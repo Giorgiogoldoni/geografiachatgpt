@@ -182,3 +182,30 @@ Nessuna delle tre varianti è una replica soddisfacente di Logical Invest. Il co
 3. Fare walk-forward/out-of-sample: parametri scelti sul training, congelati sul test, e sensibilità su lookback e date di ribilanciamento.
 4. Aggiungere costi, spread e slippage realistici e controllare i ticker con storico incompleto/delisting.
 5. Solo dopo queste verifiche passare alla mappatura UCITS europea.
+
+
+## 10. Verifica della possibile quarta area: Medio Oriente / Africa
+**Nuovo riscontro documentale — 18 novembre 2026**
+
+La tua ipotesi sul Medio Oriente è fondata come pista di ricerca: nella lista ufficiale degli strumenti della pagina World Top 4 compaiono esplicitamente:
+- **GULF** — WisdomTree Middle East Dividend;
+- **MES** — VanEck Gulf States;
+- **GAF** — SPDR Emerging Middle East & Africa;
+- **EGPT** — Egitto;
+- **AFK** — Africa;
+- **EZA** — Sudafrica;
+- **TUR** — Turchia.
+
+Questa evidenza dimostra che l'universo WTOP4 contiene esposizioni Medio Oriente e Africa. **Non dimostra però che la quarta sottostrategia si chiami “Middle East”**: la pagina principale parla di quattro sottostrategie geografiche e cita Africa, Asia e America Latina come esempi, senza pubblicare il nome di tutte e quattro. La pagina Developed include inoltre Israele (EIS), mentre la pagina Asia pubblica presenta alcune classificazioni geograficamente anomale. Non è corretto quindi assegnare in modo definitivo EIS, TUR o gli ETF regionali a una sola sleeve senza la pagina ufficiale della quarta sottostrategia o le holdings storiche.
+
+### Ipotesi di lavoro da testare, non da dare per acquisita
+La pista più promettente è una quarta area **Africa / Middle East (o EMEA emergente)**, distinta da Developed, Asia e Latin America. Per testarla:
+1. gruppo Africa: AFK, EGPT, EZA;
+2. gruppo Medio Oriente/Golfo: GULF, MES;
+3. strumento ponte: GAF, che combina Middle East e Africa;
+4. TUR resta separato come caso EMEA/Turchia, finché non si trova conferma;
+5. FM, FRN, RSX e altri strumenti non assegnati non vanno forzati nel gruppo solo per completare il paniere.
+
+Il modello 60/40 attuale continua a usare il bucket residuale non verificato e **non incorpora ancora questa nuova ipotesi come se fosse la metodologia ufficiale**. Il prossimo test quantitativo dovrà confrontare almeno due alternative: (A) Africa + Middle East/Gulf; (B) Africa soltanto, lasciando GULF/MES/GAF fuori o in un paniere EMEA separato. Si confronteranno copertura storica, mesi senza prezzi, concentrazione, turnover e risultati fuori campione.
+
+Fonte primaria: pagina World Top 4, sezione “Methodology & Assets”, che elenca GAF, GULF, MES, EGPT, AFK, EZA e TUR e descrive le quattro sottostrategie senza nominarle tutte: https://logical-invest.com/app/strategy/WTOP4
