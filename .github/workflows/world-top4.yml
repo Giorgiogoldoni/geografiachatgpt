@@ -3,7 +3,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'world_top4.py'\n      - 'world_top4_6040.py'
+      - 'world_top4.py'
+      - 'world_top4_6040.py'
       - '.github/workflows/world-top4.yml'
       - 'requirements.txt'
   schedule:
@@ -25,8 +26,10 @@ jobs:
           python-version: '3.11'
       - name: Install dependencies
         run: pip install -r requirements.txt --break-system-packages -q
-      - name: Calculate World Top 4 models
+      - name: Calculate exploratory model
         run: python world_top4.py
+      - name: Calculate separate 60/40 audit scenario
+        run: python world_top4_6040.py
       - name: Commit research data
         run: |
           git config user.name "geografia-bot"
