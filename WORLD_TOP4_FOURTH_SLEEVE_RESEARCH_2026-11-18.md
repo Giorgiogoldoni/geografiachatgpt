@@ -77,3 +77,18 @@ Le allocazioni WTOP4 pubbliche sono dichiarate ritardate di un mese e le serie s
 ## Conclusione
 
 Abbiamo ora l'universo master WTOP4 aggiornato e la conferma ufficiale dell'architettura a quattro aree. **Non abbiamo ancora la classificazione ufficiale dei 49 ETF nelle quattro aree.** La quarta sleeve resta non identificata in modo sufficiente per un backtest fedele. La ricerca è avanzata, ma il motore non va ancora modificato.
+
+
+## 7. Approfondimento HEDGE: identificati i due moduli pubblici
+
+La ricerca aggiuntiva ha individuato anche le pagine dei moduli sottostanti:
+
+- **Gold-Currency Strategy II (GLD-UUP)**, aggiornata al 12 ottobre 2026 nella pagina corrente. La descrizione ufficiale dice che alterna oro e dollaro USA in base alla loro recente performance corretta per il rischio. La pagina pubblica indica che è un aggiornamento della strategia originaria GLD-USD, che utilizzava ETF inversi a leva. Fonte: https://logical-invest.com/app/strategy/GLD-UUP
+- **Treasury Hedge (TRESHEDGE)**, pagina ufficiale aggiornata al 24 giugno 2026. Fonte: https://logical-invest.com/app/strategy.php?symbol=TRESHEDGE
+- **HEDGE**, aggiornato al 7 ottobre 2026, dichiara di combinare proprio una componente Treasury e una componente GLD-USD. Fonte: https://logical-invest.com/app/strategy/HEDGE
+
+Questa evidenza chiarisce il ruolo di GLD/UUP: non è sufficiente scegliere semplicemente il migliore dei due ETF applicando il nostro score Modified Sharpe. La strategia Gold-Currency II usa una misura di performance risk-adjusted recente, ma la pagina pubblica consultata non rende disponibili tutti i parametri numerici necessari per riprodurla esattamente.
+
+Analogamente, la presenza della pagina Treasury Hedge conferma che il modulo Treasury è una strategia autonoma: la nostra selezione diretta fra TLT, TIP e GSY non è dimostrata equivalente al suo algoritmo. I pesi correnti dei due moduli all'interno di HEDGE e i segnali effettivi non sono pubblicamente leggibili nelle pagine consultate.
+
+**Conseguenza sul codice:** la parte HEDGE del motore sperimentale resta un'approssimazione più forte di quanto vorremmo. Non va promossa a replica ufficiale. Prima di modificare il codice bisogna ottenere gli snapshot storici o i segnali dei moduli Treasury Hedge e Gold-Currency II, e verificare come HEDGE li combina.
