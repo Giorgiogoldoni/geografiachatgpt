@@ -246,3 +246,23 @@ La classificazione definitiva della quarta sleeve resta non confermata: la pagin
 - Documenti SEC 2026 con QAT e UAE: https://www.sec.gov/Archives/edgar/data/1100663/000143893426002282/0001438934-26-002282-index.htm
 
 Il test di sensibilità va quindi aggiornato per confrontare il gruppo Africa + Middle East con i ticker attivi KSA/UAE/QAT/TUR, oltre alle ipotesi Africa-only e Middle East-only. I fondi liquidati GAF/GULF/MES resteranno solo nel test storico separato.
+
+
+## 12. Ipotesi geografica ampliata: Mediterraneo orientale
+**Aggiornamento — 18 novembre 2026, dopo confronto sui ticker**
+
+La tua osservazione è importante: **GREK (Grecia) era già nell'universo ufficiale WTOP4** e va considerato insieme a **TUR (Turchia) ed EGPT (Egitto)** in una prova di “Mediterraneo orientale / Medio Oriente allargato”. La lista ufficiale WTOP4 contiene esplicitamente tutti e tre i ticker: GREK, TUR ed EGPT. Questo è un dato verificato; la loro assegnazione alla medesima sottostrategia resta invece un'ipotesi, perché LI non pubblica nel riepilogo principale la composizione completa delle quattro aree.
+
+Nuova classificazione da testare:
+- **Mediterraneo orientale / Medio Oriente allargato:** EGPT, GREK, TUR.
+- **Golfo:** KSA, UAE, QAT (candidati investibili più recenti, non confermati nell'universo storico ufficiale WTOP4).
+- **Africa:** AFK, EZA, con EGPT escluso dal gruppo Africa-only per evitare doppio conteggio negli scenari comparativi.
+- **Storico regionale composito:** GAF, GULF, MES; strumenti legacy da trattare con cautela e non come universo investibile corrente.
+
+Nel motore di sensibilità sono stati quindi aggiunti due scenari con GREK:
+1. legacy Africa + Middle East, con GREK e TUR inclusi nel gruppo di confronto;
+2. candidati attivi Eastern Mediterranean + Middle East: EGPT, GREK, TUR, KSA, UAE, QAT.
+
+Nota geografica: Grecia non è Medio Oriente in senso stretto; viene inclusa soltanto nella variante “Mediterraneo orientale allargato”. Questa separazione permette di vedere se l'inclusione di GREK migliora o peggiora la stabilità e i risultati, senza spacciare la classificazione per ufficiale.
+
+Fonte primaria per la presenza dei ticker nell'universo: https://logical-invest.com/app/strategy/WTOP4
