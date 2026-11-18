@@ -201,15 +201,40 @@ def main():
         {r["holding_to"] for r in rows} for rows in variants.values()
     ]) if variants else set()
     common = sorted(common)
+
+    # Align ACWI to the exact same holding_from / holding_to intervals.
+    # Do not use the previous available ACWI month: that can create a
+    # different holding period and an unfair benchmark comparison.
+    benchmark = prices[base.BENCH].resample("ME").last().dropna()
+    reference_rows = {
+        r["holding_to"]: r
+        for r in variants["solver_unconstrained"]
+        if r["holding_to"] in common
+    }
+    common = [
+        date for date in common
+        if date in reference_rows
+        and pd.Timestamp(reference_rows[date]["holding_from"]) in benchmark.index
+        and pd.Timestamp(date) in benchmark.index
+    ]
+    benchmark_rows = []
+    for date in common:
+        start = pd.Timestamp(reference_rows[date]["holding_from"])
+        end = pd.Timestamp(date)
+        benchmark_rows.append({
+            "holding_to": date,
+            "return": float(benchmark.loc[end] / benchmark.loc[start] - 1)
+        })
+
     results = {}
     for name, rows in variants.items():
         aligned = [r for r in rows if r["holding_to"] in common]
-        m = base.metrics(aligned)
         results[name] = {
             "metrics_common_period": compact_metrics(aligned),
             "months_common_period": len(aligned),
             "history_last_36_months": aligned[-36:]
         }
+
     # Selection and concentration diagnostics on the optimized portfolio.
     solver_rows = [r for r in variants["solver_unconstrained"] if r["holding_to"] in common]
     selection_counts, weight_stats = {}, {}
@@ -219,17 +244,10 @@ def main():
             selection_counts[region][ticker] = selection_counts[region].get(ticker, 0) + 1
         for ticker, weight in row["weights"].items():
             weight_stats.setdefault(ticker, []).append(float(weight))
-    benchmark = prices[base.BENCH].resample("ME").last().dropna()
-    benchmark_rows = []
-    for date in common:
-        d = pd.Timestamp(date)
-        if d in benchmark.index:
-            prev = benchmark.index[benchmark.index.get_loc(d) - 1] if benchmark.index.get_loc(d) > 0 else None
-            if prev is not None:
-                benchmark_rows.append({"holding_to": date,
-                                       "return": float(benchmark.loc[d] / benchmark.loc[prev] - 1)})
-    results["benchmark_acwi"] = {"metrics_common_period": compact_metrics(benchmark_rows),
-                                  "months_common_period": len(benchmark_rows)}
+    results["benchmark_acwi"] = {
+        "metrics_common_period": compact_metrics(benchmark_rows),
+        "months_common_period": len(benchmark_rows)
+    }
     data = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "latest_price_date": latest.strftime("%Y-%m-%d"),
