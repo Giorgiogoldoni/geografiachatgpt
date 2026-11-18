@@ -12,10 +12,20 @@ def main():
     base = engine.REGIONS
     scenarios = {
         "baseline_residual": base,
-        "africa_plus_middle_east": {
+        "africa_plus_middle_east_legacy": {
             "Developed": base["Developed"], "Asia": base["Asia"],
             "Latin America": base["Latin America"],
-            "Africa + Middle East (hypothesis)": ["AFK", "EGPT", "EZA", "GAF", "GULF", "MES"]
+            "Africa + Middle East legacy instruments": ["AFK", "EGPT", "EZA", "GAF", "GULF", "MES"]
+        },
+        "africa_plus_middle_east_active_candidates": {
+            "Developed": base["Developed"], "Asia": base["Asia"],
+            "Latin America": base["Latin America"],
+            "Africa + Middle East active candidates": ["AFK", "EGPT", "EZA", "KSA", "UAE", "QAT", "TUR"]
+        },
+        "middle_east_active_only": {
+            "Developed": base["Developed"], "Asia": base["Asia"],
+            "Latin America": base["Latin America"],
+            "Middle East active candidates": ["KSA", "UAE", "QAT", "TUR"]
         },
         "africa_only": {
             "Developed": base["Developed"], "Asia": base["Asia"],
