@@ -165,7 +165,7 @@ def load_universe():
     if SEED.exists():
         seed = pd.read_csv(SEED, dtype=str).fillna("")
         for _, s in seed.iterrows():
-            base_ticker = clean(s.get("justetf_primary_ticker"))
+            base_ticker = clean(s.get("justetf_primary_ticker")).split()[0]
             if base_ticker not in seed_symbols:
                 continue
             symbol, geography = seed_symbols[base_ticker]
