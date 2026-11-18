@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GEOGRAFIA CHATGPT · INDEX ETF</title>
+<style>
+:root{--bg:#f4f6f9;--card:#fff;--ink:#172033;--muted:#667085;--line:#e1e6ed;--navy:#14243b;--blue:#2459a6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:var(--navy);color:#fff;padding:18px max(16px,calc((100% - 1320px)/2));display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-size:21px;margin:0}.sub{font-size:12px;color:#c7d3e2;margin-top:4px}.headlink{color:#d8e7ff}
+main{max-width:1320px;margin:18px auto;padding:0 14px}.card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:14px;margin-bottom:14px}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.metric{font-size:24px;font-weight:750}.muted{color:var(--muted);font-size:12px}
+.controls{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0;align-items:center}input,select,button{font:inherit;border:1px solid #cbd5e1;border-radius:8px;background:white;padding:9px 11px}input{flex:1;min-width:190px}button{cursor:pointer;font-weight:650}a{color:var(--blue)}
+.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap}th{position:sticky;top:0;background:#f8fafc;color:var(--muted)}tbody tr:hover{background:#f8fbff}.pill{display:inline-block;background:#edf2f7;border-radius:20px;padding:3px 8px;font-size:11px}
+@media(max-width:700px){.metrics{grid-template-columns:1fr 1fr}header{padding:14px}td,th{padding:8px 6px;font-size:12px}}
+</style></head><body>
+<header><div><h1>🌍 GEOGRAFIA CHATGPT · INDEX</h1><div class="sub">Archivio strumenti geografici · elenco originale utente del 18/11/2026</div></div><nav><a class="headlink" href="./">Dashboard motore UCITS</a></nav></header>
+<main>
+<section class="card"><div class="metrics"><div><div class="muted">Strumenti nell'elenco originale</div><div class="metric" id="count">51</div></div><div><div class="muted">Paesi e geografie distinte</div><div class="metric" id="geos">—</div></div><div><div class="muted">Categorie</div><div class="metric" id="classes">—</div></div></div></section>
+<section class="card"><b>INDEX ETF geografici</b><p class="muted">Sono conservati tutti i 51 ticker dell'elenco fornito. La presenza nell'INDEX non significa che lo strumento sia già verificato, idoneo al motore o disponibile con una serie storica affidabile. Gli ETP e gli ETF globali/settoriali restano identificati separatamente e non vengono trattati automaticamente come ETF Paese.</p>
+<div class="controls"><input id="q" type="search" placeholder="Cerca ticker, nome, Paese o area…"><select id="geo"><option value="">Tutte le geografie</option></select><select id="kind"><option value="">Tutte le classificazioni</option></select><button id="reset">Azzera filtri</button><a href="./data/geografia_index_user_51.csv" download>Scarica CSV</a></div>
+<div class="muted" id="shown"></div><div class="scroll"><table><thead><tr><th>Portfolio</th><th>Ticker originale</th><th>Nome</th><th>Geografia</th><th>Classificazione</th><th>Verifica</th></tr></thead><tbody id="body"><tr><td colspan="6">Caricamento…</td></tr></tbody></table></div></section>
+<section class="card"><b>Prossima fase dell'INDEX</b><p class="muted">L'elenco di 51 strumenti è il nucleo originale del portafoglio PAESI. L'universo di ricerca UCITS per singolo Paese (inclusi candidati aggiuntivi non presenti in questo portafoglio) rimane un archivio separato: ISIN, borsa, valuta, TER, liquidità, data di lancio, storico prezzi e corrispondenza con il benchmark devono essere verificati prima dell'inserimento nel motore.</p></section>
+</main>
+<script>
+let rows=[];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function render(){
+ const q=document.getElementById("q").value.toLowerCase().trim(),g=document.getElementById("geo").value,k=document.getElementById("kind").value;
+ const a=rows.filter(x=>(!q||[x.ticker,x.name,x.geography,x.classification].join(" ").toLowerCase().includes(q))&&(!g||x.geography===g)&&(!k||x.classification===k));
+ document.getElementById("shown").textContent="Visualizzati "+a.length+" di "+rows.length+" strumenti";
+ document.getElementById("body").innerHTML=a.map(x=>'<tr><td>'+esc(x.portfolio)+'</td><td><b>'+esc(x.ticker)+'</b></td><td>'+esc(x.name)+'</td><td>'+esc(x.geography)+'</td><td><span class="pill">'+esc(x.classification)+'</span></td><td>'+esc(x.verification_status)+'</td></tr>').join("")||'<tr><td colspan="6">Nessun risultato.</td></tr>';
+}
+async function init(){const r=await fetch("./data/geografia_index_user_51.csv");if(!r.ok)throw Error("CSV non disponibile");const t=await r.text();const lines=t.trim().split(/\r?\n/);const parse=s=>{let a=[],v="",q=false;for(let i=0;i<s.length;i++){if(s[i]==='"'&&s[i+1]==='"'&&q){v+='"';i++}else if(s[i]==='"')q=!q;else if(s[i]===","&&!q){a.push(v);v=""}else v+=s[i]}a.push(v);return a};const h=parse(lines[0]);rows=lines.slice(1).map(l=>Object.fromEntries(h.map((x,i)=>[x,parse(l)[i]||""])));
+ const geos=[...new Set(rows.map(x=>x.geography))].sort(),kinds=[...new Set(rows.map(x=>x.classification))].sort();
+ geos.forEach(x=>document.getElementById("geo").insertAdjacentHTML("beforeend",'<option>'+esc(x)+'</option>'));
+ kinds.forEach(x=>document.getElementById("kind").insertAdjacentHTML("beforeend",'<option>'+esc(x)+'</option>'));
+ document.getElementById("count").textContent=rows.length;document.getElementById("geos").textContent=geos.length;document.getElementById("classes").textContent=kinds.length;render();
+}
+["q","geo","kind"].forEach(id=>document.getElementById(id).addEventListener(id==="q"?"input":"change",render));
+document.getElementById("reset").addEventListener("click",()=>{document.getElementById("q").value="";document.getElementById("geo").value="";document.getElementById("kind").value="";render()});
+init().catch(e=>document.getElementById("body").innerHTML='<tr><td colspan="6">'+esc(e.message)+'</td></tr>');
+</script></body></html>
