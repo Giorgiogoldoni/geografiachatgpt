@@ -129,3 +129,12 @@ Il motore scarica prezzi rettificati delle quotazioni europee mappate, calcola M
 - Dashboard ricercabile: [INDEX ETF — 51 strumenti](./index-etf.html)
 - Archivio CSV dell'elenco PAESI originale fornito il 18 novembre 2026: [data/geografia_index_user_51.csv](./data/geografia_index_user_51.csv)
 - I 51 ticker sono conservati come universo di partenza. La verifica di ISIN, borsa, valuta, struttura ETF/ETP, liquidità e disponibilità dei prezzi è un passaggio distinto prima dell'inclusione nel motore quantitativo.
+
+
+## 🧭 INDEX ETF factor
+
+È stato aggiunto un archivio separato di ETF UCITS factor, distinto dall'universo geografico:
+- [Dashboard ETF Factor](./factor-etf.html)
+- [CSV Factor (14 strumenti)](./data/geografia_index_factor_14.csv)
+- Categorie: Equal Weight, Momentum, Value e Quality.
+- Il catalogo non alimenta automaticamente il ranking Paesi. Prima dell'uso quantitativo occorre completare la verifica dei ticker per listing, valuta negoziata, liquidità e disponibilità dello storico prezzi.
