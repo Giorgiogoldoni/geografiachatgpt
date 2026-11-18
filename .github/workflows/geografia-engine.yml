@@ -6,6 +6,7 @@ on:
       - 'geografia_engine.py'
       - 'data/geografia_index_user_51.csv'
       - 'data/geografia_index_factor_14.csv'
+      - 'ucits_country_universe_seed_2026-11-18.csv'
       - 'geografia-moduli.json'
       - 'requirements.txt'
       - '.github/workflows/geografia-engine.yml'
