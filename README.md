@@ -96,4 +96,4 @@ Il calcolo viene eseguito da GitHub Actions dopo gli aggiornamenti al branch mai
 - Metodo, limiti e ritardo holdings: WORLD_TOP4_METHOD.md
 - Registro per holdings Logical Invest pubblicati in ritardo: logical_invest_holdings.csv
 
-Il modulo confronta tre varianti di momentum, quattro gruppi geografici e una sleeve hedge di test, con ACWI come benchmark. È una replica metodologica indipendente: parametri non pubblici, quarta regione e peso hedge sono esplicitamente approssimati. Gli strumenti di ricerca sono ticker USA, non ancora la lista operativa UCITS.
+Il modulo confronta tre varianti di momentum, quattro gruppi geografici, filtro absolute momentum e sleeve hedge variabile, con ACWI come benchmark sullo stesso periodo. Include storico delle selezioni e backtest mensile. È una replica metodologica indipendente: parametri non pubblici, quarta regione e peso hedge sono esplicitamente approssimati. Gli strumenti di ricerca sono ticker USA, non ancora la lista operativa UCITS.
