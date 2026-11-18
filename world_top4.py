@@ -67,8 +67,25 @@ def metrics(rows):
  for n in (1,3,5,10,15):
   k=12*n
   if len(r)>=k:
-   total=float((1+r.tail(k)).prod()-1)
-   periods[f"{n}y"]={"total_return":total,"cagr":float((1+total)**(1/n)-1)}
+   sub=r.tail(k).reset_index(drop=True); sub_dates=dates.tail(k).reset_index(drop=True)
+   sub_eq=(1+sub).cumprod(); sub_dd=sub_eq/sub_eq.cummax()-1
+   sub_vol=float(sub.std(ddof=1)*math.sqrt(12)) if len(sub)>1 else 0.0
+   sub_down=float(np.sqrt(np.mean(np.minimum(sub,0.0)**2))*math.sqrt(12))
+   sub_total=float(sub_eq.iloc[-1]-1); sub_cagr=float((1+sub_total)**(1/n)-1)
+   sub_under=(sub_dd < -1e-10).tolist(); sub_runs=[]; sub_start=None
+   for j,flag in enumerate(sub_under):
+    if flag and sub_start is None:sub_start=j
+    if sub_start is not None and (not flag or j==len(sub_under)-1):
+     sub_end=j-1 if not flag else j
+     sub_runs.append(int((sub_dates.iloc[sub_end]-sub_dates.iloc[sub_start]).days));sub_start=None
+   sub_downside=float(np.sqrt(np.mean(np.minimum(sub,0.0)**2))*math.sqrt(12))
+   periods[f"{n}y"]={"total_return":sub_total,"cagr":sub_cagr,
+    "volatility":sub_vol,"downside_volatility":sub_downside,
+    "sharpe_zero_rf":float(sub.mean()*12/sub_vol) if sub_vol>0 else 0.0,
+    "sortino_zero_target":float(sub.mean()*12/sub_downside) if sub_downside>0 else 0.0,
+    "max_drawdown":float(sub_dd.min()),"ulcer_index":float(np.sqrt(np.mean((sub_dd*100)**2))),
+    "max_underwater_days":max(sub_runs,default=0),
+    "avg_underwater_days":float(np.mean(sub_runs)) if sub_runs else 0.0}
  weights_prev={}; turnovers=[]
  for row in rows:
   current={k:float(v) for k,v in row.get("weights",{}).items()}
