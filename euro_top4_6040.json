@@ -1,0 +1,2996 @@
+{
+  "generated_at": "2026-11-18T19:55:52.010965+00:00",
+  "latest_price_date": "2026-11-18",
+  "data_source": "Yahoo Finance adjusted daily prices; European listing symbols",
+  "methodology": {
+    "equity_weight": 0.6,
+    "defensive_weight": 0.4,
+    "regional_equity_weights": "15% per each of four sleeves",
+    "defensive_split": "24% XEON.DE EUR overnight-rate proxy + 16% SGLD.MI gold ETC",
+    "ranking": "68-session return / annualized volatility squared; positive 68-session and 12-month momentum filter; monthly rebalance",
+    "warning": "Independent European UCITS approximation, not official Logical Invest. The universe is limited to mapped seed candidates and has uneven country coverage. XEON is a cash-like proxy, SGLD is an ETC (not a UCITS ETF); neither is equivalent to US Treasury/GLD. No fees, taxes, slippage or currency-hedging adjustment. Benchmark VWCE.DE is a proxy."
+  },
+  "regions": {
+    "Developed": [
+      "CSCA.MI",
+      "IAEX.AS",
+      "IBCJ.DE"
+    ],
+    "Asia-Pacific": [
+      "SJPA.MI",
+      "FLXK.MI",
+      "FLXI.MI"
+    ],
+    "Latin America": [
+      "D5BI.DE",
+      "FLXB.MI",
+      "LTAM.MI",
+      "ALAT.MI"
+    ],
+    "Africa-Middle East": [
+      "SRSA.MI",
+      "IQQ5.DE",
+      "QDVM.DE"
+    ]
+  },
+  "defensive": {
+    "Cash-like EUR": [
+      "XEON.DE",
+      0.24
+    ],
+    "Gold ETC": [
+      "SGLD.MI",
+      0.16
+    ]
+  },
+  "metrics": {
+    "months": 33,
+    "total_return": 0.3862381972315343,
+    "cagr": 0.12610115568371394,
+    "volatility": 0.11302628732605428,
+    "downside_volatility": 0.05031032126373136,
+    "sharpe_zero_rf": 1.109508698515702,
+    "sortino_zero_target": 2.492602825806155,
+    "max_drawdown": -0.10737371462173395,
+    "calmar": 1.1744136460953665,
+    "ulcer_index": 3.9983774385609547,
+    "max_underwater_days": 1431,
+    "avg_underwater_days": 389.6,
+    "drawdown_episodes": 5,
+    "maxdd_peak_date": "2021-08-31",
+    "maxdd_trough_date": "2023-09-30",
+    "maxdd_recovery_date": "2025-09-30",
+    "maxdd_recovery_days": 1491,
+    "monthly_win_rate": 0.5757575757575758,
+    "avg_monthly_turnover": 0.0,
+    "periods": {
+      "1y": {
+        "total_return": 0.3543624798753211,
+        "cagr": 0.3543624798753211,
+        "volatility": 0.14910450942652245,
+        "downside_volatility": 0.05687278985470991,
+        "sharpe_zero_rf": 2.1271058956532523,
+        "sortino_zero_target": 5.5766752761712155,
+        "max_drawdown": -0.049212954642486095,
+        "ulcer_index": 1.7136893581330435,
+        "max_underwater_days": 31,
+        "avg_underwater_days": 15.5
+      }
+    },
+    "yearly_returns": {
+      "2019": 0.010800973016210857,
+      "2020": -0.01713232630177408,
+      "2021": 0.034139644670388325,
+      "2022": -0.03840758653593901,
+      "2023": -0.047891039477956365,
+      "2024": 0.07534895855643398,
+      "2025": 0.16740451644442444,
+      "2026": 0.1739497359857356
+    },
+    "equity_curve": [
+      {
+        "date": "2019-12-31",
+        "value": 1.0108009730162109
+      },
+      {
+        "date": "2020-01-31",
+        "value": 0.9934836009203464
+      },
+      {
+        "date": "2021-04-30",
+        "value": 0.9902161026020065
+      },
+      {
+        "date": "2021-05-31",
+        "value": 1.0323089923133426
+      },
+      {
+        "date": "2021-06-30",
+        "value": 1.02834811288352
+      },
+      {
+        "date": "2021-07-31",
+        "value": 1.019708157712728
+      },
+      {
+        "date": "2021-08-31",
+        "value": 1.0537750205259047
+      },
+      {
+        "date": "2021-09-30",
+        "value": 1.0326291673512635
+      },
+      {
+        "date": "2021-10-31",
+        "value": 1.0399986343723648
+      },
+      {
+        "date": "2021-11-30",
+        "value": 1.027400778041625
+      },
+      {
+        "date": "2022-01-31",
+        "value": 1.0316362207197975
+      },
+      {
+        "date": "2022-04-30",
+        "value": 1.0169744949409862
+      },
+      {
+        "date": "2022-05-31",
+        "value": 0.9879407937519001
+      },
+      {
+        "date": "2023-08-31",
+        "value": 0.9468992198408651
+      },
+      {
+        "date": "2023-09-30",
+        "value": 0.9406272821964443
+      },
+      {
+        "date": "2024-02-29",
+        "value": 0.9508870911127405
+      },
+      {
+        "date": "2024-03-31",
+        "value": 0.9845481878092024
+      },
+      {
+        "date": "2024-04-30",
+        "value": 1.0074117053855896
+      },
+      {
+        "date": "2024-05-31",
+        "value": 1.0120969152680042
+      },
+      {
+        "date": "2024-10-31",
+        "value": 1.0115025682997154
+      },
+      {
+        "date": "2025-08-31",
+        "value": 1.02353558802009
+      },
+      {
+        "date": "2025-09-30",
+        "value": 1.0893312486356355
+      },
+      {
+        "date": "2025-10-31",
+        "value": 1.119153771782648
+      },
+      {
+        "date": "2025-11-30",
+        "value": 1.138022329463524
+      },
+      {
+        "date": "2025-12-31",
+        "value": 1.1808326666282227
+      },
+      {
+        "date": "2026-01-31",
+        "value": 1.298454689783517
+      },
+      {
+        "date": "2026-02-28",
+        "value": 1.3717024797499393
+      },
+      {
+        "date": "2026-03-31",
+        "value": 1.3041969478310198
+      },
+      {
+        "date": "2026-04-30",
+        "value": 1.398925030492159
+      },
+      {
+        "date": "2026-05-31",
+        "value": 1.4322049777383103
+      },
+      {
+        "date": "2026-07-31",
+        "value": 1.4333030672118021
+      },
+      {
+        "date": "2026-09-30",
+        "value": 1.4262934933678246
+      },
+      {
+        "date": "2026-10-31",
+        "value": 1.3862381972315343
+      }
+    ]
+  },
+  "benchmark_metrics": {
+    "months": 33,
+    "total_return": 0.30225812881529257,
+    "cagr": 0.1007990041620277,
+    "volatility": 0.10288357506907413,
+    "downside_volatility": 0.05303169658016354,
+    "sharpe_zero_rf": 0.9864508456738029,
+    "sortino_zero_target": 1.9137533999014933,
+    "max_drawdown": -0.11949295449313002,
+    "calmar": 0.8435560455392616,
+    "ulcer_index": 4.642579946619415,
+    "max_underwater_days": 1338,
+    "avg_underwater_days": 171.125,
+    "drawdown_episodes": 8,
+    "maxdd_peak_date": "2021-11-30",
+    "maxdd_trough_date": "2023-09-30",
+    "maxdd_recovery_date": "2025-10-31",
+    "maxdd_recovery_days": 1431,
+    "monthly_win_rate": 0.5757575757575758,
+    "avg_monthly_turnover": 0.0,
+    "periods": {
+      "1y": {
+        "total_return": 0.20380236389655693,
+        "cagr": 0.20380236389655693,
+        "volatility": 0.12553106164732555,
+        "downside_volatility": 0.05557326985734067,
+        "sharpe_zero_rf": 1.545639683132278,
+        "sortino_zero_target": 3.4913509830518255,
+        "max_drawdown": -0.053397407615176196,
+        "ulcer_index": 1.6044386591957174,
+        "max_underwater_days": 31,
+        "avg_underwater_days": 7.75
+      }
+    },
+    "yearly_returns": {
+      "2019": 0.022087001130332906,
+      "2020": -0.006340552167565461,
+      "2021": 0.12807329743561824,
+      "2022": -0.09789393904685695,
+      "2023": -0.02394287809512341,
+      "2024": 0.07569849841922749,
+      "2025": 0.0700515430465165,
+      "2026": 0.12151795606565607
+    },
+    "equity_curve": [
+      {
+        "date": "2019-12-31",
+        "value": 1.022087001130333
+      },
+      {
+        "date": "2020-01-31",
+        "value": 1.0156064051798754
+      },
+      {
+        "date": "2021-04-30",
+        "value": 1.0304749999649103
+      },
+      {
+        "date": "2021-05-31",
+        "value": 1.0292264827515045
+      },
+      {
+        "date": "2021-06-30",
+        "value": 1.0742863678325838
+      },
+      {
+        "date": "2021-07-31",
+        "value": 1.0823449238318041
+      },
+      {
+        "date": "2021-08-31",
+        "value": 1.1140116951099002
+      },
+      {
+        "date": "2021-09-30",
+        "value": 1.0940355062897482
+      },
+      {
+        "date": "2021-10-31",
+        "value": 1.1429543815981973
+      },
+      {
+        "date": "2021-11-30",
+        "value": 1.1456784663879962
+      },
+      {
+        "date": "2022-01-31",
+        "value": 1.0933833784681666
+      },
+      {
+        "date": "2022-04-30",
+        "value": 1.0684507152321343
+      },
+      {
+        "date": "2022-05-31",
+        "value": 1.0335234884321132
+      },
+      {
+        "date": "2023-08-31",
+        "value": 1.0237449938363588
+      },
+      {
+        "date": "2023-09-30",
+        "value": 1.0087779615401364
+      },
+      {
+        "date": "2024-02-29",
+        "value": 1.0461469097244434
+      },
+      {
+        "date": "2024-03-31",
+        "value": 1.0833326377407182
+      },
+      {
+        "date": "2024-04-30",
+        "value": 1.0646481636485647
+      },
+      {
+        "date": "2024-05-31",
+        "value": 1.0763717387939113
+      },
+      {
+        "date": "2024-10-31",
+        "value": 1.085140938467134
+      },
+      {
+        "date": "2025-08-31",
+        "value": 1.0817873164827876
+      },
+      {
+        "date": "2025-09-30",
+        "value": 1.1135671034642596
+      },
+      {
+        "date": "2025-10-31",
+        "value": 1.162114878528336
+      },
+      {
+        "date": "2025-11-30",
+        "value": 1.1565255085544253
+      },
+      {
+        "date": "2025-12-31",
+        "value": 1.1611567356297021
+      },
+      {
+        "date": "2026-01-31",
+        "value": 1.1755294883048493
+      },
+      {
+        "date": "2026-02-28",
+        "value": 1.1962901445955205
+      },
+      {
+        "date": "2026-03-31",
+        "value": 1.1324113521185353
+      },
+      {
+        "date": "2026-04-30",
+        "value": 1.229347414828795
+      },
+      {
+        "date": "2026-05-31",
+        "value": 1.3028080018095023
+      },
+      {
+        "date": "2026-07-31",
+        "value": 1.2849872845488948
+      },
+      {
+        "date": "2026-09-30",
+        "value": 1.3090431705764076
+      },
+      {
+        "date": "2026-10-31",
+        "value": 1.3022581288152926
+      }
+    ]
+  },
+  "benchmark": "VWCE.DE",
+  "selection_months": 33,
+  "history": [
+    {
+      "signal_date": "2019-11-30",
+      "holding_to": "2019-12-31",
+      "return": 0.010800973016210884,
+      "benchmark_return": 0.022087001130332906,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.0737007086465058,
+          "vol_annual": 0.09208097504985124,
+          "sharpe_68d": 2.909009730378202,
+          "modified_score": 8.692242718683344,
+          "momentum_1m": 0.03797684758819275,
+          "momentum_3m": 0.05033155951968671,
+          "momentum_6m": 0.101756924476885,
+          "momentum_12m": 0.17522828850519834,
+          "score": 8.692242718683344
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "SJPA.MI",
+          "return_68d": 0.11863451775728695,
+          "vol_annual": 0.09866610592482125,
+          "sharpe_68d": 4.262796662461313,
+          "modified_score": 12.186390567173591,
+          "momentum_1m": 0.027499349756368252,
+          "momentum_3m": 0.09880449049177353,
+          "momentum_6m": 0.14342912534714403,
+          "momentum_12m": 0.1289001414286992,
+          "score": 12.186390567173591
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.1165202410956856,
+          "vol_annual": 0.13172893010218464,
+          "sharpe_68d": 3.1679797025747836,
+          "modified_score": 6.714892209087004,
+          "momentum_1m": -0.02441483031954572,
+          "momentum_3m": 0.048701250949223285,
+          "momentum_6m": 0.026618955587080828,
+          "momentum_12m": 0.16659140365575165,
+          "score": 6.714892209087004
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.09465589850947409,
+          "vol_annual": 0.2644716129224636,
+          "sharpe_68d": 1.3991034411135723,
+          "modified_score": 1.3532858929729796,
+          "momentum_1m": 0.06730136255169183,
+          "momentum_3m": 0.06971776423153653,
+          "momentum_6m": 0.18602059113531277,
+          "momentum_12m": 0.06374122266921578,
+          "score": 1.3532858929729796
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "SJPA.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2019-12-31",
+      "holding_to": "2020-01-31",
+      "return": -0.017132326301774085,
+      "benchmark_return": -0.006340552167565461,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IAEX.AS",
+          "return_68d": 0.05651630375371175,
+          "vol_annual": 0.12021025272636769,
+          "sharpe_68d": 1.754969268933011,
+          "modified_score": 3.9110262443530144,
+          "momentum_1m": 0.011655640545288781,
+          "momentum_3m": 0.058363729470376935,
+          "momentum_6m": 0.06671887004337029,
+          "momentum_12m": 0.26695143436309143,
+          "score": 3.9110262443530144
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "SJPA.MI",
+          "return_68d": 0.03231274732161027,
+          "vol_annual": 0.10727582309048186,
+          "sharpe_68d": 1.1516325378197267,
+          "modified_score": 2.8078258868940846,
+          "momentum_1m": -0.017119429884246307,
+          "momentum_3m": 0.03338992107900163,
+          "momentum_6m": 0.09554761741244744,
+          "momentum_12m": 0.21892312856820917,
+          "score": 2.8078258868940846
+        },
+        {
+          "area": "Latin America",
+          "ticker": "ALAT.MI",
+          "return_68d": 0.08407535071300765,
+          "vol_annual": 0.16086393739777188,
+          "sharpe_68d": 1.9400151065687266,
+          "modified_score": 3.2490118739726834,
+          "momentum_1m": 0.07481913310864718,
+          "momentum_3m": 0.07109893703961556,
+          "momentum_6m": 0.042093475071793174,
+          "momentum_12m": 0.19964465580382673,
+          "score": 3.2490118739726834
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.05179210446528093,
+          "vol_annual": 0.19970919948787796,
+          "sharpe_68d": 1.0355190724331294,
+          "modified_score": 1.2985761323248703,
+          "momentum_1m": 0.04878483893674379,
+          "momentum_3m": 0.08344103028519045,
+          "momentum_6m": -0.007441272339897109,
+          "momentum_12m": 0.14965718910534398,
+          "score": 1.2985761323248703
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IAEX.AS": 0.15,
+        "SJPA.MI": 0.15,
+        "ALAT.MI": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2021-03-31",
+      "holding_to": "2021-04-30",
+      "return": -0.0032889303007245085,
+      "benchmark_return": 0.014640115215107885,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.15369662058752986,
+          "vol_annual": 0.14332980699316553,
+          "sharpe_68d": 3.770642452021137,
+          "modified_score": 7.4815448957758655,
+          "momentum_1m": 0.05935288953922346,
+          "momentum_3m": 0.1384973979712414,
+          "momentum_6m": 0.23643930914426758,
+          "momentum_12m": 0.4971490992880403,
+          "score": 7.4815448957758655
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "SJPA.MI",
+          "return_68d": 0.09597021348209056,
+          "vol_annual": 0.1286234012874138,
+          "sharpe_68d": 2.7053811416474782,
+          "modified_score": 5.800914725596093,
+          "momentum_1m": 0.021023445780756322,
+          "momentum_3m": 0.0639142686755323,
+          "momentum_6m": 0.15966935153550832,
+          "momentum_12m": 0.3657292602363793,
+          "score": 5.800914725596093
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.10837859616112677,
+          "vol_annual": 0.2243950751905173,
+          "sharpe_68d": 1.81069484131485,
+          "modified_score": 2.1523697456205397,
+          "momentum_1m": 0.08662742440687121,
+          "momentum_3m": 0.05440691045462831,
+          "momentum_6m": 0.36526944196867395,
+          "momentum_12m": 0.5695484210308834,
+          "score": 2.1523697456205397
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.1603864586871604,
+          "vol_annual": 0.23079875600915947,
+          "sharpe_68d": 2.504200480055476,
+          "modified_score": 3.0109307772407043,
+          "momentum_1m": 0.03516636742894197,
+          "momentum_3m": 0.1559191213698603,
+          "momentum_6m": 0.36601456978353597,
+          "momentum_12m": 0.7069357224600654,
+          "score": 3.0109307772407043
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "SJPA.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2021-04-30",
+      "holding_to": "2021-05-31",
+      "return": 0.04250879136455962,
+      "benchmark_return": -0.0012115938896609668,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.13550066649190273,
+          "vol_annual": 0.14330039342322118,
+          "sharpe_68d": 3.359489322466202,
+          "modified_score": 6.598521953315087,
+          "momentum_1m": 0.029322706541105692,
+          "momentum_3m": 0.15988346933424746,
+          "momentum_6m": 0.3062142414598552,
+          "momentum_12m": 0.3389700053672584,
+          "score": 6.598521953315087
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.012629412422091812,
+          "vol_annual": 0.2478880715539114,
+          "sharpe_68d": 0.31021400142792166,
+          "modified_score": 0.20552842201776453,
+          "momentum_1m": -0.039662290313365434,
+          "momentum_3m": 0.06907103491611166,
+          "momentum_6m": 0.2097452257785597,
+          "momentum_12m": 0.4023970815968527,
+          "score": 0.20552842201776453
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.09126483001838781,
+          "vol_annual": 0.19006133712341103,
+          "sharpe_68d": 1.7974710722056713,
+          "modified_score": 2.526480139722675,
+          "momentum_1m": 0.012842129419008863,
+          "momentum_3m": 0.12572091028600196,
+          "momentum_6m": 0.324961805692382,
+          "momentum_12m": 0.46684203548463965,
+          "score": 2.526480139722675
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.09226196157047184,
+          "vol_annual": 0.2393156682265974,
+          "sharpe_68d": 1.4848645427545335,
+          "modified_score": 1.6109439027137757,
+          "momentum_1m": -0.020190206546155443,
+          "momentum_3m": 0.11380879857877924,
+          "momentum_6m": 0.33606371334169305,
+          "momentum_12m": 0.45960730521646354,
+          "score": 1.6109439027137757
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXI.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2021-05-31",
+      "holding_to": "2021-06-30",
+      "return": -0.003836912648553647,
+      "benchmark_return": 0.04378033973690365,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.12790604828687147,
+          "vol_annual": 0.14582490860351804,
+          "sharpe_68d": 3.132983766707502,
+          "modified_score": 6.014889532159814,
+          "momentum_1m": 0.03769943862629632,
+          "momentum_3m": 0.12545580142383006,
+          "momentum_6m": 0.2143993408509537,
+          "momentum_12m": 0.3239025094698982,
+          "score": 6.014889532159814
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.06964869099627014,
+          "vol_annual": 0.22274583054869343,
+          "sharpe_68d": 1.2311961009911283,
+          "modified_score": 1.403763001223323,
+          "momentum_1m": 0.0700858275730285,
+          "momentum_3m": 0.05669889993401256,
+          "momentum_6m": 0.19922145930214885,
+          "momentum_12m": 0.4103737739665507,
+          "score": 1.403763001223323
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.14176194990909918,
+          "vol_annual": 0.16694245548040068,
+          "sharpe_68d": 3.0280098664743473,
+          "modified_score": 5.086582398640027,
+          "momentum_1m": 0.03421715982786666,
+          "momentum_3m": 0.1761918035639125,
+          "momentum_6m": 0.1580658896865914,
+          "momentum_12m": 0.3403698090216871,
+          "score": 5.086582398640027
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.06728462232367982,
+          "vol_annual": 0.23178260575892418,
+          "sharpe_68d": 1.1552487835201481,
+          "modified_score": 1.2524319468263634,
+          "momentum_1m": 0.03409278564186802,
+          "momentum_3m": 0.07188419417855219,
+          "momentum_6m": 0.2352006379956122,
+          "momentum_12m": 0.3805506003828587,
+          "score": 1.2524319468263634
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXI.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2021-06-30",
+      "holding_to": "2021-07-31",
+      "return": -0.008401780547411246,
+      "benchmark_return": 0.007501310861347754,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.08888073842459865,
+          "vol_annual": 0.10919776232069973,
+          "sharpe_68d": 2.9454601187591387,
+          "modified_score": 7.453841889405309,
+          "momentum_1m": 0.022749228645373876,
+          "momentum_3m": 0.08656809656822517,
+          "momentum_6m": 0.23705495066148874,
+          "momentum_12m": 0.3658626114794499,
+          "score": 7.453841889405309
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXK.MI",
+          "return_68d": 0.07298762654978375,
+          "vol_annual": 0.1276574175189124,
+          "sharpe_68d": 2.1091679998569535,
+          "modified_score": 4.478753208119732,
+          "momentum_1m": 0.043254890552019365,
+          "momentum_3m": 0.031404495745259275,
+          "momentum_6m": 0.1063646493940067,
+          "momentum_12m": 0.5610841919295848,
+          "score": 4.478753208119732
+        },
+        {
+          "area": "Latin America",
+          "ticker": "LTAM.MI",
+          "return_68d": 0.14063869044061228,
+          "vol_annual": 0.14847776518624087,
+          "sharpe_68d": 3.3604592331937484,
+          "modified_score": 6.379431368264389,
+          "momentum_1m": 0.05538939650280561,
+          "momentum_3m": 0.13446445819279051,
+          "momentum_6m": 0.08373702009809891,
+          "momentum_12m": 0.27997848389057167,
+          "score": 6.379431368264389
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.023344257848460614,
+          "vol_annual": 0.20412999961109932,
+          "sharpe_68d": 0.5196263230342184,
+          "modified_score": 0.5602300525647316,
+          "momentum_1m": -0.048247024530012506,
+          "momentum_3m": -0.014487909124698772,
+          "momentum_6m": 0.13917227018395217,
+          "momentum_12m": 0.30237680663992395,
+          "score": 0.5602300525647316
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXK.MI": 0.15,
+        "LTAM.MI": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2021-07-31",
+      "holding_to": "2021-08-31",
+      "return": 0.03340844393124274,
+      "benchmark_return": 0.02925755974905564,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.07523912089647711,
+          "vol_annual": 0.1328247473180713,
+          "sharpe_68d": 2.0908210212281437,
+          "modified_score": 4.2646727952505,
+          "momentum_1m": -0.00013483602304287245,
+          "momentum_3m": 0.06773198127253455,
+          "momentum_6m": 0.19957942701681675,
+          "momentum_12m": 0.3424434057727659,
+          "score": 4.2646727952505
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.12169634213449076,
+          "vol_annual": 0.11056460290091372,
+          "sharpe_68d": 3.906861418109332,
+          "modified_score": 9.95509259265191,
+          "momentum_1m": 0.01539320955564727,
+          "momentum_3m": 0.12169634213449076,
+          "momentum_6m": 0.11917420378718657,
+          "momentum_12m": 0.42667294099684305,
+          "score": 9.95509259265191
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.07194509119361481,
+          "vol_annual": 0.15912276054321026,
+          "sharpe_68d": 1.697452180420702,
+          "modified_score": 2.841427362443201,
+          "momentum_1m": 0.02945758530252074,
+          "momentum_3m": 0.09725591323718197,
+          "momentum_6m": 0.23219146203858299,
+          "momentum_12m": 0.5459450319329131,
+          "score": 2.841427362443201
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.05528420885847818,
+          "vol_annual": 0.2059990214326891,
+          "sharpe_68d": 1.0699390499755983,
+          "modified_score": 1.30277910496591,
+          "momentum_1m": 0.06142851419641948,
+          "momentum_3m": 0.037050811358239066,
+          "momentum_6m": -0.1478946765008009,
+          "momentum_12m": 0.0013764789730341676,
+          "score": 1.30277910496591
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXI.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2021-08-31",
+      "holding_to": "2021-09-30",
+      "return": -0.020066762603736646,
+      "benchmark_return": -0.017931758623217275,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IAEX.AS",
+          "return_68d": 0.11784751781296565,
+          "vol_annual": 0.1157160727758464,
+          "sharpe_68d": 3.627904183182962,
+          "modified_score": 8.801021210662551,
+          "momentum_1m": 0.04871233721950152,
+          "momentum_3m": 0.10434790911510516,
+          "momentum_6m": 0.21227847296087954,
+          "momentum_12m": 0.4628139912251301,
+          "score": 8.801021210662551
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.1368603307445746,
+          "vol_annual": 0.1010688993531583,
+          "sharpe_68d": 4.757464165420836,
+          "modified_score": 13.398078337242946,
+          "momentum_1m": 0.08328769631581756,
+          "momentum_3m": 0.11380284269091101,
+          "momentum_6m": 0.1615746137507057,
+          "momentum_12m": 0.47574031848499465,
+          "score": 13.398078337242946
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.11290124712539895,
+          "vol_annual": 0.1609733906327682,
+          "sharpe_68d": 2.5441545313098377,
+          "modified_score": 4.357030053472748,
+          "momentum_1m": 0.036524383533926175,
+          "momentum_3m": 0.09109837780777519,
+          "momentum_6m": 0.23626526434560047,
+          "momentum_12m": 0.5782855820521395,
+          "score": 4.357030053472748
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.16779337421507545,
+          "vol_annual": 0.1848043985285571,
+          "sharpe_68d": 3.204681804918553,
+          "modified_score": 4.913038871191678,
+          "momentum_1m": 0.09594314908288948,
+          "momentum_3m": 0.166121139094761,
+          "momentum_6m": -0.04589932201959912,
+          "momentum_12m": 0.1894157169730626,
+          "score": 4.913038871191678
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IAEX.AS": 0.15,
+        "FLXI.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2021-09-30",
+      "holding_to": "2021-10-31",
+      "return": 0.007136605525102665,
+      "benchmark_return": 0.04471415692380032,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IAEX.AS",
+          "return_68d": 0.06069853687596649,
+          "vol_annual": 0.1275198132816986,
+          "sharpe_68d": 1.7762132404340616,
+          "modified_score": 3.732698277585901,
+          "momentum_1m": -0.02092471568035159,
+          "momentum_3m": 0.05577639004524637,
+          "momentum_6m": 0.09924478307329765,
+          "momentum_12m": 0.4125211088548395,
+          "score": 3.732698277585901
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.127080998101472,
+          "vol_annual": 0.11249362619703777,
+          "sharpe_68d": 3.9999372094247914,
+          "modified_score": 10.04210561059299,
+          "momentum_1m": 0.02731409364988302,
+          "momentum_3m": 0.12271973081325727,
+          "momentum_6m": 0.2127786279770525,
+          "momentum_12m": 0.4803207126106608,
+          "score": 10.04210561059299
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.03743703964099554,
+          "vol_annual": 0.1520717452715674,
+          "sharpe_68d": 0.971219318438079,
+          "modified_score": 1.6188419085646988,
+          "momentum_1m": -0.029738563105765392,
+          "momentum_3m": 0.030266885614768757,
+          "momentum_6m": 0.0912533210237163,
+          "momentum_12m": 0.5275618624619625,
+          "score": 1.6188419085646988
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.03413456933023573,
+          "vol_annual": 0.2075897481530448,
+          "sharpe_68d": 0.7017170335028475,
+          "modified_score": 0.7921047612186377,
+          "momentum_1m": -0.1017544132623388,
+          "momentum_3m": 0.017083720608450648,
+          "momentum_6m": -0.0032876497162876994,
+          "momentum_12m": 0.06719769996288116,
+          "score": 0.7921047612186377
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IAEX.AS": 0.15,
+        "FLXI.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2021-10-31",
+      "holding_to": "2021-11-30",
+      "return": -0.012113339301010334,
+      "benchmark_return": 0.0023833714045435883,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IAEX.AS",
+          "return_68d": 0.10596015814460857,
+          "vol_annual": 0.12460643432972549,
+          "sharpe_68d": 3.058819680864507,
+          "modified_score": 6.824355784505924,
+          "momentum_1m": 0.04683864632078194,
+          "momentum_3m": 0.07373167494524613,
+          "momentum_6m": 0.14984978800551563,
+          "momentum_12m": 0.44008286162544974,
+          "score": 6.824355784505924
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.11875689984938087,
+          "vol_annual": 0.12416868412293663,
+          "sharpe_68d": 3.4131952978306606,
+          "modified_score": 7.7025529836469016,
+          "momentum_1m": -0.0031316735197503,
+          "momentum_3m": 0.08387097435778235,
+          "momentum_6m": 0.20382160672097394,
+          "momentum_12m": 0.4809010606334172,
+          "score": 7.7025529836469016
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.017642975154327,
+          "vol_annual": 0.13861815907285208,
+          "sharpe_68d": 0.5360674619169435,
+          "modified_score": 0.918187907402159,
+          "momentum_1m": -0.00011550337428556379,
+          "momentum_3m": 0.0086267612484483,
+          "momentum_6m": 0.09713419422412706,
+          "momentum_12m": 0.4787217014945515,
+          "score": 0.918187907402159
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.03468312798250528,
+          "vol_annual": 0.23213552695823184,
+          "sharpe_68d": 0.6588923793493685,
+          "modified_score": 0.6436281569605495,
+          "momentum_1m": 0.01641095516247404,
+          "momentum_3m": -0.027479102340989714,
+          "momentum_6m": -0.054901332277779824,
+          "momentum_12m": 0.23173371400044251,
+          "score": 0.6436281569605495
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IAEX.AS": 0.15,
+        "FLXI.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2021-12-31",
+      "holding_to": "2022-01-31",
+      "return": 0.004122483424867463,
+      "benchmark_return": -0.045645518750737635,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.09021145658368912,
+          "vol_annual": 0.1964595520059154,
+          "sharpe_68d": 1.7272908937407687,
+          "modified_score": 2.3373050445106274,
+          "momentum_1m": 0.013772360539553885,
+          "momentum_3m": 0.0922703928330415,
+          "momentum_6m": 0.09028481634902263,
+          "momentum_12m": 0.31253044291115883,
+          "score": 2.3373050445106274
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.015203536586795519,
+          "vol_annual": 0.19194056593235223,
+          "sharpe_68d": 0.38687694509750337,
+          "modified_score": 0.41267777622327173,
+          "momentum_1m": 0.0313901248694064,
+          "momentum_3m": 0.014871708903992475,
+          "momentum_6m": 0.15577887592024342,
+          "momentum_12m": 0.31847134789700027,
+          "score": 0.41267777622327173
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.06543131182806028,
+          "vol_annual": 0.18390263637563214,
+          "sharpe_68d": 1.3685162368764936,
+          "modified_score": 1.934682561548232,
+          "momentum_1m": 0.1365467329525618,
+          "momentum_3m": 0.08277143380749852,
+          "momentum_6m": 0.12664810768271328,
+          "momentum_12m": 0.23593423671283031,
+          "score": 1.934682561548232
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.054915361663378404,
+          "vol_annual": 0.27657551339121766,
+          "sharpe_68d": 0.8547800990961679,
+          "modified_score": 0.7179040339962902,
+          "momentum_1m": 0.07662627938165167,
+          "momentum_3m": 0.027714468997938946,
+          "momentum_6m": 0.004974286780830672,
+          "momentum_12m": 0.16852813852813853,
+          "score": 0.7179040339962902
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXI.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2022-03-31",
+      "holding_to": "2022-04-30",
+      "return": -0.01421210838117087,
+      "benchmark_return": -0.02280322138330204,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.09342061214433994,
+          "vol_annual": 0.19869436994799203,
+          "sharpe_68d": 1.7653435372749158,
+          "modified_score": 2.3663097098849066,
+          "momentum_1m": 0.07333942626207968,
+          "momentum_3m": 0.07709794290374439,
+          "momentum_6m": 0.1806734130037353,
+          "momentum_12m": 0.2660119494305968,
+          "score": 2.3663097098849066
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.017463680215929145,
+          "vol_annual": 0.25083555237915117,
+          "sharpe_68d": 0.37991167136577997,
+          "modified_score": 0.2775604526310197,
+          "momentum_1m": 0.04614868254670701,
+          "momentum_3m": -0.013919662308185088,
+          "momentum_6m": 0.020962966762342328,
+          "momentum_12m": 0.23837902192344562,
+          "score": 0.2775604526310197
+        },
+        {
+          "area": "Latin America",
+          "ticker": "LTAM.MI",
+          "return_68d": 0.3277390921041716,
+          "vol_annual": 0.20421037728639307,
+          "sharpe_68d": 5.255701307112249,
+          "modified_score": 7.859096671846282,
+          "momentum_1m": 0.12835561949511898,
+          "momentum_3m": 0.31326289032201937,
+          "momentum_6m": 0.2815722216494938,
+          "momentum_12m": 0.3024090046545225,
+          "score": 7.859096671846282
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.21455551278444163,
+          "vol_annual": 0.23458636177951261,
+          "sharpe_68d": 3.190530189897308,
+          "modified_score": 3.89882873446178,
+          "momentum_1m": 0.04922893793944816,
+          "momentum_3m": 0.1993220701056011,
+          "momentum_6m": 0.25661517333568007,
+          "momentum_12m": 0.17835142440035412,
+          "score": 3.89882873446178
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXI.MI": 0.15,
+        "LTAM.MI": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2022-04-30",
+      "holding_to": "2022-05-31",
+      "return": -0.028549094725105008,
+      "benchmark_return": -0.032689600280189524,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.05796024702437563,
+          "vol_annual": 0.21322138876796295,
+          "sharpe_68d": 1.0855640841071554,
+          "modified_score": 1.2748781925395567,
+          "momentum_1m": -0.022037727029080578,
+          "momentum_3m": 0.07723833246263956,
+          "momentum_6m": 0.06316122805243429,
+          "momentum_12m": 0.21127261543427833,
+          "score": 1.2748781925395567
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.03605769142596671,
+          "vol_annual": 0.26426684177275855,
+          "sharpe_68d": 0.6274226828883148,
+          "modified_score": 0.5163124158895265,
+          "momentum_1m": 0.036556078772490785,
+          "momentum_3m": 0.05637256078317976,
+          "momentum_6m": 0.06894844601859584,
+          "momentum_12m": 0.2868232357879943,
+          "score": 0.5163124158895265
+        },
+        {
+          "area": "Latin America",
+          "ticker": "LTAM.MI",
+          "return_68d": 0.14929254596591535,
+          "vol_annual": 0.23252986904050416,
+          "sharpe_68d": 2.33483418696278,
+          "modified_score": 2.761090427673689,
+          "momentum_1m": -0.058354152793609226,
+          "momentum_3m": 0.13563913731025434,
+          "momentum_6m": 0.26574141966680287,
+          "momentum_12m": 0.18521663872666294,
+          "score": 2.761090427673689
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.21218950280860582,
+          "vol_annual": 0.33303076515730995,
+          "sharpe_68d": 2.30935386274356,
+          "modified_score": 1.9131771480787911,
+          "momentum_1m": 0.15311286529642154,
+          "momentum_3m": 0.22433390941967812,
+          "momentum_6m": 0.17692478031063996,
+          "momentum_12m": 0.19231909136869918,
+          "score": 1.9131771480787911
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXI.MI": 0.15,
+        "LTAM.MI": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2023-07-31",
+      "holding_to": "2023-08-31",
+      "return": -0.04154254401741175,
+      "benchmark_return": -0.009461318204377345,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IAEX.AS",
+          "return_68d": 0.05719219413032306,
+          "vol_annual": 0.12535575474958646,
+          "sharpe_68d": 1.7066215047346867,
+          "modified_score": 3.639554324400588,
+          "momentum_1m": 0.029860622320368124,
+          "momentum_3m": 0.07011745545023707,
+          "momentum_6m": 0.0764238253070253,
+          "momentum_12m": 0.11624978784191575,
+          "score": 3.639554324400588
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXK.MI",
+          "return_68d": 0.13470361399325292,
+          "vol_annual": 0.18152043925242098,
+          "sharpe_68d": 2.671533342936089,
+          "modified_score": 4.088162780976707,
+          "momentum_1m": 0.05692310822315716,
+          "momentum_3m": 0.12092099351148766,
+          "momentum_6m": 0.06000342688377236,
+          "momentum_12m": 0.04849924624636892,
+          "score": 4.088162780976707
+        },
+        {
+          "area": "Latin America",
+          "ticker": "LTAM.MI",
+          "return_68d": 0.1948446486156259,
+          "vol_annual": 0.1840225452822803,
+          "sharpe_68d": 3.6799747584606686,
+          "modified_score": 5.753689427688976,
+          "momentum_1m": 0.04696384377697904,
+          "momentum_3m": 0.1973092775029488,
+          "momentum_6m": 0.13556995669535854,
+          "momentum_12m": 0.2226498524533549,
+          "score": 5.753689427688976
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.07883083618771125,
+          "vol_annual": 0.2226289505741045,
+          "sharpe_68d": 1.3733076984098427,
+          "modified_score": 1.5904970027483298,
+          "momentum_1m": 0.12652608173937763,
+          "momentum_3m": 0.07388472066742602,
+          "momentum_6m": -0.004251117105655178,
+          "momentum_12m": 0.024390256422727852,
+          "score": 1.5904970027483298
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IAEX.AS": 0.15,
+        "FLXK.MI": 0.15,
+        "LTAM.MI": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2023-08-31",
+      "holding_to": "2023-09-30",
+      "return": -0.006623659110707546,
+      "benchmark_return": -0.014619883258364275,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IBCJ.DE",
+          "return_68d": 0.05380358754337777,
+          "vol_annual": 0.23878602292140283,
+          "sharpe_68d": 0.9307113998199795,
+          "modified_score": 0.9436119457558216,
+          "momentum_1m": -0.06319935966746981,
+          "momentum_3m": 0.0219986634487781,
+          "momentum_6m": 0.1734175145893222,
+          "momentum_12m": 0.48402809085503584,
+          "score": 0.9436119457558216
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "SJPA.MI",
+          "return_68d": 0.018529140351451368,
+          "vol_annual": 0.1647059868403845,
+          "sharpe_68d": 0.4937934274891412,
+          "modified_score": 0.6830248427779884,
+          "momentum_1m": -0.01253046406735392,
+          "momentum_3m": -0.005805477780932211,
+          "momentum_6m": 0.07952485583551594,
+          "momentum_12m": 0.09600003756009623,
+          "score": 0.6830248427779884
+        },
+        {
+          "area": "Latin America",
+          "ticker": "FLXB.MI",
+          "return_68d": 0.06956316190591783,
+          "vol_annual": 0.22850436839868785,
+          "sharpe_68d": 1.2028207988975446,
+          "modified_score": 1.3322640224140538,
+          "momentum_1m": -0.059891465808625144,
+          "momentum_3m": 0.041137017806005094,
+          "momentum_6m": 0.14701084929556885,
+          "momentum_12m": 0.02432923387815511,
+          "score": 1.3322640224140538
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.19819921933786588,
+          "vol_annual": 0.3423784680030071,
+          "sharpe_68d": 2.127575879821901,
+          "modified_score": 1.6907875875958573,
+          "momentum_1m": 0.10181634248402083,
+          "momentum_3m": 0.12093016772630527,
+          "momentum_6m": 0.05704603243159667,
+          "momentum_12m": 0.36566372883690135,
+          "score": 1.6907875875958573
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IBCJ.DE": 0.15,
+        "SJPA.MI": 0.15,
+        "FLXB.MI": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2024-01-31",
+      "holding_to": "2024-02-29",
+      "return": 0.01090741158638165,
+      "benchmark_return": 0.03704377931418579,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IAEX.AS",
+          "return_68d": 0.13777591300353276,
+          "vol_annual": 0.09644687579900296,
+          "sharpe_68d": 5.01150743259542,
+          "modified_score": 14.811429284528531,
+          "momentum_1m": 0.04020934294880574,
+          "momentum_3m": 0.14174848906393045,
+          "momentum_6m": 0.07040751637532527,
+          "momentum_12m": 0.0958632388238343,
+          "score": 14.811429284528531
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.13503705846160807,
+          "vol_annual": 0.13082425192904343,
+          "sharpe_68d": 3.6560063622238226,
+          "modified_score": 7.889989930313331,
+          "momentum_1m": 0.05184973257561132,
+          "momentum_3m": 0.14630411897567108,
+          "momentum_6m": 0.18260589435927277,
+          "momentum_12m": 0.3074376895678961,
+          "score": 7.889989930313331
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.2503776836608633,
+          "vol_annual": 0.19089317225103417,
+          "sharpe_68d": 4.438085339787356,
+          "modified_score": 6.870918973854114,
+          "momentum_1m": 0.006535981346310171,
+          "momentum_3m": 0.2226736249441481,
+          "momentum_6m": 0.12427850043210831,
+          "momentum_12m": 0.19876901090303156,
+          "score": 6.870918973854114
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.017720182663201633,
+          "vol_annual": 0.2513714074734336,
+          "sharpe_68d": 0.38404100089186516,
+          "modified_score": 0.2804377284679199,
+          "momentum_1m": 0.11737213189820905,
+          "momentum_3m": 0.08375118127881787,
+          "momentum_6m": 0.09913775401739389,
+          "momentum_12m": 0.10462703095517556,
+          "score": 0.2804377284679199
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IAEX.AS": 0.15,
+        "FLXI.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2024-02-29",
+      "holding_to": "2024-03-31",
+      "return": 0.03539967784931343,
+      "benchmark_return": 0.03554541687273116,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IAEX.AS",
+          "return_68d": 0.11857684985548089,
+          "vol_annual": 0.09834846708862449,
+          "sharpe_68d": 4.274157049408275,
+          "modified_score": 12.25927305240549,
+          "momentum_1m": 0.03658371895901125,
+          "momentum_3m": 0.11578663230548036,
+          "momentum_6m": 0.14374726215499334,
+          "momentum_12m": 0.1429081277894333,
+          "score": 12.25927305240549
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "SJPA.MI",
+          "return_68d": 0.1196246982072926,
+          "vol_annual": 0.11247038151365328,
+          "sharpe_68d": 3.7815707604848674,
+          "modified_score": 9.456806840867674,
+          "momentum_1m": 0.04525543554573841,
+          "momentum_3m": 0.12528059949841963,
+          "momentum_6m": 0.11241812434583731,
+          "momentum_12m": 0.19134773699679686,
+          "score": 9.456806840867674
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.061558783217037005,
+          "vol_annual": 0.17333719090581737,
+          "sharpe_68d": 1.362619998543885,
+          "modified_score": 2.0488328021201436,
+          "momentum_1m": -0.015953380994129795,
+          "momentum_3m": 0.07381988390204453,
+          "momentum_6m": 0.06809855428468681,
+          "momentum_12m": 0.08544841412509507,
+          "score": 2.0488328021201436
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.0828600012716918,
+          "vol_annual": 0.22465925492687386,
+          "sharpe_68d": 1.4248811490759818,
+          "modified_score": 1.6417094843580669,
+          "momentum_1m": 0.03238920124588618,
+          "momentum_3m": 0.06994147885627933,
+          "momentum_6m": 0.01276177963097691,
+          "momentum_12m": 0.04140666260829007,
+          "score": 1.6417094843580669
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IAEX.AS": 0.15,
+        "SJPA.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2024-03-31",
+      "holding_to": "2024-04-30",
+      "return": 0.02322234488823012,
+      "benchmark_return": -0.017247217928483938,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IAEX.AS",
+          "return_68d": 0.11505787193579975,
+          "vol_annual": 0.1112287678242941,
+          "sharpe_68d": 3.6859674147604666,
+          "modified_score": 9.299981504195632,
+          "momentum_1m": 0.03418673052890675,
+          "momentum_3m": 0.12487930612638531,
+          "momentum_6m": 0.21767667855692618,
+          "momentum_12m": 0.19054227380497069,
+          "score": 9.299981504195632
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "SJPA.MI",
+          "return_68d": 0.14314047232803895,
+          "vol_annual": 0.12802109256716224,
+          "sharpe_68d": 3.939501267914871,
+          "modified_score": 8.733722472272628,
+          "momentum_1m": 0.0359496554430101,
+          "momentum_3m": 0.12626204729512258,
+          "momentum_6m": 0.15703762688569256,
+          "momentum_12m": 0.2306049123162679,
+          "score": 8.733722472272628
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.03146742845188433,
+          "vol_annual": 0.15898633304905382,
+          "sharpe_68d": 0.8004429147830431,
+          "modified_score": 1.244920642261158,
+          "momentum_1m": 0.05183584884188219,
+          "momentum_3m": 0.036327685626385664,
+          "momentum_6m": 0.17007030626987252,
+          "momentum_12m": 0.19614036279445313,
+          "score": 1.244920642261158
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.09590508824793864,
+          "vol_annual": 0.24380350113478688,
+          "sharpe_68d": 1.5130572804473295,
+          "modified_score": 1.6134732637989555,
+          "momentum_1m": -0.0012003231157863281,
+          "momentum_3m": 0.1564118300528914,
+          "momentum_6m": -0.020716556735856706,
+          "momentum_12m": 0.1764077998018787,
+          "score": 1.6134732637989555
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IAEX.AS": 0.15,
+        "SJPA.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2024-04-30",
+      "holding_to": "2024-05-31",
+      "return": 0.004650739967947244,
+      "benchmark_return": 0.011011689631971633,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IAEX.AS",
+          "return_68d": 0.12237747335717764,
+          "vol_annual": 0.11654941058076106,
+          "sharpe_68d": 3.7312057344714598,
+          "modified_score": 9.009098169447226,
+          "momentum_1m": 0.0030822359362148166,
+          "momentum_3m": 0.07760828027213185,
+          "momentum_6m": 0.24196060398198949,
+          "momentum_12m": 0.19604682708607446,
+          "score": 9.009098169447226
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.10177178836115441,
+          "vol_annual": 0.1357278255228229,
+          "sharpe_68d": 2.7152868431834056,
+          "modified_score": 5.524457328325299,
+          "momentum_1m": 0.04303728255085826,
+          "momentum_3m": 0.08186108658009594,
+          "momentum_6m": 0.2256685249984205,
+          "momentum_12m": 0.4412504750380972,
+          "score": 5.524457328325299
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.06181297028986177,
+          "vol_annual": 0.1647119090512131,
+          "sharpe_68d": 1.431195600908082,
+          "modified_score": 2.2783981094267145,
+          "momentum_1m": -0.018842964114582972,
+          "momentum_3m": 0.02239605878987372,
+          "momentum_6m": 0.22248712202981502,
+          "momentum_12m": 0.13640242488574605,
+          "score": 2.2783981094267145
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.27183546827050975,
+          "vol_annual": 0.23938648155498063,
+          "sharpe_68d": 3.8459831690547572,
+          "modified_score": 4.743587088277647,
+          "momentum_1m": 0.19505335063135054,
+          "momentum_3m": 0.1996389759322208,
+          "momentum_6m": 0.28354726056918533,
+          "momentum_12m": 0.5323887238505798,
+          "score": 4.743587088277647
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IAEX.AS": 0.15,
+        "FLXI.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2024-09-30",
+      "holding_to": "2024-10-31",
+      "return": -0.0005872431378089581,
+      "benchmark_return": 0.008146999179901027,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.07248792897032219,
+          "vol_annual": 0.16291773328291714,
+          "sharpe_68d": 1.673399931806181,
+          "modified_score": 2.731045739983949,
+          "momentum_1m": 0.01667491095297713,
+          "momentum_3m": 0.07526951317417208,
+          "momentum_6m": 0.05747330425315744,
+          "momentum_12m": 0.23148519685952973,
+          "score": 2.731045739983949
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXI.MI",
+          "return_68d": 0.025592618770073905,
+          "vol_annual": 0.12393512231870807,
+          "sharpe_68d": 0.8171047967818885,
+          "modified_score": 1.6661953877742068,
+          "momentum_1m": 0.015887857880777068,
+          "momentum_3m": 0.008816730430823538,
+          "momentum_6m": 0.10960821790025088,
+          "momentum_12m": 0.2844904431968449,
+          "score": 1.6661953877742068
+        },
+        {
+          "area": "Latin America",
+          "ticker": "FLXB.MI",
+          "return_68d": 0.040054669805124954,
+          "vol_annual": 0.197778610196979,
+          "sharpe_68d": 0.8337152380999688,
+          "modified_score": 1.023987168189498,
+          "momentum_1m": -0.0006559978044426984,
+          "momentum_3m": 0.0647717314211258,
+          "momentum_6m": -0.042330268358989565,
+          "momentum_12m": 0.033469007267765916,
+          "score": 1.023987168189498
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.11949381784408186,
+          "vol_annual": 0.23622572804417072,
+          "sharpe_68d": 1.8888052007934304,
+          "modified_score": 2.1413667002770285,
+          "momentum_1m": 0.051609996274844194,
+          "momentum_3m": 0.14969564627522014,
+          "momentum_6m": 0.2622358811244683,
+          "momentum_12m": 0.33581803893936835,
+          "score": 2.1413667002770285
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXI.MI": 0.15,
+        "FLXB.MI": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2025-07-31",
+      "holding_to": "2025-08-31",
+      "return": 0.011896183062195708,
+      "benchmark_return": -0.0030904943915246452,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.10469143386225976,
+          "vol_annual": 0.08730334379080848,
+          "sharpe_68d": 4.27235465158646,
+          "modified_score": 13.735655575046385,
+          "momentum_1m": 0.03301458710396066,
+          "momentum_3m": 0.07889535190999131,
+          "momentum_6m": 0.00983305429820569,
+          "momentum_12m": 0.15032716624634634,
+          "score": 13.735655575046385
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXK.MI",
+          "return_68d": 0.3079624209152012,
+          "vol_annual": 0.20325207216658975,
+          "sharpe_68d": 5.004016277942874,
+          "modified_score": 7.454658637435658,
+          "momentum_1m": 0.05427083474601746,
+          "momentum_3m": 0.23175880961253226,
+          "momentum_6m": 0.2117156929855022,
+          "momentum_12m": 0.03139417021767721,
+          "score": 7.454658637435658
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.057087703363557285,
+          "vol_annual": 0.15912322543422822,
+          "sharpe_68d": 1.3713925506463922,
+          "modified_score": 2.2546307452620455,
+          "momentum_1m": 0.01775748641582653,
+          "momentum_3m": 0.06437925945516931,
+          "momentum_6m": 0.1329066933235883,
+          "momentum_12m": 0.05783089975121314,
+          "score": 2.2546307452620455
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.11832002618191528,
+          "vol_annual": 0.16475343721778676,
+          "sharpe_68d": 2.598831342377246,
+          "modified_score": 4.359024291079775,
+          "momentum_1m": 0.01578538056599843,
+          "momentum_3m": 0.06716418697288273,
+          "momentum_6m": 0.11284049430648602,
+          "momentum_12m": 0.19148285958334865,
+          "score": 4.359024291079775
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXK.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2025-08-31",
+      "holding_to": "2025-09-30",
+      "return": 0.06428272879384642,
+      "benchmark_return": 0.029377111838210013,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.061764700960451835,
+          "vol_annual": 0.09482082727091436,
+          "sharpe_68d": 2.3900145528597387,
+          "modified_score": 6.86962235268439,
+          "momentum_1m": 0.027051791292616256,
+          "momentum_3m": 0.058440640139692634,
+          "momentum_6m": 0.06266533590958168,
+          "momentum_12m": 0.16064526112352961,
+          "score": 6.86962235268439
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXK.MI",
+          "return_68d": 0.17009754066375593,
+          "vol_annual": 0.21834290486728364,
+          "sharpe_68d": 2.7764525862970384,
+          "modified_score": 3.5679590938160546,
+          "momentum_1m": -0.0339892474218948,
+          "momentum_3m": 0.14124699621137005,
+          "momentum_6m": 0.17348789603907044,
+          "momentum_12m": 0.04381445136076789,
+          "score": 3.5679590938160546
+        },
+        {
+          "area": "Latin America",
+          "ticker": "ALAT.MI",
+          "return_68d": 0.04995337705134628,
+          "vol_annual": 0.13989618409203722,
+          "sharpe_68d": 1.3606092183142764,
+          "modified_score": 2.552425745557007,
+          "momentum_1m": 0.0696159606955209,
+          "momentum_3m": 0.06860087404200232,
+          "momentum_6m": 0.10671155979241176,
+          "momentum_12m": 0.07795407377216224,
+          "score": 2.552425745557007
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.08345573575827658,
+          "vol_annual": 0.1804430678704995,
+          "sharpe_68d": 1.7360608583193071,
+          "modified_score": 2.5631604055038792,
+          "momentum_1m": 0.04025640243139028,
+          "momentum_3m": 0.06819379104277323,
+          "momentum_6m": 0.17051355664830958,
+          "momentum_12m": 0.2208847503370721,
+          "score": 2.5631604055038792
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXK.MI": 0.15,
+        "ALAT.MI": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2025-09-30",
+      "holding_to": "2025-10-31",
+      "return": 0.027376909626309495,
+      "benchmark_return": 0.043596631862638846,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.09926382283756308,
+          "vol_annual": 0.096451635525764,
+          "sharpe_68d": 3.686280886517791,
+          "modified_score": 10.670181429586625,
+          "momentum_1m": 0.03051786390140565,
+          "momentum_3m": 0.09264237434287237,
+          "momentum_6m": 0.1315667583227147,
+          "momentum_12m": 0.17644850124134592,
+          "score": 10.670181429586625
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "SJPA.MI",
+          "return_68d": 0.09619123301603483,
+          "vol_annual": 0.1484036738183449,
+          "sharpe_68d": 2.3673806911701023,
+          "modified_score": 4.367633487493306,
+          "momentum_1m": 0.016946071859074374,
+          "momentum_3m": 0.08106553310649844,
+          "momentum_6m": 0.09025894892633679,
+          "momentum_12m": 0.09725734321805657,
+          "score": 4.367633487493306
+        },
+        {
+          "area": "Latin America",
+          "ticker": "ALAT.MI",
+          "return_68d": 0.12224615162486874,
+          "vol_annual": 0.1300470905396249,
+          "sharpe_68d": 3.3533255459632456,
+          "modified_score": 7.228262489523818,
+          "momentum_1m": 0.05988329407482951,
+          "momentum_3m": 0.09159809549254616,
+          "momentum_6m": 0.14626783330380366,
+          "momentum_12m": 0.1387677386381163,
+          "score": 7.228262489523818
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.2049879225000888,
+          "vol_annual": 0.17242682567377596,
+          "sharpe_68d": 4.097857929887247,
+          "modified_score": 6.894751340060481,
+          "momentum_1m": 0.11350750744086935,
+          "momentum_3m": 0.19970789275123413,
+          "momentum_6m": 0.23327867648858325,
+          "momentum_12m": 0.2927457327679277,
+          "score": 6.894751340060481
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "SJPA.MI": 0.15,
+        "ALAT.MI": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2025-10-31",
+      "holding_to": "2025-11-30",
+      "return": 0.01685966500458748,
+      "benchmark_return": -0.004809653569696093,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.09767055517266376,
+          "vol_annual": 0.11629569099731742,
+          "sharpe_68d": 3.0289919123691234,
+          "modified_score": 7.221649550620379,
+          "momentum_1m": 0.024055759474940208,
+          "momentum_3m": 0.10468375153079101,
+          "momentum_6m": 0.16891160289343277,
+          "momentum_12m": 0.17742279444148434,
+          "score": 7.221649550620379
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXK.MI",
+          "return_68d": 0.3431328203925277,
+          "vol_annual": 0.23820886897972995,
+          "sharpe_68d": 4.716205478782997,
+          "modified_score": 6.047089630790843,
+          "momentum_1m": 0.2265101417507862,
+          "momentum_3m": 0.36147758505685457,
+          "momentum_6m": 0.6235425356758573,
+          "momentum_12m": 0.5239749674746699,
+          "score": 6.047089630790843
+        },
+        {
+          "area": "Latin America",
+          "ticker": "LTAM.MI",
+          "return_68d": 0.17017409662652994,
+          "vol_annual": 0.1400067737114036,
+          "sharpe_68d": 4.233580482807655,
+          "modified_score": 8.68151176187411,
+          "momentum_1m": 0.03067074604114972,
+          "momentum_3m": 0.1684052327796437,
+          "momentum_6m": 0.18352133341584764,
+          "momentum_12m": 0.18964899821054582,
+          "score": 8.68151176187411
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.20187667387049313,
+          "vol_annual": 0.23716911896677645,
+          "sharpe_68d": 2.9941224629417063,
+          "modified_score": 3.588970264498241,
+          "momentum_1m": 0.02069731907209338,
+          "momentum_3m": 0.2065942804197276,
+          "momentum_6m": 0.2698980684773329,
+          "momentum_12m": 0.2968640195353698,
+          "score": 3.588970264498241
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXK.MI": 0.15,
+        "LTAM.MI": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2025-11-30",
+      "holding_to": "2025-12-31",
+      "return": 0.03761818732052451,
+      "benchmark_return": 0.0040044314120364355,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.11249698105678774,
+          "vol_annual": 0.12937596891604777,
+          "sharpe_68d": 3.1197212775403695,
+          "modified_score": 6.720996006600942,
+          "momentum_1m": 0.03292362927499326,
+          "momentum_3m": 0.088108771756648,
+          "momentum_6m": 0.14827602324321654,
+          "momentum_12m": 0.1385043864447446,
+          "score": 6.720996006600942
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXK.MI",
+          "return_68d": 0.24024297739416722,
+          "vol_annual": 0.2920647284052938,
+          "sharpe_68d": 2.8793900164113224,
+          "modified_score": 2.8163879505832847,
+          "momentum_1m": -0.06320259367908432,
+          "momentum_3m": 0.2731098398493197,
+          "momentum_6m": 0.4193603905019476,
+          "momentum_12m": 0.4467669984968945,
+          "score": 2.8163879505832847
+        },
+        {
+          "area": "Latin America",
+          "ticker": "ALAT.MI",
+          "return_68d": 0.15919890133388903,
+          "vol_annual": 0.14863233531875847,
+          "sharpe_68d": 3.760572314045746,
+          "modified_score": 7.2063186722495205,
+          "momentum_1m": 0.05552962204550771,
+          "momentum_3m": 0.1522460849727958,
+          "momentum_6m": 0.2135752974255729,
+          "momentum_12m": 0.2666948032708836,
+          "score": 7.2063186722495205
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.15034327679040094,
+          "vol_annual": 0.26563959380654356,
+          "sharpe_68d": 2.0868857031890142,
+          "modified_score": 2.1305827018284345,
+          "momentum_1m": 0.021174159793670988,
+          "momentum_3m": 0.17007716149505092,
+          "momentum_6m": 0.25364316869185677,
+          "momentum_12m": 0.3993259210587954,
+          "score": 2.1305827018284345
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXK.MI": 0.15,
+        "ALAT.MI": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2025-12-31",
+      "holding_to": "2026-01-31",
+      "return": 0.09960939130448934,
+      "benchmark_return": 0.012377960902369312,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IBCJ.DE",
+          "return_68d": 0.16455955703023806,
+          "vol_annual": 0.17634160576635477,
+          "sharpe_68d": 3.2917514329875073,
+          "modified_score": 5.291923133357751,
+          "momentum_1m": 0.0727376380469944,
+          "momentum_3m": 0.14509881752935416,
+          "momentum_6m": 0.16239136221229078,
+          "momentum_12m": 0.5365892968576735,
+          "score": 5.291923133357751
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXK.MI",
+          "return_68d": 0.260005626491701,
+          "vol_annual": 0.3187049952427664,
+          "sharpe_68d": 2.8474680568568416,
+          "modified_score": 2.5597939318957206,
+          "momentum_1m": 0.12550001144409184,
+          "momentum_3m": 0.27481246519756986,
+          "momentum_6m": 0.413057112219148,
+          "momentum_12m": 0.7278833210691049,
+          "score": 2.5597939318957206
+        },
+        {
+          "area": "Latin America",
+          "ticker": "ALAT.MI",
+          "return_68d": 0.10084747700040109,
+          "vol_annual": 0.17687418110767036,
+          "sharpe_68d": 2.101786742101158,
+          "modified_score": 3.2235629321624897,
+          "momentum_1m": 0.03647562488606293,
+          "momentum_3m": 0.09317150602696267,
+          "momentum_6m": 0.2003961242171215,
+          "momentum_12m": 0.38254526635998376,
+          "score": 3.2235629321624897
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.18391590479484865,
+          "vol_annual": 0.2694826738131368,
+          "sharpe_68d": 2.457434995219002,
+          "modified_score": 2.532547458201866,
+          "momentum_1m": 0.0952129599254008,
+          "momentum_3m": 0.15760081316581442,
+          "momentum_6m": 0.37855811344700574,
+          "momentum_12m": 0.5496412028388924,
+          "score": 2.532547458201866
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IBCJ.DE": 0.15,
+        "FLXK.MI": 0.15,
+        "ALAT.MI": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2026-01-31",
+      "holding_to": "2026-02-28",
+      "return": 0.05641151019188384,
+      "benchmark_return": 0.01766068524627884,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.06887892650381877,
+          "vol_annual": 0.12438595955429695,
+          "sharpe_68d": 2.046639662296237,
+          "modified_score": 4.451882038318989,
+          "momentum_1m": -0.004427355971516556,
+          "momentum_3m": 0.05651345226500126,
+          "momentum_6m": 0.14938757352737753,
+          "momentum_12m": 0.17459226932105798,
+          "score": 4.451882038318989
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXK.MI",
+          "return_68d": 0.3866928597351815,
+          "vol_annual": 0.324086072199327,
+          "sharpe_68d": 3.905273012905428,
+          "modified_score": 3.6816747431977843,
+          "momentum_1m": 0.2635346438084094,
+          "momentum_3m": 0.34332267812899553,
+          "momentum_6m": 0.6839593917866864,
+          "momentum_12m": 1.0474896290291489,
+          "score": 3.6816747431977843
+        },
+        {
+          "area": "Latin America",
+          "ticker": "LTAM.MI",
+          "return_68d": 0.25639524093673804,
+          "vol_annual": 0.1733916817682264,
+          "sharpe_68d": 4.971818435419662,
+          "modified_score": 8.528122732861831,
+          "momentum_1m": 0.16517453052133457,
+          "momentum_3m": 0.23328145968170744,
+          "momentum_6m": 0.4130189958668673,
+          "momentum_12m": 0.4680929745846645,
+          "score": 8.528122732861831
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.26584433936452045,
+          "vol_annual": 0.2124108464232906,
+          "sharpe_68d": 4.224184988468852,
+          "modified_score": 5.892153307944765,
+          "momentum_1m": 0.2447357714323002,
+          "momentum_3m": 0.21315886924317562,
+          "momentum_6m": 0.1983855445382321,
+          "momentum_12m": 0.027839713506429886,
+          "score": 5.892153307944765
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXK.MI": 0.15,
+        "LTAM.MI": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2026-02-28",
+      "holding_to": "2026-03-31",
+      "return": -0.049212954642486095,
+      "benchmark_return": -0.05339740761517631,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.13546103239399443,
+          "vol_annual": 0.1182223406842553,
+          "sharpe_68d": 4.044141783460192,
+          "modified_score": 9.6920416950021,
+          "momentum_1m": 0.04191346925823414,
+          "momentum_3m": 0.11325483445916706,
+          "momentum_6m": 0.19014283930194975,
+          "momentum_12m": 0.25712157597317,
+          "score": 9.6920416950021
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "SJPA.MI",
+          "return_68d": 0.17520925636015638,
+          "vol_annual": 0.13561316099167933,
+          "sharpe_68d": 4.483702175658886,
+          "modified_score": 9.526938645893694,
+          "momentum_1m": 0.10780616848787905,
+          "momentum_3m": 0.15804852641014366,
+          "momentum_6m": 0.20439525088262145,
+          "momentum_12m": 0.24925879921867988,
+          "score": 9.526938645893694
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.21034480687880852,
+          "vol_annual": 0.17853255977837645,
+          "sharpe_68d": 4.055628462359095,
+          "modified_score": 6.599285701283848,
+          "momentum_1m": 0.04114002574330233,
+          "momentum_3m": 0.20402685251060282,
+          "momentum_6m": 0.32235871072917965,
+          "momentum_12m": 0.47884224045153045,
+          "score": 6.599285701283848
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.2566768578696017,
+          "vol_annual": 0.22954528285749456,
+          "sharpe_68d": 3.807334647235497,
+          "modified_score": 4.871357123675556,
+          "momentum_1m": 0.020967910563666647,
+          "momentum_3m": 0.2504150989946339,
+          "momentum_6m": 0.14313563095194604,
+          "momentum_12m": 0.06960032795551707,
+          "score": 4.871357123675556
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "SJPA.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2026-03-31",
+      "holding_to": "2026-04-30",
+      "return": 0.07263326510515081,
+      "benchmark_return": 0.08560145792331575,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.04453247869920651,
+          "vol_annual": 0.1344829143368272,
+          "sharpe_68d": 1.2673437886195833,
+          "modified_score": 2.4623095237395116,
+          "momentum_1m": -0.04255654685245236,
+          "momentum_3m": 0.012989727817794838,
+          "momentum_6m": 0.10552463023624492,
+          "momentum_12m": 0.24508448656824666,
+          "score": 2.4623095237395116
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXK.MI",
+          "return_68d": 0.34246906538753974,
+          "vol_annual": 0.426923366074183,
+          "sharpe_68d": 2.7750389138679497,
+          "modified_score": 1.8789771496169767,
+          "momentum_1m": -0.20733996046736736,
+          "momentum_3m": 0.22729305758392093,
+          "momentum_6m": 0.524312254844236,
+          "momentum_12m": 0.9737363000455994,
+          "score": 1.8789771496169767
+        },
+        {
+          "area": "Latin America",
+          "ticker": "LTAM.MI",
+          "return_68d": 0.19624112860724563,
+          "vol_annual": 0.22202687154949197,
+          "sharpe_68d": 3.1042283310563876,
+          "modified_score": 3.980878784097249,
+          "momentum_1m": -0.03613571352289324,
+          "momentum_3m": 0.16366157016284655,
+          "momentum_6m": 0.24725027607524708,
+          "momentum_12m": 0.4189393467399338,
+          "score": 3.980878784097249
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.1551980311007879,
+          "vol_annual": 0.2571145564410639,
+          "sharpe_68d": 2.208197552022997,
+          "modified_score": 2.3476474449303377,
+          "momentum_1m": -0.05973608883537307,
+          "momentum_3m": 0.17690067485458738,
+          "momentum_6m": 0.07796931762086401,
+          "momentum_12m": 0.14652837455854706,
+          "score": 2.3476474449303377
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXK.MI": 0.15,
+        "LTAM.MI": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2026-04-30",
+      "holding_to": "2026-05-31",
+      "return": 0.02378965743035063,
+      "benchmark_return": 0.0597557582946866,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.04968559670781891,
+          "vol_annual": 0.1311351570187178,
+          "sharpe_68d": 1.4355319366595654,
+          "modified_score": 2.8892972799078653,
+          "momentum_1m": 0.060978617349903175,
+          "momentum_3m": 0.050592313667286115,
+          "momentum_6m": 0.14461127114092798,
+          "momentum_12m": 0.3531468828247677,
+          "score": 2.8892972799078653
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "FLXK.MI",
+          "return_68d": 0.3679297964673496,
+          "vol_annual": 0.48767809517198923,
+          "sharpe_68d": 2.625844617709443,
+          "modified_score": 1.547029025991985,
+          "momentum_1m": 0.2858395616960496,
+          "momentum_3m": 0.3071708345374762,
+          "momentum_6m": 0.8084895841914126,
+          "momentum_12m": 1.851361735559553,
+          "score": 1.547029025991985
+        },
+        {
+          "area": "Latin America",
+          "ticker": "FLXB.MI",
+          "return_68d": 0.17002879230684398,
+          "vol_annual": 0.2548537615825957,
+          "sharpe_68d": 2.4113142370011222,
+          "modified_score": 2.6178235720845136,
+          "momentum_1m": 0.05420318420128423,
+          "momentum_3m": 0.08393123233243949,
+          "momentum_6m": 0.3701750536499637,
+          "momentum_12m": 0.5071926075235746,
+          "score": 2.6178235720845136
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.10003239681833098,
+          "vol_annual": 0.2499045708899325,
+          "sharpe_68d": 1.537586879406999,
+          "modified_score": 1.601740937405445,
+          "momentum_1m": 0.09943668847875142,
+          "momentum_3m": 0.05883566937951401,
+          "momentum_6m": 0.27565951284939194,
+          "momentum_12m": 0.3759990272085145,
+          "score": 1.601740937405445
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "FLXK.MI": 0.15,
+        "FLXB.MI": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2026-06-30",
+      "holding_to": "2026-07-31",
+      "return": 0.0007667125101225926,
+      "benchmark_return": -0.013678698039815473,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "CSCA.MI",
+          "return_68d": 0.0880016164353501,
+          "vol_annual": 0.09717590248243738,
+          "sharpe_68d": 3.2662966698345803,
+          "modified_score": 9.31908953091925,
+          "momentum_1m": 0.006773058328679582,
+          "momentum_3m": 0.07278760229961834,
+          "momentum_6m": 0.09607002421409061,
+          "momentum_12m": 0.30602560301583326,
+          "score": 9.31908953091925
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "SJPA.MI",
+          "return_68d": 0.139659373840199,
+          "vol_annual": 0.21349296841424445,
+          "sharpe_68d": 2.3756587079871374,
+          "modified_score": 3.0641000303751658,
+          "momentum_1m": 0.029450580750629562,
+          "momentum_3m": 0.13523998754444944,
+          "momentum_6m": 0.18983917093997826,
+          "momentum_12m": 0.34959662471843167,
+          "score": 3.0641000303751658
+        },
+        {
+          "area": "Latin America",
+          "ticker": "D5BI.DE",
+          "return_68d": 0.10840527363592112,
+          "vol_annual": 0.23928757752553348,
+          "sharpe_68d": 1.7129440499585689,
+          "modified_score": 1.8932593221503893,
+          "momentum_1m": 0.0034013542102864225,
+          "momentum_3m": 0.055526126233948814,
+          "momentum_6m": 0.12898658347147873,
+          "momentum_12m": 0.35321099914070486,
+          "score": 1.8932593221503893
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.03970893779632312,
+          "vol_annual": 0.3491673087234059,
+          "sharpe_68d": 0.5829923127633824,
+          "modified_score": 0.3257025201265926,
+          "momentum_1m": -0.04688398783949854,
+          "momentum_3m": 0.003813701884239906,
+          "momentum_6m": -0.03530096114329062,
+          "momentum_12m": 0.3335999552408855,
+          "score": 0.3257025201265926
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "CSCA.MI": 0.15,
+        "SJPA.MI": 0.15,
+        "D5BI.DE": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2026-08-31",
+      "holding_to": "2026-09-30",
+      "return": -0.004890503623642635,
+      "benchmark_return": 0.018720719120545848,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IAEX.AS",
+          "return_68d": 0.06945245214491025,
+          "vol_annual": 0.10189947065279409,
+          "sharpe_68d": 2.4933478384853944,
+          "modified_score": 6.688730964448531,
+          "momentum_1m": 0.006710126754182477,
+          "momentum_3m": 0.06558942459293204,
+          "momentum_6m": 0.1351284926245775,
+          "momentum_12m": 0.2776175444408382,
+          "score": 6.688730964448531
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "SJPA.MI",
+          "return_68d": 0.04768220218805874,
+          "vol_annual": 0.1828130998187494,
+          "sharpe_68d": 1.035006571957127,
+          "modified_score": 1.4267296263078808,
+          "momentum_1m": 0.025349303305407966,
+          "momentum_3m": 0.030096973125234516,
+          "momentum_6m": 0.0771675954926887,
+          "momentum_12m": 0.26312990898603505,
+          "score": 1.4267296263078808
+        },
+        {
+          "area": "Latin America",
+          "ticker": "LTAM.MI",
+          "return_68d": 0.0027542770881550105,
+          "vol_annual": 0.16681265603323173,
+          "sharpe_68d": 0.1430754820943698,
+          "modified_score": 0.09898049802687438,
+          "momentum_1m": -0.00838867688622369,
+          "momentum_3m": 0.03750147975515583,
+          "momentum_6m": -0.018404846771463923,
+          "momentum_12m": 0.32270175082887653,
+          "score": 0.09898049802687438
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "IQQ5.DE",
+          "return_68d": 0.06903308182388557,
+          "vol_annual": 0.24806960016933646,
+          "sharpe_68d": 1.1192837618704703,
+          "modified_score": 1.1217863949387843,
+          "momentum_1m": 0.09125265342369837,
+          "momentum_3m": 0.04291483973631016,
+          "momentum_6m": 0.01948373016930094,
+          "momentum_12m": 0.1700969511659407,
+          "score": 1.1217863949387843
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IAEX.AS": 0.15,
+        "SJPA.MI": 0.15,
+        "LTAM.MI": 0.15,
+        "IQQ5.DE": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    },
+    {
+      "signal_date": "2026-09-30",
+      "holding_to": "2026-10-31",
+      "return": -0.028083487951494533,
+      "benchmark_return": -0.00518320702756303,
+      "picks": [
+        {
+          "area": "Developed",
+          "ticker": "IAEX.AS",
+          "return_68d": 0.05843146400551946,
+          "vol_annual": 0.08965007801402715,
+          "sharpe_68d": 2.3925902078552403,
+          "modified_score": 7.270184361474376,
+          "momentum_1m": 0.009619009464829409,
+          "momentum_3m": 0.03612398606830847,
+          "momentum_6m": 0.16318908392744347,
+          "momentum_12m": 0.18938316514664844,
+          "score": 7.270184361474376
+        },
+        {
+          "area": "Asia-Pacific",
+          "ticker": "SJPA.MI",
+          "return_68d": 0.056186136433875156,
+          "vol_annual": 0.17848934078020384,
+          "sharpe_68d": 1.2233984388325256,
+          "modified_score": 1.7636183070364082,
+          "momentum_1m": 0.04565247771518122,
+          "momentum_3m": 0.04418574113375873,
+          "momentum_6m": 0.1745030165178556,
+          "momentum_12m": 0.3101021267373758,
+          "score": 1.7636183070364082
+        },
+        {
+          "area": "Latin America",
+          "ticker": "FLXB.MI",
+          "return_68d": 0.07618880323776578,
+          "vol_annual": 0.2018526803646927,
+          "sharpe_68d": 1.4477164699865785,
+          "modified_score": 1.8699160547185818,
+          "momentum_1m": 0.06831776605848994,
+          "momentum_3m": 0.07763241617707983,
+          "momentum_6m": -0.0015536134728677542,
+          "momentum_12m": 0.3336791548992739,
+          "score": 1.8699160547185818
+        },
+        {
+          "area": "Africa-Middle East",
+          "ticker": "SRSA.MI",
+          "return_68d": 0.0111933117520433,
+          "vol_annual": 0.24033244462459166,
+          "sharpe_68d": 0.2897716175431087,
+          "modified_score": 0.193791083826212,
+          "momentum_1m": -0.06798081631712194,
+          "momentum_3m": -0.01152794351445563,
+          "momentum_6m": -0.026366415627866457,
+          "momentum_12m": 0.12534752734990606,
+          "score": 0.193791083826212
+        }
+      ],
+      "defensive": [
+        {
+          "ticker": "XEON.DE",
+          "weight": 0.24
+        },
+        {
+          "ticker": "SGLD.MI",
+          "weight": 0.16
+        }
+      ],
+      "weights": {
+        "IAEX.AS": 0.15,
+        "SJPA.MI": 0.15,
+        "FLXB.MI": 0.15,
+        "SRSA.MI": 0.15,
+        "XEON.DE": 0.24,
+        "SGLD.MI": 0.16
+      }
+    }
+  ],
+  "selection_frequency": {
+    "CSCA.MI": 20,
+    "SRSA.MI": 18,
+    "D5BI.DE": 16,
+    "IQQ5.DE": 15,
+    "FLXI.MI": 12,
+    "IAEX.AS": 11,
+    "SJPA.MI": 11,
+    "FLXK.MI": 10,
+    "LTAM.MI": 8,
+    "ALAT.MI": 5,
+    "FLXB.MI": 4,
+    "IBCJ.DE": 2
+  }
+}
