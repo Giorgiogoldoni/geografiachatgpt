@@ -39,7 +39,7 @@
 "FXI","iShares China Large-Cap ETF","Asia","","Asia sub-strategy"
 "GAF","SPDR S&P Emerging Middle East & Africa ETF","","Middle East & Africa candidate; composite exposure","Main World Top 4 list; instrument explicitly spans Middle East and Africa"
 "GULF","WisdomTree Middle East Dividend Fund","","Middle East candidate; sleeve assignment unconfirmed","Main World Top 4 list; Middle East-focused fund"
-"GREK","Global X MSCI Greece ETF","","Unverified fourth sleeve / regional bucket","Main World Top 4 list"
+"GREK","Global X MSCI Greece ETF","Eastern Mediterranean (hypothesis)","Greece: include only in expanded Eastern Mediterranean sensitivity test; not confirmed LI regional assignment","Main World Top 4 list"
 "GXG","Global X MSCI Colombia ETF","South America","","South America sub-strategy"
 "IDX","VanEck Indonesia Index ETF","Asia","","Asia sub-strategy"
 "MCHI","iShares MSCI China ETF","","Unverified fourth sleeve / regional bucket","Main World Top 4 list"
