@@ -50,3 +50,20 @@ Il calcolo ora espone: rendimento totale, CAGR, volatilità, downside volatility
 La pagina ufficiale della sub-strategia HEDGE aggiornata a ottobre 2026 descrive due componenti: una strategia Treasury e una strategia GLD-USD. Una newsletter Logical Invest di ottobre 2026 riferisce inoltre che la sleeve ha selezionato GSY (ultra-short paper) in settembre, quando oro e Treasury erano entrambi in calo. Un thread storico del forum Logical Invest descrive, come universo di allora, GLD/GSY/MINT/TIP/UUP per GLD-USD e GSY/TIP/TLT per Treasury; MINT e TIP erano marcati non attivi in quel post. Questi dettagli storici non vanno assunti come lista corrente senza conferma.
 
 Di conseguenza, la nostra attuale selezione piatta fra GLD/TLT/IEF/SHY e il peso HEDGE minimo del 20% sono ipotesi semplificative, non una replica del motore HEDGE. Il passo successivo è ricostruire separatamente le due sottostrategie e verificare come WTOP4 ne determina il peso complessivo.
+
+
+### Architettura equity/HEDGE: peso storico documentato
+L'aggiornamento ufficiale Logical Invest del 27 dicembre 2019, operativo dal 1 gennaio 2020, descrive per World Country Top 4 il passaggio da 70/30 a **60% equity / 40% HEDGE**. La pagina principale attuale continua a descrivere WTOP4 come strategia azionaria coperta da HEDGE, ma non espone pubblicamente un peso corrente numerico. Perciò 60/40 è un riferimento storico ufficiale importante, da verificare contro le holdings/allocazioni correnti prima di chiamarlo peso attuale.
+
+La pagina HEDGE aggiornata a ottobre 2026 descrive due blocchi: Treasury e GLD-USD. La pagina Gold-Currency Strategy II aggiornata a ottobre 2026 descrive la rotazione tra oro e dollaro in base alla performance risk-adjusted. La documentazione Logical Invest del 2022 descrive Treasury Hedge come rotazione fra TLT, TIP e GSY e GLD-USD come rotazione tra GLD e GSY; la newsletter di ottobre 2026 conferma che GSY è stato usato come difensivo in settembre. Questo permette di ricostruire l'architettura, ma non i pesi mensili o tutti i parametri proprietari.
+
+### Disallineamenti del catalogo pubblico
+La pagina principale pubblica 49 ticker. Le pagine delle sottostrategie consultabili aggiungono almeno ARGT e DBKO, assenti dall'elenco principale, e riportano sovrapposizioni/anomalie (EWJ/EWM tra Developed e Asia; EWZ/EZA nella pagina Asia; EWZ anche in South America). Il CSV conserva sia i 49 ticker principali sia i ticker aggiuntivi e le classificazioni pubblicate. Non normalizzare queste discrepanze senza verificare la composizione mensile effettiva.
+
+### Implicazione per il nostro backtest
+Il modello attualmente pubblicato resta un test esplorativo con HEDGE semplificato e pesi provvisori. Non va interpretato come il backtest della configurazione ufficiale 60/40. La prossima revisione del motore deve:
+1. usare il catalogo USA completo (main page + sottopagine);
+2. risolvere le quattro sleeve effettive senza duplicare arbitrariamente gli ETF;
+3. costruire HEDGE come combinazione delle sottostrategie Treasury e GLD-USD;
+4. testare il 60/40 storico e confrontarlo con eventuali pesi più recenti osservati;
+5. calibrare i ranking/parametri solo su periodi di training, verificando out-of-sample e senza look-ahead.
