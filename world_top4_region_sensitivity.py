@@ -9,7 +9,7 @@ import pandas as pd\nimport world_top4_6040 as engine
 OUT = Path("world_top4_region_sensitivity.json")
 
 
-def candidate_selection_audit(prices, rows, variant, region_name, candidate):
+def candidate_selection_audit(prices, rows, variant, region_name, candidate, candidate_universe):
     """Measure candidate rank, selection frequency and next-month opportunity cost."""
     monthly = prices.resample("ME").last().dropna(how="all")
     rank_counts = {}
