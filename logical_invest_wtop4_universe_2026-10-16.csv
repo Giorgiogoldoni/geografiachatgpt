@@ -1,0 +1,50 @@
+ticker,instrument_name,source_updated,source_url,classification
+AFK,VanEck Africa Index ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+ASHR,Xtrackers CSI 300 China A Shares,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+ECH,iShares MSCI Chile Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; South America page confirms South America
+EGPT,VanEck Egypt Index ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+EIDO,iShares MSCI Indonesia Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+EIRL,iShares MSCI Ireland Capped,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EIS,iShares MSCI Israel,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+ENZL,iShares MSCI New Zealand Investable Market,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EPHE,iShares MSCI Philippines,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+EPI,WisdomTree India Earnings Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+EPOL,iShares MSCI Poland Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EPU,iShares MSCI Peru Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official regional page but absent from WTOP4 master list
+EWA,iShares MSCI Australia Index Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWC,iShares MSCI Canada Index Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWD,iShares MSCI Sweden Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWG,iShares MSCI Germany Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWH,iShares MSCI Hong Kong Index Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWI,iShares MSCI Italy Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWJ,iShares MSCI Japan Index Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; listed in Developed and Asia regional pages
+EWK,iShares MSCI Belgium Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWL,iShares MSCI Switzerland,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWM,iShares MSCI Malaysia Index Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; listed in Developed and Asia regional pages
+EWN,iShares MSCI Netherlands Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWO,iShares MSCI Austria Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWP,iShares MSCI Spain Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWQ,iShares MSCI France,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWS,iShares MSCI Singapore Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Asia page confirms Asia
+EWT,iShares MSCI Taiwan Index Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Asia page confirms Asia
+EWU,iShares MSCI United Kingdom Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+EWW,iShares MSCI Mexico Index Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; South America page labels it South America although Mexico is North America
+EWY,iShares MSCI South Korea Index Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Asia page confirms Asia
+EWZ,iShares MSCI Brazil Index Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; appears in Asia and South America pages
+EZA,iShares MSCI South Africa Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Asia page anomalously lists South Africa
+FM,iShares MSCI Frontier Markets ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+FRN,Guggenheim BNY Mellon Frontier Markets ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+FXI,iShares FTSE China 25 Index Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Asia page confirms Asia
+GAF,SPDR S&P Emerging Middle East & Africa ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+GULF,WisdomTree Middle East Dividend Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+GREK,Global X FTSE Greece 20,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+GXG,Global X Interbolsa FTSE Colombia 20,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official regional page but absent from WTOP4 master list
+IDX,Market Vectors Indonesia,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Asia page confirms Asia
+MCHI,iShares MSCI China Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Asia assignment not confirmed by regional list
+MES,Market Vectors DJ Gulf States (GCC) Titans,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+NORW,Global X FTSE Norway 30 ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Developed page confirms Developed
+QQQ,PowerShares Nasdaq-100 Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; not a single-country ETF
+RSX,Market Vectors DAXglobal Russia,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; historical ticker status and tradability need review
+THD,iShares MSCI Thailand Index,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Asia page confirms Asia
+TUR,iShares MSCI Turkey,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; sub-strategy assignment not disclosed
+VNM,Market Vectors Vietnam,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Official WTOP4 universe; Asia page confirms Asia
