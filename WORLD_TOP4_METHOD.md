@@ -44,3 +44,9 @@ Il calcolo ora espone: rendimento totale, CAGR, volatilità, downside volatility
 - HEDGE: la pagina principale descrive Treasury e oro, ma il paniere e le regole di allocazione non sono ancora ricostruiti.
 - Performance: il backtest esistente resta un modello indipendente preliminare; non va presentato come replica né confrontato come se usasse le stesse regole.
 - La pagina Logical Invest dichiara che i dati storici possono includere estensioni sintetiche e che i risultati sono ipotetici, senza slippage, commissioni e imposte.
+
+
+### HEDGE — ulteriore riscontro pubblico
+La pagina ufficiale della sub-strategia HEDGE aggiornata a ottobre 2026 descrive due componenti: una strategia Treasury e una strategia GLD-USD. Una newsletter Logical Invest di ottobre 2026 riferisce inoltre che la sleeve ha selezionato GSY (ultra-short paper) in settembre, quando oro e Treasury erano entrambi in calo. Un thread storico del forum Logical Invest descrive, come universo di allora, GLD/GSY/MINT/TIP/UUP per GLD-USD e GSY/TIP/TLT per Treasury; MINT e TIP erano marcati non attivi in quel post. Questi dettagli storici non vanno assunti come lista corrente senza conferma.
+
+Di conseguenza, la nostra attuale selezione piatta fra GLD/TLT/IEF/SHY e il peso HEDGE minimo del 20% sono ipotesi semplificative, non una replica del motore HEDGE. Il passo successivo è ricostruire separatamente le due sottostrategie e verificare come WTOP4 ne determina il peso complessivo.
