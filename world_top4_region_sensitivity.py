@@ -57,17 +57,51 @@ def main():
     rf_by_date = {d.strftime("%Y-%m-%d"): float(rf.loc[d]) for d in rf.index}
     bench_dates = set(d.strftime("%Y-%m-%d") for d in bench.index[1:])
     results = {}
+    rows_by_scenario = {}
+    active_scenarios = [n for n in scenarios if n != "legacy_middle_east_instruments"]
     for name, regions in scenarios.items():
         results[name] = {"regions": regions, "fourth_sleeve_size": len(list(regions.values())[-1]), "variants": {}}
+        rows_by_scenario[name] = {}
         for variant in ("momentum", "modified", "composite"):
             rows = engine.run_backtest(prices, variant, regions)
             rows = [r for r in rows if r["holding_to"] in bench_dates]
+            rows_by_scenario[name][variant] = rows
             m = engine.metrics(rows)
             engine.add_risk_free_metrics(m, rows, rf_by_date)
             results[name]["variants"][variant] = {
                 "metrics": m, "months": len(rows),
                 "start": rows[0]["holding_to"] if rows else None,
                 "end": rows[-1]["holding_to"] if rows else None
+            }
+
+    # Fair comparison: recalculate each active hypothesis on the exact same
+    # holding months. The legacy closed-fund group has no usable history and
+    # is intentionally excluded from the common-date intersection.
+    common_periods = {}
+    for variant in ("momentum", "modified", "composite"):
+        date_sets = [
+            {r["holding_to"] for r in rows_by_scenario[name][variant]}
+            for name in active_scenarios
+        ]
+        common_dates = set.intersection(*date_sets) if date_sets else set()
+        common_dates = sorted(common_dates)
+        common_periods[variant] = {
+            "start": common_dates[0] if common_dates else None,
+            "end": common_dates[-1] if common_dates else None,
+            "months": len(common_dates)
+        }
+        for name in active_scenarios:
+            common_rows = [
+                r for r in rows_by_scenario[name][variant]
+                if r["holding_to"] in common_dates
+            ]
+            m = engine.metrics(common_rows)
+            engine.add_risk_free_metrics(m, common_rows, rf_by_date)
+            results[name]["variants"][variant]["common_period"] = {
+                "metrics": m,
+                "months": len(common_rows),
+                "start": common_rows[0]["holding_to"] if common_rows else None,
+                "end": common_rows[-1]["holding_to"] if common_rows else None
             }
     output = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
