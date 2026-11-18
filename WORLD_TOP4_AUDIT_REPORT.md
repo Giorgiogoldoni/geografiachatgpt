@@ -266,3 +266,38 @@ Nel motore di sensibilità sono stati quindi aggiunti due scenari con GREK:
 Nota geografica: Grecia non è Medio Oriente in senso stretto; viene inclusa soltanto nella variante “Mediterraneo orientale allargato”. Questa separazione permette di vedere se l'inclusione di GREK migliora o peggiora la stabilità e i risultati, senza spacciare la classificazione per ufficiale.
 
 Fonte primaria per la presenza dei ticker nell'universo: https://logical-invest.com/app/strategy/WTOP4
+
+
+## 13. Risultati aggiornati della sensibilità geografica — 18 novembre 2026
+
+Run di riferimento: `44274863684` (successo), prezzi fino al 17 novembre 2026 e rendimenti completi fino al 31 ottobre 2026. Il motore ora richiede lookback completi per il ranking composito 3/6/12 mesi; i titoli con meno di 12 mesi di osservazioni non vengono valutati dal composito.
+
+### Risultati composito 3/6/12 mesi
+
+| Ipotesi quarta area | Mesi disponibili | CAGR 5 anni | Vol. 5 anni | Max DD 5 anni | Ulcer 5 anni |
+|---|---:|---:|---:|---:|---:|
+| Residual storico | 223 | 12,88% | 12,77% | -11,49% | 4,20 |
+| Mediterraneo orientale (EGPT, GREK, TUR) | 211 | 13,27% | 12,53% | -12,02% | 3,98 |
+| Golfo attivo (KSA, UAE, QAT) | 137 | 8,61% | 12,54% | -13,31% | 6,37 |
+| Africa + Mediterraneo + Golfo | 223 | 11,95% | 12,64% | -11,78% | 4,32 |
+| Africa + Turchia + Grecia + Golfo (paniere esplorativo) | 223 | 11,95% | 12,64% | -11,78% | 4,32 |
+| Africa soltanto (AFK, EZA) | 223 | 10,31% | 13,94% | -14,26% | 6,33 |
+| GAF, GULF, MES (legacy) | 0 | n.d. | n.d. | n.d. | n.d. |
+
+Le finestre mobili a 3 e 5 anni sono calcolate sugli ultimi 36 e 60 rendimenti mensili disponibili, quindi hanno gli stessi estremi temporali per tutte le ipotesi attive. I CAGR dell'intero campione NON sono direttamente confrontabili perché l'inizio della storia varia (dal 2008 al 2015).
+
+### Interpretazione
+
+- Il paniere **EGPT + GREK + TUR** è il migliore tra le ipotesi testate sul quinquennio: CAGR 13,27%, rispetto al 12,88% del paniere residuale, con volatilità e Ulcer leggermente inferiori ma Max Drawdown leggermente peggiore.
+- Il Golfo puro non emerge come soluzione convincente: la storia è corta (137 mesi per il composito) e il CAGR quinquennale è inferiore.
+- Africa soltanto è più debole sul quinquennio, con maggiore volatilità, drawdown e Ulcer.
+- Il paniere ampio Africa + Mediterraneo + Golfo non migliora il residuale. I suoi risultati sono identici al paniere esplorativo corrente: in questo backtest l'aggiunta di EGPT non cambia le selezioni/il rendimento finale.
+- GAF, GULF e MES non hanno prodotto alcun mese investibile con la serie disponibile: il test legacy non può essere usato per giudicare la performance storica della regione.
+
+### Limiti e controllo ancora necessario
+
+Questa è una **sensibilità quantitativa**, non la prova della classificazione ufficiale Logical Invest. La migliore performance di EGPT/GREK/TUR non dimostra che LI abbia chiamato la sleeve “Middle East” o che abbia usato questi tre ETF. Inoltre il ranking e la copertura sono quelli del nostro modello indipendente, non i parametri proprietari LI.
+
+È stato aggiunto al codice un ulteriore confronto con intersezione esatta delle date mensili tra tutte le ipotesi attive. Questo confronto matched-period deve ancora essere ricalcolato da GitHub Actions: il commit del codice è presente, ma il push effettuato dall'integrazione GitHub non ha avviato automaticamente un nuovo workflow. Non considerare quindi il campo `common_period` come già popolato nei dati pubblicati.
+
+**Conclusione di ricerca:** fra le ipotesi disponibili, il Mediterraneo orientale (Egitto, Grecia, Turchia) è al momento il candidato quantitativo più interessante; il Golfo puro e Africa soltanto risultano meno convincenti. La denominazione ufficiale della quarta sleeve resta non verificata. Non si passa ancora alla mappatura UCITS né si dichiara replicata la strategia WTOP4.
