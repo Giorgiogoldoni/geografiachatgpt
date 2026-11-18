@@ -24,7 +24,7 @@ TREASURY = ["TLT", "TIP", "GSY"]
 GOLD_USD = ["GLD", "UUP"]
 OUT = Path("world_top4_6040.json")
 
-def run_backtest(prices, variant="modified"):
+def run_backtest(prices, variant="modified", regions=REGIONS):
     monthly = prices.resample("ME").last().dropna(how="all")
     latest = prices.dropna(how="all").index[-1]
     if latest.to_period("M") == pd.Timestamp.now(tz="UTC").to_period("M"):
@@ -35,7 +35,7 @@ def run_backtest(prices, variant="modified"):
         signal_date, hold_from, hold_to = dates[i-1], dates[i-1], dates[i]
         picks = []
         weights = {}
-        for region, assets in REGIONS.items():
+        for region, assets in regions.items():
             ranked = rank(prices, assets, signal_date, variant)
             if ranked:
                 item = ranked[0]
