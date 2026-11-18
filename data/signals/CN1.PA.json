@@ -1,1 +1,1 @@
-{"ticker":"CN1.PA","history":[{"date":"2026-11-18","ts":"2026-11-18 12:22 CET","signal":"SELL","price":730.8,"score":30.9,"er":0.3696,"note":"Uscita per: KAMA rotta, AO calante, ER<0.4"}]}
+{"ticker":"CN1.PA","history":[{"date":"2026-11-18","ts":"2026-11-18 12:22 CET","signal":"SELL","price":730.8,"score":30.9,"er":0.3696,"note":"Uscita per: KAMA rotta, AO calante, ER<0.4"},{"date":"2026-11-19","ts":"2026-11-19 00:02 CET","signal":"WATCH","price":731.4,"score":22.0,"er":0.0459,"note":"Nessuna condizione di ingresso attiva"}]}
