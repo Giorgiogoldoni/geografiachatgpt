@@ -47,7 +47,7 @@ La variante modificata ha un MaxDD recuperato il 31 marzo 2022 dopo un minimo il
 ## 5. Cosa sappiamo della strategia ufficiale
 - Logical Invest descrive WTOP4 come quattro sottostrategie geografiche, ciascuna seleziona il miglior ETF del proprio segmento, combinate in quattro Paesi distinti.
 - La pagina principale pubblica 49 ticker USA; le pagine secondarie consultabili aggiungono almeno ARGT e DBKO e presentano sovrapposizioni/anomalie fra le aree. Il dettaglio è in `logical_invest_universe.csv`.
-- L'aggiornamento ufficiale del 27 dicembre 2019, operativo dal 1 gennaio 2020, documenta il passaggio da 70/30 a 60% equity / 40% HEDGE per WTOP4.
+- L'aggiornamento ufficiale del 27 dicembre 2019, operativo dal 1 gennaio 2020, documenta il passaggio da 70/30 a 60% equity / 40% HEDGE per WTOP4. Lo stesso aggiornamento descrive HEDGE internamente con 60% Treasury / 40% Gold; il solo GSY poteva raggiungere il 100% della sleeve.
 - La pagina HEDGE aggiornata a ottobre 2026 descrive due blocchi: Treasury e GLD-USD. La pagina Gold-Currency Strategy II descrive la rotazione tra oro e dollaro. La documentazione LI del 2022 cita GSY come alternativa cash nella componente Treasury e GLD-USD; la newsletter di ottobre 2026 conferma l'uso di GSY come difensivo.
 - Le holdings e allocazioni sul sito sono dichiarate in ritardo di un mese; i risultati possono includere storico sintetico e non considerano slippage, costi o imposte.
 
