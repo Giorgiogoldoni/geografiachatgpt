@@ -30,11 +30,13 @@ jobs:
         run: python world_top4.py
       - name: Calculate separate 60/40 audit scenario
         run: python world_top4_6040.py
+      - name: Compare fourth-region hypotheses (Africa / Middle East)
+        run: python world_top4_region_sensitivity.py
       - name: Commit research data
         run: |
           git config user.name "geografia-bot"
           git config user.email "geografia-bot@users.noreply.github.com"
-          git add world_top4.json world_top4_6040.json
+          git add world_top4.json world_top4_6040.json world_top4_region_sensitivity.json
           git diff --staged --quiet || git commit -m "Daily World Top 4 model update"
           git pull --rebase
           git push
