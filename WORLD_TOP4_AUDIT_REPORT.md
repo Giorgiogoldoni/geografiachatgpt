@@ -15,9 +15,9 @@
 
 | Modello | CAGR storico | Volatilità | Downside vol. | Max DD | Ulcer | Sharpe RF=0 | Sortino target=0 |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Score rendimento/volatilità² | 6,53% | 11,98% | 7,44% | -22,78% | 7,60 | 0,59 | 0,95 |
-| Momentum 68 sedute | 6,57% | 14,63% | 8,88% | -24,63% | 9,06 | 0,51 | 0,84 |
-| Momentum 3/6/12 mesi | 7,57% | 13,21% | 7,80% | -20,06% | 7,46 | 0,62 | 1,05 |
+| Score rendimento/volatilità² | 7,07% | 11,97% | 7,36% | -20,35% | 7,27 | 0,63 | 1,03 |
+| Momentum 68 sedute | 7,04% | 14,67% | 8,85% | -23,87% | 8,77 | 0,54 | 0,89 |
+| Momentum 3/6/12 mesi | 7,36% | 13,27% | 7,85% | -20,35% | 7,71 | 0,60 | 1,02 |
 | ACWI buy & hold | 8,39% | 16,53% | 11,16% | -51,70% | 12,58 | 0,57 | 0,85 |
 
 **Lettura:** il modello esplorativo ha contenuto volatilità, Max Drawdown e Ulcer rispetto ad ACWI, ma ha prodotto un CAGR inferiore sul periodo massimo. Il momentum composito ha il miglior CAGR fra le tre varianti e il MaxDD più contenuto, ma resta sotto ACWI sul periodo completo.
@@ -27,9 +27,9 @@ Attenzione: Sharpe e Sortino qui usano tasso privo di rischio/target pari a zero
 ## 3. Finestre mobili
 | Modello | 3 anni CAGR | 5 anni CAGR | 10 anni CAGR | 15 anni CAGR |
 |---|---:|---:|---:|---:|
-| Score rendimento/volatilità² | 19,88% | 12,03% | 7,55% | 5,91% |
-| Momentum 68 sedute | 24,96% | 12,56% | 6,85% | 5,28% |
-| Momentum 3/6/12 mesi | 25,17% | 13,53% | 7,66% | 7,02% |
+| Score rendimento/volatilità² | 19,59% | 11,87% | 7,74% | 6,20% |
+| Momentum 68 sedute | 24,35% | 12,32% | 6,98% | 5,57% |
+| Momentum 3/6/12 mesi | 25,17% | 13,22% | 7,47% | 6,76% |
 | ACWI | 22,12% | 10,08% | 12,47% | 11,09% |
 
 I periodi recenti di 3 e 5 anni sono più favorevoli al momentum; sui 10 e 15 anni ACWI è nettamente superiore. È un segnale di dipendenza dal regime di mercato e non basta osservare soltanto il quinquennio più recente.
@@ -58,9 +58,9 @@ Le varianti di momentum superano ACWI per CAGR nelle finestre recenti, ma hanno 
 ## 4. Durata dei drawdown e turnover
 | Modello | Max tempo underwater | Media underwater | Turnover medio mensile |
 |---|---:|---:|---:|
-| Score rendimento/volatilità² | 945 giorni | 145 giorni | 48,0% |
-| Momentum 68 sedute | 1.948 giorni | 321 giorni | 50,7% |
-| Momentum 3/6/12 mesi | 1.918 giorni | 225 giorni | 43,1% |
+| Score rendimento/volatilità² | 945 giorni | 141 giorni | 47,9% |
+| Momentum 68 sedute | 1.461 giorni | 299 giorni | 50,4% |
+| Momentum 3/6/12 mesi | 1.948 giorni | 258 giorni | 43,2% |
 | ACWI | 1.645 giorni | 160 giorni | n.d. |
 
 La variante modificata ha un MaxDD recuperato il 31 marzo 2022 dopo un minimo il 31 marzo 2020. Le altre due varianti hanno avuto periodi underwater massimi più lunghi dell'ACWI. Il turnover medio mensile è elevato: prima di qualunque uso pratico va stimato l'impatto di spread, commissioni e fiscalità.
