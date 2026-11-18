@@ -90,3 +90,35 @@ Le pagine pubbliche correnti confermano i panieri regionali Developed (23 ticker
 Il rapporto completo delle evidenze, delle discrepanze e dei prossimi test è in LOGICAL_INVEST_ENGINE_RESEARCH.md.
 
 **Regola di progetto:** mantenere intatti i backtest correnti come baseline; sviluppare il motore solver in un modulo sperimentale separato; non cambiare dashboard, pesi o strategia operativa prima della validazione.
+
+
+## Motore sperimentale Modified Sharpe — 18 novembre 2026
+
+È stato aggiunto `world_top4_solver_experimental.py`, con output `world_top4_solver_experimental.json`. Il modulo resta separato dai motori precedenti.
+
+### Formula e differenza rispetto alla baseline
+La guida pubblica QuantTrader definisce il Modified Sharpe come:
+
+`media dei rendimenti giornalieri / (deviazione standard giornaliera ^ f)`
+
+e indica che `f` è il Volatility Attenuator. Con `f=2`, il punteggio sperimentale è quindi `mean(daily_returns) / std(daily_returns)^2`. Questo è più aderente alla formula descritta nella guida rispetto alla proxy precedente `return_68d / volatilità_annualizzata^2`. Non sono però note tutte le normalizzazioni interne di QuantTrader.
+
+### Test del solver
+Per ogni mese:
+1. calcola il punteggio su 68 sedute giornaliere;
+2. seleziona un ETF per ciascuna delle quattro sleeve provvisorie;
+3. confronta pesi equity 25/25/25/25, ottimizzazione long-only a passi del 5% senza limite massimo e una sensibilità con limiti 10%-40% per ETF;
+4. applica, solo come scenario storico, 60% equity e 40% HEDGE (24% Treasury e 16% GLD-USD);
+5. confronta i risultati sullo stesso periodo comune.
+
+Il limite 10%-40% è una sensibilità scelta per misurare l'effetto della diversificazione, **non** un vincolo ufficiale Logical Invest. Anche il paniere della quarta sleeve e i due universi HEDGE restano provvisori. Il solver a griglia non è il solver proprietario QuantTrader.
+
+### Output e validazione
+Il workflow giornaliero esegue il nuovo modulo e pubblica il JSON. Prima di considerare il modello utilizzabile occorre esaminare:
+- differenza CAGR, Sharpe, drawdown e Ulcer rispetto a equal-weight e ACWI;
+- concentrazione dei pesi e frequenza di selezione;
+- stabilità per sottoperiodi e finestre mobili;
+- sensibilità al passo della griglia e ai vincoli;
+- impatto della quarta sleeve e della ricostruzione HEDGE.
+
+Non sostituire la baseline o i pesi operativi in base al solo backtest complessivo.
