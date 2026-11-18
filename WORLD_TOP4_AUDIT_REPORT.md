@@ -34,6 +34,27 @@ Attenzione: Sharpe e Sortino qui usano tasso privo di rischio/target pari a zero
 
 I periodi recenti di 3 e 5 anni sono più favorevoli al momentum; sui 10 e 15 anni ACWI è nettamente superiore. È un segnale di dipendenza dal regime di mercato e non basta osservare soltanto il quinquennio più recente.
 
+### Metriche di rischio sulle finestre mobili
+**Ultimi 5 anni completi (al 31 ottobre 2026):**
+
+| Modello | CAGR | Vol. | DownVol | Sharpe RF=0 | Sortino target=0 | Max DD | Ulcer | Max underwater |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Score rendimento/volatilità² | 11,87% | 12,25% | 7,38% | 0,98 | 1,63 | -18,91% | 5,04 | 245 gg |
+| Momentum 68 sedute | 12,32% | 15,89% | 9,65% | 0,81 | 1,34 | -23,87% | 7,61 | 426 gg |
+| Momentum 3/6/12 mesi | 13,22% | 14,56% | 8,37% | 0,93 | 1,61 | -16,42% | 5,06 | 396 gg |
+| ACWI | 10,08% | 14,80% | 9,16% | 0,72 | 1,17 | -25,74% | 8,47 | 699 gg |
+
+**Ultimi 3 anni completi:**
+
+| Modello | CAGR | Vol. | DownVol | Sharpe RF=0 | Sortino target=0 | Max DD | Ulcer | Max underwater |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Score rendimento/volatilità² | 19,59% | 10,55% | 5,80% | 1,76 | 3,20 | -8,66% | 1,93 | 153 gg |
+| Momentum 68 sedute | 24,35% | 14,83% | 7,97% | 1,55 | 2,89 | -10,09% | 2,70 | 214 gg |
+| Momentum 3/6/12 mesi | 25,17% | 14,16% | 7,27% | 1,67 | 3,25 | -9,90% | 2,39 | 122 gg |
+| ACWI | 22,12% | 11,44% | 5,15% | 1,82 | 4,03 | -6,11% | 1,66 | 61 gg |
+
+Le varianti di momentum superano ACWI per CAGR nelle finestre recenti, ma hanno volatilità, drawdown e/o durata underwater superiori. Il vantaggio recente non è quindi gratuito in termini di rischio.
+
 ## 4. Durata dei drawdown e turnover
 | Modello | Max tempo underwater | Media underwater | Turnover medio mensile |
 |---|---:|---:|---:|
