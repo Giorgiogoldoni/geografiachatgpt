@@ -1,7 +1,6 @@
-# 🦅 GEOGRAFIA CHATGPT
+# 🌍 GEOGRAFIA CHATGPT
 
-Portfolio manager autonomo per ETF UCITS quotati in Europa.
-Due portafogli separati: **PAESI** + **NEW AREA**.
+Dashboard e motore di rotazione geografica per ETF UCITS quotati in Europa. La precedente dashboard RAPTOR è conservata in `raptor-geografia-legacy.html`.
 
 ## 📐 Regole operative
 
