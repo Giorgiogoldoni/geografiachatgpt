@@ -130,6 +130,9 @@ def rolling_comparison(rows_a, rows_b, window):
 
 
 def regime_comparison(rows_a, rows_b, prices):
+    """Conditional monthly statistics; regimes are non-contiguous by definition.
+    Do not chain their returns into CAGR or drawdown paths.
+    """
     monthly = prices.resample("ME").last()
     bench = monthly[engine.BENCH].dropna()
     regimes = {}
@@ -142,12 +145,43 @@ def regime_comparison(rows_a, rows_b, prices):
         regime = "risk_on" if trailing > 0.05 else ("risk_off" if trailing < -0.05 else "sideways")
         regimes[row["holding_to"]] = regime
     a, b = align_rows(rows_a, rows_b)
+
+    def conditional_stats(rows):
+        values = np.asarray([float(r["return"]) for r in rows], dtype=float)
+        if len(values) == 0:
+            return {"months": 0}
+        vol = float(np.std(values, ddof=1) * np.sqrt(12)) if len(values) > 1 else 0.0
+        mean = float(np.mean(values))
+        return {
+            "months": int(len(values)),
+            "average_monthly_return": mean,
+            "annualized_arithmetic_return": mean * 12,
+            "annualized_volatility": vol,
+            "sharpe_zero_rf": float(mean * 12 / vol) if vol > 0 else 0.0,
+            "monthly_win_rate": float(np.mean(values > 0))
+        }
+
     out = {}
     for regime in ("risk_on", "sideways", "risk_off"):
         aa = [r for r in a if regimes.get(r["holding_to"]) == regime]
         bb = [r for r in b if regimes.get(r["holding_to"]) == regime]
-        out[regime] = comparison(aa, bb)
-    out["definition"] = "ACWI trailing 12-month return measured at the prior month-end signal: >+5% risk_on, <-5% risk_off, otherwise sideways. Descriptive classification, not causal."
+        ma, mb = conditional_stats(aa), conditional_stats(bb)
+        out[regime] = {
+            "baseline": ma,
+            "test": mb,
+            "delta_test_minus_baseline": {
+                key: mb[key] - ma[key] for key in (
+                    "average_monthly_return", "annualized_arithmetic_return",
+                    "annualized_volatility", "sharpe_zero_rf", "monthly_win_rate"
+                ) if key in ma and key in mb
+            }
+        }
+    out["definition"] = (
+        "ACWI trailing 12-month return measured at the prior month-end signal: "
+        ">+5% risk_on, <-5% risk_off, otherwise sideways. Because regimes contain "
+        "non-contiguous months, report conditional monthly statistics only; no "
+        "CAGR or drawdown is calculated. Descriptive classification, not causal."
+    )
     return out
 
 
