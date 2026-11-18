@@ -1,0 +1,302 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-11-18",
+  "principles": [
+    "Ogni ETF appartiene a un modulo geografico in base all'esposizione sottostante, non alla borsa di quotazione.",
+    "ETF regionali e singoli Paesi restano classificati separatamente.",
+    "ETF Global e World restano esclusivamente nel modulo GLOBAL e non entrano nei ranking regionali.",
+    "Gli ETF factor sono classificati per area geografica e fattore; non vengono trattati come ETF Paese.",
+    "Nessun ticker viene inventato: strumenti non ancora verificati restano candidati da ricercare."
+  ],
+  "factor_categories": [
+    "QUALITY",
+    "MOMENTUM",
+    "VALUE",
+    "GROWTH",
+    "HIGH_DIVIDEND",
+    "DIVIDEND_ARISTOCRATS",
+    "EQUAL_WEIGHT",
+    "MINIMUM_VOLATILITY",
+    "MULTI_FACTOR"
+  ],
+  "modules": [
+    {
+      "id": "north-america",
+      "name": "America del Nord",
+      "region": "AMERICA DEL NORD",
+      "countries": [
+        "Stati Uniti",
+        "Canada"
+      ],
+      "country_universe_status": "da ampliare e verificare",
+      "subuniverses": [
+        "S&P 500",
+        "Nasdaq 100",
+        "Nasdaq Composite (solo se esiste un UCITS idoneo)",
+        "Dow Jones",
+        "Russell 1000",
+        "Russell 2000",
+        "Mid Cap",
+        "Small Cap",
+        "S&P/TSX 60",
+        "MSCI Canada"
+      ],
+      "factor_categories": [
+        "QUALITY",
+        "MOMENTUM",
+        "VALUE",
+        "GROWTH",
+        "HIGH_DIVIDEND",
+        "DIVIDEND_ARISTOCRATS",
+        "EQUAL_WEIGHT",
+        "MINIMUM_VOLATILITY",
+        "MULTI_FACTOR"
+      ],
+      "existing_user_index_examples": [
+        "WSPX.MI",
+        "SPY5.MI",
+        "VUSA.MI",
+        "CSNDX.MI",
+        "DJE.PA",
+        "WRTY.MI",
+        "CSCA.MI"
+      ],
+      "notes": "Gli esempi dell'INDEX utente sono un punto di partenza, non una conferma automatica di idoneità o quotazione."
+    },
+    {
+      "id": "latin-america",
+      "name": "Centro e Sud America",
+      "region": "CENTRO E SUD AMERICA",
+      "countries": [
+        "Messico",
+        "Brasile",
+        "Argentina",
+        "Cile",
+        "Colombia",
+        "Perù"
+      ],
+      "country_universe_status": "Messico e Brasile presenti nel seed; altri mercati da verificare",
+      "subuniverses": [
+        "ETF singoli Paesi",
+        "America Latina regionale"
+      ],
+      "factor_categories": [
+        "QUALITY",
+        "MOMENTUM",
+        "VALUE",
+        "HIGH_DIVIDEND"
+      ],
+      "existing_user_index_examples": [
+        "D5BI.DE",
+        "IBZL.MI",
+        "LTAM.MI",
+        "ALAT.MI"
+      ],
+      "notes": "LTAM e ALAT sono panieri regionali, non proxy di Brasile o Messico."
+    },
+    {
+      "id": "asia",
+      "name": "Asia",
+      "region": "ASIA",
+      "countries": [
+        "Giappone",
+        "Cina",
+        "India",
+        "Taiwan",
+        "Corea del Sud",
+        "Hong Kong",
+        "Singapore",
+        "Indonesia",
+        "Malesia",
+        "Thailandia",
+        "Filippine",
+        "Vietnam",
+        "Pakistan",
+        "Bangladesh",
+        "Sri Lanka"
+      ],
+      "country_universe_status": "Primi Paesi presenti nel seed e nell'INDEX; copertura completa da verificare",
+      "subuniverses": [
+        "Paesi sviluppati asiatici",
+        "Asia emergente",
+        "Cina A-shares e Hong Kong",
+        "Asia Pacifico regionale"
+      ],
+      "factor_categories": [
+        "QUALITY",
+        "MOMENTUM",
+        "VALUE",
+        "GROWTH",
+        "HIGH_DIVIDEND",
+        "EQUAL_WEIGHT"
+      ],
+      "existing_user_index_examples": [
+        "FLXI.MI",
+        "MCHN.MI",
+        "LCCN.MI",
+        "FLXT.MI",
+        "SJPA.MI",
+        "INDO.PA",
+        "XCS4.DE",
+        "XCS3.DE",
+        "XPQP.DE",
+        "XBAS.DE"
+      ],
+      "notes": "Pacifico ex-Japan e Australia non sono automaticamente classificati come singolo Paese asiatico: verranno assegnati a una categoria regionale dedicata o al modulo corretto."
+    },
+    {
+      "id": "middle-east-africa",
+      "name": "Medio Oriente e Africa",
+      "region": "MEDIO ORIENTE E AFRICA",
+      "countries": [
+        "Arabia Saudita",
+        "Israele",
+        "Emirati Arabi Uniti",
+        "Qatar",
+        "Kuwait",
+        "Sudafrica",
+        "Egitto",
+        "Marocco",
+        "Nigeria",
+        "Kenya",
+        "Turchia"
+      ],
+      "country_universe_status": "Arabia Saudita, Israele, Turchia e Sudafrica già censiti; altri da verificare",
+      "subuniverses": [
+        "Golfo e GCC",
+        "Medio Oriente",
+        "Africa",
+        "Singoli Paesi"
+      ],
+      "factor_categories": [
+        "QUALITY",
+        "MOMENTUM",
+        "VALUE",
+        "HIGH_DIVIDEND"
+      ],
+      "existing_user_index_examples": [
+        "SAUDI.MI",
+        "SRSA.MI",
+        "TUR.PA"
+      ],
+      "notes": "Turchia resta in questo modulo per la classificazione di mercato adottata dal progetto; eventuali classificazioni geografiche alternative saranno documentate."
+    },
+    {
+      "id": "europe",
+      "name": "Europa",
+      "region": "EUROPA",
+      "countries": [
+        "Regno Unito",
+        "Svizzera",
+        "Germania",
+        "Francia",
+        "Italia",
+        "Spagna",
+        "Paesi Bassi",
+        "Belgio",
+        "Austria",
+        "Irlanda",
+        "Portogallo",
+        "Svezia",
+        "Norvegia",
+        "Danimarca",
+        "Finlandia",
+        "Islanda",
+        "Polonia",
+        "Grecia",
+        "Repubblica Ceca",
+        "Ungheria",
+        "Romania",
+        "Turchia"
+      ],
+      "country_universe_status": "Paesi già censiti e ampliamento progressivo; disponibilità UCITS da verificare Paese per Paese",
+      "subuniverses": [
+        "ETF singoli Paesi",
+        "MSCI Europe",
+        "STOXX Europe 600",
+        "EURO STOXX 50",
+        "Eurozona",
+        "Europa sviluppata ed emergente"
+      ],
+      "factor_categories": [
+        "QUALITY",
+        "MOMENTUM",
+        "VALUE",
+        "GROWTH",
+        "HIGH_DIVIDEND",
+        "DIVIDEND_ARISTOCRATS",
+        "EQUAL_WEIGHT",
+        "MINIMUM_VOLATILITY",
+        "MULTI_FACTOR"
+      ],
+      "existing_user_index_examples": [
+        "XESD.DE",
+        "C40.PA",
+        "IS3U.DE",
+        "EXS1.DE",
+        "IAEX.AS",
+        "IMIB.MI",
+        "SVE.MI",
+        "UKE.MI",
+        "CSCA.MI",
+        "IBCJ.DE"
+      ],
+      "notes": "I Paesi senza ETF UCITS dedicato resteranno visibili come copertura mancante; non verranno sostituiti con proxy non dichiarati."
+    },
+    {
+      "id": "global",
+      "name": "Global",
+      "region": "GLOBAL",
+      "countries": [
+        "Globale sviluppato",
+        "Globale all-country",
+        "Mercati emergenti globali"
+      ],
+      "country_universe_status": "modulo autonomo; nessuna classificazione per singolo Paese",
+      "subuniverses": [
+        "MSCI World",
+        "MSCI ACWI",
+        "FTSE All-World",
+        "MSCI Emerging Markets",
+        "Global aggregate equity"
+      ],
+      "factor_categories": [
+        "QUALITY",
+        "MOMENTUM",
+        "VALUE",
+        "GROWTH",
+        "HIGH_DIVIDEND",
+        "DIVIDEND_ARISTOCRATS",
+        "EQUAL_WEIGHT",
+        "MINIMUM_VOLATILITY",
+        "MULTI_FACTOR"
+      ],
+      "existing_user_index_examples": [
+        "WRD.PA",
+        "LEER.DE",
+        "MWEQ",
+        "IWMO",
+        "XDEM",
+        "IWVL",
+        "XDEV",
+        "IWQU"
+      ],
+      "notes": "Nessun ETF Global entra nelle graduatorie di America del Nord, Europa, Asia o America Latina."
+    }
+  ],
+  "ranking_blueprint": [
+    "Paesi",
+    "Indici",
+    "Quality",
+    "Momentum",
+    "Value",
+    "Growth",
+    "High Dividend",
+    "Dividend Aristocrats",
+    "Equal Weight",
+    "Minimum Volatility",
+    "Multi-Factor",
+    "Quality + Momentum combinata"
+  ],
+  "implementation_status": "ARCHITETTURA E TASSONOMIA INIZIALE. I moduli sono definiti; universi ETF, listing, serie prezzi e ranking specifici devono essere verificati e implementati progressivamente."
+}
