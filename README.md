@@ -107,3 +107,4 @@ Il modulo confronta tre varianti di momentum e ACWI. Un modulo sperimentale sepa
 - Snapshot ufficiale dei 49 ETF WTOP4 (16 ottobre 2026): [logical_invest_wtop4_universe_2026-10-16.csv](./logical_invest_wtop4_universe_2026-10-16.csv)
 - Ricostruzione della quarta sleeve e discrepanze tra universo master e pagine regionali: [WORLD_TOP4_FOURTH_SLEEVE_RESEARCH_2026-11-18.md](./WORLD_TOP4_FOURTH_SLEEVE_RESEARCH_2026-11-18.md)
 - **Nuovo audit tecnico QuantTrader e HEDGE**: [QUANTTRADER_HEDGE_AUDIT_2026-11-18.md](./QUANTTRADER_HEDGE_AUDIT_2026-11-18.md) — logiche NO/SR/DR/SRE/DRE, vincoli e architettura dei due moduli hedge.
+- **Adattamento operativo agli ETF europei UCITS**: [WORLD_TOP4_UCITS_ADAPTATION.md](./WORLD_TOP4_UCITS_ADAPTATION.md) e [registro iniziale ETF per Paese](./ucits_country_universe_seed_2026-11-18.csv). Obiettivo: avvicinarsi alle scelte geografiche Logical Invest usando strumenti europei verificati.
