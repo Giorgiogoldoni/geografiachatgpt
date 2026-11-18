@@ -1,0 +1,37 @@
+name: Euro 60/40 portfolio — monthly research update
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'euro_top4_6040.py'
+      - 'world_top4.py'
+      - '.github/workflows/euro-top4-6040.yml'
+      - 'requirements.txt'
+  schedule:
+    - cron: '40 22 * * 1-5'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: euro-top4-6040-main
+  cancel-in-progress: true
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt --break-system-packages -q
+      - name: Calculate European UCITS 60/40 portfolio
+        run: python euro_top4_6040.py
+      - name: Commit history
+        run: |
+          git config user.name "geografia-bot"
+          git config user.email "geografia-bot@users.noreply.github.com"
+          git add euro_top4_6040.json
+          git diff --staged --quiet || git commit -m "Daily Euro 60/40 portfolio update"
+          git pull --rebase
+          git push
