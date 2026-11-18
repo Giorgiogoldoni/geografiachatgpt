@@ -50,3 +50,5 @@ portfolio,ticker,name,geography,classification,source,verification_status
 "PAESI","XPQP.DE","Xtrackers MSCI Philippines UCITS ETF","Filippine","Paese","User list 2026-11-18","Ticker and listing require final instrument-level verification"
 "PAESI","LCCN.MI","Amundi MSCI China UCITS ETF","Cina","Paese","User list 2026-11-18","Ticker and listing require final instrument-level verification"
 "PAESI","HSTE.MI","HSBC Hang Seng Tech UCITS ETF","Hong Kong / Cina","Indice settoriale/tematico","User list 2026-11-18","Ticker and listing require final instrument-level verification"
+"PAESI","CSCA.MI","iShares MSCI Canada UCITS ETF (Acc)","Canada","Paese","Verified listing: Borsa Italiana EUR; ISIN IE00B52SF786","Listing verified; engine price history to be checked"
+"PAESI","IBCJ.DE","iShares MSCI Poland UCITS ETF USD (Acc)","Polonia","Paese","Verified listing: Xetra EUR; ISIN IE00B4M7GH52","Listing verified; engine price history to be checked"
