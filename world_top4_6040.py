@@ -53,16 +53,23 @@ def run_backtest(prices, variant="modified", regions=REGIONS):
             hedge.append({"sleeve":"GLD-USD","ticker":item["ticker"],"score":item["score"],"weight":0.16})
             weights[item["ticker"]] = weights.get(item["ticker"],0.0) + 0.16
         start_px, end_px = monthly.loc[hold_from], monthly.loc[hold_to]
+        # Strict coverage: every one of the four equity sleeves and both HEDGE
+        # components must have valid start/end prices. Never silently renormalize
+        # the portfolio around a missing regional holding.
+        if len(picks) != 4 or len(hedge) != 2:
+            continue
+        required_tickers = {x["ticker"] for x in picks} | {x["ticker"] for x in hedge}
+        if not required_tickers.issubset(weights):
+            continue
         valid = {t:w for t,w in weights.items()
                  if t in monthly.columns and pd.notna(start_px.get(t)) and pd.notna(end_px.get(t))
                  and start_px[t] > 0 and end_px[t] > 0}
-        if len(valid) < 6:
-            continue
-        # Require the four equity sleeves plus both HEDGE components to be present.
-        if len(picks) != 4 or len(hedge) != 2:
+        if set(valid) != set(weights):
             continue
         total = sum(valid.values())
-        ret = sum(w * (end_px[t]/start_px[t]-1) for t,w in valid.items()) / total
+        if abs(total - 1.0) > 1e-8:
+            continue
+        ret = sum(w * (end_px[t]/start_px[t]-1) for t,w in valid.items())
         rows.append({
             "signal_date":signal_date.strftime("%Y-%m-%d"),
             "holding_from":hold_from.strftime("%Y-%m-%d"),
