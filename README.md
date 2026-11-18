@@ -108,3 +108,18 @@ Il modulo confronta tre varianti di momentum e ACWI. Un modulo sperimentale sepa
 - Ricostruzione della quarta sleeve e discrepanze tra universo master e pagine regionali: [WORLD_TOP4_FOURTH_SLEEVE_RESEARCH_2026-11-18.md](./WORLD_TOP4_FOURTH_SLEEVE_RESEARCH_2026-11-18.md)
 - **Nuovo audit tecnico QuantTrader e HEDGE**: [QUANTTRADER_HEDGE_AUDIT_2026-11-18.md](./QUANTTRADER_HEDGE_AUDIT_2026-11-18.md) — logiche NO/SR/DR/SRE/DRE, vincoli e architettura dei due moduli hedge.
 - **Adattamento operativo agli ETF europei UCITS**: [WORLD_TOP4_UCITS_ADAPTATION.md](./WORLD_TOP4_UCITS_ADAPTATION.md) e [registro iniziale ETF per Paese](./ucits_country_universe_seed_2026-11-18.csv). Obiettivo: avvicinarsi alle scelte geografiche Logical Invest usando strumenti europei verificati.
+
+
+## 🌍 Strategia geografica UCITS — dashboard e motore
+
+La pagina principale del repository è ora la dashboard della strategia geografica europea:
+- **Dashboard:** [Apri Geografia ChatGPT](https://giorgiogoldoni.github.io/geografiachatgpt/)
+- **Motore:** \`ucits_geography.py\`
+- **Dati giornalieri:** \`ucits_geography.json\`
+- **Workflow:** \`.github/workflows/ucits-geography.yml\`
+- **Universo di partenza:** \`ucits_country_universe_seed_2026-11-18.csv\`
+- **Vecchia dashboard RAPTOR conservata:** [raptor-geografia-legacy.html](./raptor-geografia-legacy.html)
+
+Il motore scarica prezzi rettificati delle quotazioni europee mappate, calcola Modified Sharpe su 68 sedute, momentum a 3/6/12 mesi e filtro prezzo sopra SMA200 + momentum 12 mesi positivo. Le quattro aree sono classificate separatamente. LTAM e ALAT sono alternative regionali e non vengono confuse con Brasile e Messico.
+
+**Limiti della prima release:** il motore mostra lo snapshot corrente e non ancora un backtest walk-forward; i ticker non mappati, le quotazioni senza dati e gli storici insufficienti sono segnalati ed esclusi. Non è una replica del motore proprietario Logical Invest né un sistema di ordini automatici.
