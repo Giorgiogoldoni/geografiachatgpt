@@ -86,10 +86,14 @@ def metrics(rows):
  "periods":periods,"yearly_returns":yearly,
  "equity_curve":[{"date":dates.iloc[i].strftime("%Y-%m-%d"),"value":float(v)} for i,v in enumerate(eq)]}
 def backtest(p,variant,common_start=None):
- m=p.resample("ME").last().dropna(how="all"); dates=list(m.index); out=[]
- for i in range(1,len(dates)-1):
-  sig,start,end=dates[i-1],dates[i],dates[i+1]; picks=[]
-  if common_start is not None and start<common_start:continue
+ m=p.resample("ME").last().dropna(how="all")
+ latest=p.dropna(how="all").index[-1]
+ # Exclude the still-open calendar month; never treat a partial month as a full holding period.
+ if latest.to_period("M")==pd.Timestamp.now(tz="UTC").to_period("M") and len(m):m=m.iloc[:-1]
+ dates=list(m.index); out=[]
+ for i in range(1,len(dates)):
+  sig=start=dates[i-1]; end=dates[i]; picks=[]
+  if common_start is not None and sig<common_start:continue
   for region,assets in REGIONS.items():
    rr=rank(p,assets,sig,variant)
    if rr:picks.append({"region":region,**rr[0]})
@@ -107,7 +111,9 @@ def backtest(p,variant,common_start=None):
  return out
 def main():
  tickers=sum(REGIONS.values(),[])+HEDGE+[BENCH]; p=download(tickers); latest=p.dropna(how="all").index[-1]
- bm=p.resample("ME").last()[BENCH].dropna()
+ monthly=p.resample("ME").last()
+ if latest.to_period("M")==pd.Timestamp.now(tz="UTC").to_period("M"):monthly=monthly.iloc[:-1]
+ bm=monthly[BENCH].dropna()
  variants={}
  for v in ["modified","momentum","composite"]:
   h=backtest(p,v,bm.index[0]);variants[v]={"metrics":metrics(h),"history":h[-36:]}
