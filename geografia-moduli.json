@@ -120,7 +120,8 @@
         "Paesi sviluppati asiatici",
         "Asia emergente",
         "Cina A-shares e Hong Kong",
-        "Asia Pacifico regionale"
+        "Asia Pacifico regionale",
+        "Asia Pacifico High Dividend (IAPD)"
       ],
       "factor_categories": [
         "QUALITY",
@@ -140,7 +141,8 @@
         "XCS4.DE",
         "XCS3.DE",
         "XPQP.DE",
-        "XBAS.DE"
+        "XBAS.DE",
+        "IAPD.MI"
       ],
       "notes": "Pacifico ex-Japan e Australia non sono automaticamente classificati come singolo Paese asiatico: verranno assegnati a una categoria regionale dedicata o al modulo corretto."
     },
