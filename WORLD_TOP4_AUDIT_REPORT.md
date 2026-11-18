@@ -80,6 +80,29 @@ La variante modificata ha un MaxDD recuperato il 31 marzo 2022 dopo un minimo il
 5. Il ranking proprietario, i lookback e i parametri risk-adjusted non sono pubblicati integralmente.
 6. Il nostro backtest usa proxy Yahoo Finance adjusted; non include costi, tasse, slippage o conversione FX.
 
+## Confronto diagnostico con lo snapshot LI
+Valori del nostro modello a confronto con la fotografia pubblica Logical Invest del 16 ottobre 2026. Le finestre non sono garantite identiche, quindi questa tabella serve a capire ordini di grandezza e differenze di rischio, non a certificare una replica.
+
+**5 anni**
+
+| Modello | CAGR | Vol. | DownVol | Ulcer | MaxDuration | AveDuration |
+|---|---:|---:|---:|---:|---:|---:|
+| Logical Invest (snapshot) | 12,2% | 8,6% | 5,9% | 2,89 | 247 gg | 51 gg |
+| Nostro score rendimento/volatilità² | 11,87% | 12,25% | 7,38% | 5,04 | 245 gg | 58 gg |
+| Nostro momentum 68 sedute | 12,32% | 15,89% | 9,65% | 7,61 | 426 gg | 207 gg |
+| Nostro momentum 3/6/12 mesi | 13,22% | 14,56% | 8,37% | 5,06 | 396 gg | 88 gg |
+
+**3 anni**
+
+| Modello | CAGR | Vol. | DownVol | Ulcer | MaxDuration | AveDuration |
+|---|---:|---:|---:|---:|---:|---:|
+| Logical Invest (snapshot) | 18,4% | 9,7% | 6,7% | 2,47 | 131 gg | 26 gg |
+| Nostro score rendimento/volatilità² | 19,59% | 10,55% | 5,80% | 1,93 | 153 gg | 31 gg |
+| Nostro momentum 68 sedute | 24,35% | 14,83% | 7,97% | 2,70 | 214 gg | 55 gg |
+| Nostro momentum 3/6/12 mesi | 25,17% | 14,16% | 7,27% | 2,39 | 122 gg | 26 gg |
+
+Il composito 3/6/12 mesi è quello che si avvicina di più ad alcune metriche di rischio LI nella finestra triennale, ma la volatilità resta più alta e il rendimento è maggiore. Questo può indicare una diversa esposizione, non necessariamente una ricostruzione migliore. Sulla finestra quinquennale nessuna variante replica il profilo di bassa volatilità pubblicato da LI.
+
 ## 7. Prossime attività
 1. Ricostruire le quattro sleeve usando catalogo ufficiale e holdings pubblicate con ritardo.
 2. Separare Treasury Hedge e Gold-Currency II, poi ricostruire la combinazione HEDGE.
