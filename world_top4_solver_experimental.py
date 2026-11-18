@@ -31,7 +31,7 @@ LB = 68
 OUT = Path("world_top4_solver_experimental.json")
 GRID = 0.05
 TREASURY = ["TLT", "TIP", "GSY"]
-GOLD_USD = ["GLD", "UUP", "GSY"]
+GOLD_USD = ["GLD", "UUP"]
 VARIANTS = ("equal_weight", "solver_unconstrained", "solver_10_40")
 
 
