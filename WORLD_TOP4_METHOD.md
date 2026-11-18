@@ -70,3 +70,23 @@ Il modello attualmente pubblicato resta un test esplorativo con HEDGE semplifica
 
 
 **Dettaglio pesi HEDGE documentato nel 2020:** oltre al 60% equity / 40% HEDGE di WTOP4, l'aggiornamento del 2020 descriveva la componente HEDGE con **60% Treasury / 40% Gold**; il solo GSY poteva raggiungere il 100% della sleeve. Il paniere Treasury pubblicato era GLD, TLT, TIP e GSY, con rotazione fra i componenti. È un'architettura storicamente documentata, ma il peso effettivo corrente va ancora controllato sulle allocazioni mensili.
+
+
+## Ricostruzione documentale del motore Logical Invest — 18 novembre 2026
+
+La ricerca successiva ha individuato una descrizione storica più precisa del motore, pubblicata da Logical Invest il 20 gennaio 2019:
+- lookback di 68 sedute;
+- ribilanciamento mensile;
+- ranking basato su modified Sharpe;
+- volatility attenuator pari a 2;
+- combinazione/ottimizzazione con un solver per massimizzare il modified Sharpe del portafoglio, non soltanto ordinamento indipendente dei singoli ETF.
+
+In un commento del 2015 l'autore conferma che il calcolo veniva eseguito in QuantTrader, software proprietario C# con un solver simile a Excel Solver. Questo descrive il motore storico; non certifica che tutti i parametri siano rimasti identici nella versione 2026.
+
+Il nostro score return / volatility² è quindi una possibile interpretazione del modified Sharpe con attenuatore 2, ma non è una formula ufficiale verificata. Il codice attuale seleziona i primi classificati per regione e non replica l'ottimizzazione congiunta storica.
+
+Le pagine pubbliche correnti confermano i panieri regionali Developed (23 ticker), Asia (16) e South America (6). Le appartenenze ufficiali, comprese le sovrapposizioni e anomalie geografiche, sono state registrate in logical_invest_substrategy_universe.csv. Non è stata individuata una pagina corrente con la composizione della quarta sottostrategia: i candidati Africa/EMEA/frontier restano tali e non vanno promossi a universo ufficiale senza ulteriore prova.
+
+Il rapporto completo delle evidenze, delle discrepanze e dei prossimi test è in LOGICAL_INVEST_ENGINE_RESEARCH.md.
+
+**Regola di progetto:** mantenere intatti i backtest correnti come baseline; sviluppare il motore solver in un modulo sperimentale separato; non cambiare dashboard, pesi o strategia operativa prima della validazione.
