@@ -86,6 +86,8 @@ python -m http.server 8080  # apri http://localhost:8080
 
 ## 🌍 World Top 4 — nuova area di ricerca
 
+Il calcolo viene eseguito da GitHub Actions dopo gli aggiornamenti al branch main e ogni giorno feriale alle 22:30 UTC.
+
 È stata aggiunta una dashboard autonoma ispirata alla strategia pubblica World Top 4 di Logical Invest:
 
 - [Apri dashboard World Top 4](./world-top4.html)
