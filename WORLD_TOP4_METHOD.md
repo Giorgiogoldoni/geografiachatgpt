@@ -67,3 +67,6 @@ Il modello attualmente pubblicato resta un test esplorativo con HEDGE semplifica
 3. costruire HEDGE come combinazione delle sottostrategie Treasury e GLD-USD;
 4. testare il 60/40 storico e confrontarlo con eventuali pesi più recenti osservati;
 5. calibrare i ranking/parametri solo su periodi di training, verificando out-of-sample e senza look-ahead.
+
+
+**Dettaglio pesi HEDGE documentato nel 2020:** oltre al 60% equity / 40% HEDGE di WTOP4, l'aggiornamento del 2020 descriveva la componente HEDGE con **60% Treasury / 40% Gold**; il solo GSY poteva raggiungere il 100% della sleeve. Il paniere Treasury pubblicato era GLD, TLT, TIP e GSY, con rotazione fra i componenti. È un'architettura storicamente documentata, ma il peso effettivo corrente va ancora controllato sulle allocazioni mensili.
