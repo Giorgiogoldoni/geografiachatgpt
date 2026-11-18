@@ -6,8 +6,8 @@ LB=68; START="2006-01-01"; BENCH="ACWI"; OUT=Path("world_top4.json")
 REGIONS={
 "Developed":["SPY","DIA","EIRL","EIS","ENZL","EPOL","EWA","EWC","EWD","EWG","EWH","EWI","EWJ","EWK","EWL","EWM","EWN","EWO","EWP","EWQ","EWU","NORW","QQQ"],
 "Asia":["ASHR","EIDO","EPHE","EPI","EWJ","EWM","EWS","EWT","EWY","FXI","THD","VNM"],
-"South America":["ARGT","ECH","EPU","EWW","EWZ","GXG"],
-"Africa & Middle East":["AFK","EGPT","EZA","GAF","GULF","MES","TUR","GREK","FM","FRN"]}
+"South America":["ARGT","ECH","EPU","EWW","EWZ"],
+"Africa & Middle East":["AFK","EZA","TUR","GREK","KSA","UAE","QAT"]}
 HEDGE=["GLD","TLT","IEF","SHY"]
 def download(ts):
  d=yf.download(sorted(set(ts)),start=START,auto_adjust=True,progress=False,threads=True,group_by="column")
