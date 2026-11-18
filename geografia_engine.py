@@ -18,6 +18,7 @@ import yfinance as yf
 ROOT = Path(__file__).resolve().parent
 INDEX = ROOT / "data" / "geografia_index_user_51.csv"
 FACTORS = ROOT / "data" / "geografia_index_factor_14.csv"
+SEED = ROOT / "ucits_country_universe_seed_2026-11-18.csv"
 OUT = ROOT / "geografia-motore.json"
 LOOKBACK = 68
 WINDOWS = {"1m": 21, "3m": 63, "6m": 126, "12m": 252}
@@ -137,10 +138,44 @@ def load_universe():
             "module_id": module, "module": MODULES.get(module, "Da classificare"),
             "subgroup": subgroup_for(geo), "bucket": bucket,
             "portfolio": clean(r.get("portfolio")),
+            "isin": "",
             "verification_status": clean(r.get("verification_status")),
             "symbol": ticker if "." in ticker else (ticker + ".MI" if ticker == "AUHEUA" else ticker),
             "instrument_status": "ETP separato" if bucket == "etp" else "Listing/forma giuridica da verificare",
         })
+    # Add researched UCITS seed candidates missing from the user INDEX.
+    # Duplicate price listings are skipped; regional funds remain regional.
+    seed_symbols = {
+        "FLXK": ("FLXK.MI", "Corea del Sud"),
+        "SJPA": ("SJPA.MI", "Giappone"),
+        "FLXB": ("FLXB.MI", "Brasile"),
+        "IQQ5": ("IQQ5.DE", "Turchia"),
+        "LTAM": ("LTAM.MI", "America Latina"),
+        "ALAT": ("ALAT.MI", "America Latina"),
+        "QDVM": ("QDVM.DE", "Israele"),
+    }
+    known = {r["symbol"] for r in rows}
+    if SEED.exists():
+        seed = pd.read_csv(SEED, dtype=str).fillna("")
+        for _, s in seed.iterrows():
+            base_ticker = clean(s.get("justetf_primary_ticker"))
+            if base_ticker not in seed_symbols:
+                continue
+            symbol, geography = seed_symbols[base_ticker]
+            if symbol in known:
+                continue
+            is_regional = base_ticker in {"LTAM", "ALAT"}
+            module_id = module_for(geography)
+            rows.append({
+                "ticker": base_ticker, "name": clean(s.get("ucits_fund")),
+                "geography": geography, "classification": "Regione" if is_regional else "Paese",
+                "module_id": module_id, "module": MODULES.get(module_id, "Da classificare"),
+                "subgroup": subgroup_for(geography), "bucket": "regional" if is_regional else "country",
+                "portfolio": "REGIONALI" if is_regional else "PAESI",
+                "isin": clean(s.get("isin")), "verification_status": clean(s.get("eligibility")),
+                "symbol": symbol, "instrument_status": "UCITS seed; listing/data checks still required",
+            })
+            known.add(symbol)
     return rows
 
 def download_prices(symbols):
