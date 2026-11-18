@@ -206,8 +206,7 @@
         "Grecia",
         "Repubblica Ceca",
         "Ungheria",
-        "Romania",
-        "Turchia"
+        "Romania"
       ],
       "country_universe_status": "Paesi già censiti e ampliamento progressivo; disponibilità UCITS da verificare Paese per Paese",
       "subuniverses": [
@@ -238,7 +237,6 @@
         "IMIB.MI",
         "SVE.MI",
         "UKE.MI",
-        "CSCA.MI",
         "IBCJ.DE"
       ],
       "notes": "I Paesi senza ETF UCITS dedicato resteranno visibili come copertura mancante; non verranno sostituiti con proxy non dichiarati."
