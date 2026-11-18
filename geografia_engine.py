@@ -45,7 +45,7 @@ COUNTRY_MAP = {
     "indonesia": "asia", "malesia": "asia", "thailandia": "asia",
     "filippine": "asia", "vietnam": "asia", "australia": "asia",
     "nuova zelanda": "asia", "pacifico ex giappone": "asia",
-    "asia pacifico": "asia", "asia-pacifico": "asia",
+    "asia pacifico": "asia", "asia-pacifico": "asia", "hong kong / cina": "asia",
     "arabia saudita": "middle-east-africa", "sudafrica": "middle-east-africa",
     "sud africa": "middle-east-africa", "turchia": "middle-east-africa",
     "israele": "middle-east-africa", "emirati arabi uniti": "middle-east-africa",
@@ -258,7 +258,13 @@ def monthly_winner_backtest(prices, rows):
 
 def main():
     rows = load_universe()
+    factor_df = pd.read_csv(FACTORS, dtype=str).fillna("") if FACTORS.exists() else pd.DataFrame()
+    factor_symbols = []
+    if not factor_df.empty:
+        factor_symbols = [clean(x) for x in factor_df["ticker"].tolist()
+                          if clean(x).endswith((".MI", ".DE", ".PA", ".AS", ".L"))]
     symbols = [r["symbol"] for r in rows if r["module_id"] and r["bucket"] != "etp"]
+    symbols += factor_symbols
     warnings_list = []
     try:
         prices = download_prices(symbols)
@@ -295,9 +301,8 @@ def main():
         selections[key] = eligible[0] if eligible else None
     # The factor register is deliberately separate from the geographic universe.
     factor_rows = []
-    if FACTORS.exists():
-        factors = pd.read_csv(FACTORS, dtype=str).fillna("")
-        for _, f in factors.iterrows():
+    if not factor_df.empty:
+        for _, f in factor_df.iterrows():
             ticker = clean(f.get("ticker"))
             factor_rows.append({
                 "category": clean(f.get("category")), "ticker": ticker,
