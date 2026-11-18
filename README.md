@@ -126,9 +126,9 @@ Il motore scarica prezzi rettificati delle quotazioni europee mappate, calcola M
 
 ## INDEX ETF geografici
 
-- Dashboard ricercabile: [INDEX ETF — 51 strumenti](./index-etf.html)
+- Dashboard ricercabile: [INDEX ETF — 53 strumenti](./index-etf.html)
 - Archivio CSV dell'elenco PAESI originale fornito il 18 novembre 2026: [data/geografia_index_user_51.csv](./data/geografia_index_user_51.csv)
-- I 51 ticker sono conservati come universo di partenza. La verifica di ISIN, borsa, valuta, struttura ETF/ETP, liquidità e disponibilità dei prezzi è un passaggio distinto prima dell'inclusione nel motore quantitativo.
+- I 51 ticker originali sono conservati; l'INDEX è stato esteso a 53 strumenti con Canada e Polonia (l'Olanda era già presente). La verifica di ISIN, borsa, valuta, struttura ETF/ETP, liquidità e disponibilità dei prezzi è un passaggio distinto prima dell'inclusione nel motore quantitativo.
 
 
 ## 🧭 INDEX ETF factor
