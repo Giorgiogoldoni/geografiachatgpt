@@ -12,30 +12,35 @@ def main():
     base = engine.REGIONS
     scenarios = {
         "baseline_residual": base,
-        "africa_plus_middle_east_legacy": {
+        "mena_eastern_mediterranean": {
             "Developed": base["Developed"], "Asia": base["Asia"],
             "Latin America": base["Latin America"],
-            "Africa + Middle East legacy instruments": ["AFK", "EGPT", "EZA", "GAF", "GULF", "MES", "GREK", "TUR"]
+            "Eastern Mediterranean": ["EGPT", "GREK", "TUR"]
         },
-        "africa_plus_middle_east_active_candidates": {
+        "gulf_only_active": {
             "Developed": base["Developed"], "Asia": base["Asia"],
             "Latin America": base["Latin America"],
-            "Eastern Mediterranean + Middle East active candidates": ["EGPT", "GREK", "TUR", "KSA", "UAE", "QAT"]
+            "Gulf only": ["KSA", "UAE", "QAT"]
         },
-        "middle_east_active_only": {
+        "mena_broad_active": {
             "Developed": base["Developed"], "Asia": base["Asia"],
             "Latin America": base["Latin America"],
-            "Middle East + Eastern Mediterranean candidates": ["EGPT", "GREK", "TUR", "KSA", "UAE", "QAT"]
+            "Africa + Eastern Mediterranean + Gulf": ["AFK", "EZA", "EGPT", "GREK", "TUR", "KSA", "UAE", "QAT"]
+        },
+        "current_exploratory_bucket": {
+            "Developed": base["Developed"], "Asia": base["Asia"],
+            "Latin America": base["Latin America"],
+            "Africa & Middle East (exploratory model)": ["AFK", "EZA", "TUR", "GREK", "KSA", "UAE", "QAT"]
         },
         "africa_only": {
             "Developed": base["Developed"], "Asia": base["Asia"],
             "Latin America": base["Latin America"],
-            "Africa only (hypothesis)": ["AFK", "EGPT", "EZA"]
+            "Africa only": ["AFK", "EZA"]
         },
-        "middle_east_gulf_only": {
+        "legacy_middle_east_instruments": {
             "Developed": base["Developed"], "Asia": base["Asia"],
             "Latin America": base["Latin America"],
-            "Middle East / Gulf only (hypothesis)": ["GAF", "GULF", "MES"]
+            "Legacy ME instruments (closed / unverified history)": ["GAF", "GULF", "MES"]
         }
     }
     tickers = sorted(set(
@@ -68,7 +73,7 @@ def main():
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "latest_price_date": latest.strftime("%Y-%m-%d"),
         "data_source": "Yahoo Finance adjusted daily prices; same engine, hedge and ranking settings across scenarios",
-        "warning": "Exploratory sensitivity only. Africa/Middle East sleeve assignments are not confirmed by Logical Invest. Results are not a replication and exclude fees, taxes, slippage and FX.",
+        "warning": "Exploratory sensitivity only. Africa/Middle East sleeve assignments are not confirmed by Logical Invest. Strict price coverage: all four equity picks and both hedge picks must have valid start/end prices; months with missing selected prices are excluded. Legacy closed funds may yield no usable history. Results exclude fees, taxes, slippage and FX.",
         "scenarios": results
     }
     OUT.write_text(json.dumps(output, indent=2, allow_nan=False), encoding="utf-8")
