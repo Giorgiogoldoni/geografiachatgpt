@@ -129,3 +129,56 @@ La pagina World Top 4 indicizzata con aggiornamento 16 ottobre 2026 riporta, com
 Sono valori descrittivi pubblicati nella pagina e vanno trattati come snapshot indicativo, non come una serie dati esportata con date iniziali/finali precise. Le metriche vanno confrontate solo dopo aver allineato la finestra esatta, la frequenza dei rendimenti e la definizione di risk-free/downside deviation.
 
 La tabella riepilogativa della homepage Logical Invest, indicizzata a metà novembre 2026, riporta inoltre circa **+7,4% YTD**, **+8,7% a 1 anno**, volatilità a 1 anno **11,6%**, Sharpe **0,5** e MaxDD a 1 anno **-9,6%**. È un dato di homepage soggetto a variazione giornaliera, non va confuso con lo snapshot pluriennale sopra.
+
+
+## 9. Audit quantitativo del modello 60/40 — aggiornamento 18 novembre 2026
+
+**Run completato:** https://github.com/Giorgiogoldoni/geografiachatgpt/actions/runs/44270881029  
+**Prezzi fino al:** 17 novembre 2026; rendimenti mensili completi fino al 31 ottobre 2026.  
+**Campione:** 223 rendimenti mensili, stesso periodo e stessi mesi per ACWI.
+
+Il nuovo motore tiene separato il 60% equity dal 40% HEDGE: quattro sleeve azionarie provvisorie al 15% ciascuna; all'interno di HEDGE, 24% Treasury e 16% GLD-USD. La suddivisione interna 60/40 di HEDGE è una ricostruzione della configurazione storica descritta nel 2020, non una conferma del peso corrente. Le quattro aree e la formula di ranking restano ipotesi.
+
+### Risultati sull'intero campione
+
+| Variante 60/40 | CAGR | Vol. | DownVol | Sharpe con T-Bill | Sortino con T-Bill | Max DD | Ulcer |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Momentum 68 sedute | 4,98% | 13,12% | 8,70% | 0,33 | 0,49 | -34,05% | 11,35 |
+| Rendimento/volatilità² | 4,97% | 12,25% | 8,34% | 0,34 | 0,50 | -38,93% | 9,95 |
+| Composito 3/6/12 mesi | 5,64% | 13,24% | 8,64% | 0,38 | 0,56 | -35,52% | 12,59 |
+| ACWI buy & hold | 8,39% | 16,53% | 11,16% | 0,49 | 0,71 | -51,70% | 12,58 |
+
+Per Sharpe e Sortino è stato aggiunto il rendimento del Treasury Bill USA a 13 settimane (^IRX), usando il rendimento annualizzato mensile diviso per 12 come proxy del tasso privo di rischio. È una convenzione di ricerca ragionevole, ma non prova che la convenzione e la serie dati coincidano con quelle usate da LI.
+
+### Finestre recenti: tre e cinque anni
+
+| Variante | CAGR 3a | Vol. 3a | MaxDD 3a | CAGR 5a | Vol. 5a | MaxDD 5a |
+|---|---:|---:|---:|---:|---:|---:|
+| Momentum 68 sedute | 21,02% | 12,49% | -9,21% | 11,10% | 13,09% | -17,92% |
+| Rendimento/volatilità² | 17,90% | 9,49% | -8,35% | 10,98% | 10,65% | -15,18% |
+| Composito 3/6/12 mesi | 23,43% | 12,84% | -9,21% | 13,48% | 12,85% | -11,49% |
+| ACWI | 22,12% | 11,44% | -6,11% | 10,08% | 14,80% | -25,74% |
+
+### Confronto con lo snapshot pubblico LI
+
+La fotografia LI pubblicata il 16 ottobre 2026 indicava CAGR 12,2%, volatilità 8,6%, DownVol 5,9%, Sharpe 1,13, Sortino 1,66 e Ulcer 2,89 sui cinque anni; sui tre anni CAGR 18,4%, volatilità 9,7%, DownVol 6,7%, Sharpe 1,63, Sortino 2,39 e Ulcer 2,47. Le finestre non hanno estremi ufficiali scaricabili e quindi il confronto è diagnostico, non perfettamente omogeneo.
+
+- **5 anni:** il composito supera il CAGR LI (13,48% contro 12,2%) ma mostra più volatilità (12,85% contro 8,6%), più downside volatility (7,36% contro 5,9%), Sharpe inferiore (0,75 contro 1,13), Sortino inferiore (1,24 contro 1,66) e Ulcer più alto (3,84 contro 2,89). La durata massima underwater è simile: 245 contro 247 giorni.
+- **3 anni:** il composito è più redditizio (23,43% contro 18,4%), ma più volatile (12,84% contro 9,7%), con Sharpe inferiore (1,38 contro 1,63), Ulcer leggermente più alto (2,65 contro 2,47) e drawdown più lunghi (214 contro 131 giorni). Il modello rendimento/volatilità² si avvicina maggiormente al profilo di rischio, ma rende meno (17,90% CAGR) e mantiene una durata massima underwater superiore.
+
+### Diagnostica delle selezioni HEDGE
+
+Nel periodo di 223 mesi, la frequenza delle selezioni varia sensibilmente con il ranking. Nel modello modificato GSY compare 179 mesi, UUP 114 e GLD 109; nel composito GLD 137, TLT 88, UUP 86 e GSY 74. Questo mostra che la scelta della formula cambia anche la composizione difensiva, non soltanto la selezione azionaria. La frequenza è conteggiata sulle sleeve e non rappresenta una quota percentuale del capitale.
+
+### Conclusione provvisoria
+
+Nessuna delle tre varianti è una replica soddisfacente di Logical Invest. Il composito è il migliore per CAGR sui tre e cinque anni, ma non riproduce la volatilità e i rapporti risk-adjusted di LI; sul periodo massimo tutte e tre le varianti sottoperformano ACWI in CAGR. Il vantaggio recente del composito non deve essere scambiato per una conferma dei parametri proprietari.
+
+**Correzione importante:** la tabella sintetica comunicata nel precedente aggiornamento della chat riportava valori provvisori non corrispondenti all'output definitivo del motore 60/40. I numeri ufficiali di questo audit sono quelli delle tabelle qui sopra e del file `world_top4_6040.json`.
+
+### Prossimo lavoro
+1. Sostituire il bucket residuale con una quarta sleeve solo quando si trova una fonte primaria o una serie storica holdings che ne confermi composizione e perimetro.
+2. Testare il Treasury hedge e il Gold-Currency II come sottostrategie distinte, senza assumere che GLD/UUP sia l'intero universo corrente.
+3. Fare walk-forward/out-of-sample: parametri scelti sul training, congelati sul test, e sensibilità su lookback e date di ribilanciamento.
+4. Aggiungere costi, spread e slippage realistici e controllare i ticker con storico incompleto/delisting.
+5. Solo dopo queste verifiche passare alla mappatura UCITS europea.
