@@ -23,3 +23,24 @@ Non retrodatare mai un holding come informazione disponibile alla data del segna
 
 ## Limiti
 Dati Yahoo Finance adjusted, ticker USA, nessuna commissione, slippage, imposta o FX. I ticker possono avere storia incompleta o non corrispondere alle share class UCITS. La quarta regione e il peso hedge sono ipotesi esplicite. La formula proprietaria attuale non è pubblica. Prima dell'uso operativo occorre validare i dati e mappare strumenti UCITS.
+
+
+## Audit tecnico — aggiornamento 18 novembre 2026
+
+### Universo USA Logical Invest: riscontro sulle pagine pubbliche
+La pagina World Top 4 elenca 49 ticker USA nel proprio universo pubblico. Le pagine pubbliche delle sottostrategie consultabili espongono gli elenchi Developed, Asia e South America. Gli elenchi non sono perfettamente disgiunti: ad esempio EWJ ed EWM compaiono sia in Developed sia in Asia; EWZ compare in Asia e South America; EZA compare nell'elenco Asia nonostante sia un ETF Sud Africa. Queste sovrapposizioni vanno conservate nel registro di fonte e verificate, non corrette arbitrariamente.
+
+Il file `logical_invest_universe.csv` registra tutti i 49 ticker elencati dalla pagina principale, la classificazione esplicitamente visibile nelle pagine secondarie e i casi non ancora attribuibili con sufficiente certezza. La quarta sleeve e la sua composizione non sono ancora ricostruite: non si deve considerare il raggruppamento Africa & Middle East attuale una replica verificata.
+
+### Metriche aggiunte al motore
+Il calcolo ora espone: rendimento totale, CAGR, volatilità, downside volatility, Sharpe con tasso privo di rischio pari a zero, Sortino con target pari a zero, Max Drawdown, Calmar, Ulcer Index, durata massima/media dei periodi underwater, date di picco/minimo/recupero del MaxDD, percentuale di mesi positivi, turnover medio stimato, rendimenti annuali e periodi mobili 1/3/5/10/15 anni.
+
+**Avvertenza di confrontabilità:** Logical Invest descrive lo Sharpe come rendimento in eccesso rispetto a un tasso privo di rischio (normalmente Treasury Bill a 90 giorni). Il nostro Sharpe a tasso zero e Sortino a target zero sono diagnostici interni e non sono direttamente confrontabili con i valori pubblicati da Logical Invest. Per un confronto numerico corretto occorre integrare una serie storica coerente del tasso risk-free e replicare la convenzione di frequenza/annualizzazione del fornitore.
+
+### Stato e prossime verifiche
+- Universo complessivo: trascritto dalla pagina ufficiale principale (49 ticker).
+- Sottostrategie: elenchi pubblici Developed, Asia e South America registrati.
+- Quarta sleeve: non verificata; serve recuperare la pagina/composizione ufficiale.
+- HEDGE: la pagina principale descrive Treasury e oro, ma il paniere e le regole di allocazione non sono ancora ricostruiti.
+- Performance: il backtest esistente resta un modello indipendente preliminare; non va presentato come replica né confrontato come se usasse le stesse regole.
+- La pagina Logical Invest dichiara che i dati storici possono includere estensioni sintetiche e che i risultati sono ipotetici, senza slippage, commissioni e imposte.
