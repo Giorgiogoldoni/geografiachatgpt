@@ -1,0 +1,4736 @@
+{
+  "generated_at": "2026-11-18T11:55:46.686763+00:00",
+  "latest_price_date": "2026-11-17",
+  "data_source": "Yahoo Finance adjusted daily prices",
+  "methodology": {
+    "historical_reference": "QuantTrader public help: mean daily return / daily standard deviation^f; f=2; monthly rebalance; portfolio-level modified-Sharpe optimization",
+    "lookback_trading_days": 68,
+    "ranking_score": "mean(daily returns) / std(daily returns)^2",
+    "equity_selection": "one highest-scoring ETF per provisional region; no absolute-momentum filter",
+    "solver": "long-only 5%-step grid across the four selected regional ETFs",
+    "weight_variants": {
+      "equal_weight": "25% per equity sleeve",
+      "solver_unconstrained": "0%-100% per ETF; fully invested",
+      "solver_10_40": "10%-40% per ETF; sensitivity constraint, not an official LI rule"
+    },
+    "portfolio_architecture": "historical 2020 scenario: 60% equity / 40% HEDGE; HEDGE split 24% Treasury + 16% GLD-USD",
+    "hedge_universes": {
+      "treasury": [
+        "TLT",
+        "TIP",
+        "GSY"
+      ],
+      "gold_usd": [
+        "GLD",
+        "UUP",
+        "GSY"
+      ]
+    },
+    "fourth_region": "provisional residual bucket inherited from world_top4_6040.py; not verified as official LI fourth sleeve",
+    "risk": "Research only. No current official constraints or 2026 live parameters confirmed. No fees, taxes, slippage or FX. The grid solver is a transparent approximation, not QuantTrader's proprietary solver."
+  },
+  "common_period": {
+    "start": "2006-05-31",
+    "end": "2026-10-31",
+    "months": 246
+  },
+  "variants": {
+    "equal_weight": {
+      "metrics_common_period": {
+        "months": 246,
+        "total_return": 2.727193320290788,
+        "cagr": 0.0662825176349735,
+        "volatility": 0.12244561540292881,
+        "sharpe_zero_rf": 0.5870105149762267,
+        "max_drawdown": -0.42461959827563733,
+        "ulcer_index": 10.645278311050491,
+        "monthly_win_rate": 0.5975609756097561,
+        "avg_monthly_turnover": 0.3523265306122449
+      },
+      "months_common_period": 246,
+      "history_last_36_months": [
+        {
+          "signal_date": "2023-10-31",
+          "holding_from": "2023-10-31",
+          "holding_to": "2023-11-30",
+          "return": 0.05405357518715618,
+          "weights": {
+            "EPOL": 0.15,
+            "EPI": 0.15,
+            "EWZ": 0.15,
+            "TUR": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EPOL",
+            "Asia": "EPI",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EPOL": 0.25,
+              "EPI": 0.25,
+              "EWZ": 0.25,
+              "TUR": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1770.0671919147073,
+              "return_68d": 0.013462506642106575,
+              "daily_volatility": 0.0003333817910530068
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1770.0671919147073,
+              "return_68d": 0.013462506642106575,
+              "daily_volatility": 0.0003333817910530068
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2023-11-30",
+          "holding_from": "2023-11-30",
+          "holding_to": "2023-12-31",
+          "return": 0.033147004059968045,
+          "weights": {
+            "EWP": 0.15,
+            "EPI": 0.15,
+            "EWZ": 0.15,
+            "EZA": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EPI",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.25,
+              "EPI": 0.25,
+              "EWZ": 0.25,
+              "EZA": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1460.5385626995758,
+              "return_68d": 0.01647339968145345,
+              "daily_volatility": 0.000405698635536433
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1460.5385626995758,
+              "return_68d": 0.01647339968145345,
+              "daily_volatility": 0.000405698635536433
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2023-12-31",
+          "holding_from": "2023-12-31",
+          "holding_to": "2024-01-31",
+          "return": 0.005018944145522354,
+          "weights": {
+            "EWD": 0.15,
+            "EPI": 0.15,
+            "EPU": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWD",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWD": 0.25,
+              "EPI": 0.25,
+              "EPU": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1292.5085758862588,
+              "return_68d": 0.021302268637107824,
+              "daily_volatility": 0.0004898527559158803
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1292.5085758862588,
+              "return_68d": 0.021302268637107824,
+              "daily_volatility": 0.0004898527559158803
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-01-31",
+          "holding_from": "2024-01-31",
+          "holding_to": "2024-02-29",
+          "return": 0.013697736916072817,
+          "weights": {
+            "EWL": 0.15,
+            "EPI": 0.15,
+            "EPU": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWL",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWL": 0.25,
+              "EPI": 0.25,
+              "EPU": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1372.1332899671027,
+              "return_68d": 0.0234397533927051,
+              "daily_volatility": 0.0004984463462305295
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1372.1332899671027,
+              "return_68d": 0.0234397533927051,
+              "daily_volatility": 0.0004984463462305295
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-02-29",
+          "holding_from": "2024-02-29",
+          "holding_to": "2024-03-31",
+          "return": 0.019792591157974864,
+          "weights": {
+            "EIS": 0.15,
+            "EPHE": 0.15,
+            "EPU": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIS",
+            "Asia": "EPHE",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIS": 0.25,
+              "EPHE": 0.25,
+              "EPU": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1325.9488365049287,
+              "return_68d": 0.020311063280704644,
+              "daily_volatility": 0.0004723614484213093
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1325.9488365049287,
+              "return_68d": 0.020311063280704644,
+              "daily_volatility": 0.0004723614484213093
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-03-31",
+          "holding_from": "2024-03-31",
+          "holding_to": "2024-04-30",
+          "return": -0.005739424475758018,
+          "weights": {
+            "EWI": 0.15,
+            "EPHE": 0.15,
+            "EPU": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWI",
+            "Asia": "EPHE",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWI": 0.25,
+              "EPHE": 0.25,
+              "EPU": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2001.5458367070091,
+              "return_68d": 0.016616771821017062,
+              "daily_volatility": 0.00034803593287027973
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2001.5458367070091,
+              "return_68d": 0.016616771821017062,
+              "daily_volatility": 0.00034803593287027973
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-04-30",
+          "holding_from": "2024-04-30",
+          "holding_to": "2024-05-31",
+          "return": 0.030801526132831346,
+          "weights": {
+            "EWU": 0.15,
+            "EPI": 0.15,
+            "EPU": 0.15,
+            "TUR": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.25,
+              "EPI": 0.25,
+              "EPU": 0.25,
+              "TUR": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1555.3286829218773,
+              "return_68d": 0.012954567129418226,
+              "daily_volatility": 0.0003489283464780407
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1555.3286829218773,
+              "return_68d": 0.012954567129418226,
+              "daily_volatility": 0.0003489283464780407
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-05-31",
+          "holding_from": "2024-05-31",
+          "holding_to": "2024-06-30",
+          "return": -0.01082326176678256,
+          "weights": {
+            "EWU": 0.15,
+            "EWS": 0.15,
+            "EPU": 0.15,
+            "AFK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.25,
+              "EWS": 0.25,
+              "EPU": 0.25,
+              "AFK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2074.2134959678588,
+              "return_68d": 0.014966483318661572,
+              "daily_volatility": 0.0003245929393725354
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2074.2134959678588,
+              "return_68d": 0.014966483318661572,
+              "daily_volatility": 0.0003245929393725354
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-06-30",
+          "holding_from": "2024-06-30",
+          "holding_to": "2024-07-31",
+          "return": 0.016128365093110768,
+          "weights": {
+            "EWU": 0.15,
+            "EWS": 0.15,
+            "EPU": 0.15,
+            "TUR": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.25,
+              "EWS": 0.25,
+              "EPU": 0.25,
+              "TUR": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2072.2274714145033,
+              "return_68d": 0.015079668600721963,
+              "daily_volatility": 0.0003259651648455573
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2072.2274714145033,
+              "return_68d": 0.015079668600721963,
+              "daily_volatility": 0.0003259651648455573
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-07-31",
+          "holding_from": "2024-07-31",
+          "holding_to": "2024-08-31",
+          "return": 0.01497710707937838,
+          "weights": {
+            "EWL": 0.15,
+            "EWS": 0.15,
+            "EPU": 0.15,
+            "AFK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWL",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWL": 0.25,
+              "EWS": 0.25,
+              "EPU": 0.25,
+              "AFK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2957.759653998316,
+              "return_68d": 0.018506780515199717,
+              "daily_volatility": 0.0003019958375774539
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2957.759653998316,
+              "return_68d": 0.018506780515199717,
+              "daily_volatility": 0.0003019958375774539
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-08-31",
+          "holding_from": "2024-08-31",
+          "holding_to": "2024-09-30",
+          "return": 0.022170112907490293,
+          "weights": {
+            "EWL": 0.15,
+            "EPHE": 0.15,
+            "ARGT": 0.15,
+            "EZA": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWL",
+            "Asia": "EPHE",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWL": 0.25,
+              "EPHE": 0.25,
+              "ARGT": 0.25,
+              "EZA": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2665.193110981223,
+              "return_68d": 0.01974944377888077,
+              "daily_volatility": 0.0003285512793407028
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2665.193110981223,
+              "return_68d": 0.01974944377888077,
+              "daily_volatility": 0.0003285512793407028
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-09-30",
+          "holding_from": "2024-09-30",
+          "holding_to": "2024-10-31",
+          "return": -0.003664562154767176,
+          "weights": {
+            "EWK": 0.15,
+            "EPHE": 0.15,
+            "ARGT": 0.15,
+            "EZA": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWK",
+            "Asia": "EPHE",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWK": 0.25,
+              "EPHE": 0.25,
+              "ARGT": 0.25,
+              "EZA": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2030.4692488088865,
+              "return_68d": 0.019696936947301236,
+              "daily_volatility": 0.00037593198666506506
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2030.4692488088865,
+              "return_68d": 0.019696936947301236,
+              "daily_volatility": 0.00037593198666506506
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-10-31",
+          "holding_from": "2024-10-31",
+          "holding_to": "2024-11-30",
+          "return": 0.021159562895792138,
+          "weights": {
+            "EWC": 0.15,
+            "THD": 0.15,
+            "ARGT": 0.15,
+            "EZA": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "THD",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.25,
+              "THD": 0.25,
+              "ARGT": 0.25,
+              "EZA": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1490.0592055386812,
+              "return_68d": 0.015553559154018126,
+              "daily_volatility": 0.0003903707221935451
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1490.0592055386812,
+              "return_68d": 0.015553559154018126,
+              "daily_volatility": 0.0003903707221935451
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-11-30",
+          "holding_from": "2024-11-30",
+          "holding_to": "2024-12-31",
+          "return": -0.0070759393566136135,
+          "weights": {
+            "EWC": 0.15,
+            "EWS": 0.15,
+            "ARGT": 0.15,
+            "MCHI": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWS",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "MCHI"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.25,
+              "EWS": 0.25,
+              "ARGT": 0.25,
+              "MCHI": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1772.6401572928646,
+              "return_68d": 0.013788331352800887,
+              "daily_volatility": 0.0003371202164268077
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1772.6401572928646,
+              "return_68d": 0.013788331352800887,
+              "daily_volatility": 0.0003371202164268077
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2024-12-31",
+          "holding_from": "2024-12-31",
+          "holding_to": "2025-01-31",
+          "return": 0.017932547722373758,
+          "weights": {
+            "EIS": 0.15,
+            "ASHR": 0.15,
+            "ARGT": 0.15,
+            "MCHI": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIS",
+            "Asia": "ASHR",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "MCHI"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIS": 0.25,
+              "ASHR": 0.25,
+              "ARGT": 0.25,
+              "MCHI": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1860.1056550165504,
+              "return_68d": 0.011719666218431124,
+              "daily_volatility": 0.0003035597604918549
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1860.1056550165504,
+              "return_68d": 0.011719666218431124,
+              "daily_volatility": 0.0003035597604918549
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-01-31",
+          "holding_from": "2025-01-31",
+          "holding_to": "2025-02-28",
+          "return": 0.0013403918676383746,
+          "weights": {
+            "EIS": 0.15,
+            "EWS": 0.15,
+            "ARGT": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIS",
+            "Asia": "EWS",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIS": 0.25,
+              "EWS": 0.25,
+              "ARGT": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2775.5362194868476,
+              "return_68d": 0.013987011168637098,
+              "daily_volatility": 0.00027132226326221775
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2775.5362194868476,
+              "return_68d": 0.013987011168637098,
+              "daily_volatility": 0.00027132226326221775
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-02-28",
+          "holding_from": "2025-02-28",
+          "holding_to": "2025-03-31",
+          "return": 0.02811139248120067,
+          "weights": {
+            "EWU": 0.15,
+            "EWS": 0.15,
+            "ECH": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EWS",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.25,
+              "EWS": 0.25,
+              "ECH": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3050.144041076718,
+              "return_68d": 0.015298677131676763,
+              "daily_volatility": 0.000270595818231864
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3050.144041076718,
+              "return_68d": 0.015298677131676763,
+              "daily_volatility": 0.000270595818231864
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-03-31",
+          "holding_from": "2025-03-31",
+          "holding_to": "2025-04-30",
+          "return": 0.018079732776309324,
+          "weights": {
+            "NORW": 0.15,
+            "EWS": 0.15,
+            "ECH": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWS",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.25,
+              "EWS": 0.25,
+              "ECH": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3174.6166752672584,
+              "return_68d": 0.014806629176246089,
+              "daily_volatility": 0.00026096807375925655
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3174.6166752672584,
+              "return_68d": 0.014806629176246089,
+              "daily_volatility": 0.00026096807375925655
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-04-30",
+          "holding_from": "2025-04-30",
+          "holding_to": "2025-05-31",
+          "return": 0.03169697561590618,
+          "weights": {
+            "EWP": 0.15,
+            "EPHE": 0.15,
+            "ECH": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EPHE",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.25,
+              "EPHE": 0.25,
+              "ECH": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1715.021411769502,
+              "return_68d": 0.013253135287215612,
+              "daily_volatility": 0.0003360643385696297
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1715.021411769502,
+              "return_68d": 0.013253135287215612,
+              "daily_volatility": 0.0003360643385696297
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-05-31",
+          "holding_from": "2025-05-31",
+          "holding_to": "2025-06-30",
+          "return": 0.02858494126349045,
+          "weights": {
+            "EWK": 0.15,
+            "EPI": 0.15,
+            "EPU": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWK",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWK": 0.25,
+              "EPI": 0.25,
+              "EPU": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1598.5356820057254,
+              "return_68d": 0.01200536075868297,
+              "daily_volatility": 0.0003314064609085182
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1598.5356820057254,
+              "return_68d": 0.01200536075868297,
+              "daily_volatility": 0.0003314064609085182
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-06-30",
+          "holding_from": "2025-06-30",
+          "holding_to": "2025-07-31",
+          "return": 0.008940245703625348,
+          "weights": {
+            "EWC": 0.15,
+            "EWY": 0.15,
+            "EWW": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWY",
+            "Latin America": "EWW",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.25,
+              "EWY": 0.25,
+              "EWW": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1973.5528453894542,
+              "return_68d": 0.013056823043938959,
+              "daily_volatility": 0.0003109602443846722
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1973.5528453894542,
+              "return_68d": 0.013056823043938959,
+              "daily_volatility": 0.0003109602443846722
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-07-31",
+          "holding_from": "2025-07-31",
+          "holding_to": "2025-08-31",
+          "return": 0.0461838481432065,
+          "weights": {
+            "EWC": 0.15,
+            "EWS": 0.15,
+            "EPU": 0.15,
+            "AFK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.25,
+              "EWS": 0.25,
+              "EPU": 0.25,
+              "AFK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3720.4408151368884,
+              "return_68d": 0.014608571197412434,
+              "daily_volatility": 0.000239457025763356
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3720.4408151368884,
+              "return_68d": 0.014608571197412434,
+              "daily_volatility": 0.000239457025763356
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-08-31",
+          "holding_from": "2025-08-31",
+          "holding_to": "2025-09-30",
+          "return": 0.046475864206403796,
+          "weights": {
+            "EWC": 0.15,
+            "ASHR": 0.15,
+            "EPU": 0.15,
+            "AFK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "ASHR",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.25,
+              "ASHR": 0.25,
+              "EPU": 0.25,
+              "AFK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3841.7264391889626,
+              "return_68d": 0.01522489229532109,
+              "daily_volatility": 0.00024052973667269446
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3841.7264391889626,
+              "return_68d": 0.01522489229532109,
+              "daily_volatility": 0.00024052973667269446
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-09-30",
+          "holding_from": "2025-09-30",
+          "holding_to": "2025-10-31",
+          "return": 0.0030561003112769373,
+          "weights": {
+            "EWC": 0.15,
+            "EWS": 0.15,
+            "EPU": 0.15,
+            "AFK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.25,
+              "EWS": 0.25,
+              "EPU": 0.25,
+              "AFK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3183.3850600464634,
+              "return_68d": 0.013897164928388994,
+              "daily_volatility": 0.0002525337904198822
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3183.3850600464634,
+              "return_68d": 0.013897164928388994,
+              "daily_volatility": 0.0002525337904198822
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-10-31",
+          "holding_from": "2025-10-31",
+          "holding_to": "2025-11-30",
+          "return": 0.00508456717467432,
+          "weights": {
+            "EWP": 0.15,
+            "EWY": 0.15,
+            "EPU": 0.15,
+            "AFK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EWY",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.25,
+              "EWY": 0.25,
+              "EPU": 0.25,
+              "AFK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3144.8236434307532,
+              "return_68d": 0.013304262135785061,
+              "daily_volatility": 0.00024863448206241805
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3144.8236434307532,
+              "return_68d": 0.013304262135785061,
+              "daily_volatility": 0.00024863448206241805
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-11-30",
+          "holding_from": "2025-11-30",
+          "holding_to": "2025-12-31",
+          "return": 0.03157365150620718,
+          "weights": {
+            "EWC": 0.15,
+            "EWY": 0.15,
+            "EWZ": 0.15,
+            "AFK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWY",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.25,
+              "EWY": 0.25,
+              "EWZ": 0.25,
+              "AFK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3360.4661723497584,
+              "return_68d": 0.012309889861444656,
+              "daily_volatility": 0.0002314165986393849
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3360.4661723497584,
+              "return_68d": 0.012309889861444656,
+              "daily_volatility": 0.0002314165986393849
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2025-12-31",
+          "holding_from": "2025-12-31",
+          "holding_to": "2026-01-31",
+          "return": 0.024053615008298675,
+          "weights": {
+            "EWP": 0.15,
+            "EIDO": 0.15,
+            "ECH": 0.15,
+            "AFK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EIDO",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.25,
+              "EIDO": 0.25,
+              "ECH": 0.25,
+              "AFK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2987.069929620318,
+              "return_68d": 0.011805948299358437,
+              "daily_volatility": 0.00024040986515730048
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2987.069929620318,
+              "return_68d": 0.011805948299358437,
+              "daily_volatility": 0.00024040986515730048
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2026-01-31",
+          "holding_from": "2026-01-31",
+          "holding_to": "2026-02-28",
+          "return": 0.030127424481062814,
+          "weights": {
+            "EWO": 0.15,
+            "EWY": 0.15,
+            "ECH": 0.15,
+            "TUR": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWO",
+            "Asia": "EWY",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWO": 0.25,
+              "EWY": 0.25,
+              "ECH": 0.25,
+              "TUR": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3388.0447964997475,
+              "return_68d": 0.011746274698438253,
+              "daily_volatility": 0.0002251656454487531
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3388.0447964997475,
+              "return_68d": 0.011746274698438253,
+              "daily_volatility": 0.0002251656454487531
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2026-02-28",
+          "holding_from": "2026-02-28",
+          "holding_to": "2026-03-31",
+          "return": -0.048924254429480486,
+          "weights": {
+            "EWU": 0.15,
+            "THD": 0.15,
+            "EPU": 0.15,
+            "TUR": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "THD",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.25,
+              "THD": 0.25,
+              "EPU": 0.25,
+              "TUR": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3927.7010408198544,
+              "return_68d": 0.012832061190585664,
+              "daily_volatility": 0.00021851754018112509
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3927.7010408198544,
+              "return_68d": 0.012832061190585664,
+              "daily_volatility": 0.00021851754018112509
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2026-03-31",
+          "holding_from": "2026-03-31",
+          "holding_to": "2026-04-30",
+          "return": 0.06307801109827776,
+          "weights": {
+            "NORW": 0.15,
+            "EWT": 0.15,
+            "EWZ": 0.15,
+            "TUR": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWT",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.25,
+              "EWT": 0.25,
+              "EWZ": 0.25,
+              "TUR": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1854.2971210420576,
+              "return_68d": 0.009417758416698563,
+              "daily_volatility": 0.0002726991509495325
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1854.2971210420576,
+              "return_68d": 0.009417758416698563,
+              "daily_volatility": 0.0002726991509495325
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2026-04-30",
+          "holding_from": "2026-04-30",
+          "holding_to": "2026-05-31",
+          "return": -0.008480540802747058,
+          "weights": {
+            "NORW": 0.15,
+            "EWT": 0.15,
+            "EWZ": 0.15,
+            "TUR": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWT",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.25,
+              "EWT": 0.25,
+              "EWZ": 0.25,
+              "TUR": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1948.8610796918185,
+              "return_68d": 0.009746245131524,
+              "daily_volatility": 0.0002705766010417829
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1948.8610796918185,
+              "return_68d": 0.009746245131524,
+              "daily_volatility": 0.0002705766010417829
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2026-05-31",
+          "holding_from": "2026-05-31",
+          "holding_to": "2026-06-30",
+          "return": -0.011725230341841447,
+          "weights": {
+            "NORW": 0.15,
+            "EWT": 0.15,
+            "ARGT": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWT",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.25,
+              "EWT": 0.25,
+              "ARGT": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1582.4604137156782,
+              "return_68d": 0.009154163165716156,
+              "daily_volatility": 0.0002910586205989255
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1582.4604137156782,
+              "return_68d": 0.009154163165716156,
+              "daily_volatility": 0.0002910586205989255
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2026-06-30",
+          "holding_from": "2026-06-30",
+          "holding_to": "2026-07-31",
+          "return": 0.0277459650408578,
+          "weights": {
+            "EWO": 0.15,
+            "EWS": 0.15,
+            "EWW": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWO",
+            "Asia": "EWS",
+            "Latin America": "EWW",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWO": 0.25,
+              "EWS": 0.25,
+              "EWW": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1945.4696686075115,
+              "return_68d": 0.011430063876363583,
+              "daily_volatility": 0.00029315388057317237
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1945.4696686075115,
+              "return_68d": 0.011430063876363583,
+              "daily_volatility": 0.00029315388057317237
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2026-07-31",
+          "holding_from": "2026-07-31",
+          "holding_to": "2026-08-31",
+          "return": 0.03547564697311026,
+          "weights": {
+            "EIRL": 0.15,
+            "EWS": 0.15,
+            "EPU": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIRL",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIRL": 0.25,
+              "EWS": 0.25,
+              "EPU": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1798.1415529244384,
+              "return_68d": 0.010926986313188447,
+              "daily_volatility": 0.0002981807727063823
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1798.1415529244384,
+              "return_68d": 0.010926986313188447,
+              "daily_volatility": 0.0002981807727063823
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2026-08-31",
+          "holding_from": "2026-08-31",
+          "holding_to": "2026-09-30",
+          "return": -0.009757607926625455,
+          "weights": {
+            "EIRL": 0.15,
+            "EWS": 0.15,
+            "EPU": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIRL",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIRL": 0.25,
+              "EWS": 0.25,
+              "EPU": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1889.6191280865776,
+              "return_68d": 0.011123879542981996,
+              "daily_volatility": 0.0002934665610249198
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1889.6191280865776,
+              "return_68d": 0.011123879542981996,
+              "daily_volatility": 0.0002934665610249198
+            },
+            "equity_solver_score": null
+          }
+        },
+        {
+          "signal_date": "2026-09-30",
+          "holding_from": "2026-09-30",
+          "holding_to": "2026-10-31",
+          "return": -0.04320194778447114,
+          "weights": {
+            "EPOL": 0.15,
+            "EWS": 0.15,
+            "EWZ": 0.15,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EPOL",
+            "Asia": "EWS",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EPOL": 0.25,
+              "EWS": 0.25,
+              "EWZ": 0.25,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 853.1425912652796,
+              "return_68d": 0.006659047989561184,
+              "daily_volatility": 0.00033834193430487986
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 853.1425912652796,
+              "return_68d": 0.006659047989561184,
+              "daily_volatility": 0.00033834193430487986
+            },
+            "equity_solver_score": null
+          }
+        }
+      ]
+    },
+    "solver_unconstrained": {
+      "metrics_common_period": {
+        "months": 246,
+        "total_return": 2.9211270589188576,
+        "cagr": 0.06892411259137354,
+        "volatility": 0.12536402616547526,
+        "sharpe_zero_rf": 0.5965326042067081,
+        "max_drawdown": -0.42812281131584173,
+        "ulcer_index": 10.939505861867925,
+        "monthly_win_rate": 0.6056910569105691,
+        "avg_monthly_turnover": 0.4348571428571429
+      },
+      "months_common_period": 246,
+      "history_last_36_months": [
+        {
+          "signal_date": "2023-10-31",
+          "holding_from": "2023-10-31",
+          "holding_to": "2023-11-30",
+          "return": 0.03481355642711132,
+          "weights": {
+            "EPOL": 0.0,
+            "EPI": 0.33,
+            "EWZ": 0.0,
+            "TUR": 0.27,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EPOL",
+            "Asia": "EPI",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EPOL": 0.0,
+              "EPI": 0.55,
+              "EWZ": 0.0,
+              "TUR": 0.45
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1770.0671919147073,
+              "return_68d": 0.013462506642106575,
+              "daily_volatility": 0.0003333817910530068
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1770.0671919147073,
+              "return_68d": 0.013462506642106575,
+              "daily_volatility": 0.0003333817910530068
+            },
+            "equity_solver_score": 4.3292663561721785
+          }
+        },
+        {
+          "signal_date": "2023-11-30",
+          "holding_from": "2023-11-30",
+          "holding_to": "2023-12-31",
+          "return": 0.03587088176961376,
+          "weights": {
+            "EWP": 0.18000000000000002,
+            "EPI": 0.42000000000000004,
+            "EWZ": 0.0,
+            "EZA": 0.0,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EPI",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.30000000000000004,
+              "EPI": 0.7000000000000001,
+              "EWZ": 0.0,
+              "EZA": 0.0
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1460.5385626995758,
+              "return_68d": 0.01647339968145345,
+              "daily_volatility": 0.000405698635536433
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1460.5385626995758,
+              "return_68d": 0.01647339968145345,
+              "daily_volatility": 0.000405698635536433
+            },
+            "equity_solver_score": 20.96074443075881
+          }
+        },
+        {
+          "signal_date": "2023-12-31",
+          "holding_from": "2023-12-31",
+          "holding_to": "2024-01-31",
+          "return": 0.007198794375578948,
+          "weights": {
+            "EWD": 0.15,
+            "EPI": 0.36000000000000004,
+            "EPU": 0.09000000000000001,
+            "GREK": 0.0,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWD",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWD": 0.25,
+              "EPI": 0.6000000000000001,
+              "EPU": 0.15000000000000002,
+              "GREK": 0.0
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1292.5085758862588,
+              "return_68d": 0.021302268637107824,
+              "daily_volatility": 0.0004898527559158803
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1292.5085758862588,
+              "return_68d": 0.021302268637107824,
+              "daily_volatility": 0.0004898527559158803
+            },
+            "equity_solver_score": 31.04627994249369
+          }
+        },
+        {
+          "signal_date": "2024-01-31",
+          "holding_from": "2024-01-31",
+          "holding_to": "2024-02-29",
+          "return": 0.010118010751092055,
+          "weights": {
+            "EWL": 0.21000000000000002,
+            "EPI": 0.24,
+            "EPU": 0.12,
+            "GREK": 0.03,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWL",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWL": 0.35000000000000003,
+              "EPI": 0.4,
+              "EPU": 0.2,
+              "GREK": 0.05
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1372.1332899671027,
+              "return_68d": 0.0234397533927051,
+              "daily_volatility": 0.0004984463462305295
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1372.1332899671027,
+              "return_68d": 0.0234397533927051,
+              "daily_volatility": 0.0004984463462305295
+            },
+            "equity_solver_score": 43.46983840464169
+          }
+        },
+        {
+          "signal_date": "2024-02-29",
+          "holding_from": "2024-02-29",
+          "holding_to": "2024-03-31",
+          "return": 0.007013645752047989,
+          "weights": {
+            "EIS": 0.21000000000000002,
+            "EPHE": 0.27,
+            "EPU": 0.03,
+            "GREK": 0.09000000000000001,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIS",
+            "Asia": "EPHE",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIS": 0.35000000000000003,
+              "EPHE": 0.45,
+              "EPU": 0.05,
+              "GREK": 0.15000000000000002
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1325.9488365049287,
+              "return_68d": 0.020311063280704644,
+              "daily_volatility": 0.0004723614484213093
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1325.9488365049287,
+              "return_68d": 0.020311063280704644,
+              "daily_volatility": 0.0004723614484213093
+            },
+            "equity_solver_score": 43.835275868334485
+          }
+        },
+        {
+          "signal_date": "2024-03-31",
+          "holding_from": "2024-03-31",
+          "holding_to": "2024-04-30",
+          "return": -0.009315224226576841,
+          "weights": {
+            "EWI": 0.18000000000000002,
+            "EPHE": 0.18000000000000002,
+            "EPU": 0.15,
+            "GREK": 0.09000000000000001,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWI",
+            "Asia": "EPHE",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWI": 0.30000000000000004,
+              "EPHE": 0.30000000000000004,
+              "EPU": 0.25,
+              "GREK": 0.15000000000000002
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2001.5458367070091,
+              "return_68d": 0.016616771821017062,
+              "daily_volatility": 0.00034803593287027973
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2001.5458367070091,
+              "return_68d": 0.016616771821017062,
+              "daily_volatility": 0.00034803593287027973
+            },
+            "equity_solver_score": 37.81344072814915
+          }
+        },
+        {
+          "signal_date": "2024-04-30",
+          "holding_from": "2024-04-30",
+          "holding_to": "2024-05-31",
+          "return": 0.029430899444301464,
+          "weights": {
+            "EWU": 0.21000000000000002,
+            "EPI": 0.18000000000000002,
+            "EPU": 0.15,
+            "TUR": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.35000000000000003,
+              "EPI": 0.30000000000000004,
+              "EPU": 0.25,
+              "TUR": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1555.3286829218773,
+              "return_68d": 0.012954567129418226,
+              "daily_volatility": 0.0003489283464780407
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1555.3286829218773,
+              "return_68d": 0.012954567129418226,
+              "daily_volatility": 0.0003489283464780407
+            },
+            "equity_solver_score": 38.48567405703838
+          }
+        },
+        {
+          "signal_date": "2024-05-31",
+          "holding_from": "2024-05-31",
+          "holding_to": "2024-06-30",
+          "return": -0.010887470179176085,
+          "weights": {
+            "EWU": 0.42000000000000004,
+            "EWS": 0.03,
+            "EPU": 0.06,
+            "AFK": 0.09000000000000001,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.7000000000000001,
+              "EWS": 0.05,
+              "EPU": 0.1,
+              "AFK": 0.15000000000000002
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2074.2134959678588,
+              "return_68d": 0.014966483318661572,
+              "daily_volatility": 0.0003245929393725354
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2074.2134959678588,
+              "return_68d": 0.014966483318661572,
+              "daily_volatility": 0.0003245929393725354
+            },
+            "equity_solver_score": 42.1248004445354
+          }
+        },
+        {
+          "signal_date": "2024-06-30",
+          "holding_from": "2024-06-30",
+          "holding_to": "2024-07-31",
+          "return": 0.018541992040938808,
+          "weights": {
+            "EWU": 0.27,
+            "EWS": 0.18000000000000002,
+            "EPU": 0.0,
+            "TUR": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.45,
+              "EWS": 0.30000000000000004,
+              "EPU": 0.0,
+              "TUR": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2072.2274714145033,
+              "return_68d": 0.015079668600721963,
+              "daily_volatility": 0.0003259651648455573
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2072.2274714145033,
+              "return_68d": 0.015079668600721963,
+              "daily_volatility": 0.0003259651648455573
+            },
+            "equity_solver_score": 24.94264798865198
+          }
+        },
+        {
+          "signal_date": "2024-07-31",
+          "holding_from": "2024-07-31",
+          "holding_to": "2024-08-31",
+          "return": 0.025936985834478496,
+          "weights": {
+            "EWL": 0.3,
+            "EWS": 0.21000000000000002,
+            "EPU": 0.0,
+            "AFK": 0.09000000000000001,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWL",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWL": 0.5,
+              "EWS": 0.35000000000000003,
+              "EPU": 0.0,
+              "AFK": 0.15000000000000002
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2957.759653998316,
+              "return_68d": 0.018506780515199717,
+              "daily_volatility": 0.0003019958375774539
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2957.759653998316,
+              "return_68d": 0.018506780515199717,
+              "daily_volatility": 0.0003019958375774539
+            },
+            "equity_solver_score": 33.276767978325374
+          }
+        },
+        {
+          "signal_date": "2024-08-31",
+          "holding_from": "2024-08-31",
+          "holding_to": "2024-09-30",
+          "return": 0.0036610926843630197,
+          "weights": {
+            "EWL": 0.44999999999999996,
+            "EPHE": 0.09000000000000001,
+            "ARGT": 0.03,
+            "EZA": 0.03,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWL",
+            "Asia": "EPHE",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWL": 0.75,
+              "EPHE": 0.15000000000000002,
+              "ARGT": 0.05,
+              "EZA": 0.05
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2665.193110981223,
+              "return_68d": 0.01974944377888077,
+              "daily_volatility": 0.0003285512793407028
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2665.193110981223,
+              "return_68d": 0.01974944377888077,
+              "daily_volatility": 0.0003285512793407028
+            },
+            "equity_solver_score": 28.498502070553823
+          }
+        },
+        {
+          "signal_date": "2024-09-30",
+          "holding_from": "2024-09-30",
+          "holding_to": "2024-10-31",
+          "return": -0.03237933220082336,
+          "weights": {
+            "EWK": 0.27,
+            "EPHE": 0.33,
+            "ARGT": 0.0,
+            "EZA": 0.0,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWK",
+            "Asia": "EPHE",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWK": 0.45,
+              "EPHE": 0.55,
+              "ARGT": 0.0,
+              "EZA": 0.0
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2030.4692488088865,
+              "return_68d": 0.019696936947301236,
+              "daily_volatility": 0.00037593198666506506
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2030.4692488088865,
+              "return_68d": 0.019696936947301236,
+              "daily_volatility": 0.00037593198666506506
+            },
+            "equity_solver_score": 34.37155965931894
+          }
+        },
+        {
+          "signal_date": "2024-10-31",
+          "holding_from": "2024-10-31",
+          "holding_to": "2024-11-30",
+          "return": 0.029471003961525286,
+          "weights": {
+            "EWC": 0.18000000000000002,
+            "THD": 0.24,
+            "ARGT": 0.18000000000000002,
+            "EZA": 0.0,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "THD",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.30000000000000004,
+              "THD": 0.4,
+              "ARGT": 0.30000000000000004,
+              "EZA": 0.0
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1490.0592055386812,
+              "return_68d": 0.015553559154018126,
+              "daily_volatility": 0.0003903707221935451
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1490.0592055386812,
+              "return_68d": 0.015553559154018126,
+              "daily_volatility": 0.0003903707221935451
+            },
+            "equity_solver_score": 25.185734427361776
+          }
+        },
+        {
+          "signal_date": "2024-11-30",
+          "holding_from": "2024-11-30",
+          "holding_to": "2024-12-31",
+          "return": -0.012589266037454512,
+          "weights": {
+            "EWC": 0.21000000000000002,
+            "EWS": 0.21000000000000002,
+            "ARGT": 0.18000000000000002,
+            "MCHI": 0.0,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWS",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "MCHI"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.35000000000000003,
+              "EWS": 0.35000000000000003,
+              "ARGT": 0.30000000000000004,
+              "MCHI": 0.0
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1772.6401572928646,
+              "return_68d": 0.013788331352800887,
+              "daily_volatility": 0.0003371202164268077
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1772.6401572928646,
+              "return_68d": 0.013788331352800887,
+              "daily_volatility": 0.0003371202164268077
+            },
+            "equity_solver_score": 41.94405660167388
+          }
+        },
+        {
+          "signal_date": "2024-12-31",
+          "holding_from": "2024-12-31",
+          "holding_to": "2025-01-31",
+          "return": 0.02570886388595727,
+          "weights": {
+            "EIS": 0.36000000000000004,
+            "ASHR": 0.06,
+            "ARGT": 0.18000000000000002,
+            "MCHI": 0.0,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIS",
+            "Asia": "ASHR",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "MCHI"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIS": 0.6000000000000001,
+              "ASHR": 0.1,
+              "ARGT": 0.30000000000000004,
+              "MCHI": 0.0
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1860.1056550165504,
+              "return_68d": 0.011719666218431124,
+              "daily_volatility": 0.0003035597604918549
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1860.1056550165504,
+              "return_68d": 0.011719666218431124,
+              "daily_volatility": 0.0003035597604918549
+            },
+            "equity_solver_score": 31.992841263524767
+          }
+        },
+        {
+          "signal_date": "2025-01-31",
+          "holding_from": "2025-01-31",
+          "holding_to": "2025-02-28",
+          "return": -0.00018185248562194428,
+          "weights": {
+            "EIS": 0.27,
+            "EWS": 0.12,
+            "ARGT": 0.09000000000000001,
+            "GREK": 0.12,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIS",
+            "Asia": "EWS",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIS": 0.45,
+              "EWS": 0.2,
+              "ARGT": 0.15000000000000002,
+              "GREK": 0.2
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2775.5362194868476,
+              "return_68d": 0.013987011168637098,
+              "daily_volatility": 0.00027132226326221775
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2775.5362194868476,
+              "return_68d": 0.013987011168637098,
+              "daily_volatility": 0.00027132226326221775
+            },
+            "equity_solver_score": 34.789815351488045
+          }
+        },
+        {
+          "signal_date": "2025-02-28",
+          "holding_from": "2025-02-28",
+          "holding_to": "2025-03-31",
+          "return": 0.020767007413697837,
+          "weights": {
+            "EWU": 0.27,
+            "EWS": 0.06,
+            "ECH": 0.21000000000000002,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EWS",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.45,
+              "EWS": 0.1,
+              "ECH": 0.35000000000000003,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3050.144041076718,
+              "return_68d": 0.015298677131676763,
+              "daily_volatility": 0.000270595818231864
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3050.144041076718,
+              "return_68d": 0.015298677131676763,
+              "daily_volatility": 0.000270595818231864
+            },
+            "equity_solver_score": 33.78668139785327
+          }
+        },
+        {
+          "signal_date": "2025-03-31",
+          "holding_from": "2025-03-31",
+          "holding_to": "2025-04-30",
+          "return": 0.011145519252550456,
+          "weights": {
+            "NORW": 0.27,
+            "EWS": 0.12,
+            "ECH": 0.15,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWS",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.45,
+              "EWS": 0.2,
+              "ECH": 0.25,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3174.6166752672584,
+              "return_68d": 0.014806629176246089,
+              "daily_volatility": 0.00026096807375925655
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3174.6166752672584,
+              "return_68d": 0.014806629176246089,
+              "daily_volatility": 0.00026096807375925655
+            },
+            "equity_solver_score": 44.72899276574411
+          }
+        },
+        {
+          "signal_date": "2025-04-30",
+          "holding_from": "2025-04-30",
+          "holding_to": "2025-05-31",
+          "return": 0.02939937329987668,
+          "weights": {
+            "EWP": 0.27,
+            "EPHE": 0.21000000000000002,
+            "ECH": 0.06,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EPHE",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.45,
+              "EPHE": 0.35000000000000003,
+              "ECH": 0.1,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1715.021411769502,
+              "return_68d": 0.013253135287215612,
+              "daily_volatility": 0.0003360643385696297
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1715.021411769502,
+              "return_68d": 0.013253135287215612,
+              "daily_volatility": 0.0003360643385696297
+            },
+            "equity_solver_score": 11.756692323812938
+          }
+        },
+        {
+          "signal_date": "2025-05-31",
+          "holding_from": "2025-05-31",
+          "holding_to": "2025-06-30",
+          "return": 0.020994727826301386,
+          "weights": {
+            "EWK": 0.27,
+            "EPI": 0.21000000000000002,
+            "EPU": 0.0,
+            "GREK": 0.12,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWK",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWK": 0.45,
+              "EPI": 0.35000000000000003,
+              "EPU": 0.0,
+              "GREK": 0.2
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1598.5356820057254,
+              "return_68d": 0.01200536075868297,
+              "daily_volatility": 0.0003314064609085182
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1598.5356820057254,
+              "return_68d": 0.01200536075868297,
+              "daily_volatility": 0.0003314064609085182
+            },
+            "equity_solver_score": 13.446827542024531
+          }
+        },
+        {
+          "signal_date": "2025-06-30",
+          "holding_from": "2025-06-30",
+          "holding_to": "2025-07-31",
+          "return": 0.009720534019791937,
+          "weights": {
+            "EWC": 0.27,
+            "EWY": 0.15,
+            "EWW": 0.03,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWY",
+            "Latin America": "EWW",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.45,
+              "EWY": 0.25,
+              "EWW": 0.05,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1973.5528453894542,
+              "return_68d": 0.013056823043938959,
+              "daily_volatility": 0.0003109602443846722
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1973.5528453894542,
+              "return_68d": 0.013056823043938959,
+              "daily_volatility": 0.0003109602443846722
+            },
+            "equity_solver_score": 13.179281619651688
+          }
+        },
+        {
+          "signal_date": "2025-07-31",
+          "holding_from": "2025-07-31",
+          "holding_to": "2025-08-31",
+          "return": 0.037812067305486495,
+          "weights": {
+            "EWC": 0.33,
+            "EWS": 0.21000000000000002,
+            "EPU": 0.0,
+            "AFK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.55,
+              "EWS": 0.35000000000000003,
+              "EPU": 0.0,
+              "AFK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3720.4408151368884,
+              "return_68d": 0.014608571197412434,
+              "daily_volatility": 0.000239457025763356
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3720.4408151368884,
+              "return_68d": 0.014608571197412434,
+              "daily_volatility": 0.000239457025763356
+            },
+            "equity_solver_score": 61.81055138289875
+          }
+        },
+        {
+          "signal_date": "2025-08-31",
+          "holding_from": "2025-08-31",
+          "holding_to": "2025-09-30",
+          "return": 0.027249179559419225,
+          "weights": {
+            "EWC": 0.33,
+            "ASHR": 0.18000000000000002,
+            "EPU": 0.0,
+            "AFK": 0.09000000000000001,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "ASHR",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.55,
+              "ASHR": 0.30000000000000004,
+              "EPU": 0.0,
+              "AFK": 0.15000000000000002
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3841.7264391889626,
+              "return_68d": 0.01522489229532109,
+              "daily_volatility": 0.00024052973667269446
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3841.7264391889626,
+              "return_68d": 0.01522489229532109,
+              "daily_volatility": 0.00024052973667269446
+            },
+            "equity_solver_score": 51.655737837032106
+          }
+        },
+        {
+          "signal_date": "2025-09-30",
+          "holding_from": "2025-09-30",
+          "holding_to": "2025-10-31",
+          "return": 0.0013907419346087166,
+          "weights": {
+            "EWC": 0.18000000000000002,
+            "EWS": 0.15,
+            "EPU": 0.09000000000000001,
+            "AFK": 0.18000000000000002,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.30000000000000004,
+              "EWS": 0.25,
+              "EPU": 0.15000000000000002,
+              "AFK": 0.30000000000000004
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3183.3850600464634,
+              "return_68d": 0.013897164928388994,
+              "daily_volatility": 0.0002525337904198822
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3183.3850600464634,
+              "return_68d": 0.013897164928388994,
+              "daily_volatility": 0.0002525337904198822
+            },
+            "equity_solver_score": 55.793411352264485
+          }
+        },
+        {
+          "signal_date": "2025-10-31",
+          "holding_from": "2025-10-31",
+          "holding_to": "2025-11-30",
+          "return": 0.007892793654002474,
+          "weights": {
+            "EWP": 0.36000000000000004,
+            "EWY": 0.12,
+            "EPU": 0.09000000000000001,
+            "AFK": 0.03,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EWY",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.6000000000000001,
+              "EWY": 0.2,
+              "EPU": 0.15000000000000002,
+              "AFK": 0.05
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3144.8236434307532,
+              "return_68d": 0.013304262135785061,
+              "daily_volatility": 0.00024863448206241805
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3144.8236434307532,
+              "return_68d": 0.013304262135785061,
+              "daily_volatility": 0.00024863448206241805
+            },
+            "equity_solver_score": 36.88657273955496
+          }
+        },
+        {
+          "signal_date": "2025-11-30",
+          "holding_from": "2025-11-30",
+          "holding_to": "2025-12-31",
+          "return": 0.011812442027120755,
+          "weights": {
+            "EWC": 0.3,
+            "EWY": 0.03,
+            "EWZ": 0.24,
+            "AFK": 0.03,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWY",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.5,
+              "EWY": 0.05,
+              "EWZ": 0.4,
+              "AFK": 0.05
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3360.4661723497584,
+              "return_68d": 0.012309889861444656,
+              "daily_volatility": 0.0002314165986393849
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3360.4661723497584,
+              "return_68d": 0.012309889861444656,
+              "daily_volatility": 0.0002314165986393849
+            },
+            "equity_solver_score": 25.99325582911949
+          }
+        },
+        {
+          "signal_date": "2025-12-31",
+          "holding_from": "2025-12-31",
+          "holding_to": "2026-01-31",
+          "return": 0.016735057931652995,
+          "weights": {
+            "EWP": 0.33,
+            "EIDO": 0.18000000000000002,
+            "ECH": 0.09000000000000001,
+            "AFK": 0.0,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EIDO",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.55,
+              "EIDO": 0.30000000000000004,
+              "ECH": 0.15000000000000002,
+              "AFK": 0.0
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2987.069929620318,
+              "return_68d": 0.011805948299358437,
+              "daily_volatility": 0.00024040986515730048
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2987.069929620318,
+              "return_68d": 0.011805948299358437,
+              "daily_volatility": 0.00024040986515730048
+            },
+            "equity_solver_score": 37.51869585681556
+          }
+        },
+        {
+          "signal_date": "2026-01-31",
+          "holding_from": "2026-01-31",
+          "holding_to": "2026-02-28",
+          "return": -0.00267986197640906,
+          "weights": {
+            "EWO": 0.27,
+            "EWY": 0.0,
+            "ECH": 0.06,
+            "TUR": 0.27,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWO",
+            "Asia": "EWY",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWO": 0.45,
+              "EWY": 0.0,
+              "ECH": 0.1,
+              "TUR": 0.45
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3388.0447964997475,
+              "return_68d": 0.011746274698438253,
+              "daily_volatility": 0.0002251656454487531
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3388.0447964997475,
+              "return_68d": 0.011746274698438253,
+              "daily_volatility": 0.0002251656454487531
+            },
+            "equity_solver_score": 70.44303132785708
+          }
+        },
+        {
+          "signal_date": "2026-02-28",
+          "holding_from": "2026-02-28",
+          "holding_to": "2026-03-31",
+          "return": -0.036284911095585404,
+          "weights": {
+            "EWU": 0.27,
+            "THD": 0.12,
+            "EPU": 0.0,
+            "TUR": 0.21000000000000002,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "THD",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.45,
+              "THD": 0.2,
+              "EPU": 0.0,
+              "TUR": 0.35000000000000003
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3927.7010408198544,
+              "return_68d": 0.012832061190585664,
+              "daily_volatility": 0.00021851754018112509
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3927.7010408198544,
+              "return_68d": 0.012832061190585664,
+              "daily_volatility": 0.00021851754018112509
+            },
+            "equity_solver_score": 72.11202764079681
+          }
+        },
+        {
+          "signal_date": "2026-03-31",
+          "holding_from": "2026-03-31",
+          "holding_to": "2026-04-30",
+          "return": 0.023382417513153116,
+          "weights": {
+            "NORW": 0.42000000000000004,
+            "EWT": 0.0,
+            "EWZ": 0.0,
+            "TUR": 0.18000000000000002,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWT",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.7000000000000001,
+              "EWT": 0.0,
+              "EWZ": 0.0,
+              "TUR": 0.30000000000000004
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1854.2971210420576,
+              "return_68d": 0.009417758416698563,
+              "daily_volatility": 0.0002726991509495325
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1854.2971210420576,
+              "return_68d": 0.009417758416698563,
+              "daily_volatility": 0.0002726991509495325
+            },
+            "equity_solver_score": 30.794174730771587
+          }
+        },
+        {
+          "signal_date": "2026-04-30",
+          "holding_from": "2026-04-30",
+          "holding_to": "2026-05-31",
+          "return": 0.00178579453005326,
+          "weights": {
+            "NORW": 0.36000000000000004,
+            "EWT": 0.12,
+            "EWZ": 0.0,
+            "TUR": 0.12,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWT",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.6000000000000001,
+              "EWT": 0.2,
+              "EWZ": 0.0,
+              "TUR": 0.2
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1948.8610796918185,
+              "return_68d": 0.009746245131524,
+              "daily_volatility": 0.0002705766010417829
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1948.8610796918185,
+              "return_68d": 0.009746245131524,
+              "daily_volatility": 0.0002705766010417829
+            },
+            "equity_solver_score": 24.02086840851813
+          }
+        },
+        {
+          "signal_date": "2026-05-31",
+          "holding_from": "2026-05-31",
+          "holding_to": "2026-06-30",
+          "return": -0.022794577952007258,
+          "weights": {
+            "NORW": 0.36000000000000004,
+            "EWT": 0.24,
+            "ARGT": 0.0,
+            "GREK": 0.0,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWT",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.6000000000000001,
+              "EWT": 0.4,
+              "ARGT": 0.0,
+              "GREK": 0.0
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1582.4604137156782,
+              "return_68d": 0.009154163165716156,
+              "daily_volatility": 0.0002910586205989255
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1582.4604137156782,
+              "return_68d": 0.009154163165716156,
+              "daily_volatility": 0.0002910586205989255
+            },
+            "equity_solver_score": 18.888771951525072
+          }
+        },
+        {
+          "signal_date": "2026-06-30",
+          "holding_from": "2026-06-30",
+          "holding_to": "2026-07-31",
+          "return": 0.02677789401935407,
+          "weights": {
+            "EWO": 0.33,
+            "EWS": 0.27,
+            "EWW": 0.0,
+            "GREK": 0.0,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWO",
+            "Asia": "EWS",
+            "Latin America": "EWW",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWO": 0.55,
+              "EWS": 0.45,
+              "EWW": 0.0,
+              "GREK": 0.0
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1945.4696686075115,
+              "return_68d": 0.011430063876363583,
+              "daily_volatility": 0.00029315388057317237
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1945.4696686075115,
+              "return_68d": 0.011430063876363583,
+              "daily_volatility": 0.00029315388057317237
+            },
+            "equity_solver_score": 17.116274382024486
+          }
+        },
+        {
+          "signal_date": "2026-07-31",
+          "holding_from": "2026-07-31",
+          "holding_to": "2026-08-31",
+          "return": 0.032544436190350315,
+          "weights": {
+            "EIRL": 0.24,
+            "EWS": 0.36000000000000004,
+            "EPU": 0.0,
+            "GREK": 0.0,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIRL",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIRL": 0.4,
+              "EWS": 0.6000000000000001,
+              "EPU": 0.0,
+              "GREK": 0.0
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1798.1415529244384,
+              "return_68d": 0.010926986313188447,
+              "daily_volatility": 0.0002981807727063823
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1798.1415529244384,
+              "return_68d": 0.010926986313188447,
+              "daily_volatility": 0.0002981807727063823
+            },
+            "equity_solver_score": 23.46529982196417
+          }
+        },
+        {
+          "signal_date": "2026-08-31",
+          "holding_from": "2026-08-31",
+          "holding_to": "2026-09-30",
+          "return": -0.010316297478662204,
+          "weights": {
+            "EIRL": 0.27,
+            "EWS": 0.27,
+            "EPU": 0.0,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIRL",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIRL": 0.45,
+              "EWS": 0.45,
+              "EPU": 0.0,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1889.6191280865776,
+              "return_68d": 0.011123879542981996,
+              "daily_volatility": 0.0002934665610249198
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1889.6191280865776,
+              "return_68d": 0.011123879542981996,
+              "daily_volatility": 0.0002934665610249198
+            },
+            "equity_solver_score": 38.55575324864915
+          }
+        },
+        {
+          "signal_date": "2026-09-30",
+          "holding_from": "2026-09-30",
+          "holding_to": "2026-10-31",
+          "return": -0.04386174505648484,
+          "weights": {
+            "EPOL": 0.09000000000000001,
+            "EWS": 0.3,
+            "EWZ": 0.09000000000000001,
+            "GREK": 0.12,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EPOL",
+            "Asia": "EWS",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EPOL": 0.15000000000000002,
+              "EWS": 0.5,
+              "EWZ": 0.15000000000000002,
+              "GREK": 0.2
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 853.1425912652796,
+              "return_68d": 0.006659047989561184,
+              "daily_volatility": 0.00033834193430487986
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 853.1425912652796,
+              "return_68d": 0.006659047989561184,
+              "daily_volatility": 0.00033834193430487986
+            },
+            "equity_solver_score": 28.955379117324256
+          }
+        }
+      ]
+    },
+    "solver_10_40": {
+      "metrics_common_period": {
+        "months": 246,
+        "total_return": 2.8042149403326295,
+        "cagr": 0.06734694664625707,
+        "volatility": 0.1207129406981611,
+        "sharpe_zero_rf": 0.602035492454346,
+        "max_drawdown": -0.4224922468932303,
+        "ulcer_index": 10.40656825954159,
+        "monthly_win_rate": 0.6178861788617886,
+        "avg_monthly_turnover": 0.3857551020408163
+      },
+      "months_common_period": 246,
+      "history_last_36_months": [
+        {
+          "signal_date": "2023-10-31",
+          "holding_from": "2023-10-31",
+          "holding_to": "2023-11-30",
+          "return": 0.04186042572144765,
+          "weights": {
+            "EPOL": 0.06,
+            "EPI": 0.24,
+            "EWZ": 0.06,
+            "TUR": 0.24,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EPOL",
+            "Asia": "EPI",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EPOL": 0.1,
+              "EPI": 0.4,
+              "EWZ": 0.1,
+              "TUR": 0.4
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1770.0671919147073,
+              "return_68d": 0.013462506642106575,
+              "daily_volatility": 0.0003333817910530068
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1770.0671919147073,
+              "return_68d": 0.013462506642106575,
+              "daily_volatility": 0.0003333817910530068
+            },
+            "equity_solver_score": 2.3327869568618604
+          }
+        },
+        {
+          "signal_date": "2023-11-30",
+          "holding_from": "2023-11-30",
+          "holding_to": "2023-12-31",
+          "return": 0.031148953920084342,
+          "weights": {
+            "EWP": 0.24,
+            "EPI": 0.24,
+            "EWZ": 0.06,
+            "EZA": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EPI",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.4,
+              "EPI": 0.4,
+              "EWZ": 0.1,
+              "EZA": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1460.5385626995758,
+              "return_68d": 0.01647339968145345,
+              "daily_volatility": 0.000405698635536433
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1460.5385626995758,
+              "return_68d": 0.01647339968145345,
+              "daily_volatility": 0.000405698635536433
+            },
+            "equity_solver_score": 15.205606937802955
+          }
+        },
+        {
+          "signal_date": "2023-12-31",
+          "holding_from": "2023-12-31",
+          "holding_to": "2024-01-31",
+          "return": 0.00309834577395662,
+          "weights": {
+            "EWD": 0.18000000000000002,
+            "EPI": 0.24,
+            "EPU": 0.12,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWD",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWD": 0.30000000000000004,
+              "EPI": 0.4,
+              "EPU": 0.2,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1292.5085758862588,
+              "return_68d": 0.021302268637107824,
+              "daily_volatility": 0.0004898527559158803
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1292.5085758862588,
+              "return_68d": 0.021302268637107824,
+              "daily_volatility": 0.0004898527559158803
+            },
+            "equity_solver_score": 29.41047572443116
+          }
+        },
+        {
+          "signal_date": "2024-01-31",
+          "holding_from": "2024-01-31",
+          "holding_to": "2024-02-29",
+          "return": 0.0114469317642238,
+          "weights": {
+            "EWL": 0.18000000000000002,
+            "EPI": 0.24,
+            "EPU": 0.12,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWL",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWL": 0.30000000000000004,
+              "EPI": 0.4,
+              "EPU": 0.2,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1372.1332899671027,
+              "return_68d": 0.0234397533927051,
+              "daily_volatility": 0.0004984463462305295
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1372.1332899671027,
+              "return_68d": 0.0234397533927051,
+              "daily_volatility": 0.0004984463462305295
+            },
+            "equity_solver_score": 43.42577226140611
+          }
+        },
+        {
+          "signal_date": "2024-02-29",
+          "holding_from": "2024-02-29",
+          "holding_to": "2024-03-31",
+          "return": 0.010258923435442421,
+          "weights": {
+            "EIS": 0.21000000000000002,
+            "EPHE": 0.24,
+            "EPU": 0.06,
+            "GREK": 0.09000000000000001,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIS",
+            "Asia": "EPHE",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIS": 0.35000000000000003,
+              "EPHE": 0.4,
+              "EPU": 0.1,
+              "GREK": 0.15000000000000002
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1325.9488365049287,
+              "return_68d": 0.020311063280704644,
+              "daily_volatility": 0.0004723614484213093
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1325.9488365049287,
+              "return_68d": 0.020311063280704644,
+              "daily_volatility": 0.0004723614484213093
+            },
+            "equity_solver_score": 43.68294130338188
+          }
+        },
+        {
+          "signal_date": "2024-03-31",
+          "holding_from": "2024-03-31",
+          "holding_to": "2024-04-30",
+          "return": -0.009315224226576841,
+          "weights": {
+            "EWI": 0.18000000000000002,
+            "EPHE": 0.18000000000000002,
+            "EPU": 0.15,
+            "GREK": 0.09000000000000001,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWI",
+            "Asia": "EPHE",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWI": 0.30000000000000004,
+              "EPHE": 0.30000000000000004,
+              "EPU": 0.25,
+              "GREK": 0.15000000000000002
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2001.5458367070091,
+              "return_68d": 0.016616771821017062,
+              "daily_volatility": 0.00034803593287027973
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2001.5458367070091,
+              "return_68d": 0.016616771821017062,
+              "daily_volatility": 0.00034803593287027973
+            },
+            "equity_solver_score": 37.81344072814915
+          }
+        },
+        {
+          "signal_date": "2024-04-30",
+          "holding_from": "2024-04-30",
+          "holding_to": "2024-05-31",
+          "return": 0.029430899444301464,
+          "weights": {
+            "EWU": 0.21000000000000002,
+            "EPI": 0.18000000000000002,
+            "EPU": 0.15,
+            "TUR": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.35000000000000003,
+              "EPI": 0.30000000000000004,
+              "EPU": 0.25,
+              "TUR": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1555.3286829218773,
+              "return_68d": 0.012954567129418226,
+              "daily_volatility": 0.0003489283464780407
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1555.3286829218773,
+              "return_68d": 0.012954567129418226,
+              "daily_volatility": 0.0003489283464780407
+            },
+            "equity_solver_score": 38.48567405703838
+          }
+        },
+        {
+          "signal_date": "2024-05-31",
+          "holding_from": "2024-05-31",
+          "holding_to": "2024-06-30",
+          "return": -0.01075824732153507,
+          "weights": {
+            "EWU": 0.24,
+            "EWS": 0.15,
+            "EPU": 0.12,
+            "AFK": 0.09000000000000001,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.4,
+              "EWS": 0.25,
+              "EPU": 0.2,
+              "AFK": 0.15000000000000002
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2074.2134959678588,
+              "return_68d": 0.014966483318661572,
+              "daily_volatility": 0.0003245929393725354
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2074.2134959678588,
+              "return_68d": 0.014966483318661572,
+              "daily_volatility": 0.0003245929393725354
+            },
+            "equity_solver_score": 40.22671580897785
+          }
+        },
+        {
+          "signal_date": "2024-06-30",
+          "holding_from": "2024-06-30",
+          "holding_to": "2024-07-31",
+          "return": 0.01729296482136943,
+          "weights": {
+            "EWU": 0.18000000000000002,
+            "EWS": 0.21000000000000002,
+            "EPU": 0.06,
+            "TUR": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.30000000000000004,
+              "EWS": 0.35000000000000003,
+              "EPU": 0.1,
+              "TUR": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2072.2274714145033,
+              "return_68d": 0.015079668600721963,
+              "daily_volatility": 0.0003259651648455573
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2072.2274714145033,
+              "return_68d": 0.015079668600721963,
+              "daily_volatility": 0.0003259651648455573
+            },
+            "equity_solver_score": 23.04581134499991
+          }
+        },
+        {
+          "signal_date": "2024-07-31",
+          "holding_from": "2024-07-31",
+          "holding_to": "2024-08-31",
+          "return": 0.023466035125074045,
+          "weights": {
+            "EWL": 0.24,
+            "EWS": 0.24,
+            "EPU": 0.06,
+            "AFK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWL",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWL": 0.4,
+              "EWS": 0.4,
+              "EPU": 0.1,
+              "AFK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2957.759653998316,
+              "return_68d": 0.018506780515199717,
+              "daily_volatility": 0.0003019958375774539
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2957.759653998316,
+              "return_68d": 0.018506780515199717,
+              "daily_volatility": 0.0003019958375774539
+            },
+            "equity_solver_score": 29.59242323803771
+          }
+        },
+        {
+          "signal_date": "2024-08-31",
+          "holding_from": "2024-08-31",
+          "holding_to": "2024-09-30",
+          "return": 0.01789461545296793,
+          "weights": {
+            "EWL": 0.24,
+            "EPHE": 0.24,
+            "ARGT": 0.06,
+            "EZA": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWL",
+            "Asia": "EPHE",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWL": 0.4,
+              "EPHE": 0.4,
+              "ARGT": 0.1,
+              "EZA": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2665.193110981223,
+              "return_68d": 0.01974944377888077,
+              "daily_volatility": 0.0003285512793407028
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2665.193110981223,
+              "return_68d": 0.01974944377888077,
+              "daily_volatility": 0.0003285512793407028
+            },
+            "equity_solver_score": 23.76998793162215
+          }
+        },
+        {
+          "signal_date": "2024-09-30",
+          "holding_from": "2024-09-30",
+          "holding_to": "2024-10-31",
+          "return": -0.020702871652269483,
+          "weights": {
+            "EWK": 0.24,
+            "EPHE": 0.24,
+            "ARGT": 0.06,
+            "EZA": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWK",
+            "Asia": "EPHE",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWK": 0.4,
+              "EPHE": 0.4,
+              "ARGT": 0.1,
+              "EZA": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2030.4692488088865,
+              "return_68d": 0.019696936947301236,
+              "daily_volatility": 0.00037593198666506506
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2030.4692488088865,
+              "return_68d": 0.019696936947301236,
+              "daily_volatility": 0.00037593198666506506
+            },
+            "equity_solver_score": 30.23461026225047
+          }
+        },
+        {
+          "signal_date": "2024-10-31",
+          "holding_from": "2024-10-31",
+          "holding_to": "2024-11-30",
+          "return": 0.023280222095434348,
+          "weights": {
+            "EWC": 0.12,
+            "THD": 0.24,
+            "ARGT": 0.18000000000000002,
+            "EZA": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "THD",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "EZA"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.2,
+              "THD": 0.4,
+              "ARGT": 0.30000000000000004,
+              "EZA": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1490.0592055386812,
+              "return_68d": 0.015553559154018126,
+              "daily_volatility": 0.0003903707221935451
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1490.0592055386812,
+              "return_68d": 0.015553559154018126,
+              "daily_volatility": 0.0003903707221935451
+            },
+            "equity_solver_score": 23.92118628230689
+          }
+        },
+        {
+          "signal_date": "2024-11-30",
+          "holding_from": "2024-11-30",
+          "holding_to": "2024-12-31",
+          "return": -0.006545386930438749,
+          "weights": {
+            "EWC": 0.12,
+            "EWS": 0.18000000000000002,
+            "ARGT": 0.24,
+            "MCHI": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWS",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "MCHI"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.2,
+              "EWS": 0.30000000000000004,
+              "ARGT": 0.4,
+              "MCHI": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1772.6401572928646,
+              "return_68d": 0.013788331352800887,
+              "daily_volatility": 0.0003371202164268077
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1772.6401572928646,
+              "return_68d": 0.013788331352800887,
+              "daily_volatility": 0.0003371202164268077
+            },
+            "equity_solver_score": 38.61709557007193
+          }
+        },
+        {
+          "signal_date": "2024-12-31",
+          "holding_from": "2024-12-31",
+          "holding_to": "2025-01-31",
+          "return": 0.024883138958580023,
+          "weights": {
+            "EIS": 0.24,
+            "ASHR": 0.06,
+            "ARGT": 0.24,
+            "MCHI": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIS",
+            "Asia": "ASHR",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "MCHI"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIS": 0.4,
+              "ASHR": 0.1,
+              "ARGT": 0.4,
+              "MCHI": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1860.1056550165504,
+              "return_68d": 0.011719666218431124,
+              "daily_volatility": 0.0003035597604918549
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1860.1056550165504,
+              "return_68d": 0.011719666218431124,
+              "daily_volatility": 0.0003035597604918549
+            },
+            "equity_solver_score": 25.745160139748076
+          }
+        },
+        {
+          "signal_date": "2025-01-31",
+          "holding_from": "2025-01-31",
+          "holding_to": "2025-02-28",
+          "return": 0.0012887398990847248,
+          "weights": {
+            "EIS": 0.24,
+            "EWS": 0.15,
+            "ARGT": 0.09000000000000001,
+            "GREK": 0.12,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIS",
+            "Asia": "EWS",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIS": 0.4,
+              "EWS": 0.25,
+              "ARGT": 0.15000000000000002,
+              "GREK": 0.2
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2775.5362194868476,
+              "return_68d": 0.013987011168637098,
+              "daily_volatility": 0.00027132226326221775
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2775.5362194868476,
+              "return_68d": 0.013987011168637098,
+              "daily_volatility": 0.00027132226326221775
+            },
+            "equity_solver_score": 34.701057926244
+          }
+        },
+        {
+          "signal_date": "2025-02-28",
+          "holding_from": "2025-02-28",
+          "holding_to": "2025-03-31",
+          "return": 0.02351173429630635,
+          "weights": {
+            "EWU": 0.24,
+            "EWS": 0.06,
+            "ECH": 0.21000000000000002,
+            "GREK": 0.09000000000000001,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "EWS",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.4,
+              "EWS": 0.1,
+              "ECH": 0.35000000000000003,
+              "GREK": 0.15000000000000002
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3050.144041076718,
+              "return_68d": 0.015298677131676763,
+              "daily_volatility": 0.000270595818231864
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3050.144041076718,
+              "return_68d": 0.015298677131676763,
+              "daily_volatility": 0.000270595818231864
+            },
+            "equity_solver_score": 33.759616966230006
+          }
+        },
+        {
+          "signal_date": "2025-03-31",
+          "holding_from": "2025-03-31",
+          "holding_to": "2025-04-30",
+          "return": 0.012795531224599352,
+          "weights": {
+            "NORW": 0.24,
+            "EWS": 0.12,
+            "ECH": 0.18000000000000002,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWS",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.4,
+              "EWS": 0.2,
+              "ECH": 0.30000000000000004,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3174.6166752672584,
+              "return_68d": 0.014806629176246089,
+              "daily_volatility": 0.00026096807375925655
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3174.6166752672584,
+              "return_68d": 0.014806629176246089,
+              "daily_volatility": 0.00026096807375925655
+            },
+            "equity_solver_score": 44.44027443473386
+          }
+        },
+        {
+          "signal_date": "2025-04-30",
+          "holding_from": "2025-04-30",
+          "holding_to": "2025-05-31",
+          "return": 0.027768256463801926,
+          "weights": {
+            "EWP": 0.24,
+            "EPHE": 0.21000000000000002,
+            "ECH": 0.09000000000000001,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EPHE",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.4,
+              "EPHE": 0.35000000000000003,
+              "ECH": 0.15000000000000002,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1715.021411769502,
+              "return_68d": 0.013253135287215612,
+              "daily_volatility": 0.0003360643385696297
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1715.021411769502,
+              "return_68d": 0.013253135287215612,
+              "daily_volatility": 0.0003360643385696297
+            },
+            "equity_solver_score": 11.750338605595497
+          }
+        },
+        {
+          "signal_date": "2025-05-31",
+          "holding_from": "2025-05-31",
+          "holding_to": "2025-06-30",
+          "return": 0.023349647040517955,
+          "weights": {
+            "EWK": 0.24,
+            "EPI": 0.18000000000000002,
+            "EPU": 0.06,
+            "GREK": 0.12,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWK",
+            "Asia": "EPI",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWK": 0.4,
+              "EPI": 0.30000000000000004,
+              "EPU": 0.1,
+              "GREK": 0.2
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1598.5356820057254,
+              "return_68d": 0.01200536075868297,
+              "daily_volatility": 0.0003314064609085182
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1598.5356820057254,
+              "return_68d": 0.01200536075868297,
+              "daily_volatility": 0.0003314064609085182
+            },
+            "equity_solver_score": 12.933154370178144
+          }
+        },
+        {
+          "signal_date": "2025-06-30",
+          "holding_from": "2025-06-30",
+          "holding_to": "2025-07-31",
+          "return": 0.009525461940750289,
+          "weights": {
+            "EWC": 0.24,
+            "EWY": 0.15,
+            "EWW": 0.06,
+            "GREK": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWY",
+            "Latin America": "EWW",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.4,
+              "EWY": 0.25,
+              "EWW": 0.1,
+              "GREK": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1973.5528453894542,
+              "return_68d": 0.013056823043938959,
+              "daily_volatility": 0.0003109602443846722
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1973.5528453894542,
+              "return_68d": 0.013056823043938959,
+              "daily_volatility": 0.0003109602443846722
+            },
+            "equity_solver_score": 13.174897595195198
+          }
+        },
+        {
+          "signal_date": "2025-07-31",
+          "holding_from": "2025-07-31",
+          "holding_to": "2025-08-31",
+          "return": 0.04092431855671093,
+          "weights": {
+            "EWC": 0.24,
+            "EWS": 0.24,
+            "EPU": 0.06,
+            "AFK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.4,
+              "EWS": 0.4,
+              "EPU": 0.1,
+              "AFK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3720.4408151368884,
+              "return_68d": 0.014608571197412434,
+              "daily_volatility": 0.000239457025763356
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3720.4408151368884,
+              "return_68d": 0.014608571197412434,
+              "daily_volatility": 0.000239457025763356
+            },
+            "equity_solver_score": 58.54253957313096
+          }
+        },
+        {
+          "signal_date": "2025-08-31",
+          "holding_from": "2025-08-31",
+          "holding_to": "2025-09-30",
+          "return": 0.03519924946071814,
+          "weights": {
+            "EWC": 0.24,
+            "ASHR": 0.18000000000000002,
+            "EPU": 0.06,
+            "AFK": 0.12,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "ASHR",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.4,
+              "ASHR": 0.30000000000000004,
+              "EPU": 0.1,
+              "AFK": 0.2
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3841.7264391889626,
+              "return_68d": 0.01522489229532109,
+              "daily_volatility": 0.00024052973667269446
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3841.7264391889626,
+              "return_68d": 0.01522489229532109,
+              "daily_volatility": 0.00024052973667269446
+            },
+            "equity_solver_score": 50.313484930451516
+          }
+        },
+        {
+          "signal_date": "2025-09-30",
+          "holding_from": "2025-09-30",
+          "holding_to": "2025-10-31",
+          "return": 0.0013907419346087166,
+          "weights": {
+            "EWC": 0.18000000000000002,
+            "EWS": 0.15,
+            "EPU": 0.09000000000000001,
+            "AFK": 0.18000000000000002,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.30000000000000004,
+              "EWS": 0.25,
+              "EPU": 0.15000000000000002,
+              "AFK": 0.30000000000000004
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3183.3850600464634,
+              "return_68d": 0.013897164928388994,
+              "daily_volatility": 0.0002525337904198822
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3183.3850600464634,
+              "return_68d": 0.013897164928388994,
+              "daily_volatility": 0.0002525337904198822
+            },
+            "equity_solver_score": 55.793411352264485
+          }
+        },
+        {
+          "signal_date": "2025-10-31",
+          "holding_from": "2025-10-31",
+          "holding_to": "2025-11-30",
+          "return": 0.005214993481147828,
+          "weights": {
+            "EWP": 0.24,
+            "EWY": 0.15,
+            "EPU": 0.09000000000000001,
+            "AFK": 0.12,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EWY",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.4,
+              "EWY": 0.25,
+              "EPU": 0.15000000000000002,
+              "AFK": 0.2
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3144.8236434307532,
+              "return_68d": 0.013304262135785061,
+              "daily_volatility": 0.00024863448206241805
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3144.8236434307532,
+              "return_68d": 0.013304262135785061,
+              "daily_volatility": 0.00024863448206241805
+            },
+            "equity_solver_score": 35.238853804811676
+          }
+        },
+        {
+          "signal_date": "2025-11-30",
+          "holding_from": "2025-11-30",
+          "holding_to": "2025-12-31",
+          "return": 0.015535973732068395,
+          "weights": {
+            "EWC": 0.24,
+            "EWY": 0.06,
+            "EWZ": 0.24,
+            "AFK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWC",
+            "Asia": "EWY",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWC": 0.4,
+              "EWY": 0.1,
+              "EWZ": 0.4,
+              "AFK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3360.4661723497584,
+              "return_68d": 0.012309889861444656,
+              "daily_volatility": 0.0002314165986393849
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3360.4661723497584,
+              "return_68d": 0.012309889861444656,
+              "daily_volatility": 0.0002314165986393849
+            },
+            "equity_solver_score": 25.811911882901835
+          }
+        },
+        {
+          "signal_date": "2025-12-31",
+          "holding_from": "2025-12-31",
+          "holding_to": "2026-01-31",
+          "return": 0.013634281248244114,
+          "weights": {
+            "EWP": 0.24,
+            "EIDO": 0.21000000000000002,
+            "ECH": 0.09000000000000001,
+            "AFK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWP",
+            "Asia": "EIDO",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "AFK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWP": 0.4,
+              "EIDO": 0.35000000000000003,
+              "ECH": 0.15000000000000002,
+              "AFK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 2987.069929620318,
+              "return_68d": 0.011805948299358437,
+              "daily_volatility": 0.00024040986515730048
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 2987.069929620318,
+              "return_68d": 0.011805948299358437,
+              "daily_volatility": 0.00024040986515730048
+            },
+            "equity_solver_score": 34.37118567454298
+          }
+        },
+        {
+          "signal_date": "2026-01-31",
+          "holding_from": "2026-01-31",
+          "holding_to": "2026-02-28",
+          "return": 0.011710438301967059,
+          "weights": {
+            "EWO": 0.24,
+            "EWY": 0.06,
+            "ECH": 0.06,
+            "TUR": 0.24,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWO",
+            "Asia": "EWY",
+            "Latin America": "ECH",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWO": 0.4,
+              "EWY": 0.1,
+              "ECH": 0.1,
+              "TUR": 0.4
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3388.0447964997475,
+              "return_68d": 0.011746274698438253,
+              "daily_volatility": 0.0002251656454487531
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3388.0447964997475,
+              "return_68d": 0.011746274698438253,
+              "daily_volatility": 0.0002251656454487531
+            },
+            "equity_solver_score": 65.13165722985862
+          }
+        },
+        {
+          "signal_date": "2026-02-28",
+          "holding_from": "2026-02-28",
+          "holding_to": "2026-03-31",
+          "return": -0.04129531448698326,
+          "weights": {
+            "EWU": 0.24,
+            "THD": 0.12,
+            "EPU": 0.06,
+            "TUR": 0.18000000000000002,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWU",
+            "Asia": "THD",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWU": 0.4,
+              "THD": 0.2,
+              "EPU": 0.1,
+              "TUR": 0.30000000000000004
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 3927.7010408198544,
+              "return_68d": 0.012832061190585664,
+              "daily_volatility": 0.00021851754018112509
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 3927.7010408198544,
+              "return_68d": 0.012832061190585664,
+              "daily_volatility": 0.00021851754018112509
+            },
+            "equity_solver_score": 69.8720626318256
+          }
+        },
+        {
+          "signal_date": "2026-03-31",
+          "holding_from": "2026-03-31",
+          "holding_to": "2026-04-30",
+          "return": 0.045735726725515104,
+          "weights": {
+            "NORW": 0.24,
+            "EWT": 0.06,
+            "EWZ": 0.06,
+            "TUR": 0.24,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWT",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.4,
+              "EWT": 0.1,
+              "EWZ": 0.1,
+              "TUR": 0.4
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1854.2971210420576,
+              "return_68d": 0.009417758416698563,
+              "daily_volatility": 0.0002726991509495325
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1854.2971210420576,
+              "return_68d": 0.009417758416698563,
+              "daily_volatility": 0.0002726991509495325
+            },
+            "equity_solver_score": 24.89444949882833
+          }
+        },
+        {
+          "signal_date": "2026-04-30",
+          "holding_from": "2026-04-30",
+          "holding_to": "2026-05-31",
+          "return": -0.0010786454450119507,
+          "weights": {
+            "NORW": 0.24,
+            "EWT": 0.15,
+            "EWZ": 0.06,
+            "TUR": 0.15,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWT",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "TUR"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.4,
+              "EWT": 0.25,
+              "EWZ": 0.1,
+              "TUR": 0.25
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1948.8610796918185,
+              "return_68d": 0.009746245131524,
+              "daily_volatility": 0.0002705766010417829
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1948.8610796918185,
+              "return_68d": 0.009746245131524,
+              "daily_volatility": 0.0002705766010417829
+            },
+            "equity_solver_score": 20.27081859634017
+          }
+        },
+        {
+          "signal_date": "2026-05-31",
+          "holding_from": "2026-05-31",
+          "holding_to": "2026-06-30",
+          "return": -0.012542600502943922,
+          "weights": {
+            "NORW": 0.24,
+            "EWT": 0.24,
+            "ARGT": 0.06,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "NORW",
+            "Asia": "EWT",
+            "Latin America": "ARGT",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "NORW": 0.4,
+              "EWT": 0.4,
+              "ARGT": 0.1,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1582.4604137156782,
+              "return_68d": 0.009154163165716156,
+              "daily_volatility": 0.0002910586205989255
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1582.4604137156782,
+              "return_68d": 0.009154163165716156,
+              "daily_volatility": 0.0002910586205989255
+            },
+            "equity_solver_score": 15.474108659396736
+          }
+        },
+        {
+          "signal_date": "2026-06-30",
+          "holding_from": "2026-06-30",
+          "holding_to": "2026-07-31",
+          "return": 0.02872443801141629,
+          "weights": {
+            "EWO": 0.24,
+            "EWS": 0.24,
+            "EWW": 0.06,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EWO",
+            "Asia": "EWS",
+            "Latin America": "EWW",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EWO": 0.4,
+              "EWS": 0.4,
+              "EWW": 0.1,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1945.4696686075115,
+              "return_68d": 0.011430063876363583,
+              "daily_volatility": 0.00029315388057317237
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1945.4696686075115,
+              "return_68d": 0.011430063876363583,
+              "daily_volatility": 0.00029315388057317237
+            },
+            "equity_solver_score": 15.335188209631736
+          }
+        },
+        {
+          "signal_date": "2026-07-31",
+          "holding_from": "2026-07-31",
+          "holding_to": "2026-08-31",
+          "return": 0.033137564358848,
+          "weights": {
+            "EIRL": 0.24,
+            "EWS": 0.24,
+            "EPU": 0.06,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIRL",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIRL": 0.4,
+              "EWS": 0.4,
+              "EPU": 0.1,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1798.1415529244384,
+              "return_68d": 0.010926986313188447,
+              "daily_volatility": 0.0002981807727063823
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1798.1415529244384,
+              "return_68d": 0.010926986313188447,
+              "daily_volatility": 0.0002981807727063823
+            },
+            "equity_solver_score": 18.64963088578685
+          }
+        },
+        {
+          "signal_date": "2026-08-31",
+          "holding_from": "2026-08-31",
+          "holding_to": "2026-09-30",
+          "return": -0.01100676674737879,
+          "weights": {
+            "EIRL": 0.24,
+            "EWS": 0.24,
+            "EPU": 0.06,
+            "GREK": 0.06,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EIRL",
+            "Asia": "EWS",
+            "Latin America": "EPU",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EIRL": 0.4,
+              "EWS": 0.4,
+              "EPU": 0.1,
+              "GREK": 0.1
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 1889.6191280865776,
+              "return_68d": 0.011123879542981996,
+              "daily_volatility": 0.0002934665610249198
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 1889.6191280865776,
+              "return_68d": 0.011123879542981996,
+              "daily_volatility": 0.0002934665610249198
+            },
+            "equity_solver_score": 31.31678480013991
+          }
+        },
+        {
+          "signal_date": "2026-09-30",
+          "holding_from": "2026-09-30",
+          "holding_to": "2026-10-31",
+          "return": -0.040362793462261126,
+          "weights": {
+            "EPOL": 0.15,
+            "EWS": 0.24,
+            "EWZ": 0.09000000000000001,
+            "GREK": 0.12,
+            "GSY": 0.4
+          },
+          "picks": {
+            "Developed": "EPOL",
+            "Asia": "EWS",
+            "Latin America": "EWZ",
+            "Other / residual (unverified)": "GREK"
+          },
+          "solver": {
+            "equity_weights": {
+              "EPOL": 0.25,
+              "EWS": 0.4,
+              "EWZ": 0.15000000000000002,
+              "GREK": 0.2
+            },
+            "treasury": {
+              "ticker": "GSY",
+              "score": 853.1425912652796,
+              "return_68d": 0.006659047989561184,
+              "daily_volatility": 0.00033834193430487986
+            },
+            "gold_usd": {
+              "ticker": "GSY",
+              "score": 853.1425912652796,
+              "return_68d": 0.006659047989561184,
+              "daily_volatility": 0.00033834193430487986
+            },
+            "equity_solver_score": 28.57452914524485
+          }
+        }
+      ]
+    },
+    "benchmark_acwi": {
+      "metrics_common_period": {
+        "months": 223,
+        "total_return": 3.47272737213129,
+        "cagr": 0.08394783364443548,
+        "volatility": 0.16529860176848865,
+        "sharpe_zero_rf": 0.5727245604207492,
+        "max_drawdown": -0.517035778377744,
+        "ulcer_index": 12.584104163603712,
+        "monthly_win_rate": 0.6233183856502242,
+        "avg_monthly_turnover": 0.0
+      },
+      "months_common_period": 223
+    }
+  },
+  "unconstrained_selection_frequency": {
+    "Developed": {
+      "EWN": 7,
+      "EWI": 9,
+      "EWP": 14,
+      "EWK": 8,
+      "EWU": 14,
+      "EWL": 33,
+      "EWG": 4,
+      "EWC": 34,
+      "EWH": 29,
+      "EWO": 10,
+      "EWA": 5,
+      "EIS": 23,
+      "EWD": 4,
+      "ENZL": 28,
+      "EIRL": 13,
+      "EWQ": 2,
+      "EPOL": 3,
+      "NORW": 6
+    },
+    "Asia": {
+      "EWS": 47,
+      "EWT": 32,
+      "FXI": 19,
+      "EWY": 19,
+      "IDX": 10,
+      "THD": 31,
+      "EIDO": 14,
+      "EPHE": 22,
+      "VNM": 7,
+      "EPI": 29,
+      "ASHR": 16
+    },
+    "Latin America": {
+      "EWW": 55,
+      "EWZ": 41,
+      "ECH": 41,
+      "EPU": 62,
+      "ARGT": 47
+    },
+    "Other / residual (unverified)": {
+      "EZA": 60,
+      "TUR": 51,
+      "AFK": 46,
+      "MCHI": 41,
+      "GREK": 48
+    }
+  },
+  "unconstrained_weight_distribution": {
+    "EWN": {
+      "mean": 0.2742857142857143,
+      "median": 0.18000000000000002,
+      "max": 0.5700000000000001,
+      "months": 7
+    },
+    "EWS": {
+      "mean": 0.17361702127659578,
+      "median": 0.21000000000000002,
+      "max": 0.39,
+      "months": 47
+    },
+    "EWW": {
+      "mean": 0.03381818181818182,
+      "median": 0.0,
+      "max": 0.33,
+      "months": 55
+    },
+    "EZA": {
+      "mean": 0.023,
+      "median": 0.0,
+      "max": 0.6,
+      "months": 60
+    },
+    "TIP": {
+      "mean": 0.24,
+      "median": 0.24,
+      "max": 0.24,
+      "months": 49
+    },
+    "GLD": {
+      "mean": 0.16,
+      "median": 0.16,
+      "max": 0.16,
+      "months": 40
+    },
+    "EWI": {
+      "mean": 0.13333333333333333,
+      "median": 0.0,
+      "max": 0.54,
+      "months": 9
+    },
+    "EWZ": {
+      "mean": 0.051219512195121955,
+      "median": 0.0,
+      "max": 0.6,
+      "months": 41
+    },
+    "EWT": {
+      "mean": 0.18,
+      "median": 0.195,
+      "max": 0.48,
+      "months": 32
+    },
+    "EWP": {
+      "mean": 0.3685714285714285,
+      "median": 0.34500000000000003,
+      "max": 0.6,
+      "months": 14
+    },
+    "FXI": {
+      "mean": 0.10894736842105263,
+      "median": 0.0,
+      "max": 0.6,
+      "months": 19
+    },
+    "EWK": {
+      "mean": 0.27,
+      "median": 0.27,
+      "max": 0.51,
+      "months": 8
+    },
+    "TLT": {
+      "mean": 0.24000000000000002,
+      "median": 0.24,
+      "max": 0.24,
+      "months": 18
+    },
+    "EWU": {
+      "mean": 0.255,
+      "median": 0.27,
+      "max": 0.48,
+      "months": 14
+    },
+    "EWL": {
+      "mean": 0.3136363636363636,
+      "median": 0.33,
+      "max": 0.6,
+      "months": 33
+    },
+    "EWG": {
+      "mean": 0.39000000000000007,
+      "median": 0.375,
+      "max": 0.51,
+      "months": 4
+    },
+    "EWC": {
+      "mean": 0.3326470588235294,
+      "median": 0.33,
+      "max": 0.6,
+      "months": 34
+    },
+    "EWY": {
+      "mean": 0.11368421052631578,
+      "median": 0.06,
+      "max": 0.6,
+      "months": 19
+    },
+    "UUP": {
+      "mean": 0.16,
+      "median": 0.16,
+      "max": 0.16,
+      "months": 28
+    },
+    "EWH": {
+      "mean": 0.13344827586206898,
+      "median": 0.09000000000000001,
+      "max": 0.6,
+      "months": 29
+    },
+    "ECH": {
+      "mean": 0.20780487804878053,
+      "median": 0.18000000000000002,
+      "max": 0.6,
+      "months": 41
+    },
+    "EWO": {
+      "mean": 0.32700000000000007,
+      "median": 0.30000000000000004,
+      "max": 0.6,
+      "months": 10
+    },
+    "GSY": {
+      "mean": 0.3968888888888888,
+      "median": 0.4,
+      "max": 0.4,
+      "months": 180
+    },
+    "TUR": {
+      "mean": 0.12117647058823529,
+      "median": 0.09000000000000001,
+      "max": 0.6,
+      "months": 51
+    },
+    "EWA": {
+      "mean": 0.12,
+      "median": 0.0,
+      "max": 0.6,
+      "months": 5
+    },
+    "EIS": {
+      "mean": 0.2021739130434783,
+      "median": 0.21000000000000002,
+      "max": 0.51,
+      "months": 23
+    },
+    "AFK": {
+      "mean": 0.0808695652173913,
+      "median": 0.06,
+      "max": 0.3,
+      "months": 46
+    },
+    "IDX": {
+      "mean": 0.15,
+      "median": 0.135,
+      "max": 0.51,
+      "months": 10
+    },
+    "THD": {
+      "mean": 0.15193548387096775,
+      "median": 0.15,
+      "max": 0.33,
+      "months": 31
+    },
+    "EPU": {
+      "mean": 0.12629032258064515,
+      "median": 0.09000000000000001,
+      "max": 0.6,
+      "months": 62
+    },
+    "EWD": {
+      "mean": 0.0375,
+      "median": 0.0,
+      "max": 0.15,
+      "months": 4
+    },
+    "ENZL": {
+      "mean": 0.27321428571428574,
+      "median": 0.3,
+      "max": 0.54,
+      "months": 28
+    },
+    "EIDO": {
+      "mean": 0.17571428571428574,
+      "median": 0.18000000000000002,
+      "max": 0.36000000000000004,
+      "months": 14
+    },
+    "EPHE": {
+      "mean": 0.3054545454545454,
+      "median": 0.27,
+      "max": 0.6,
+      "months": 22
+    },
+    "EIRL": {
+      "mean": 0.3092307692307692,
+      "median": 0.27,
+      "max": 0.6,
+      "months": 13
+    },
+    "MCHI": {
+      "mean": 0.03073170731707317,
+      "median": 0.0,
+      "max": 0.27,
+      "months": 41
+    },
+    "ARGT": {
+      "mean": 0.053617021276595754,
+      "median": 0.03,
+      "max": 0.27,
+      "months": 47
+    },
+    "GREK": {
+      "mean": 0.07,
+      "median": 0.045,
+      "max": 0.6,
+      "months": 48
+    },
+    "VNM": {
+      "mean": 0.18,
+      "median": 0.21000000000000002,
+      "max": 0.33,
+      "months": 7
+    },
+    "EPI": {
+      "mean": 0.23379310344827586,
+      "median": 0.21000000000000002,
+      "max": 0.54,
+      "months": 29
+    },
+    "ASHR": {
+      "mean": 0.22874999999999998,
+      "median": 0.195,
+      "max": 0.6,
+      "months": 16
+    },
+    "EWQ": {
+      "mean": 0.21000000000000002,
+      "median": 0.21000000000000002,
+      "max": 0.21000000000000002,
+      "months": 2
+    },
+    "EPOL": {
+      "mean": 0.030000000000000002,
+      "median": 0.0,
+      "max": 0.09000000000000001,
+      "months": 3
+    },
+    "NORW": {
+      "mean": 0.28,
+      "median": 0.31500000000000006,
+      "max": 0.42000000000000004,
+      "months": 6
+    }
+  }
+}
