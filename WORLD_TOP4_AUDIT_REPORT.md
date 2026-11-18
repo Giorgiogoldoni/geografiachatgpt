@@ -209,3 +209,40 @@ La pista più promettente è una quarta area **Africa / Middle East (o EMEA emer
 Il modello 60/40 attuale continua a usare il bucket residuale non verificato e **non incorpora ancora questa nuova ipotesi come se fosse la metodologia ufficiale**. Il prossimo test quantitativo dovrà confrontare almeno due alternative: (A) Africa + Middle East/Gulf; (B) Africa soltanto, lasciando GULF/MES/GAF fuori o in un paniere EMEA separato. Si confronteranno copertura storica, mesi senza prezzi, concentrazione, turnover e risultati fuori campione.
 
 Fonte primaria: pagina World Top 4, sezione “Methodology & Assets”, che elenca GAF, GULF, MES, EGPT, AFK, EZA e TUR e descrive le quattro sottostrategie senza nominarle tutte: https://logical-invest.com/app/strategy/WTOP4
+
+
+## 11. Approfondimento Medio Oriente: distinzione tra universo storico e strumenti attivi
+**Aggiornamento ricerca — 18 novembre 2026**
+
+La pagina principale WTOP4 elenca 49 strumenti e contiene effettivamente un blocco di esposizioni che rende plausibile la tua ipotesi:
+- AFK, EGPT, EZA: Africa / paesi africani;
+- GAF: Middle East & Africa;
+- GULF: Middle East;
+- MES: Gulf States / GCC;
+- TUR: Turchia;
+- EIS: Israele (ma è anche nella sottostrategia pubblica Developed).
+
+Questa è una prova che il perimetro storico degli strumenti WTOP4 includeva Medio Oriente e Africa, ma non rivela da sola a quale sottostrategia appartenesse ogni ETF.
+
+**Attenzione: GAF, MES e GULF sono strumenti storici non più negoziati.** Una fonte di settore che censisce gli ETF regionali riporta GAF liquidato nel luglio 2017, MES nell'ottobre 2016 e GULF nel maggio 2020. Non devono essere trattati come ETF utilizzabili oggi; possono servire solo per ricostruzioni storiche, se le serie prezzi sono complete e correttamente rettificate.
+
+Esistono invece strumenti nazionali tuttora attivi:
+- KSA — iShares MSCI Saudi Arabia ETF; factsheet BlackRock al 30 settembre 2026.
+- UAE — iShares MSCI UAE ETF; incluso nei rendiconti semestrali iShares al 28 febbraio 2026.
+- QAT — iShares MSCI Qatar ETF; incluso nei documenti regolamentari SEC.
+Questi tre strumenti, insieme a TUR (Turchia), sono candidati più sensati per un test di una sleeve Medio Oriente / GCC attuale. Non sono però confermati come componenti della quarta sottostrategia LI.
+
+### Conclusione aggiornata sull'ipotesi
+La lettura più plausibile da testare non è “Medio Oriente puro” con GAF/GULF/MES, perché quei fondi sono chiusi. È **Africa + Medio Oriente / EMEA emergente**, con un universo storico e un universo investibile attuale distinti:
+- storico: AFK, EGPT, EZA, GAF, GULF, MES, TUR;
+- investibile attuale candidato: AFK, EGPT, EZA, KSA, UAE, QAT, TUR.
+La classificazione definitiva della quarta sleeve resta non confermata: la pagina principale non nomina tutte e quattro le sottostrategie e non abbiamo trovato una pagina pubblica dedicata “World Countries Africa” o “World Countries Middle East”.
+
+### Fonti consultate
+- WTOP4, metodologia e lista strumenti: https://logical-invest.com/app/strategy/WTOP4
+- Lista ETF Middle East e date di liquidazione GAF/MES/GULF: https://www.emergingmarketskeptic.com/emerging-market-etfs-list/asia-etfs-list/middle-east-etfs-list/middle-east-etfs-list-region-wide/
+- Factsheet KSA BlackRock, 30 settembre 2026: https://www.blackrock.com/us/individual/literature/fact-sheet/ksa-ishares-msci-saudi-arabia-etf-fund-fact-sheet-en-us.pdf
+- Rendiconti iShares 28 febbraio 2026 (KSA e UAE): https://www.ishares.com/us/library/stream-document?documentId=1164765~2318535~926204~2298022~2360029~2251464~2517642~2118037~2164935&iframeUrlOverride=%2Fus%2F%2Fliterature%2Fsemi-annual-financial-statements%2Fsafs-c-ishares-trust-msci-country-etfs-book1-02-28-en.pdf&product=IUS-KSA&shareClass=NA&stream=reg
+- Documenti SEC 2026 con QAT e UAE: https://www.sec.gov/Archives/edgar/data/1100663/000143893426002282/0001438934-26-002282-index.htm
+
+Il test di sensibilità va quindi aggiornato per confrontare il gruppo Africa + Middle East con i ticker attivi KSA/UAE/QAT/TUR, oltre alle ipotesi Africa-only e Middle East-only. I fondi liquidati GAF/GULF/MES resteranno solo nel test storico separato.
