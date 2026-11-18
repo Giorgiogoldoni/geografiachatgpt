@@ -75,10 +75,11 @@ def main():
                 "Latin America": base["Latin America"],
                 "Eastern Mediterranean": ["EGPT", "GREK", "TUR"]}
     east_med_no_grek = {**east_med, "Eastern Mediterranean": ["EGPT", "TUR"]}
-    tickers = sorted(set(sum([list(x) for x in []], []) |
-                         {t for members in base.values() for t in members} |
-                         {t for members in east_med.values() for t in members} |
-                         set(engine.TREASURY + engine.GOLD_USD + [engine.BENCH, "^IRX"])))
+    tickers = sorted(
+        {t for members in base.values() for t in members}
+        | {t for members in east_med.values() for t in members}
+        | set(engine.TREASURY + engine.GOLD_USD + [engine.BENCH, "^IRX"])
+    )
     prices = engine.download(tickers)
     latest = prices.dropna(how="all").index[-1]
     output = {"generated_at": datetime.now(timezone.utc).isoformat(),
