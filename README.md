@@ -138,3 +138,16 @@ Il motore scarica prezzi rettificati delle quotazioni europee mappate, calcola M
 - [CSV Factor (14 strumenti)](./data/geografia_index_factor_14.csv)
 - Categorie: Equal Weight, Momentum, Value e Quality.
 - Il catalogo non alimenta automaticamente il ranking Paesi. Prima dell'uso quantitativo occorre completare la verifica dei ticker per listing, valuta negoziata, liquidità e disponibilità dello storico prezzi.
+
+
+## 🗺️ Architettura geografica a sei moduli
+
+- [Moduli geografici](./geografia-aree.html) e tassonomia strutturata in `geografia-moduli.json`.
+- **America del Nord**: Stati Uniti e Canada; indici USA/Canada e fattori.
+- **Centro e Sud America**: singoli Paesi e panieri regionali LTAM/ALAT, separati.
+- **Asia**: Paesi asiatici e panieri regionali.
+- **Medio Oriente e Africa**: Paesi del Golfo, Medio Oriente e Africa.
+- **Europa**: Paesi, indici europei e fattori.
+- **Global**: World, ACWI, All-World, Emerging Markets e fattori globali, sempre separati dai moduli regionali.
+
+La tassonomia è la prima fase strutturale: elenchi e ticker di esempio non equivalgono a copertura quantitativa già attiva. Ogni strumento dovrà essere verificato per ISIN, listing UCITS, ticker di borsa, liquidità e serie storica prima di entrare nei ranking. Il catalogo factor resta distinto dall'universo Paesi.
