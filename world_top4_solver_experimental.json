@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18T12:04:15.184583+00:00",
+  "generated_at": "2026-11-18T12:38:38.661649+00:00",
   "latest_price_date": "2026-11-17",
   "data_source": "Yahoo Finance adjusted daily prices",
   "methodology": {
@@ -37,12 +37,12 @@
     "equal_weight": {
       "metrics_common_period": {
         "months": 246,
-        "total_return": 2.662529295127126,
-        "cagr": 0.06537258606275897,
-        "volatility": 0.1243271766892725,
-        "sharpe_zero_rf": 0.573037325535714,
-        "max_drawdown": -0.4343154321044691,
-        "ulcer_index": 11.03128081597311,
+        "total_return": 2.6625268298516027,
+        "cagr": 0.06537255108176443,
+        "volatility": 0.12432718592685209,
+        "sharpe_zero_rf": 0.5730370294233613,
+        "max_drawdown": -0.434315804029328,
+        "ulcer_index": 11.031296523588226,
         "monthly_win_rate": 0.5934959349593496,
         "avg_monthly_turnover": 0.36865306122448976
       },
@@ -52,7 +52,7 @@
           "signal_date": "2023-10-31",
           "holding_from": "2023-10-31",
           "holding_to": "2023-11-30",
-          "return": 0.048816910011995764,
+          "return": 0.048816857791288366,
           "weights": {
             "EPOL": 0.15,
             "EPI": 0.15,
@@ -76,9 +76,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1771.123208670705,
-              "return_68d": 0.013462595477037542,
-              "daily_volatility": 0.0003332834529805246
+              "score": 1770.8511333422937,
+              "return_68d": 0.013462686736505747,
+              "daily_volatility": 0.00033331018442220956
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -93,7 +93,7 @@
           "signal_date": "2023-11-30",
           "holding_from": "2023-11-30",
           "holding_to": "2023-12-31",
-          "return": 0.03386860242938615,
+          "return": 0.033868687523541455,
           "weights": {
             "EWP": 0.15,
             "EPI": 0.15,
@@ -117,9 +117,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1460.9190442795418,
-              "return_68d": 0.01647375951817609,
-              "daily_volatility": 0.0004056501790887437
+              "score": 1460.577349021189,
+              "return_68d": 0.016473672879720347,
+              "daily_volatility": 0.0004056965840193924
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -134,7 +134,7 @@
           "signal_date": "2023-12-31",
           "holding_from": "2023-12-31",
           "holding_to": "2024-01-31",
-          "return": 0.0018066479212815608,
+          "return": 0.0018065988600884388,
           "weights": {
             "EWD": 0.15,
             "EPI": 0.15,
@@ -158,9 +158,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1292.5533603709837,
-              "return_68d": 0.021302177461485217,
-              "daily_volatility": 0.0004898432288948871
+              "score": 1292.2360559074857,
+              "return_68d": 0.021301991306870605,
+              "daily_volatility": 0.0004899012693428658
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -175,7 +175,7 @@
           "signal_date": "2024-01-31",
           "holding_from": "2024-01-31",
           "holding_to": "2024-02-29",
-          "return": 0.013981610793450916,
+          "return": 0.013981635227302591,
           "weights": {
             "EWL": 0.15,
             "EPI": 0.15,
@@ -199,9 +199,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1372.1419086494184,
-              "return_68d": 0.023439120385274848,
-              "daily_volatility": 0.0004984381260075498
+              "score": 1371.7129384355762,
+              "return_68d": 0.023439306605154142,
+              "daily_volatility": 0.0004985180430394087
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -216,7 +216,7 @@
           "signal_date": "2024-02-29",
           "holding_from": "2024-02-29",
           "holding_to": "2024-03-31",
-          "return": 0.020577005141044956,
+          "return": 0.020577097618660656,
           "weights": {
             "EIS": 0.15,
             "EPHE": 0.15,
@@ -240,9 +240,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1325.9478839788333,
-              "return_68d": 0.020311420560645832,
-              "daily_volatility": 0.00047236573176750237
+              "score": 1325.5960428348083,
+              "return_68d": 0.02031142235662431,
+              "daily_volatility": 0.0004724284594962729
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -257,7 +257,7 @@
           "signal_date": "2024-03-31",
           "holding_from": "2024-03-31",
           "holding_to": "2024-04-30",
-          "return": -0.002752359495136344,
+          "return": -0.002752439112387197,
           "weights": {
             "EWI": 0.15,
             "EPHE": 0.15,
@@ -281,9 +281,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2001.6792509042273,
-              "return_68d": 0.01661685947886382,
-              "daily_volatility": 0.00034802524187346886
+              "score": 2001.134326332242,
+              "return_68d": 0.016616858022265646,
+              "daily_volatility": 0.0003480726201824946
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -298,7 +298,7 @@
           "signal_date": "2024-04-30",
           "holding_from": "2024-04-30",
           "holding_to": "2024-05-31",
-          "return": 0.028067025060973926,
+          "return": 0.028067081375533428,
           "weights": {
             "EWU": 0.15,
             "EPI": 0.15,
@@ -322,9 +322,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1555.7014148599374,
-              "return_68d": 0.012954829543870172,
-              "daily_volatility": 0.0003488900419805598
+              "score": 1555.3019590386477,
+              "return_68d": 0.01295465309651056,
+              "daily_volatility": 0.00034893249558546675
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -339,7 +339,7 @@
           "signal_date": "2024-05-31",
           "holding_from": "2024-05-31",
           "holding_to": "2024-06-30",
-          "return": -0.008987863088365857,
+          "return": -0.008987836157486419,
           "weights": {
             "EWU": 0.15,
             "EWS": 0.15,
@@ -363,9 +363,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2074.733432713016,
-              "return_68d": 0.01496683277018418,
-              "daily_volatility": 0.0003245560163550992
+              "score": 2074.4261297479966,
+              "return_68d": 0.01496657003262536,
+              "daily_volatility": 0.0003245772326351037
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -380,7 +380,7 @@
           "signal_date": "2024-06-30",
           "holding_from": "2024-06-30",
           "holding_to": "2024-07-31",
-          "return": 0.012972024749379113,
+          "return": 0.012971934530926904,
           "weights": {
             "EWU": 0.15,
             "EWS": 0.15,
@@ -404,9 +404,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2072.7304916275607,
-              "return_68d": 0.015079669902532622,
-              "daily_volatility": 0.0003259256136066874
+              "score": 2072.534076500891,
+              "return_68d": 0.01507940570873778,
+              "daily_volatility": 0.00032593822670232706
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -421,7 +421,7 @@
           "signal_date": "2024-07-31",
           "holding_from": "2024-07-31",
           "holding_to": "2024-08-31",
-          "return": 0.017299243368993127,
+          "return": 0.01729918596693951,
           "weights": {
             "EWL": 0.15,
             "EWS": 0.15,
@@ -445,9 +445,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2958.3877454601447,
-              "return_68d": 0.018506957322960815,
-              "daily_volatility": 0.0003019652018421819
+              "score": 2958.246462061038,
+              "return_68d": 0.01850660848312602,
+              "daily_volatility": 0.00030196959334899393
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -462,7 +462,7 @@
           "signal_date": "2024-08-31",
           "holding_from": "2024-08-31",
           "holding_to": "2024-09-30",
-          "return": 0.029427510320172788,
+          "return": 0.029427676318477262,
           "weights": {
             "EWL": 0.15,
             "EPHE": 0.15,
@@ -486,9 +486,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2665.722559097029,
-              "return_68d": 0.019749873331326606,
-              "daily_volatility": 0.0003285221827908691
+              "score": 2666.0188752892573,
+              "return_68d": 0.019749532731394348,
+              "daily_volatility": 0.0003285011164936618
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -503,7 +503,7 @@
           "signal_date": "2024-09-30",
           "holding_from": "2024-09-30",
           "holding_to": "2024-10-31",
-          "return": 0.002808965305265065,
+          "return": 0.002808924496126331,
           "weights": {
             "EWK": 0.15,
             "EPHE": 0.15,
@@ -527,9 +527,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2030.823988179851,
-              "return_68d": 0.019697197268539135,
-              "daily_volatility": 0.0003759016041057222
+              "score": 2030.6832161232762,
+              "return_68d": 0.019697452561288964,
+              "daily_volatility": 0.00037591704909546876
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -544,7 +544,7 @@
           "signal_date": "2024-10-31",
           "holding_from": "2024-10-31",
           "holding_to": "2024-11-30",
-          "return": 0.015446996271120245,
+          "return": 0.015446975745088784,
           "weights": {
             "EWC": 0.15,
             "THD": 0.15,
@@ -568,9 +568,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1490.1775049033047,
-              "return_68d": 0.015553816711356694,
-              "daily_volatility": 0.0003903584293152379
+              "score": 1490.12712502946,
+              "return_68d": 0.015553559154018792,
+              "daily_volatility": 0.0003903618226794732
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -585,7 +585,7 @@
           "signal_date": "2024-11-30",
           "holding_from": "2024-11-30",
           "holding_to": "2024-12-31",
-          "return": -0.0029807608072292104,
+          "return": -0.0029807736357852083,
           "weights": {
             "EWC": 0.15,
             "EWS": 0.15,
@@ -609,9 +609,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1772.7660752691017,
-              "return_68d": 0.0137882496538968,
-              "daily_volatility": 0.0003371072482005737
+              "score": 1772.452951768471,
+              "return_68d": 0.013787995289739952,
+              "daily_volatility": 0.0003371339431704435
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -626,7 +626,7 @@
           "signal_date": "2024-12-31",
           "holding_from": "2024-12-31",
           "holding_to": "2025-01-31",
-          "return": 0.01772119647096778,
+          "return": 0.017721200591850964,
           "weights": {
             "EIS": 0.15,
             "ASHR": 0.15,
@@ -650,9 +650,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1860.051450267467,
-              "return_68d": 0.011719662305450518,
-              "daily_volatility": 0.00030356413434038694
+              "score": 1859.891425418826,
+              "return_68d": 0.01171974773235851,
+              "daily_volatility": 0.00030357829691946285
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -667,7 +667,7 @@
           "signal_date": "2025-01-31",
           "holding_from": "2025-01-31",
           "holding_to": "2025-02-28",
-          "return": -3.910545180315207e-05,
+          "return": -3.901598784693814e-05,
           "weights": {
             "EIS": 0.15,
             "EWS": 0.15,
@@ -691,9 +691,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2774.8214744146157,
-              "return_68d": 0.013987264541869493,
-              "daily_volatility": 0.00027135965218182183
+              "score": 2775.5371636383634,
+              "return_68d": 0.01398684574822373,
+              "daily_volatility": 0.00027132062360235316
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -708,7 +708,7 @@
           "signal_date": "2025-02-28",
           "holding_from": "2025-02-28",
           "holding_to": "2025-03-31",
-          "return": 0.022953894467267224,
+          "return": 0.02295376774337174,
           "weights": {
             "EWU": 0.15,
             "EWS": 0.15,
@@ -732,9 +732,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3048.863622316799,
-              "return_68d": 0.015298595379545032,
-              "daily_volatility": 0.0002706519241888452
+              "score": 3049.8631931303016,
+              "return_68d": 0.015298760153933388,
+              "daily_volatility": 0.0002706090077175617
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -749,7 +749,7 @@
           "signal_date": "2025-03-31",
           "holding_from": "2025-03-31",
           "holding_to": "2025-04-30",
-          "return": 0.02619529326084733,
+          "return": 0.026195342225772834,
           "weights": {
             "NORW": 0.15,
             "EWS": 0.15,
@@ -773,9 +773,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3172.6925529373884,
-              "return_68d": 0.01480687852480611,
-              "daily_volatility": 0.00026104939007326786
+              "score": 3174.276821196149,
+              "return_68d": 0.014806379827725591,
+              "daily_volatility": 0.00026097986414430244
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -790,7 +790,7 @@
           "signal_date": "2025-04-30",
           "holding_from": "2025-04-30",
           "holding_to": "2025-05-31",
-          "return": 0.031037849650998473,
+          "return": 0.031037854004502992,
           "weights": {
             "EWP": 0.15,
             "EPHE": 0.15,
@@ -814,9 +814,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1714.731798591241,
-              "return_68d": 0.013252886231384098,
-              "daily_volatility": 0.00033608958808331417
+              "score": 1714.8457323287723,
+              "return_68d": 0.01325280393985584,
+              "daily_volatility": 0.00033607738317524257
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -831,7 +831,7 @@
           "signal_date": "2025-05-31",
           "holding_from": "2025-05-31",
           "holding_to": "2025-06-30",
-          "return": 0.02843359797062629,
+          "return": 0.028433592293228425,
           "weights": {
             "EWK": 0.15,
             "EPI": 0.15,
@@ -855,9 +855,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1598.280243251662,
-              "return_68d": 0.012004947332627136,
-              "daily_volatility": 0.00033142727749793687
+              "score": 1598.2556640349535,
+              "return_68d": 0.012005278860023783,
+              "daily_volatility": 0.0003314343762778801
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -872,7 +872,7 @@
           "signal_date": "2025-06-30",
           "holding_from": "2025-06-30",
           "holding_to": "2025-07-31",
-          "return": 0.00735488864102086,
+          "return": 0.007354895339550258,
           "weights": {
             "EWC": 0.15,
             "EWY": 0.15,
@@ -896,9 +896,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1973.700926660403,
-              "return_68d": 0.013056492479217807,
-              "daily_volatility": 0.00031094466483384424
+              "score": 1973.4424235992183,
+              "return_68d": 0.013056904620021514,
+              "daily_volatility": 0.0003109699114005585
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -913,7 +913,7 @@
           "signal_date": "2025-07-31",
           "holding_from": "2025-07-31",
           "holding_to": "2025-08-31",
-          "return": 0.042348829074562264,
+          "return": 0.04234888065939642,
           "weights": {
             "EWC": 0.15,
             "EWS": 0.15,
@@ -937,9 +937,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3720.386627136752,
-              "return_68d": 0.014608488614504589,
-              "daily_volatility": 0.00023945809782996652
+              "score": 3720.174704368599,
+              "return_68d": 0.014608733985146838,
+              "daily_volatility": 0.0002394669158685096
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -954,7 +954,7 @@
           "signal_date": "2025-08-31",
           "holding_from": "2025-08-31",
           "holding_to": "2025-09-30",
-          "return": 0.06460360857578216,
+          "return": 0.06460351972726319,
           "weights": {
             "EWC": 0.15,
             "ASHR": 0.15,
@@ -978,9 +978,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3842.07465167579,
-              "return_68d": 0.015224237803470597,
-              "daily_volatility": 0.00024051370375025927
+              "score": 3842.059843143456,
+              "return_68d": 0.015224726513127784,
+              "daily_volatility": 0.00024051799903897794
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -995,7 +995,7 @@
           "signal_date": "2025-09-30",
           "holding_from": "2025-09-30",
           "holding_to": "2025-10-31",
-          "return": 0.00817606843398736,
+          "return": 0.008176049400867892,
           "weights": {
             "EWC": 0.15,
             "EWS": 0.15,
@@ -1019,9 +1019,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3183.665350433061,
-              "return_68d": 0.013897410055232928,
-              "daily_volatility": 0.00025252488389125984
+              "score": 3183.386315695272,
+              "return_68d": 0.013897328346272442,
+              "daily_volatility": 0.0002525352153375468
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -1036,7 +1036,7 @@
           "signal_date": "2025-10-31",
           "holding_from": "2025-10-31",
           "holding_to": "2025-11-30",
-          "return": 0.004510729690201368,
+          "return": 0.004510722847920939,
           "weights": {
             "EWP": 0.15,
             "EWY": 0.15,
@@ -1060,9 +1060,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3145.2462451782935,
-              "return_68d": 0.013304261068064704,
-              "daily_volatility": 0.00024861776545446546
+              "score": 3144.9907433369913,
+              "return_68d": 0.013304180814103672,
+              "daily_volatility": 0.00024862712076976584
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1077,7 +1077,7 @@
           "signal_date": "2025-11-30",
           "holding_from": "2025-11-30",
           "holding_to": "2025-12-31",
-          "return": 0.02947893530779261,
+          "return": 0.02947897333908198,
           "weights": {
             "EWC": 0.15,
             "EWY": 0.15,
@@ -1101,9 +1101,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3360.414011739157,
-              "return_68d": 0.012309969750143646,
-              "daily_volatility": 0.00023141914135003735
+              "score": 3359.949212601855,
+              "return_68d": 0.01230989084486711,
+              "daily_volatility": 0.0002314344125634994
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1142,9 +1142,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2986.800299732636,
-              "return_68d": 0.011806028770176447,
-              "daily_volatility": 0.00024042153271055803
+              "score": 2986.5280511425917,
+              "return_68d": 0.011805787357761721,
+              "daily_volatility": 0.00024043004848469933
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1183,9 +1183,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3387.290452032615,
-              "return_68d": 0.011746353930251363,
-              "daily_volatility": 0.00022519147485695385
+              "score": 3387.489777683938,
+              "return_68d": 0.011746273767760274,
+              "daily_volatility": 0.00022518408449127982
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -1200,7 +1200,7 @@
           "signal_date": "2026-02-28",
           "holding_from": "2026-02-28",
           "holding_to": "2026-03-31",
-          "return": -0.06673400017813563,
+          "return": -0.06673398144818402,
           "weights": {
             "EWU": 0.15,
             "THD": 0.15,
@@ -1224,9 +1224,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3927.2676274400355,
-              "return_68d": 0.012832061190585442,
-              "daily_volatility": 0.0002185295991626526
+              "score": 3927.518391310643,
+              "return_68d": 0.012832141247772544,
+              "daily_volatility": 0.0002185232992454321
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -1241,7 +1241,7 @@
           "signal_date": "2026-03-31",
           "holding_from": "2026-03-31",
           "holding_to": "2026-04-30",
-          "return": 0.06004230779876878,
+          "return": 0.060042270296652066,
           "weights": {
             "NORW": 0.15,
             "EWT": 0.15,
@@ -1265,9 +1265,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1854.0840331226855,
-              "return_68d": 0.009417599507064889,
-              "daily_volatility": 0.00027271253494635613
+              "score": 1854.0861167430876,
+              "return_68d": 0.009417837130224704,
+              "daily_volatility": 0.00027271580632432635
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1282,7 +1282,7 @@
           "signal_date": "2026-04-30",
           "holding_from": "2026-04-30",
           "holding_to": "2026-05-31",
-          "return": -0.007301648074229416,
+          "return": -0.007301666650303376,
           "weights": {
             "NORW": 0.15,
             "EWT": 0.15,
@@ -1306,9 +1306,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1948.7054643581982,
-              "return_68d": 0.009746165930249795,
-              "daily_volatility": 0.00027058631289858656
+              "score": 1948.6561191421924,
+              "return_68d": 0.009746166694707847,
+              "daily_volatility": 0.00027058975029295917
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1323,7 +1323,7 @@
           "signal_date": "2026-05-31",
           "holding_from": "2026-05-31",
           "holding_to": "2026-06-30",
-          "return": -0.007952428742503516,
+          "return": -0.007952391458546208,
           "weights": {
             "NORW": 0.15,
             "EWT": 0.15,
@@ -1347,9 +1347,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1582.4154033460673,
-              "return_68d": 0.009154319385437537,
-              "daily_volatility": 0.0002910652337370488
+              "score": 1582.3183723902328,
+              "return_68d": 0.00915424199061432,
+              "daily_volatility": 0.0002910729358013287
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1364,7 +1364,7 @@
           "signal_date": "2026-06-30",
           "holding_from": "2026-06-30",
           "holding_to": "2026-07-31",
-          "return": 0.025889494551139834,
+          "return": 0.025889476040258527,
           "weights": {
             "EWO": 0.15,
             "EWS": 0.15,
@@ -1388,9 +1388,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1945.511630534239,
-              "return_68d": 0.011430141886626943,
-              "daily_volatility": 0.00029315171309543086
+              "score": 1945.5195793679957,
+              "return_68d": 0.011430141886627831,
+              "daily_volatility": 0.00029315111407590395
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1405,7 +1405,7 @@
           "signal_date": "2026-07-31",
           "holding_from": "2026-07-31",
           "holding_to": "2026-08-31",
-          "return": 0.03468097765491443,
+          "return": 0.03468099616647525,
           "weights": {
             "EIRL": 0.15,
             "EWS": 0.15,
@@ -1429,9 +1429,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1798.1914098086215,
-              "return_68d": 0.010927064888735183,
-              "daily_volatility": 0.0002981777042143571
+              "score": 1798.1783648213643,
+              "return_68d": 0.010926987162501067,
+              "daily_volatility": 0.00029817773123619513
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1470,9 +1470,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1889.672751870135,
-              "return_68d": 0.011123957899044523,
-              "daily_volatility": 0.0002934634239717464
+              "score": 1889.5603403230402,
+              "return_68d": 0.011124036255118375,
+              "daily_volatility": 0.00029347318329094995
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1511,9 +1511,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 853.133019123699,
-              "return_68d": 0.006659047989561184,
-              "daily_volatility": 0.00033834383349271046
+              "score": 853.0891062268101,
+              "return_68d": 0.0066589702853092625,
+              "daily_volatility": 0.00033835057888357894
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1529,12 +1529,12 @@
     "solver_unconstrained": {
       "metrics_common_period": {
         "months": 246,
-        "total_return": 2.861732028112923,
-        "cagr": 0.06812853834362453,
-        "volatility": 0.1263322433586716,
-        "sharpe_zero_rf": 0.5869520073476933,
-        "max_drawdown": -0.4377297824321513,
-        "ulcer_index": 11.092059661260857,
+        "total_return": 2.861726207642342,
+        "cagr": 0.06812845981175575,
+        "volatility": 0.12633225603097661,
+        "sharpe_zero_rf": 0.5869513771923891,
+        "max_drawdown": -0.43773010532759393,
+        "ulcer_index": 11.092087188507252,
         "monthly_win_rate": 0.6097560975609756,
         "avg_monthly_turnover": 0.45118367346938776
       },
@@ -1544,7 +1544,7 @@
           "signal_date": "2023-10-31",
           "holding_from": "2023-10-31",
           "holding_to": "2023-11-30",
-          "return": 0.029576950554937323,
+          "return": 0.029576854415323137,
           "weights": {
             "EPOL": 0.0,
             "EPI": 0.33,
@@ -1568,9 +1568,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1771.123208670705,
-              "return_68d": 0.013462595477037542,
-              "daily_volatility": 0.0003332834529805246
+              "score": 1770.8511333422937,
+              "return_68d": 0.013462686736505747,
+              "daily_volatility": 0.00033331018442220956
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1578,14 +1578,14 @@
               "return_68d": 0.07441859443226773,
               "daily_volatility": 0.00351457697253769
             },
-            "equity_solver_score": 4.329269639607998
+            "equity_solver_score": 4.329267707695843
           }
         },
         {
           "signal_date": "2023-11-30",
           "holding_from": "2023-11-30",
           "holding_to": "2023-12-31",
-          "return": 0.03659250362978894,
+          "return": 0.036592597282497405,
           "weights": {
             "EWP": 0.18000000000000002,
             "EPI": 0.42000000000000004,
@@ -1609,9 +1609,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1460.9190442795418,
-              "return_68d": 0.01647375951817609,
-              "daily_volatility": 0.0004056501790887437
+              "score": 1460.577349021189,
+              "return_68d": 0.016473672879720347,
+              "daily_volatility": 0.0004056965840193924
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -1619,14 +1619,14 @@
               "return_68d": 0.06128756549010239,
               "daily_volatility": 0.007635850193276623
             },
-            "equity_solver_score": 20.96075373352531
+            "equity_solver_score": 20.96072061647113
           }
         },
         {
           "signal_date": "2023-12-31",
           "holding_from": "2023-12-31",
           "holding_to": "2024-01-31",
-          "return": 0.003986504996984804,
+          "return": 0.003986420606483942,
           "weights": {
             "EWD": 0.15,
             "EPI": 0.36000000000000004,
@@ -1650,9 +1650,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1292.5533603709837,
-              "return_68d": 0.021302177461485217,
-              "daily_volatility": 0.0004898432288948871
+              "score": 1292.2360559074857,
+              "return_68d": 0.021301991306870605,
+              "daily_volatility": 0.0004899012693428658
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -1660,14 +1660,14 @@
               "return_68d": 0.0702609080440526,
               "daily_volatility": 0.009070619962483864
             },
-            "equity_solver_score": 31.04625617493688
+            "equity_solver_score": 31.046255703176982
           }
         },
         {
           "signal_date": "2024-01-31",
           "holding_from": "2024-01-31",
           "holding_to": "2024-02-29",
-          "return": 0.010401877561783587,
+          "return": 0.010401910930137979,
           "weights": {
             "EWL": 0.21000000000000002,
             "EPI": 0.24,
@@ -1691,9 +1691,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1372.1419086494184,
-              "return_68d": 0.023439120385274848,
-              "daily_volatility": 0.0004984381260075498
+              "score": 1371.7129384355762,
+              "return_68d": 0.023439306605154142,
+              "daily_volatility": 0.0004985180430394087
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -1701,14 +1701,14 @@
               "return_68d": 0.029950241520350085,
               "daily_volatility": 0.007631881789892131
             },
-            "equity_solver_score": 43.46986537234141
+            "equity_solver_score": 43.46986939820957
           }
         },
         {
           "signal_date": "2024-02-29",
           "holding_from": "2024-02-29",
           "holding_to": "2024-03-31",
-          "return": 0.007798043905488824,
+          "return": 0.007798114771796863,
           "weights": {
             "EIS": 0.21000000000000002,
             "EPHE": 0.27,
@@ -1732,9 +1732,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1325.9478839788333,
-              "return_68d": 0.020311420560645832,
-              "daily_volatility": 0.00047236573176750237
+              "score": 1325.5960428348083,
+              "return_68d": 0.02031142235662431,
+              "daily_volatility": 0.0004724284594962729
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1742,14 +1742,14 @@
               "return_68d": 0.02306182701362358,
               "daily_volatility": 0.003819401064380129
             },
-            "equity_solver_score": 43.835253941989635
+            "equity_solver_score": 43.83524716394859
           }
         },
         {
           "signal_date": "2024-03-31",
           "holding_from": "2024-03-31",
           "holding_to": "2024-04-30",
-          "return": -0.006328151043821128,
+          "return": -0.006328229616942696,
           "weights": {
             "EWI": 0.18000000000000002,
             "EPHE": 0.18000000000000002,
@@ -1773,9 +1773,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2001.6792509042273,
-              "return_68d": 0.01661685947886382,
-              "daily_volatility": 0.00034802524187346886
+              "score": 2001.134326332242,
+              "return_68d": 0.016616858022265646,
+              "daily_volatility": 0.0003480726201824946
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1783,14 +1783,14 @@
               "return_68d": 0.04224837434886841,
               "daily_volatility": 0.0033084309747845064
             },
-            "equity_solver_score": 37.813485146084844
+            "equity_solver_score": 37.81343987388147
           }
         },
         {
           "signal_date": "2024-04-30",
           "holding_from": "2024-04-30",
           "holding_to": "2024-05-31",
-          "return": 0.026696383211670817,
+          "return": 0.026696449124928752,
           "weights": {
             "EWU": 0.21000000000000002,
             "EPI": 0.18000000000000002,
@@ -1814,9 +1814,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1555.7014148599374,
-              "return_68d": 0.012954829543870172,
-              "daily_volatility": 0.0003488900419805598
+              "score": 1555.3019590386477,
+              "return_68d": 0.01295465309651056,
+              "daily_volatility": 0.00034893249558546675
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1824,14 +1824,14 @@
               "return_68d": 0.043196563028873536,
               "daily_volatility": 0.0033765762532160216
             },
-            "equity_solver_score": 38.485747773053816
+            "equity_solver_score": 38.48566489678748
           }
         },
         {
           "signal_date": "2024-05-31",
           "holding_from": "2024-05-31",
           "holding_to": "2024-06-30",
-          "return": -0.00905204552654226,
+          "return": -0.00905205397943848,
           "weights": {
             "EWU": 0.42000000000000004,
             "EWS": 0.03,
@@ -1855,9 +1855,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2074.733432713016,
-              "return_68d": 0.01496683277018418,
-              "daily_volatility": 0.0003245560163550992
+              "score": 2074.4261297479966,
+              "return_68d": 0.01496657003262536,
+              "daily_volatility": 0.0003245772326351037
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1865,14 +1865,14 @@
               "return_68d": 0.02246791358849931,
               "daily_volatility": 0.003321041117892021
             },
-            "equity_solver_score": 42.124966358814056
+            "equity_solver_score": 42.12505564350257
           }
         },
         {
           "signal_date": "2024-06-30",
           "holding_from": "2024-06-30",
           "holding_to": "2024-07-31",
-          "return": 0.015385676912928206,
+          "return": 0.015385576843919516,
           "weights": {
             "EWU": 0.27,
             "EWS": 0.18000000000000002,
@@ -1896,9 +1896,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2072.7304916275607,
-              "return_68d": 0.015079669902532622,
-              "daily_volatility": 0.0003259256136066874
+              "score": 2072.534076500891,
+              "return_68d": 0.01507940570873778,
+              "daily_volatility": 0.00032593822670232706
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -1906,14 +1906,14 @@
               "return_68d": 0.034078807631420904,
               "daily_volatility": 0.0034537724964336914
             },
-            "equity_solver_score": 24.942687841139236
+            "equity_solver_score": 24.94274109688426
           }
         },
         {
           "signal_date": "2024-07-31",
           "holding_from": "2024-07-31",
           "holding_to": "2024-08-31",
-          "return": 0.028259139842580713,
+          "return": 0.028259056496797715,
           "weights": {
             "EWL": 0.3,
             "EWS": 0.21000000000000002,
@@ -1937,9 +1937,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2958.3877454601447,
-              "return_68d": 0.018506957322960815,
-              "daily_volatility": 0.0003019652018421819
+              "score": 2958.246462061038,
+              "return_68d": 0.01850660848312602,
+              "daily_volatility": 0.00030196959334899393
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -1947,14 +1947,14 @@
               "return_68d": 0.05352497267942935,
               "daily_volatility": 0.01068460647456619
             },
-            "equity_solver_score": 33.27688017245989
+            "equity_solver_score": 33.27680717231557
           }
         },
         {
           "signal_date": "2024-08-31",
           "holding_from": "2024-08-31",
           "holding_to": "2024-09-30",
-          "return": 0.010918456100703976,
+          "return": 0.010918681061397758,
           "weights": {
             "EWL": 0.44999999999999996,
             "EPHE": 0.09000000000000001,
@@ -1978,9 +1978,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2665.722559097029,
-              "return_68d": 0.019749873331326606,
-              "daily_volatility": 0.0003285221827908691
+              "score": 2666.0188752892573,
+              "return_68d": 0.019749532731394348,
+              "daily_volatility": 0.0003285011164936618
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -1988,14 +1988,14 @@
               "return_68d": 0.0721768587860332,
               "daily_volatility": 0.010236506643980616
             },
-            "equity_solver_score": 28.49857806670824
+            "equity_solver_score": 28.498479433300144
           }
         },
         {
           "signal_date": "2024-09-30",
           "holding_from": "2024-09-30",
           "holding_to": "2024-10-31",
-          "return": -0.02590578694594927,
+          "return": -0.02590584718491349,
           "weights": {
             "EWK": 0.27,
             "EPHE": 0.33,
@@ -2019,9 +2019,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2030.823988179851,
-              "return_68d": 0.019697197268539135,
-              "daily_volatility": 0.0003759016041057222
+              "score": 2030.6832161232762,
+              "return_68d": 0.019697452561288964,
+              "daily_volatility": 0.00037591704909546876
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -2029,14 +2029,14 @@
               "return_68d": 0.1272086075900638,
               "daily_volatility": 0.009193513768816875
             },
-            "equity_solver_score": 34.37162316391565
+            "equity_solver_score": 34.37152947456174
           }
         },
         {
           "signal_date": "2024-10-31",
           "holding_from": "2024-10-31",
           "holding_to": "2024-11-30",
-          "return": 0.023758416068554864,
+          "return": 0.023758395589508045,
           "weights": {
             "EWC": 0.18000000000000002,
             "THD": 0.24,
@@ -2060,9 +2060,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1490.1775049033047,
-              "return_68d": 0.015553816711356694,
-              "daily_volatility": 0.0003903584293152379
+              "score": 1490.12712502946,
+              "return_68d": 0.015553559154018792,
+              "daily_volatility": 0.0003903618226794732
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -2070,14 +2070,14 @@
               "return_68d": 0.14902773374585965,
               "daily_volatility": 0.008344054099088534
             },
-            "equity_solver_score": 25.1856894685493
+            "equity_solver_score": 25.18567675333619
           }
         },
         {
           "signal_date": "2024-11-30",
           "holding_from": "2024-11-30",
           "holding_to": "2024-12-31",
-          "return": -0.008494080423044097,
+          "return": -0.008494098418664192,
           "weights": {
             "EWC": 0.21000000000000002,
             "EWS": 0.21000000000000002,
@@ -2101,9 +2101,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1772.7660752691017,
-              "return_68d": 0.0137882496538968,
-              "daily_volatility": 0.0003371072482005737
+              "score": 1772.452951768471,
+              "return_68d": 0.013787995289739952,
+              "daily_volatility": 0.0003371339431704435
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2111,14 +2111,14 @@
               "return_68d": 0.06759667917628231,
               "daily_volatility": 0.0041853789334743005
             },
-            "equity_solver_score": 41.944188815127454
+            "equity_solver_score": 41.94419960629012
           }
         },
         {
           "signal_date": "2024-12-31",
           "holding_from": "2024-12-31",
           "holding_to": "2025-01-31",
-          "return": 0.025497512634551293,
+          "return": 0.025497547689452275,
           "weights": {
             "EIS": 0.36000000000000004,
             "ASHR": 0.06,
@@ -2142,9 +2142,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1860.051450267467,
-              "return_68d": 0.011719662305450518,
-              "daily_volatility": 0.00030356413434038694
+              "score": 1859.891425418826,
+              "return_68d": 0.01171974773235851,
+              "daily_volatility": 0.00030357829691946285
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2152,14 +2152,14 @@
               "return_68d": 0.09734817656790273,
               "daily_volatility": 0.004248551052234309
             },
-            "equity_solver_score": 31.99286651372815
+            "equity_solver_score": 31.992911012743395
           }
         },
         {
           "signal_date": "2025-01-31",
           "holding_from": "2025-01-31",
           "holding_to": "2025-02-28",
-          "return": -0.0015613556291785863,
+          "return": -0.0015612745745733755,
           "weights": {
             "EIS": 0.27,
             "EWS": 0.12,
@@ -2183,9 +2183,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2774.8214744146157,
-              "return_68d": 0.013987264541869493,
-              "daily_volatility": 0.00027135965218182183
+              "score": 2775.5371636383634,
+              "return_68d": 0.01398684574822373,
+              "daily_volatility": 0.00027132062360235316
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2193,14 +2193,14 @@
               "return_68d": 0.05658646544749346,
               "daily_volatility": 0.004792072477740496
             },
-            "equity_solver_score": 34.78976064460223
+            "equity_solver_score": 34.789847499995254
           }
         },
         {
           "signal_date": "2025-02-28",
           "holding_from": "2025-02-28",
           "holding_to": "2025-03-31",
-          "return": 0.015609500201135943,
+          "return": 0.015609377816006926,
           "weights": {
             "EWU": 0.27,
             "EWS": 0.06,
@@ -2224,9 +2224,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3048.863622316799,
-              "return_68d": 0.015298595379545032,
-              "daily_volatility": 0.0002706519241888452
+              "score": 3049.8631931303016,
+              "return_68d": 0.015298760153933388,
+              "daily_volatility": 0.0002706090077175617
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2234,14 +2234,14 @@
               "return_68d": 0.026272661237919603,
               "daily_volatility": 0.004526913664291807
             },
-            "equity_solver_score": 33.786609185316564
+            "equity_solver_score": 33.78649056050061
           }
         },
         {
           "signal_date": "2025-03-31",
           "holding_from": "2025-03-31",
           "holding_to": "2025-04-30",
-          "return": 0.01926107701464895,
+          "return": 0.01926112597957445,
           "weights": {
             "NORW": 0.27,
             "EWS": 0.12,
@@ -2265,9 +2265,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3172.6925529373884,
-              "return_68d": 0.01480687852480611,
-              "daily_volatility": 0.00026104939007326786
+              "score": 3174.276821196149,
+              "return_68d": 0.014806379827725591,
+              "daily_volatility": 0.00026097986414430244
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -2275,14 +2275,14 @@
               "return_68d": 0.20429666999848228,
               "daily_volatility": 0.00797248176303857
             },
-            "equity_solver_score": 44.72883595353859
+            "equity_solver_score": 44.72892044809851
           }
         },
         {
           "signal_date": "2025-04-30",
           "holding_from": "2025-04-30",
           "holding_to": "2025-05-31",
-          "return": 0.028740260385044146,
+          "return": 0.02874023103248028,
           "weights": {
             "EWP": 0.27,
             "EPHE": 0.21000000000000002,
@@ -2306,9 +2306,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1714.731798591241,
-              "return_68d": 0.013252886231384098,
-              "daily_volatility": 0.00033608958808331417
+              "score": 1714.8457323287723,
+              "return_68d": 0.01325280393985584,
+              "daily_volatility": 0.00033607738317524257
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -2316,14 +2316,14 @@
               "return_68d": 0.19392366371194458,
               "daily_volatility": 0.012249977469177883
             },
-            "equity_solver_score": 11.756689952762912
+            "equity_solver_score": 11.756711368673418
           }
         },
         {
           "signal_date": "2025-05-31",
           "holding_from": "2025-05-31",
           "holding_to": "2025-06-30",
-          "return": 0.02084340671812059,
+          "return": 0.020843392597676296,
           "weights": {
             "EWK": 0.27,
             "EPI": 0.21000000000000002,
@@ -2347,9 +2347,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1598.280243251662,
-              "return_68d": 0.012004947332627136,
-              "daily_volatility": 0.00033142727749793687
+              "score": 1598.2556640349535,
+              "return_68d": 0.012005278860023783,
+              "daily_volatility": 0.0003314343762778801
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -2357,14 +2357,14 @@
               "return_68d": 0.12137112009457507,
               "daily_volatility": 0.014818989384078175
             },
-            "equity_solver_score": 13.446813972983925
+            "equity_solver_score": 13.44681210440712
           }
         },
         {
           "signal_date": "2025-06-30",
           "holding_from": "2025-06-30",
           "holding_to": "2025-07-31",
-          "return": 0.00813518472023516,
+          "return": 0.008135181375196395,
           "weights": {
             "EWC": 0.27,
             "EWY": 0.15,
@@ -2388,9 +2388,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1973.700926660403,
-              "return_68d": 0.013056492479217807,
-              "daily_volatility": 0.00031094466483384424
+              "score": 1973.4424235992183,
+              "return_68d": 0.013056904620021514,
+              "daily_volatility": 0.0003109699114005585
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -2398,14 +2398,14 @@
               "return_68d": 0.0945814832185643,
               "daily_volatility": 0.015267355211075063
             },
-            "equity_solver_score": 13.179291292306043
+            "equity_solver_score": 13.179283695178256
           }
         },
         {
           "signal_date": "2025-07-31",
           "holding_from": "2025-07-31",
           "holding_to": "2025-08-31",
-          "return": 0.03397707802775983,
+          "return": 0.03397714553630339,
           "weights": {
             "EWC": 0.33,
             "EWS": 0.21000000000000002,
@@ -2429,9 +2429,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3720.386627136752,
-              "return_68d": 0.014608488614504589,
-              "daily_volatility": 0.00023945809782996652
+              "score": 3720.174704368599,
+              "return_68d": 0.014608733985146838,
+              "daily_volatility": 0.0002394669158685096
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2439,14 +2439,14 @@
               "return_68d": 0.016763786362738564,
               "daily_volatility": 0.004877647340228298
             },
-            "equity_solver_score": 61.81064702624384
+            "equity_solver_score": 61.810544796519615
           }
         },
         {
           "signal_date": "2025-08-31",
           "holding_from": "2025-08-31",
           "holding_to": "2025-09-30",
-          "return": 0.045376922375075776,
+          "return": 0.04537681926094343,
           "weights": {
             "EWC": 0.33,
             "ASHR": 0.18000000000000002,
@@ -2470,9 +2470,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3842.07465167579,
-              "return_68d": 0.015224237803470597,
-              "daily_volatility": 0.00024051370375025927
+              "score": 3842.059843143456,
+              "return_68d": 0.015224726513127784,
+              "daily_volatility": 0.00024051799903897794
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -2480,14 +2480,14 @@
               "return_68d": 0.049355094505728614,
               "daily_volatility": 0.009376825331917325
             },
-            "equity_solver_score": 51.65580379849824
+            "equity_solver_score": 51.65577722192907
           }
         },
         {
           "signal_date": "2025-09-30",
           "holding_from": "2025-09-30",
           "holding_to": "2025-10-31",
-          "return": 0.0065107061795840315,
+          "return": 0.006510687155090078,
           "weights": {
             "EWC": 0.18000000000000002,
             "EWS": 0.15,
@@ -2511,9 +2511,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3183.665350433061,
-              "return_68d": 0.013897410055232928,
-              "daily_volatility": 0.00025252488389125984
+              "score": 3183.386315695272,
+              "return_68d": 0.013897328346272442,
+              "daily_volatility": 0.0002525352153375468
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -2521,14 +2521,14 @@
               "return_68d": 0.16094581268611985,
               "daily_volatility": 0.008558143624916949
             },
-            "equity_solver_score": 55.79339258409779
+            "equity_solver_score": 55.793413832325015
           }
         },
         {
           "signal_date": "2025-10-31",
           "holding_from": "2025-10-31",
           "holding_to": "2025-11-30",
-          "return": 0.0073189598907528386,
+          "return": 0.0073189699851302515,
           "weights": {
             "EWP": 0.36000000000000004,
             "EWY": 0.12,
@@ -2552,9 +2552,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3145.2462451782935,
-              "return_68d": 0.013304261068064704,
-              "daily_volatility": 0.00024861776545446546
+              "score": 3144.9907433369913,
+              "return_68d": 0.013304180814103672,
+              "daily_volatility": 0.00024862712076976584
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2562,14 +2562,14 @@
               "return_68d": 0.025818163456099663,
               "daily_volatility": 0.004185620353409227
             },
-            "equity_solver_score": 36.88656496063057
+            "equity_solver_score": 36.8866067253428
           }
         },
         {
           "signal_date": "2025-11-30",
           "holding_from": "2025-11-30",
           "holding_to": "2025-12-31",
-          "return": 0.009717725828706185,
+          "return": 0.009717763859995556,
           "weights": {
             "EWC": 0.3,
             "EWY": 0.03,
@@ -2593,9 +2593,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3360.414011739157,
-              "return_68d": 0.012309969750143646,
-              "daily_volatility": 0.00023141914135003735
+              "score": 3359.949212601855,
+              "return_68d": 0.01230989084486711,
+              "daily_volatility": 0.0002314344125634994
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2603,7 +2603,7 @@
               "return_68d": 0.032199066542682564,
               "daily_volatility": 0.0034417659717968616
             },
-            "equity_solver_score": 25.99325582911949
+            "equity_solver_score": 25.993247731030294
           }
         },
         {
@@ -2634,9 +2634,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2986.800299732636,
-              "return_68d": 0.011806028770176447,
-              "daily_volatility": 0.00024042153271055803
+              "score": 2986.5280511425917,
+              "return_68d": 0.011805787357761721,
+              "daily_volatility": 0.00024043004848469933
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2644,7 +2644,7 @@
               "return_68d": 0.016108375486238113,
               "daily_volatility": 0.002934486611688108
             },
-            "equity_solver_score": 37.51867123854861
+            "equity_solver_score": 37.51879936038915
           }
         },
         {
@@ -2675,9 +2675,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3387.290452032615,
-              "return_68d": 0.011746353930251363,
-              "daily_volatility": 0.00022519147485695385
+              "score": 3387.489777683938,
+              "return_68d": 0.011746273767760274,
+              "daily_volatility": 0.00022518408449127982
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -2692,7 +2692,7 @@
           "signal_date": "2026-02-28",
           "holding_from": "2026-02-28",
           "holding_to": "2026-03-31",
-          "return": -0.05409465684424056,
+          "return": -0.05409463811428894,
           "weights": {
             "EWU": 0.27,
             "THD": 0.12,
@@ -2716,9 +2716,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3927.2676274400355,
-              "return_68d": 0.012832061190585442,
-              "daily_volatility": 0.0002185295991626526
+              "score": 3927.518391310643,
+              "return_68d": 0.012832141247772544,
+              "daily_volatility": 0.0002185232992454321
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -2726,14 +2726,14 @@
               "return_68d": 0.2922398613938657,
               "daily_volatility": 0.021905712302181475
             },
-            "equity_solver_score": 72.1120559489717
+            "equity_solver_score": 72.11202245801961
           }
         },
         {
           "signal_date": "2026-03-31",
           "holding_from": "2026-03-31",
           "holding_to": "2026-04-30",
-          "return": 0.020346714213644142,
+          "return": 0.02034667671152742,
           "weights": {
             "NORW": 0.42000000000000004,
             "EWT": 0.0,
@@ -2757,9 +2757,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1854.0840331226855,
-              "return_68d": 0.009417599507064889,
-              "daily_volatility": 0.00027271253494635613
+              "score": 1854.0861167430876,
+              "return_68d": 0.009417837130224704,
+              "daily_volatility": 0.00027271580632432635
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2767,14 +2767,14 @@
               "return_68d": 0.023468336065797235,
               "daily_volatility": 0.00432318710824364
             },
-            "equity_solver_score": 30.794172008645656
+            "equity_solver_score": 30.794174730771598
           }
         },
         {
           "signal_date": "2026-04-30",
           "holding_from": "2026-04-30",
           "holding_to": "2026-05-31",
-          "return": 0.0029646872585709022,
+          "return": 0.002964668682496943,
           "weights": {
             "NORW": 0.36000000000000004,
             "EWT": 0.12,
@@ -2798,9 +2798,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1948.7054643581982,
-              "return_68d": 0.009746165930249795,
-              "daily_volatility": 0.00027058631289858656
+              "score": 1948.6561191421924,
+              "return_68d": 0.009746166694707847,
+              "daily_volatility": 0.00027058975029295917
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2815,7 +2815,7 @@
           "signal_date": "2026-05-31",
           "holding_from": "2026-05-31",
           "holding_to": "2026-06-30",
-          "return": -0.01902177635266933,
+          "return": -0.019021739068712018,
           "weights": {
             "NORW": 0.36000000000000004,
             "EWT": 0.24,
@@ -2839,9 +2839,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1582.4154033460673,
-              "return_68d": 0.009154319385437537,
-              "daily_volatility": 0.0002910652337370488
+              "score": 1582.3183723902328,
+              "return_68d": 0.00915424199061432,
+              "daily_volatility": 0.0002910729358013287
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2856,7 +2856,7 @@
           "signal_date": "2026-06-30",
           "holding_from": "2026-06-30",
           "holding_to": "2026-07-31",
-          "return": 0.024921423529636104,
+          "return": 0.024921405018754797,
           "weights": {
             "EWO": 0.33,
             "EWS": 0.27,
@@ -2880,9 +2880,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1945.511630534239,
-              "return_68d": 0.011430141886626943,
-              "daily_volatility": 0.00029315171309543086
+              "score": 1945.5195793679957,
+              "return_68d": 0.011430141886627831,
+              "daily_volatility": 0.00029315111407590395
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2897,7 +2897,7 @@
           "signal_date": "2026-07-31",
           "holding_from": "2026-07-31",
           "holding_to": "2026-08-31",
-          "return": 0.031749766872154486,
+          "return": 0.031749785383715305,
           "weights": {
             "EIRL": 0.24,
             "EWS": 0.36000000000000004,
@@ -2921,9 +2921,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1798.1914098086215,
-              "return_68d": 0.010927064888735183,
-              "daily_volatility": 0.0002981777042143571
+              "score": 1798.1783648213643,
+              "return_68d": 0.010926987162501067,
+              "daily_volatility": 0.00029817773123619513
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -2962,9 +2962,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1889.672751870135,
-              "return_68d": 0.011123957899044523,
-              "daily_volatility": 0.0002934634239717464
+              "score": 1889.5603403230402,
+              "return_68d": 0.011124036255118375,
+              "daily_volatility": 0.00029347318329094995
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3003,9 +3003,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 853.133019123699,
-              "return_68d": 0.006659047989561184,
-              "daily_volatility": 0.00033834383349271046
+              "score": 853.0891062268101,
+              "return_68d": 0.0066589702853092625,
+              "daily_volatility": 0.00033835057888357894
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3021,12 +3021,12 @@
     "solver_10_40": {
       "metrics_common_period": {
         "months": 246,
-        "total_return": 2.7415149535851944,
-        "cagr": 0.06648201475611182,
-        "volatility": 0.12226965722905195,
-        "sharpe_zero_rf": 0.5891952830421812,
-        "max_drawdown": -0.43213988578935025,
-        "ulcer_index": 10.74251951984042,
+        "total_return": 2.7415117705582173,
+        "cagr": 0.06648197049802018,
+        "volatility": 0.12226967713422224,
+        "sharpe_zero_rf": 0.5891948678349122,
+        "max_drawdown": -0.43214023880728014,
+        "ulcer_index": 10.742538746729627,
         "monthly_win_rate": 0.6016260162601627,
         "avg_monthly_turnover": 0.4020816326530612
       },
@@ -3036,7 +3036,7 @@
           "signal_date": "2023-10-31",
           "holding_from": "2023-10-31",
           "holding_to": "2023-11-30",
-          "return": 0.036623796128079075,
+          "return": 0.03662371541156927,
           "weights": {
             "EPOL": 0.06,
             "EPI": 0.24,
@@ -3060,9 +3060,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1771.123208670705,
-              "return_68d": 0.013462595477037542,
-              "daily_volatility": 0.0003332834529805246
+              "score": 1770.8511333422937,
+              "return_68d": 0.013462686736505747,
+              "daily_volatility": 0.00033331018442220956
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3070,14 +3070,14 @@
               "return_68d": 0.07441859443226773,
               "daily_volatility": 0.00351457697253769
             },
-            "equity_solver_score": 2.33279467770579
+            "equity_solver_score": 2.33278732659388
           }
         },
         {
           "signal_date": "2023-11-30",
           "holding_from": "2023-11-30",
           "holding_to": "2023-12-31",
-          "return": 0.031870566383956696,
+          "return": 0.0318706515570075,
           "weights": {
             "EWP": 0.24,
             "EPI": 0.24,
@@ -3101,9 +3101,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1460.9190442795418,
-              "return_68d": 0.01647375951817609,
-              "daily_volatility": 0.0004056501790887437
+              "score": 1460.577349021189,
+              "return_68d": 0.016473672879720347,
+              "daily_volatility": 0.0004056965840193924
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3111,14 +3111,14 @@
               "return_68d": 0.06128756549010239,
               "daily_volatility": 0.007635850193276623
             },
-            "equity_solver_score": 15.205610947784862
+            "equity_solver_score": 15.20559342295341
           }
         },
         {
           "signal_date": "2023-12-31",
           "holding_from": "2023-12-31",
           "holding_to": "2024-01-31",
-          "return": -0.00011394542183349463,
+          "return": -0.00011401569593023691,
           "weights": {
             "EWD": 0.18000000000000002,
             "EPI": 0.24,
@@ -3142,9 +3142,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1292.5533603709837,
-              "return_68d": 0.021302177461485217,
-              "daily_volatility": 0.0004898432288948871
+              "score": 1292.2360559074857,
+              "return_68d": 0.021301991306870605,
+              "daily_volatility": 0.0004899012693428658
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3152,14 +3152,14 @@
               "return_68d": 0.0702609080440526,
               "daily_volatility": 0.009070619962483864
             },
-            "equity_solver_score": 29.410435388885194
+            "equity_solver_score": 29.41045483839975
           }
         },
         {
           "signal_date": "2024-01-31",
           "holding_from": "2024-01-31",
           "holding_to": "2024-02-29",
-          "return": 0.011730801783789626,
+          "return": 0.011730831943269725,
           "weights": {
             "EWL": 0.18000000000000002,
             "EPI": 0.24,
@@ -3183,9 +3183,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1372.1419086494184,
-              "return_68d": 0.023439120385274848,
-              "daily_volatility": 0.0004984381260075498
+              "score": 1371.7129384355762,
+              "return_68d": 0.023439306605154142,
+              "daily_volatility": 0.0004985180430394087
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3193,14 +3193,14 @@
               "return_68d": 0.029950241520350085,
               "daily_volatility": 0.007631881789892131
             },
-            "equity_solver_score": 43.42578458874875
+            "equity_solver_score": 43.42580687669141
           }
         },
         {
           "signal_date": "2024-02-29",
           "holding_from": "2024-02-29",
           "holding_to": "2024-03-31",
-          "return": 0.011043328032932438,
+          "return": 0.011043400257962977,
           "weights": {
             "EIS": 0.21000000000000002,
             "EPHE": 0.24,
@@ -3224,9 +3224,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1325.9478839788333,
-              "return_68d": 0.020311420560645832,
-              "daily_volatility": 0.00047236573176750237
+              "score": 1325.5960428348083,
+              "return_68d": 0.02031142235662431,
+              "daily_volatility": 0.0004724284594962729
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3234,14 +3234,14 @@
               "return_68d": 0.02306182701362358,
               "daily_volatility": 0.003819401064380129
             },
-            "equity_solver_score": 43.68293477006576
+            "equity_solver_score": 43.682911131161376
           }
         },
         {
           "signal_date": "2024-03-31",
           "holding_from": "2024-03-31",
           "holding_to": "2024-04-30",
-          "return": -0.006328151043821128,
+          "return": -0.006328229616942696,
           "weights": {
             "EWI": 0.18000000000000002,
             "EPHE": 0.18000000000000002,
@@ -3265,9 +3265,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2001.6792509042273,
-              "return_68d": 0.01661685947886382,
-              "daily_volatility": 0.00034802524187346886
+              "score": 2001.134326332242,
+              "return_68d": 0.016616858022265646,
+              "daily_volatility": 0.0003480726201824946
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3275,14 +3275,14 @@
               "return_68d": 0.04224837434886841,
               "daily_volatility": 0.0033084309747845064
             },
-            "equity_solver_score": 37.813485146084844
+            "equity_solver_score": 37.81343987388147
           }
         },
         {
           "signal_date": "2024-04-30",
           "holding_from": "2024-04-30",
           "holding_to": "2024-05-31",
-          "return": 0.026696383211670817,
+          "return": 0.026696449124928752,
           "weights": {
             "EWU": 0.21000000000000002,
             "EPI": 0.18000000000000002,
@@ -3306,9 +3306,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1555.7014148599374,
-              "return_68d": 0.012954829543870172,
-              "daily_volatility": 0.0003488900419805598
+              "score": 1555.3019590386477,
+              "return_68d": 0.01295465309651056,
+              "daily_volatility": 0.00034893249558546675
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3316,14 +3316,14 @@
               "return_68d": 0.043196563028873536,
               "daily_volatility": 0.0033765762532160216
             },
-            "equity_solver_score": 38.485747773053816
+            "equity_solver_score": 38.48566489678748
           }
         },
         {
           "signal_date": "2024-05-31",
           "holding_from": "2024-05-31",
           "holding_to": "2024-06-30",
-          "return": -0.008922848643118366,
+          "return": -0.008922829177794628,
           "weights": {
             "EWU": 0.24,
             "EWS": 0.15,
@@ -3347,9 +3347,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2074.733432713016,
-              "return_68d": 0.01496683277018418,
-              "daily_volatility": 0.0003245560163550992
+              "score": 2074.4261297479966,
+              "return_68d": 0.01496657003262536,
+              "daily_volatility": 0.0003245772326351037
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3357,14 +3357,14 @@
               "return_68d": 0.02246791358849931,
               "daily_volatility": 0.003321041117892021
             },
-            "equity_solver_score": 40.22690580021394
+            "equity_solver_score": 40.22693069401295
           }
         },
         {
           "signal_date": "2024-06-30",
           "holding_from": "2024-06-30",
           "holding_to": "2024-07-31",
-          "return": 0.014136653547053343,
+          "return": 0.014136543627488167,
           "weights": {
             "EWU": 0.18000000000000002,
             "EWS": 0.21000000000000002,
@@ -3388,9 +3388,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2072.7304916275607,
-              "return_68d": 0.015079669902532622,
-              "daily_volatility": 0.0003259256136066874
+              "score": 2072.534076500891,
+              "return_68d": 0.01507940570873778,
+              "daily_volatility": 0.00032593822670232706
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3398,14 +3398,14 @@
               "return_68d": 0.034078807631420904,
               "daily_volatility": 0.0034537724964336914
             },
-            "equity_solver_score": 23.04583881187003
+            "equity_solver_score": 23.045895198911683
           }
         },
         {
           "signal_date": "2024-07-31",
           "holding_from": "2024-07-31",
           "holding_to": "2024-08-31",
-          "return": 0.025788176156765638,
+          "return": 0.025788114966506882,
           "weights": {
             "EWL": 0.24,
             "EWS": 0.24,
@@ -3429,9 +3429,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2958.3877454601447,
-              "return_68d": 0.018506957322960815,
-              "daily_volatility": 0.0003019652018421819
+              "score": 2958.246462061038,
+              "return_68d": 0.01850660848312602,
+              "daily_volatility": 0.00030196959334899393
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3439,14 +3439,14 @@
               "return_68d": 0.05352497267942935,
               "daily_volatility": 0.01068460647456619
             },
-            "equity_solver_score": 29.5925025018122
+            "equity_solver_score": 29.592457697604264
           }
         },
         {
           "signal_date": "2024-08-31",
           "holding_from": "2024-08-31",
           "holding_to": "2024-09-30",
-          "return": 0.025152017791132127,
+          "return": 0.02515220794705147,
           "weights": {
             "EWL": 0.24,
             "EPHE": 0.24,
@@ -3470,9 +3470,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2665.722559097029,
-              "return_68d": 0.019749873331326606,
-              "daily_volatility": 0.0003285221827908691
+              "score": 2666.0188752892573,
+              "return_68d": 0.019749532731394348,
+              "daily_volatility": 0.0003285011164936618
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3480,14 +3480,14 @@
               "return_68d": 0.0721768587860332,
               "daily_volatility": 0.010236506643980616
             },
-            "equity_solver_score": 23.770013394684803
+            "equity_solver_score": 23.76995794494089
           }
         },
         {
           "signal_date": "2024-09-30",
           "holding_from": "2024-09-30",
           "holding_to": "2024-10-31",
-          "return": -0.01422933179869855,
+          "return": -0.014229384265732576,
           "weights": {
             "EWK": 0.24,
             "EPHE": 0.24,
@@ -3511,9 +3511,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2030.823988179851,
-              "return_68d": 0.019697197268539135,
-              "daily_volatility": 0.0003759016041057222
+              "score": 2030.6832161232762,
+              "return_68d": 0.019697452561288964,
+              "daily_volatility": 0.00037591704909546876
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3521,14 +3521,14 @@
               "return_68d": 0.1272086075900638,
               "daily_volatility": 0.009193513768816875
             },
-            "equity_solver_score": 30.234647344251353
+            "equity_solver_score": 30.2345993748943
           }
         },
         {
           "signal_date": "2024-10-31",
           "holding_from": "2024-10-31",
           "holding_to": "2024-11-30",
-          "return": 0.01756764514144209,
+          "return": 0.017567625038029607,
           "weights": {
             "EWC": 0.12,
             "THD": 0.24,
@@ -3552,9 +3552,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1490.1775049033047,
-              "return_68d": 0.015553816711356694,
-              "daily_volatility": 0.0003903584293152379
+              "score": 1490.12712502946,
+              "return_68d": 0.015553559154018792,
+              "daily_volatility": 0.0003903618226794732
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3562,14 +3562,14 @@
               "return_68d": 0.14902773374585965,
               "daily_volatility": 0.008344054099088534
             },
-            "equity_solver_score": 23.92114673687747
+            "equity_solver_score": 23.921142575059864
           }
         },
         {
           "signal_date": "2024-11-30",
           "holding_from": "2024-11-30",
           "holding_to": "2024-12-31",
-          "return": -0.002450208735837285,
+          "return": -0.0024502189808612348,
           "weights": {
             "EWC": 0.12,
             "EWS": 0.18000000000000002,
@@ -3593,9 +3593,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1772.7660752691017,
-              "return_68d": 0.0137882496538968,
-              "daily_volatility": 0.0003371072482005737
+              "score": 1772.452951768471,
+              "return_68d": 0.013787995289739952,
+              "daily_volatility": 0.0003371339431704435
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3603,14 +3603,14 @@
               "return_68d": 0.06759667917628231,
               "daily_volatility": 0.0041853789334743005
             },
-            "equity_solver_score": 38.6171733444011
+            "equity_solver_score": 38.61722049475481
           }
         },
         {
           "signal_date": "2024-12-31",
           "holding_from": "2024-12-31",
           "holding_to": "2025-01-31",
-          "return": 0.024671787707174046,
+          "return": 0.024671802931481194,
           "weights": {
             "EIS": 0.24,
             "ASHR": 0.06,
@@ -3634,9 +3634,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1860.051450267467,
-              "return_68d": 0.011719662305450518,
-              "daily_volatility": 0.00030356413434038694
+              "score": 1859.891425418826,
+              "return_68d": 0.01171974773235851,
+              "daily_volatility": 0.00030357829691946285
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3644,14 +3644,14 @@
               "return_68d": 0.09734817656790273,
               "daily_volatility": 0.004248551052234309
             },
-            "equity_solver_score": 25.745153756188547
+            "equity_solver_score": 25.745197539607013
           }
         },
         {
           "signal_date": "2025-01-31",
           "holding_from": "2025-01-31",
           "holding_to": "2025-02-28",
-          "return": -9.076039328663563e-05,
+          "return": -9.067649311121629e-05,
           "weights": {
             "EIS": 0.24,
             "EWS": 0.15,
@@ -3675,9 +3675,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2774.8214744146157,
-              "return_68d": 0.013987264541869493,
-              "daily_volatility": 0.00027135965218182183
+              "score": 2775.5371636383634,
+              "return_68d": 0.01398684574822373,
+              "daily_volatility": 0.00027132062360235316
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3685,14 +3685,14 @@
               "return_68d": 0.05658646544749346,
               "daily_volatility": 0.004792072477740496
             },
-            "equity_solver_score": 34.70099224669778
+            "equity_solver_score": 34.701073475105126
           }
         },
         {
           "signal_date": "2025-02-28",
           "holding_from": "2025-02-28",
           "holding_to": "2025-03-31",
-          "return": 0.018354230381440666,
+          "return": 0.018354107996311646,
           "weights": {
             "EWU": 0.24,
             "EWS": 0.06,
@@ -3716,9 +3716,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3048.863622316799,
-              "return_68d": 0.015298595379545032,
-              "daily_volatility": 0.0002706519241888452
+              "score": 3049.8631931303016,
+              "return_68d": 0.015298760153933388,
+              "daily_volatility": 0.0002706090077175617
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3726,14 +3726,14 @@
               "return_68d": 0.026272661237919603,
               "daily_volatility": 0.004526913664291807
             },
-            "equity_solver_score": 33.75955820089321
+            "equity_solver_score": 33.75944702030254
           }
         },
         {
           "signal_date": "2025-03-31",
           "holding_from": "2025-03-31",
           "holding_to": "2025-04-30",
-          "return": 0.020911088924732896,
+          "return": 0.02091113589136028,
           "weights": {
             "NORW": 0.24,
             "EWS": 0.12,
@@ -3757,9 +3757,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3172.6925529373884,
-              "return_68d": 0.01480687852480611,
-              "daily_volatility": 0.00026104939007326786
+              "score": 3174.276821196149,
+              "return_68d": 0.014806379827725591,
+              "daily_volatility": 0.00026097986414430244
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3767,14 +3767,14 @@
               "return_68d": 0.20429666999848228,
               "daily_volatility": 0.00797248176303857
             },
-            "equity_solver_score": 44.44013139190304
+            "equity_solver_score": 44.44021259167008
           }
         },
         {
           "signal_date": "2025-04-30",
           "holding_from": "2025-04-30",
           "holding_to": "2025-05-31",
-          "return": 0.027109141612011185,
+          "return": 0.027109117132870987,
           "weights": {
             "EWP": 0.24,
             "EPHE": 0.21000000000000002,
@@ -3798,9 +3798,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1714.731798591241,
-              "return_68d": 0.013252886231384098,
-              "daily_volatility": 0.00033608958808331417
+              "score": 1714.8457323287723,
+              "return_68d": 0.01325280393985584,
+              "daily_volatility": 0.00033607738317524257
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3808,14 +3808,14 @@
               "return_68d": 0.19392366371194458,
               "daily_volatility": 0.012249977469177883
             },
-            "equity_solver_score": 11.750335753265274
+            "equity_solver_score": 11.750356260540778
           }
         },
         {
           "signal_date": "2025-05-31",
           "holding_from": "2025-05-31",
           "holding_to": "2025-06-30",
-          "return": 0.02319831777273373,
+          "return": 0.023198306344894868,
           "weights": {
             "EWK": 0.24,
             "EPI": 0.18000000000000002,
@@ -3839,9 +3839,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1598.280243251662,
-              "return_68d": 0.012004947332627136,
-              "daily_volatility": 0.00033142727749793687
+              "score": 1598.2556640349535,
+              "return_68d": 0.012005278860023783,
+              "daily_volatility": 0.0003314343762778801
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3849,14 +3849,14 @@
               "return_68d": 0.12137112009457507,
               "daily_volatility": 0.014818989384078175
             },
-            "equity_solver_score": 12.933143739042787
+            "equity_solver_score": 12.933142557430624
           }
         },
         {
           "signal_date": "2025-06-30",
           "holding_from": "2025-06-30",
           "holding_to": "2025-07-31",
-          "return": 0.007940110700431584,
+          "return": 0.00794010986628486,
           "weights": {
             "EWC": 0.24,
             "EWY": 0.15,
@@ -3880,9 +3880,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1973.700926660403,
-              "return_68d": 0.013056492479217807,
-              "daily_volatility": 0.00031094466483384424
+              "score": 1973.4424235992183,
+              "return_68d": 0.013056904620021514,
+              "daily_volatility": 0.0003109699114005585
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3890,14 +3890,14 @@
               "return_68d": 0.0945814832185643,
               "daily_volatility": 0.015267355211075063
             },
-            "equity_solver_score": 13.174904433050665
+            "equity_solver_score": 13.17489869803843
           }
         },
         {
           "signal_date": "2025-07-31",
           "holding_from": "2025-07-31",
           "holding_to": "2025-08-31",
-          "return": 0.037089321421592936,
+          "return": 0.03708938096828181,
           "weights": {
             "EWC": 0.24,
             "EWS": 0.24,
@@ -3921,9 +3921,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3720.386627136752,
-              "return_68d": 0.014608488614504589,
-              "daily_volatility": 0.00023945809782996652
+              "score": 3720.174704368599,
+              "return_68d": 0.014608733985146838,
+              "daily_volatility": 0.0002394669158685096
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -3931,14 +3931,14 @@
               "return_68d": 0.016763786362738564,
               "daily_volatility": 0.004877647340228298
             },
-            "equity_solver_score": 58.54260344297039
+            "equity_solver_score": 58.542544952628035
           }
         },
         {
           "signal_date": "2025-08-31",
           "holding_from": "2025-08-31",
           "holding_to": "2025-09-30",
-          "return": 0.05332699289786342,
+          "return": 0.05332689691653775,
           "weights": {
             "EWC": 0.24,
             "ASHR": 0.18000000000000002,
@@ -3962,9 +3962,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3842.07465167579,
-              "return_68d": 0.015224237803470597,
-              "daily_volatility": 0.00024051370375025927
+              "score": 3842.059843143456,
+              "return_68d": 0.015224726513127784,
+              "daily_volatility": 0.00024051799903897794
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -3972,14 +3972,14 @@
               "return_68d": 0.049355094505728614,
               "daily_volatility": 0.009376825331917325
             },
-            "equity_solver_score": 50.313524226177684
+            "equity_solver_score": 50.313519154245846
           }
         },
         {
           "signal_date": "2025-09-30",
           "holding_from": "2025-09-30",
           "holding_to": "2025-10-31",
-          "return": 0.0065107061795840315,
+          "return": 0.006510687155090078,
           "weights": {
             "EWC": 0.18000000000000002,
             "EWS": 0.15,
@@ -4003,9 +4003,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3183.665350433061,
-              "return_68d": 0.013897410055232928,
-              "daily_volatility": 0.00025252488389125984
+              "score": 3183.386315695272,
+              "return_68d": 0.013897328346272442,
+              "daily_volatility": 0.0002525352153375468
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -4013,14 +4013,14 @@
               "return_68d": 0.16094581268611985,
               "daily_volatility": 0.008558143624916949
             },
-            "equity_solver_score": 55.79339258409779
+            "equity_solver_score": 55.793413832325015
           }
         },
         {
           "signal_date": "2025-10-31",
           "holding_from": "2025-10-31",
           "holding_to": "2025-11-30",
-          "return": 0.004641159717898192,
+          "return": 0.00464116013418541,
           "weights": {
             "EWP": 0.24,
             "EWY": 0.15,
@@ -4044,9 +4044,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3145.2462451782935,
-              "return_68d": 0.013304261068064704,
-              "daily_volatility": 0.00024861776545446546
+              "score": 3144.9907433369913,
+              "return_68d": 0.013304180814103672,
+              "daily_volatility": 0.00024862712076976584
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -4054,14 +4054,14 @@
               "return_68d": 0.025818163456099663,
               "daily_volatility": 0.004185620353409227
             },
-            "equity_solver_score": 35.23884590874177
+            "equity_solver_score": 35.23887465486852
           }
         },
         {
           "signal_date": "2025-11-30",
           "holding_from": "2025-11-30",
           "holding_to": "2025-12-31",
-          "return": 0.013441257533653826,
+          "return": 0.013441295564943197,
           "weights": {
             "EWC": 0.24,
             "EWY": 0.06,
@@ -4085,9 +4085,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3360.414011739157,
-              "return_68d": 0.012309969750143646,
-              "daily_volatility": 0.00023141914135003735
+              "score": 3359.949212601855,
+              "return_68d": 0.01230989084486711,
+              "daily_volatility": 0.0002314344125634994
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -4095,7 +4095,7 @@
               "return_68d": 0.032199066542682564,
               "daily_volatility": 0.0034417659717968616
             },
-            "equity_solver_score": 25.81191188290183
+            "equity_solver_score": 25.8119016767465
           }
         },
         {
@@ -4126,9 +4126,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 2986.800299732636,
-              "return_68d": 0.011806028770176447,
-              "daily_volatility": 0.00024042153271055803
+              "score": 2986.5280511425917,
+              "return_68d": 0.011805787357761721,
+              "daily_volatility": 0.00024043004848469933
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -4136,7 +4136,7 @@
               "return_68d": 0.016108375486238113,
               "daily_volatility": 0.002934486611688108
             },
-            "equity_solver_score": 34.371157096296415
+            "equity_solver_score": 34.37126512265171
           }
         },
         {
@@ -4167,9 +4167,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3387.290452032615,
-              "return_68d": 0.011746353930251363,
-              "daily_volatility": 0.00022519147485695385
+              "score": 3387.489777683938,
+              "return_68d": 0.011746273767760274,
+              "daily_volatility": 0.00022518408449127982
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -4184,7 +4184,7 @@
           "signal_date": "2026-02-28",
           "holding_from": "2026-02-28",
           "holding_to": "2026-03-31",
-          "return": -0.05910506023563841,
+          "return": -0.059105041505686795,
           "weights": {
             "EWU": 0.24,
             "THD": 0.12,
@@ -4208,9 +4208,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 3927.2676274400355,
-              "return_68d": 0.012832061190585442,
-              "daily_volatility": 0.0002185295991626526
+              "score": 3927.518391310643,
+              "return_68d": 0.012832141247772544,
+              "daily_volatility": 0.0002185232992454321
             },
             "gold_usd": {
               "ticker": "GLD",
@@ -4218,14 +4218,14 @@
               "return_68d": 0.2922398613938657,
               "daily_volatility": 0.021905712302181475
             },
-            "equity_solver_score": 69.87206448119596
+            "equity_solver_score": 69.87204875851087
           }
         },
         {
           "signal_date": "2026-03-31",
           "holding_from": "2026-03-31",
           "holding_to": "2026-04-30",
-          "return": 0.04270002342600613,
+          "return": 0.04269998592388941,
           "weights": {
             "NORW": 0.24,
             "EWT": 0.06,
@@ -4249,9 +4249,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1854.0840331226855,
-              "return_68d": 0.009417599507064889,
-              "daily_volatility": 0.00027271253494635613
+              "score": 1854.0861167430876,
+              "return_68d": 0.009417837130224704,
+              "daily_volatility": 0.00027271580632432635
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -4259,14 +4259,14 @@
               "return_68d": 0.023468336065797235,
               "daily_volatility": 0.00432318710824364
             },
-            "equity_solver_score": 24.894447691946276
+            "equity_solver_score": 24.89444949882833
           }
         },
         {
           "signal_date": "2026-04-30",
           "holding_from": "2026-04-30",
           "holding_to": "2026-05-31",
-          "return": 0.00010024728350569129,
+          "return": 0.00010022870743173228,
           "weights": {
             "NORW": 0.24,
             "EWT": 0.15,
@@ -4290,9 +4290,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1948.7054643581982,
-              "return_68d": 0.009746165930249795,
-              "daily_volatility": 0.00027058631289858656
+              "score": 1948.6561191421924,
+              "return_68d": 0.009746166694707847,
+              "daily_volatility": 0.00027058975029295917
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -4307,7 +4307,7 @@
           "signal_date": "2026-05-31",
           "holding_from": "2026-05-31",
           "holding_to": "2026-06-30",
-          "return": -0.008769798903605991,
+          "return": -0.008769761619648682,
           "weights": {
             "NORW": 0.24,
             "EWT": 0.24,
@@ -4331,9 +4331,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1582.4154033460673,
-              "return_68d": 0.009154319385437537,
-              "daily_volatility": 0.0002910652337370488
+              "score": 1582.3183723902328,
+              "return_68d": 0.00915424199061432,
+              "daily_volatility": 0.0002910729358013287
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -4348,7 +4348,7 @@
           "signal_date": "2026-06-30",
           "holding_from": "2026-06-30",
           "holding_to": "2026-07-31",
-          "return": 0.026867967521698323,
+          "return": 0.026867949010817016,
           "weights": {
             "EWO": 0.24,
             "EWS": 0.24,
@@ -4372,9 +4372,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1945.511630534239,
-              "return_68d": 0.011430141886626943,
-              "daily_volatility": 0.00029315171309543086
+              "score": 1945.5195793679957,
+              "return_68d": 0.011430141886627831,
+              "daily_volatility": 0.00029315111407590395
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -4389,7 +4389,7 @@
           "signal_date": "2026-07-31",
           "holding_from": "2026-07-31",
           "holding_to": "2026-08-31",
-          "return": 0.03234289504065217,
+          "return": 0.03234291355221299,
           "weights": {
             "EIRL": 0.24,
             "EWS": 0.24,
@@ -4413,9 +4413,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1798.1914098086215,
-              "return_68d": 0.010927064888735183,
-              "daily_volatility": 0.0002981777042143571
+              "score": 1798.1783648213643,
+              "return_68d": 0.010926987162501067,
+              "daily_volatility": 0.00029817773123619513
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -4454,9 +4454,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 1889.672751870135,
-              "return_68d": 0.011123957899044523,
-              "daily_volatility": 0.0002934634239717464
+              "score": 1889.5603403230402,
+              "return_68d": 0.011124036255118375,
+              "daily_volatility": 0.00029347318329094995
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -4495,9 +4495,9 @@
             },
             "treasury": {
               "ticker": "GSY",
-              "score": 853.133019123699,
-              "return_68d": 0.006659047989561184,
-              "daily_volatility": 0.00033834383349271046
+              "score": 853.0891062268101,
+              "return_68d": 0.0066589702853092625,
+              "daily_volatility": 0.00033835057888357894
             },
             "gold_usd": {
               "ticker": "UUP",
@@ -4513,12 +4513,12 @@
     "benchmark_acwi": {
       "metrics_common_period": {
         "months": 223,
-        "total_return": 3.4727263939960364,
-        "cagr": 0.08394782088853003,
-        "volatility": 0.16529853878648534,
-        "sharpe_zero_rf": 0.5727246523446375,
-        "max_drawdown": -0.5170359740604255,
-        "ulcer_index": 12.584110694467572,
+        "total_return": 3.4727268830635962,
+        "cagr": 0.0839478272664822,
+        "volatility": 0.1652986066204022,
+        "sharpe_zero_rf": 0.5727245182703192,
+        "max_drawdown": -0.5170361246710915,
+        "ulcer_index": 12.584112311816325,
         "monthly_win_rate": 0.6233183856502242,
         "avg_monthly_turnover": 0.0
       },
