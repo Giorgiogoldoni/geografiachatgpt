@@ -23,9 +23,11 @@ START = "2005-01-01"
 # A blank symbol means that the listing/price series still needs verification.
 MAP = {
     "IE00BHZRR030": ("FLXK.MI", "Borsa Italiana", "EUR", "country"),
+    "IE00B52SF786": ("CSCA.MI", "Borsa Italiana", "EUR", "country"),
+    "IE00B0M62Y33": ("IAEX.AS", "Euronext Amsterdam", "EUR", "country"),
     "IE00BHZRQZ17": ("FLXI.MI", "Borsa Italiana", "EUR", "country"),
     "IE00B4L5YX21": ("SJPA.MI", "Borsa Italiana", "EUR", "country"),
-    "IE00B4M7GH52": ("IBCJ.MI", "Borsa Italiana", "EUR", "country"),
+    "IE00B4M7GH52": ("IBCJ.DE", "Xetra", "EUR", "country"),
     "IE00BHZRQY00": ("FLXB.MI", "Borsa Italiana", "EUR", "country"),
     "LU0476289466": ("D5BI.DE", "Xetra", "EUR", "country"),
     "IE00B52XQP83": ("SRSA.MI", "Borsa Italiana", "EUR", "country"),
@@ -35,7 +37,7 @@ MAP = {
     "IE00BP3QZG05": ("QDVM.DE", "Xetra", "EUR", "country"),
 }
 AREAS = {
-    "Developed": ["Poland", "Japan"],
+    "Developed": ["Poland", "Japan", "Canada", "Netherlands"],
     "Asia-Pacific emergente": ["South Korea", "Taiwan", "India", "China"],
     "America Latina": ["Brazil", "Mexico"],
     "Africa e Medio Oriente": ["South Africa", "Turkey", "Israel"],
