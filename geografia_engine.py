@@ -139,6 +139,7 @@ def load_universe():
             "subgroup": subgroup_for(geo), "bucket": bucket,
             "portfolio": clean(r.get("portfolio")),
             "isin": "",
+            "seed_eligibility": "",
             "verification_status": clean(r.get("verification_status")),
             "symbol": ticker if "." in ticker else (ticker + ".MI" if ticker == "AUHEUA" else ticker),
             "instrument_status": "ETP separato" if bucket == "etp" else "Listing/forma giuridica da verificare",
@@ -148,13 +149,19 @@ def load_universe():
     seed_symbols = {
         "FLXK": ("FLXK.MI", "Corea del Sud"),
         "SJPA": ("SJPA.MI", "Giappone"),
+        "FLXI": ("FLXI.MI", "India"),
+        "CSCA": ("CSCA.MI", "Canada"),
+        "IAEX": ("IAEX.AS", "Paesi Bassi"),
+        "IBCJ": ("IBCJ.DE", "Polonia"),
+        "D5BI": ("D5BI.DE", "Messico"),
+        "SRSA": ("SRSA.MI", "Sudafrica"),
         "FLXB": ("FLXB.MI", "Brasile"),
         "IQQ5": ("IQQ5.DE", "Turchia"),
         "LTAM": ("LTAM.MI", "America Latina"),
         "ALAT": ("ALAT.MI", "America Latina"),
         "QDVM": ("QDVM.DE", "Israele"),
     }
-    known = {r["symbol"] for r in rows}
+    known = {r["symbol"]: r for r in rows}
     if SEED.exists():
         seed = pd.read_csv(SEED, dtype=str).fillna("")
         for _, s in seed.iterrows():
@@ -162,20 +169,25 @@ def load_universe():
             if base_ticker not in seed_symbols:
                 continue
             symbol, geography = seed_symbols[base_ticker]
+            isin = clean(s.get("isin"))
+            eligibility = clean(s.get("eligibility"))
             if symbol in known:
+                known[symbol]["isin"] = isin
+                known[symbol]["seed_eligibility"] = eligibility
                 continue
             is_regional = base_ticker in {"LTAM", "ALAT"}
             module_id = module_for(geography)
-            rows.append({
+            new_row = {
                 "ticker": base_ticker, "name": clean(s.get("ucits_fund")),
                 "geography": geography, "classification": "Regione" if is_regional else "Paese",
                 "module_id": module_id, "module": MODULES.get(module_id, "Da classificare"),
                 "subgroup": subgroup_for(geography), "bucket": "regional" if is_regional else "country",
                 "portfolio": "REGIONALI" if is_regional else "PAESI",
-                "isin": clean(s.get("isin")), "verification_status": clean(s.get("eligibility")),
+                "isin": isin, "seed_eligibility": eligibility, "verification_status": eligibility,
                 "symbol": symbol, "instrument_status": "UCITS seed; listing/data checks still required",
-            })
-            known.add(symbol)
+            }
+            rows.append(new_row)
+            known[symbol] = new_row
     return rows
 
 def download_prices(symbols):
