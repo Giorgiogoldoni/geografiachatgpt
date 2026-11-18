@@ -93,6 +93,7 @@ Il calcolo viene eseguito da GitHub Actions dopo gli aggiornamenti al branch mai
 - [Apri dashboard World Top 4](./world-top4.html)
 - Motore: world_top4.py
 - Dati/backtest: world_top4.json (generato dal workflow giornaliero)
+- Report audit USA preliminare: [WORLD_TOP4_AUDIT_REPORT.md](./WORLD_TOP4_AUDIT_REPORT.md)
 - Metodo, limiti e ritardo holdings: WORLD_TOP4_METHOD.md
 - Universo USA pubblico Logical Invest (49 ticker) e stato di classificazione: [logical_invest_universe.csv](./logical_invest_universe.csv)
 - Registro per holdings Logical Invest pubblicati in ritardo: logical_invest_holdings.csv
