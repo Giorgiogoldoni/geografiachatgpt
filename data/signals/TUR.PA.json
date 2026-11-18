@@ -1,1 +1,1 @@
-{"ticker":"TUR.PA","history":[{"date":"2026-11-18","ts":"2026-11-18 12:22 CET","signal":"WATCH","price":47.62,"score":48.0,"er":0.2747,"note":"Nessuna condizione di ingresso attiva"}]}
+{"ticker":"TUR.PA","history":[{"date":"2026-11-18","ts":"2026-11-18 12:22 CET","signal":"WATCH","price":47.62,"score":48.0,"er":0.2747,"note":"Nessuna condizione di ingresso attiva"},{"date":"2026-11-18","ts":"2026-11-18 19:32 CET","signal":"SELL","price":46.735,"score":22.0,"er":0.1481,"note":"Uscita per: KAMA rotta, ER<0.4"}]}
