@@ -15,17 +15,17 @@ def main():
         "africa_plus_middle_east_legacy": {
             "Developed": base["Developed"], "Asia": base["Asia"],
             "Latin America": base["Latin America"],
-            "Africa + Middle East legacy instruments": ["AFK", "EGPT", "EZA", "GAF", "GULF", "MES"]
+            "Africa + Middle East legacy instruments": ["AFK", "EGPT", "EZA", "GAF", "GULF", "MES", "GREK", "TUR"]
         },
         "africa_plus_middle_east_active_candidates": {
             "Developed": base["Developed"], "Asia": base["Asia"],
             "Latin America": base["Latin America"],
-            "Africa + Middle East active candidates": ["AFK", "EGPT", "EZA", "KSA", "UAE", "QAT", "TUR"]
+            "Eastern Mediterranean + Middle East active candidates": ["EGPT", "GREK", "TUR", "KSA", "UAE", "QAT"]
         },
         "middle_east_active_only": {
             "Developed": base["Developed"], "Asia": base["Asia"],
             "Latin America": base["Latin America"],
-            "Middle East active candidates": ["KSA", "UAE", "QAT", "TUR"]
+            "Middle East + Eastern Mediterranean candidates": ["EGPT", "GREK", "TUR", "KSA", "UAE", "QAT"]
         },
         "africa_only": {
             "Developed": base["Developed"], "Asia": base["Asia"],
