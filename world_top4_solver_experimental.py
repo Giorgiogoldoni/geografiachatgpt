@@ -79,8 +79,11 @@ def solve_weights(prices, tickers, signal_date, min_units=0, max_units=20):
     series = [daily_window(prices, t, signal_date) for t in tickers]
     if any(x is None for x in series):
         return None
-    frame = pd.concat(series, axis=1)
+    frame = pd.concat(series, axis=1).dropna()
     frame.columns = tickers
+    # Country ETFs trade on different calendars; optimize only on common sessions.
+    if len(frame) < 50:
+        return None
     best_score, best_weights = -np.inf, None
     for weights in weight_grids(len(tickers), min_units, max_units):
         port = frame.to_numpy() @ weights
@@ -140,8 +143,10 @@ def make_weights(prices, signal_date, variant):
 
 
 def solve_score(prices, tickers, signal_date, weights):
-    frame = pd.concat([daily_window(prices, t, signal_date) for t in tickers], axis=1)
+    frame = pd.concat([daily_window(prices, t, signal_date) for t in tickers], axis=1).dropna()
     frame.columns = tickers
+    if len(frame) < 50:
+        return 0.0
     port = frame.to_numpy() @ np.asarray([weights[t] for t in tickers])
     sd = float(np.std(port, ddof=1))
     return float(np.mean(port) / (sd ** 2)) if sd > 0 else 0.0
