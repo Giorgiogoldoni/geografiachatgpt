@@ -5,7 +5,8 @@ on:
     paths:
       - 'world_top4.py'
       - 'world_top4_6040.py'
-      - 'world_top4_region_sensitivity.py'\n      - 'world_top4_robustness.py'
+      - 'world_top4_region_sensitivity.py'
+      - 'world_top4_robustness.py'
       - '.github/workflows/world-top4.yml'
       - 'requirements.txt'
   schedule:
@@ -33,7 +34,9 @@ jobs:
         run: python world_top4_6040.py
       - name: Compare fourth-region hypotheses (Africa / Middle East)
         run: python world_top4_region_sensitivity.py
-      - name: Run robustness tests (Asia two slots / Greece exclusion)\n        run: python world_top4_robustness.py\n      - name: Commit research data
+      - name: Run robustness tests (Asia two slots / Greece exclusion)
+        run: python world_top4_robustness.py
+      - name: Commit research data
         run: |
           git config user.name "geografia-bot"
           git config user.email "geografia-bot@users.noreply.github.com"
