@@ -1,0 +1,56 @@
+strategy,ticker,instrument_name,source_updated,source_url,membership_status,notes
+Developed,SPY,SPDR S&P 500 ETF,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,DIA,SPDR Dow Jones Industrial Average ETF,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EIRL,iShares MSCI Ireland Capped,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EIS,iShares MSCI Israel,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,ENZL,iShares MSCI New Zealand Investable Market,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EPOL,iShares MSCI Poland Index,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWA,iShares MSCI Australia Index Fund,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWC,iShares MSCI Canada Index Fund,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWD,iShares MSCI Sweden Index,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWG,iShares MSCI Germany Index,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWH,iShares MSCI Hong Kong Index Fund,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWI,iShares MSCI Italy Index,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWJ,iShares MSCI Japan Index Fund,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,Also appears in Asia list
+Developed,EWK,iShares MSCI Belgium Index,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWL,iShares MSCI Switzerland,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWM,iShares MSCI Malaysia Index Fund,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,Also appears in Asia list
+Developed,EWN,iShares MSCI Netherlands Index,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWO,iShares MSCI Austria Index,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWP,iShares MSCI Spain Index,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWQ,iShares MSCI France,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,EWU,iShares MSCI United Kingdom Index,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,NORW,Global X FTSE Norway 30 ETF,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,
+Developed,QQQ,PowerShares Nasdaq-100 Index,2026-09-30,https://logical-invest.com/app/strategy/developed/world-countries-developed,Official published universe,Not a single-country ETF
+Asia,ASHR,Deutsche X-Trackers CSI 300 China A Shares,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,
+Asia,DBKO,Xtrackers MSCI South Korea Hedged Equity ETF,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,Additional vs main WTOP4 list
+Asia,EIDO,iShares MSCI Indonesia Index,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,
+Asia,EPHE,iShares MSCI Philippines,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,
+Asia,EPI,WisdomTree India Earnings Index,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,
+Asia,EWJ,iShares MSCI Japan Index Fund,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,Also appears in Developed list
+Asia,EWM,iShares MSCI Malaysia Index Fund,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,Also appears in Developed list
+Asia,EWS,iShares MSCI Singapore Index,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,
+Asia,EWT,iShares MSCI Taiwan Index Fund,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,
+Asia,EWY,iShares MSCI South Korea Index Fund,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,
+Asia,EWZ,iShares MSCI Brazil Index Fund,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,Geographic anomaly: Brazil also belongs to South America
+Asia,EZA,iShares MSCI South Africa Index,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,Geographic anomaly: South Africa listed in Asia page
+Asia,FXI,iShares FTSE China 25 Index Fund,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,
+Asia,IDX,Market Vectors Indonesia,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,
+Asia,THD,iShares MSCI Thailand Index,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,
+Asia,VNM,Market Vectors Vietnam,2026-09-28,https://logical-invest.com/app/strategy/asia/world-countries-asia,Official published universe,
+South America,ARGT,Global X MSCI Argentina ETF,2026-10-07,https://logical-invest.com/app/strategy/soamerica/world-countries-south-america,Official published universe,Additional vs main WTOP4 list
+South America,ECH,iShares MSCI Chile Fund,2026-10-07,https://logical-invest.com/app/strategy/soamerica/world-countries-south-america,Official published universe,
+South America,EPU,iShares MSCI Peru Index,2026-10-07,https://logical-invest.com/app/strategy/soamerica/world-countries-south-america,Official published universe,
+South America,EWW,iShares MSCI Mexico Index Fund,2026-10-07,https://logical-invest.com/app/strategy/soamerica/world-countries-south-america,Official published universe,Geographic anomaly: Mexico is North America
+South America,EWZ,iShares MSCI Brazil Index Fund,2026-10-07,https://logical-invest.com/app/strategy/soamerica/world-countries-south-america,Official published universe,Also appears in Asia list
+South America,GXG,Global X MSCI Colombia ETF,2026-10-07,https://logical-invest.com/app/strategy/soamerica/world-countries-south-america,Official published universe,Additional vs main WTOP4 list
+Fourth sleeve candidate,AFK,VanEck Africa Index ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Candidate only,No current dedicated fourth-sleeve constituents page verified
+Fourth sleeve candidate,EGPT,VanEck Egypt Index ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Candidate only,No current dedicated fourth-sleeve constituents page verified
+Fourth sleeve candidate,FM,iShares MSCI Frontier and Select EM ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Candidate only,Regional frontier exposure; assignment unverified
+Fourth sleeve candidate,FRN,Guggenheim BNY Mellon Frontier Markets ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Candidate only,Regional frontier exposure; assignment unverified
+Fourth sleeve candidate,GAF,SPDR S&P Emerging Middle East & Africa ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Candidate only,Regional Middle East/Africa exposure; assignment unverified
+Fourth sleeve candidate,GULF,WisdomTree Middle East Dividend Fund,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Candidate only,Middle East exposure; assignment unverified
+Fourth sleeve candidate,GREK,Global X FTSE Greece 20 ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Candidate only,Eastern Mediterranean candidate; assignment unverified
+Fourth sleeve candidate,MES,VanEck Gulf States Index ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Candidate only,GCC exposure; assignment unverified
+Fourth sleeve candidate,RSX,VanEck Russia ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Candidate only,Historical ticker status and tradability require separate review
+Fourth sleeve candidate,TUR,iShares MSCI Turkey ETF,2026-10-16,https://logical-invest.com/app/strategy/WTOP4,Candidate only,Turkey/EMEA candidate; assignment unverified
