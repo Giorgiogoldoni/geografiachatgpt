@@ -20,7 +20,11 @@ def stats(s,date):
  if len(p)<LB+1:return None
  r=p.pct_change().dropna().tail(LB); vol=float(r.std()*math.sqrt(252)); ret=float(p.iloc[-1]/p.iloc[-LB-1]-1)
  if not np.isfinite(vol) or vol<=0:return None
- mom=lambda n:float(p.iloc[-1]/p.iloc[-min(n,len(p))]-1)
+ def mom(n):
+  # Require n+1 observations for a genuine n-session return; never shorten
+  # the lookback for recently listed ETFs.
+  if len(p)<n+1:return None
+  return float(p.iloc[-1]/p.iloc[-n-1]-1)
  return {"return_68d":ret,"vol_annual":vol,"sharpe_68d":float(r.mean()/r.std()*math.sqrt(252)),
  "modified_score":ret/vol**2,"momentum_1m":mom(22),"momentum_3m":mom(63),"momentum_6m":mom(126),"momentum_12m":mom(252)}
 def rank(prices,tickers,date,variant):
@@ -29,7 +33,12 @@ def rank(prices,tickers,date,variant):
   if t not in prices:continue
   z=stats(prices[t],date)
   if z:
-   score=z["return_68d"] if variant=="momentum" else (.4*z["momentum_3m"]+.3*z["momentum_6m"]+.3*z["momentum_12m"] if variant=="composite" else z["modified_score"])
+   if variant=="composite":
+    # Composite needs complete 3/6/12-month history.
+    if any(z[k] is None for k in ("momentum_3m","momentum_6m","momentum_12m")):continue
+    score=.4*z["momentum_3m"]+.3*z["momentum_6m"]+.3*z["momentum_12m"]
+   else:
+    score=z["return_68d"] if variant=="momentum" else z["modified_score"]
    out.append({"ticker":t,**z,"score":float(score)})
  return sorted(out,key=lambda x:x["score"],reverse=True)
 def metrics(rows):
