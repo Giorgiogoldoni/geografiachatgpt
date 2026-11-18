@@ -34,12 +34,57 @@ def rank(prices,tickers,date,variant):
  return sorted(out,key=lambda x:x["score"],reverse=True)
 def metrics(rows):
  if not rows:return {}
- r=pd.Series([x["return"] for x in rows]); eq=(1+r).cumprod(); dd=eq/eq.cummax()-1; vol=float(r.std()*math.sqrt(12)) if len(r)>1 else 0
- neg=r[r<0]; down=float(neg.std()*math.sqrt(12)) if len(neg)>1 else 0; years=len(r)/12
- return {"months":len(r),"total_return":float(eq.iloc[-1]-1),"cagr":float(eq.iloc[-1]**(1/years)-1) if years else 0,
- "volatility":vol,"sharpe":float(r.mean()*12/(vol+1e-12)),"sortino":float(r.mean()*12/(down+1e-12)),
- "max_drawdown":float(dd.min()),"ulcer_index":float(np.sqrt(np.mean((dd*100)**2))),
- "equity_curve":[{"date":x.get("holding_to"),"value":float(v)} for x,v in zip(rows,eq)]}
+ r=pd.Series([float(x["return"]) for x in rows],dtype=float)
+ dates=pd.to_datetime([x.get("holding_to") for x in rows])
+ eq=(1+r).cumprod(); peak=eq.cummax(); dd=eq/peak-1
+ vol=float(r.std(ddof=1)*math.sqrt(12)) if len(r)>1 else 0.0
+ downside=float(np.sqrt(np.mean(np.minimum(r,0.0)**2))*math.sqrt(12)) if len(r) else 0.0
+ years=len(r)/12
+ cagr=float(eq.iloc[-1]**(1/years)-1) if years else 0.0
+ sharpe=float(r.mean()*12/vol) if vol>0 else 0.0
+ sortino=float(r.mean()*12/downside) if downside>0 else 0.0
+ max_dd=float(dd.min())
+ calmar=float(cagr/abs(max_dd)) if max_dd<0 else None
+ underwater=(dd < -1e-10).tolist()
+ episodes=[]; start=None
+ for i,flag in enumerate(underwater):
+  if flag and start is None:start=i
+  if start is not None and (not flag or i==len(underwater)-1):
+   end=i-1 if not flag else i
+   episodes.append({"start":dates.iloc[start].strftime("%Y-%m-%d"),"end":dates.iloc[end].strftime("%Y-%m-%d"),"days":int((dates.iloc[end]-dates.iloc[start]).days)})
+   start=None
+ max_under=max([x["days"] for x in episodes],default=0)
+ avg_under=float(np.mean([x["days"] for x in episodes])) if episodes else 0.0
+ trough=int(dd.idxmin()); peak_idx=int(eq.iloc[:trough+1].idxmax()); peak_value=float(eq.iloc[peak_idx])
+ recovery=next((i for i in range(trough+1,len(eq)) if float(eq.iloc[i])>=peak_value),None)
+ maxdd_recovery=dates.iloc[recovery].strftime("%Y-%m-%d") if recovery is not None else None
+ maxdd_duration=int((dates.iloc[recovery if recovery is not None else len(dates)-1]-dates.iloc[peak_idx]).days)
+ yearly={}
+ frame=pd.DataFrame({"return":r.values,"date":dates})
+ for year,g in frame.groupby(frame["date"].dt.year):
+  yearly[str(int(year))]=float((1+g["return"]).prod()-1)
+ periods={}
+ for n in (1,3,5,10,15):
+  k=12*n
+  if len(r)>=k:
+   total=float((1+r.tail(k)).prod()-1)
+   periods[f"{n}y"]={"total_return":total,"cagr":float((1+total)**(1/n)-1)}
+ weights_prev={}; turnovers=[]
+ for row in rows:
+  current={k:float(v) for k,v in row.get("weights",{}).items()}
+  if weights_prev:
+   keys=set(weights_prev)|set(current)
+   turnovers.append(0.5*sum(abs(current.get(k,0)-weights_prev.get(k,0)) for k in keys))
+  weights_prev=current
+ return {"months":len(r),"total_return":float(eq.iloc[-1]-1),"cagr":cagr,
+ "volatility":vol,"downside_volatility":downside,"sharpe_zero_rf":sharpe,"sortino_zero_target":sortino,
+ "max_drawdown":max_dd,"calmar":calmar,"ulcer_index":float(np.sqrt(np.mean((dd*100)**2))),
+ "max_underwater_days":max_under,"avg_underwater_days":avg_under,"drawdown_episodes":len(episodes),
+ "maxdd_peak_date":dates.iloc[peak_idx].strftime("%Y-%m-%d"),"maxdd_trough_date":dates.iloc[trough].strftime("%Y-%m-%d"),
+ "maxdd_recovery_date":maxdd_recovery,"maxdd_recovery_days":maxdd_duration,
+ "monthly_win_rate":float((r>0).mean()),"avg_monthly_turnover":float(np.mean(turnovers)) if turnovers else 0.0,
+ "periods":periods,"yearly_returns":yearly,
+ "equity_curve":[{"date":dates.iloc[i].strftime("%Y-%m-%d"),"value":float(v)} for i,v in enumerate(eq)]}
 def backtest(p,variant,common_start=None):
  m=p.resample("ME").last().dropna(how="all"); dates=list(m.index); out=[]
  for i in range(1,len(dates)-1):
@@ -69,7 +114,7 @@ def main():
  bh=[{"holding_to":bm.index[i].strftime("%Y-%m-%d"),"return":float(bm.iloc[i]/bm.iloc[i-1]-1)} for i in range(1,len(bm))]
  d={"generated_at":datetime.now(timezone.utc).isoformat(),"latest_price_date":latest.strftime("%Y-%m-%d"),"data_source":"Yahoo Finance adjusted daily prices",
  "methodology":{"lookback_trading_days":LB,"rebalance":"monthly","decision_timing":"previous month-end close; execute from next month","hedge_weight_assumption":.20,
- "regions":"Developed, Asia, South America, Africa & Middle East (fourth sleeve approximate)","warning":"Independent approximation, not Logical Invest formula. US-listed research tickers; excludes fees, taxes, slippage and FX."},
+ "regions":"Developed, Asia, South America, Africa & Middle East (fourth sleeve approximate)","warning":"Independent approximation, not Logical Invest formula. US-listed research tickers; excludes fees, taxes, slippage and FX. Sharpe/Sortino here use zero risk-free/target assumptions and are not directly comparable with Logical Invest."},
  "regions":{k:rank(p,v,latest,"modified")[:10] for k,v in REGIONS.items()},
  "selected":{k:(rank(p,v,latest,"modified")[0] if rank(p,v,latest,"modified") and rank(p,v,latest,"modified")[0]["return_68d"]>0 else None) for k,v in REGIONS.items()},
  "hedge":rank(p,HEDGE,latest,"modified")[:10],"variants":variants,"benchmark":{"ticker":BENCH,"metrics":metrics(bh)}}
