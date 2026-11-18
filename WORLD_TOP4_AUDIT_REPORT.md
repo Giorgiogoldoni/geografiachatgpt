@@ -75,3 +75,11 @@ La variante modificata ha un MaxDD recuperato il 31 marzo 2022 dopo un minimo il
 - Gold-Currency Strategy II: https://logical-invest.com/app/strategy/GLD-UUP
 - Update 2020 (60/40): https://logical-invest.com/investment-strategy-update-2020/
 - Newsletter October 2026: https://logical-invest.com/logical-invest-market-investment-outlook-for-october-2026/
+
+
+## 8. Riferimento metriche Logical Invest (snapshot pubblico)
+La pagina World Top 4 indicizzata con aggiornamento 16 ottobre 2026 riporta, come esempi di confronto:
+- **5 anni:** total return 77,5%, CAGR 12,2%, volatilità 8,6%, downside volatility 5,9%, Sharpe 1,13, Sortino 1,66, Ulcer Index 2,89, MaxDuration 247 giorni, AveDuration 51 giorni.
+- **3 anni:** total return 65,7%, CAGR 18,4%, volatilità 9,7%, downside volatility 6,7%, Sharpe 1,63, Sortino 2,39, Ulcer Index 2,47, MaxDuration 131 giorni, AveDuration 26 giorni.
+
+Sono valori descrittivi pubblicati nella pagina e vanno trattati come snapshot indicativo, non come una serie dati esportata con date iniziali/finali precise. Le metriche vanno confrontate solo dopo aver allineato la finestra esatta, la frequenza dei rendimenti e la definizione di risk-free/downside deviation.
