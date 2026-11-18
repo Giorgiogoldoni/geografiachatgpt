@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'world_top4.py'
+      - 'world_top4.py'\n      - 'world_top4_6040.py'
       - '.github/workflows/world-top4.yml'
       - 'requirements.txt'
   schedule:
