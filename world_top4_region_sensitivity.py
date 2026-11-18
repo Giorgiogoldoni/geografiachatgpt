@@ -53,10 +53,9 @@ def main():
     bench_dates = set(d.strftime("%Y-%m-%d") for d in bench.index[1:])
     results = {}
     for name, regions in scenarios.items():
-        engine.REGIONS = regions
         results[name] = {"regions": regions, "fourth_sleeve_size": len(list(regions.values())[-1]), "variants": {}}
         for variant in ("momentum", "modified", "composite"):
-            rows = engine.run_backtest(prices, variant)
+            rows = engine.run_backtest(prices, variant, regions)
             rows = [r for r in rows if r["holding_to"] in bench_dates]
             m = engine.metrics(rows)
             engine.add_risk_free_metrics(m, rows, rf_by_date)
