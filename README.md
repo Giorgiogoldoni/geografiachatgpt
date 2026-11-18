@@ -82,3 +82,16 @@ python -m http.server 8080  # apri http://localhost:8080
 
 ---
 🦅 GEOGRAFIA CHATGPT — *Fly High, Trade Smart*
+
+
+## 🌍 World Top 4 — nuova area di ricerca
+
+È stata aggiunta una dashboard autonoma ispirata alla strategia pubblica World Top 4 di Logical Invest:
+
+- [Apri dashboard World Top 4](./world-top4.html)
+- Motore: world_top4.py
+- Dati/backtest: world_top4.json (generato dal workflow giornaliero)
+- Metodo, limiti e ritardo holdings: WORLD_TOP4_METHOD.md
+- Registro per holdings Logical Invest pubblicati in ritardo: logical_invest_holdings.csv
+
+Il modulo confronta tre varianti di momentum, quattro gruppi geografici e una sleeve hedge di test, con ACWI come benchmark. È una replica metodologica indipendente: parametri non pubblici, quarta regione e peso hedge sono esplicitamente approssimati. Gli strumenti di ricerca sono ticker USA, non ancora la lista operativa UCITS.
