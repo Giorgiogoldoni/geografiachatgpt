@@ -96,6 +96,7 @@ Il calcolo viene eseguito da GitHub Actions dopo gli aggiornamenti al branch mai
 - Dati/backtest: world_top4.json (generato dal workflow giornaliero)
 - Report audit USA preliminare: [WORLD_TOP4_AUDIT_REPORT.md](./WORLD_TOP4_AUDIT_REPORT.md)
 - Ricerca sul motore storico Logical Invest: [LOGICAL_INVEST_ENGINE_RESEARCH.md](./LOGICAL_INVEST_ENGINE_RESEARCH.md)
+- **Nuovo audit di fedeltà alla metodologia ufficiale**: [WORLD_TOP4_FIDELITY_AUDIT_2026-11-18.md](./WORLD_TOP4_FIDELITY_AUDIT_2026-11-18.md)
 - Panieri ufficiali delle sottostrategie verificati: [logical_invest_substrategy_universe.csv](./logical_invest_substrategy_universe.csv)
 - Metodo, limiti e ritardo holdings: WORLD_TOP4_METHOD.md
 - Universo USA pubblico Logical Invest (49 ticker) e stato di classificazione: [logical_invest_universe.csv](./logical_invest_universe.csv)
