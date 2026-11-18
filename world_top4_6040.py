@@ -18,7 +18,7 @@ REGIONS = {
     "Developed": ["EIRL","EIS","ENZL","EPOL","EWA","EWC","EWD","EWG","EWH","EWI","EWK","EWL","EWN","EWO","EWP","EWQ","EWU","NORW"],
     "Asia": ["ASHR","DBKO","EIDO","EPHE","EPI","EWS","EWT","EWY","FXI","IDX","THD","VNM"],
     "Latin America": ["ARGT","ECH","EPU","EWW","EWZ","GXG"],
-    "Africa & Middle East (residual)": ["AFK","EGPT","EZA","FM","FRN","GAF","GULF","GREK","MCHI","MES","QQQ","RSX","TUR"],
+    "Other / residual (unverified)": ["AFK","EGPT","EZA","FM","FRN","GAF","GULF","GREK","MCHI","MES","RSX","TUR"],
 }
 TREASURY = ["TLT", "TIP", "GSY"]
 GOLD_USD = ["GLD", "UUP"]
@@ -80,15 +80,27 @@ def main():
     if latest.to_period("M") == pd.Timestamp.now(tz="UTC").to_period("M"):
         monthly = monthly.iloc[:-1]
     bench = monthly[BENCH].dropna()
-    history = run_backtest(prices)
-    # Align benchmark to the exact holding months retained by the model.
     by_date = {d.strftime("%Y-%m-%d"): float(bench.loc[d]/bench.shift(1).loc[d]-1)
                for d in bench.index[1:]}
-    model_dates = [pd.Timestamp(x["holding_to"]) for x in history]
-    aligned = [x for x in history if x["holding_to"] in by_date]
-    benchmark_rows = [{"holding_to":x["holding_to"],"return":by_date[x["holding_to"]]}
-                      for x in aligned]
-    history = aligned
+    variants = {}
+    for variant in ("momentum", "modified", "composite"):
+        full_history = run_backtest(prices, variant)
+        aligned = [x for x in full_history if x["holding_to"] in by_date]
+        benchmark_rows = [{"holding_to":x["holding_to"],"return":by_date[x["holding_to"]]}
+                          for x in aligned]
+        counts = {}
+        for row in aligned:
+            for item in row["picks"]:
+                counts[item["ticker"]] = counts.get(item["ticker"],0) + 1
+            for item in row["hedge"]:
+                counts[item["ticker"]] = counts.get(item["ticker"],0) + 1
+        variants[variant] = {
+            "metrics":metrics(aligned),
+            "benchmark":metrics(benchmark_rows),
+            "selection_months":len(aligned),
+            "selection_frequency":dict(sorted(counts.items(), key=lambda kv:(-kv[1],kv[0]))),
+            "history":aligned[-36:]
+        }
     data = {
         "generated_at":datetime.now(timezone.utc).isoformat(),
         "latest_price_date":latest.strftime("%Y-%m-%d"),
@@ -98,18 +110,16 @@ def main():
             "equity_region_weights":"15% each across four provisional regional sleeves",
             "hedge_split":"24% Treasury (60% of HEDGE) + 16% GLD-USD (40% of HEDGE)",
             "treasury_candidates":TREASURY, "gold_usd_candidates":GOLD_USD,
-            "ranking_proxy":"68-trading-day return / annualized volatility squared; not confirmed as LI formula",
+            "ranking_variants":["68-day return","68-day return / annualized volatility squared","3/6/12-month composite"],
             "absolute_momentum_filter":False,
-            "fourth_region":"Residual approximation; not verified as the official fourth LI sub-strategy",
-            "warning":"Scenario test only. Historical 60/40 and internal 60/40 hedge split are documented for 2020, not verified as current. Exact regional buckets, HEDGE selection algorithms, execution timing and ranking formula remain unconfirmed. No fees, taxes, slippage or FX."
+            "fourth_region":"Other / residual universe, not verified as the official fourth LI sub-strategy",
+            "warning":"Scenario test only. Historical 60/40 and internal 60/40 hedge split are documented for 2020, not verified as current. Exact regional buckets, HEDGE selection algorithms, execution timing and ranking formula remain unconfirmed. The residual bucket is not a verified region. No fees, taxes, slippage or FX."
         },
         "regions":REGIONS,
-        "metrics":metrics(history),
-        "benchmark":{"ticker":BENCH,"metrics":metrics(benchmark_rows)},
-        "history":history[-36:]
+        "variants":variants
     }
     OUT.write_text(json.dumps(data,indent=2,allow_nan=False),encoding="utf-8")
-    print("World Top 4 60/40 scenario",latest.date(),"months",len(history),"tickers",len(tickers))
+    print("World Top 4 60/40 scenario",latest.date(),"variants",len(variants),"tickers",len(tickers))
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
