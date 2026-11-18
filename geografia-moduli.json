@@ -120,8 +120,8 @@
         "Paesi sviluppati asiatici",
         "Asia emergente",
         "Cina A-shares e Hong Kong",
-        "Asia Pacifico regionale",
-        "Asia Pacifico High Dividend (IAPD)"
+        "Pacifico sviluppato (Australia, Nuova Zelanda, Hong Kong e Singapore; escluso il Giappone)",
+        "Asia-Pacifico High Dividend (IAPD)"
       ],
       "factor_categories": [
         "QUALITY",
@@ -142,9 +142,17 @@
         "XCS3.DE",
         "XPQP.DE",
         "XBAS.DE",
-        "IAPD.MI"
+        "IAPD.MI",
+        "SAUS.MI",
+        "AUHEUA.MI",
+        "SPXJ.MI"
       ],
-      "notes": "Pacifico ex-Japan e Australia non sono automaticamente classificati come singolo Paese asiatico: verranno assegnati a una categoria regionale dedicata o al modulo corretto."
+      "notes": "Il sottoinsieme Pacifico è distinto dai singoli Paesi asiatici: Australia e Nuova Zelanda sono tracciate separatamente. Gli ETF Pacifico ex-Japan includono anche Hong Kong e Singapore; non sono proxy puri di Australia/Nuova Zelanda. IAPD resta un ETF dividend Asia-Pacifico.",
+      "pacific_countries": [
+        "Australia",
+        "Nuova Zelanda"
+      ],
+      "pacific_country_universe_status": "Australia: ETF UCITS dedicati verificati (SAUS.MI; UBS MSCI Australia hEUR acc, AUHEUA.MI). Nuova Zelanda: non è stato individuato un ETF UCITS europeo dedicato al solo Paese; esposizione disponibile tramite ETF regionali Pacifico ex-Japan."
     },
     {
       "id": "middle-east-africa",
