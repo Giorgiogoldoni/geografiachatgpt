@@ -4,11 +4,11 @@
 Ricostruire una strategia momentum geografica ispirata alle informazioni pubbliche di Logical Invest, senza affermare di replicarne il codice proprietario.
 
 ## Struttura
-- Quattro gruppi regionali: Developed, Asia, South America e Africa & Middle East. Il quarto gruppo è un'aggregazione di ricerca: le fonti pubbliche reperite confermano almeno Developed, Asia e South America, ma non consentono di attribuire con certezza tutti i ticker alle quattro sleeve correnti.
+- Quattro sottostrategie geografiche sono dichiarate da Logical Invest, ma la mappa completa ticker→sleeve non è pubblicata nelle pagine consultate. Developed, Asia e South America hanno pagine regionali pubbliche; la quarta sleeve non è identificata con certezza. Il gruppo residuale presente nei vecchi script è un'ipotesi di ricerca, non una classificazione ufficiale.
 - Lookback primario: 68 sedute di borsa.
 - Tre varianti confrontate: rendimento 68 sedute, rendimento/volatilità annualizzata al quadrato (proxy Sharpe modificato), composito momentum 3/6/12 mesi.
 - Ribilanciamento mensile: il segnale usa la chiusura del mese precedente; il rendimento viene misurato nel mese successivo.
-- Filtro absolute momentum: un Paese entra nella sleeve soltanto se il rendimento degli ultimi 68 giorni è positivo. Ogni regione selezionata pesa il 20%; la quota delle regioni senza momentum positivo viene trasferita alla sleeve HEDGE. La sleeve hedge sceglie fino a due strumenti positivi tra GLD, TLT, IEF e SHY; se nessuno supera il filtro, la quota resta su SHY. È una regola prudenziale sperimentale, non un peso attribuito a Logical Invest.
+- Le regole di peso, filtro absolute momentum e allocazione HEDGE presenti negli script sono ipotesi sperimentali, non regole ufficiali Logical Invest. La pagina HEDGE corrente descrive due moduli: Treasury Hedge e Gold-Currency (GLD-USD). Non sostituirli con una selezione piatta di GLD, TLT, IEF e SHY.
 - Benchmark: ACWI buy & hold.
 
 ## Holdings pubblicati con un mese di ritardo
@@ -122,3 +122,12 @@ Il workflow giornaliero esegue il nuovo modulo e pubblica il JSON. Prima di cons
 - impatto della quarta sleeve e della ricostruzione HEDGE.
 
 Non sostituire la baseline o i pesi operativi in base al solo backtest complessivo.
+
+
+## Correzione documentale — 18 novembre 2026
+
+La pagina principale WTOP4 aggiornata al 16 ottobre 2026 conferma quattro sottostrategie geografiche e pubblica un universo di 49 ETF, ma non rende visibile l'associazione completa fra ticker e singola sleeve. Africa, Asia e Latin America sono esempi di aree citati nella descrizione; non costituiscono da soli la mappa completa delle quattro sleeve. Vedi `logical_invest_wtop4_universe_2026-10-16.csv` e `WORLD_TOP4_FOURTH_SLEEVE_RESEARCH_2026-11-18.md`.
+
+La pagina HEDGE aggiornata al 7 ottobre 2026 descrive due componenti: Treasury e GLD-USD. La pagina Gold-Currency Strategy II (GLD-UUP), aggiornata a ottobre 2026, specifica che alterna oro e dollaro sulla base della recente performance risk-adjusted. La pagina Treasury Hedge (TRESHEDGE) è aggiornata al 24 giugno 2026. I parametri completi e i pesi correnti dei due moduli non sono disponibili nel testo pubblico consultato. Il precedente schema del motore sperimentale (24% Treasury + 16% GLD-USD) resta uno scenario storico, non una regola live confermata.
+
+**Regola di governance:** non cambiare i panieri ufficiali, i pesi o il codice operativo finché non sono disponibili evidenze che associno i ticker alle quattro sleeve e documentino i segnali di Treasury Hedge e GLD-UUP. Le ipotesi vanno mantenute in varianti separate e nominate come tali.
