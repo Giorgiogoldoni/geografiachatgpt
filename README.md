@@ -122,3 +122,10 @@ La pagina principale del repository è ora la dashboard della strategia geografi
 Il motore scarica prezzi rettificati delle quotazioni europee mappate, calcola Modified Sharpe su 68 sedute, momentum a 3/6/12 mesi e filtro prezzo sopra SMA200 + momentum 12 mesi positivo. Le quattro aree sono classificate separatamente. LTAM e ALAT sono alternative regionali e non vengono confuse con Brasile e Messico.
 
 **Limiti della prima release:** il motore mostra lo snapshot corrente e non ancora un backtest walk-forward; i ticker non mappati, le quotazioni senza dati e gli storici insufficienti sono segnalati ed esclusi. Non è una replica del motore proprietario Logical Invest né un sistema di ordini automatici.
+
+
+## INDEX ETF geografici
+
+- Dashboard ricercabile: [INDEX ETF — 51 strumenti](./index-etf.html)
+- Archivio CSV dell'elenco PAESI originale fornito il 18 novembre 2026: [data/geografia_index_user_51.csv](./data/geografia_index_user_51.csv)
+- I 51 ticker sono conservati come universo di partenza. La verifica di ISIN, borsa, valuta, struttura ETF/ETP, liquidità e disponibilità dei prezzi è un passaggio distinto prima dell'inclusione nel motore quantitativo.
