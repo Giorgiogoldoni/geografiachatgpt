@@ -4,7 +4,8 @@ All Africa/Middle East classifications below are research hypotheses, not offici
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-import pandas as pd\nimport world_top4_6040 as engine
+import pandas as pd
+import world_top4_6040 as engine
 
 OUT = Path("world_top4_region_sensitivity.json")
 
@@ -24,8 +25,6 @@ def candidate_selection_audit(prices, rows, variant, region_name, candidate, can
         signal = __import__("pandas").Timestamp(row["signal_date"])
         start = __import__("pandas").Timestamp(row["holding_from"])
         end = __import__("pandas").Timestamp(row["holding_to"])
-        ranked = engine.rank(prices, region_assets, signal, variant) if False else None
-        # region_assets is supplied by the caller through the audit closure below.
         ranked = engine.rank(prices, candidate_universe, signal, variant)
         positions = {item["ticker"]: i + 1 for i, item in enumerate(ranked)}
         rank = positions.get(candidate)
@@ -71,16 +70,18 @@ def candidate_selection_audit(prices, rows, variant, region_name, candidate, can
 
 def build_candidate_audits(prices, rows, variant, regions):
     audits = {}
-    # Korea is tested inside the Asia sleeve, against the full eligible Asia universe.
-    global candidate_universe
-    candidate_universe = regions.get("Asia", [])
-    if "EWY" in candidate_universe:
-        audits["EWY"] = candidate_selection_audit(prices, rows, variant, "Asia", "EWY")
-    # Greece is tested wherever it is eligible in the fourth sleeve.
-    fourth_name, fourth_assets = list(regions.items())[-1]
-    if "GREK" in fourth_assets:
-        candidate_universe = fourth_assets
-        audits["GREK"] = candidate_selection_audit(prices, rows, variant, fourth_name, "GREK")
+    # Korea is ranked against the full eligible Asia universe.
+    asia_universe = regions.get("Asia", [])
+    if "EWY" in asia_universe:
+        audits["EWY"] = candidate_selection_audit(
+            prices, rows, variant, "Asia", "EWY", asia_universe
+        )
+    # Greece is ranked against the fourth-sleeve universe in each scenario.
+    fourth_name, fourth_universe = list(regions.items())[-1]
+    if "GREK" in fourth_universe:
+        audits["GREK"] = candidate_selection_audit(
+            prices, rows, variant, fourth_name, "GREK", fourth_universe
+        )
     return audits
 
 
@@ -142,13 +143,14 @@ def main():
             rows = engine.run_backtest(prices, variant, regions)
             rows = [r for r in rows if r["holding_to"] in bench_dates]
             rows_by_scenario[name][variant] = rows
-            results[name]["variants"][variant]["candidate_audit"] = build_candidate_audits(prices, rows, variant, regions)
+            candidate_audit = build_candidate_audits(prices, rows, variant, regions)
             m = engine.metrics(rows)
             engine.add_risk_free_metrics(m, rows, rf_by_date)
             results[name]["variants"][variant] = {
                 "metrics": m, "months": len(rows),
                 "start": rows[0]["holding_to"] if rows else None,
-                "end": rows[-1]["holding_to"] if rows else None
+                "end": rows[-1]["holding_to"] if rows else None,
+                "candidate_audit": candidate_audit
             }
 
     # Fair comparison: recalculate each active hypothesis on the exact same
