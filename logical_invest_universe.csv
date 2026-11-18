@@ -1,5 +1,7 @@
 "ticker","instrument_name","public_substrategy_classification","audit_status","source_note"
+"ARGT","Global X MSCI Argentina ETF","","Additional official sub-strategy ticker","South America page; not present in main WTOP4 list"
 "AFK","VanEck Africa Index ETF","","Unverified fourth sleeve / regional bucket","Main World Top 4 list"
+"DBKO","Xtrackers MSCI South Korea Hedged Equity ETF","Asia","Additional official sub-strategy ticker","Asia page; not present in main WTOP4 list"
 "ASHR","Xtrackers Harvest CSI 300 China A-Shares ETF","Asia","","Asia sub-strategy"
 "ECH","iShares MSCI Chile ETF","South America","","South America sub-strategy"
 "EGPT","VanEck Egypt Index ETF","","Unverified fourth sleeve / regional bucket","Main World Top 4 list"
