@@ -72,14 +72,38 @@ def run_backtest(prices, variant="modified"):
         })
     return rows
 
+def add_risk_free_metrics(metric_block, rows, rf_by_date):
+    # ^IRX is the 13-week US Treasury bill annualized yield.
+    dates = [x["holding_to"] for x in rows]
+    returns = pd.Series([float(x["return"]) for x in rows], dtype=float)
+    rf = pd.Series([float(rf_by_date.get(d, 0.0)) for d in dates], dtype=float)
+    excess = returns - rf
+    vol = float(returns.std(ddof=1) * (12 ** 0.5)) if len(returns) > 1 else 0.0
+    downside = float(((-excess.clip(upper=0)) ** 2).mean() ** 0.5 * (12 ** 0.5)) if len(excess) else 0.0
+    metric_block["sharpe_90d_rf"] = float(excess.mean() * 12 / vol) if vol > 0 else 0.0
+    metric_block["sortino_90d_rf"] = float(excess.mean() * 12 / downside) if downside > 0 else 0.0
+    for n in (1, 3, 5, 10, 15):
+        key = f"{n}y"
+        if key not in metric_block.get("periods", {}):
+            continue
+        k = 12 * n
+        sub_returns = returns.tail(k)
+        sub_excess = excess.tail(k)
+        sub_vol = float(sub_returns.std(ddof=1) * (12 ** 0.5)) if len(sub_returns) > 1 else 0.0
+        sub_down = float(((-sub_excess.clip(upper=0)) ** 2).mean() ** 0.5 * (12 ** 0.5))
+        metric_block["periods"][key]["sharpe_90d_rf"] = float(sub_excess.mean() * 12 / sub_vol) if sub_vol > 0 else 0.0
+        metric_block["periods"][key]["sortino_90d_rf"] = float(sub_excess.mean() * 12 / sub_down) if sub_down > 0 else 0.0
+
 def main():
-    tickers = sorted(set(sum(REGIONS.values(),[]) + TREASURY + GOLD_USD + [BENCH]))
+    tickers = sorted(set(sum(REGIONS.values(),[]) + TREASURY + GOLD_USD + [BENCH, "^IRX"]))
     prices = download(tickers)
     latest = prices.dropna(how="all").index[-1]
     monthly = prices.resample("ME").last()
     if latest.to_period("M") == pd.Timestamp.now(tz="UTC").to_period("M"):
         monthly = monthly.iloc[:-1]
     bench = monthly[BENCH].dropna()
+    rf_series = monthly["^IRX"].dropna() / 100.0 / 12.0
+    rf_by_date = {d.strftime("%Y-%m-%d"): float(rf_series.loc[d]) for d in rf_series.index}
     by_date = {d.strftime("%Y-%m-%d"): float(bench.loc[d]/bench.shift(1).loc[d]-1)
                for d in bench.index[1:]}
     variants = {}
@@ -94,9 +118,13 @@ def main():
                 counts[item["ticker"]] = counts.get(item["ticker"],0) + 1
             for item in row["hedge"]:
                 counts[item["ticker"]] = counts.get(item["ticker"],0) + 1
+        model_metrics = metrics(aligned)
+        benchmark_metrics = metrics(benchmark_rows)
+        add_risk_free_metrics(model_metrics, aligned, rf_by_date)
+        add_risk_free_metrics(benchmark_metrics, benchmark_rows, rf_by_date)
         variants[variant] = {
-            "metrics":metrics(aligned),
-            "benchmark":metrics(benchmark_rows),
+            "metrics":model_metrics,
+            "benchmark":benchmark_metrics,
             "selection_months":len(aligned),
             "selection_frequency":dict(sorted(counts.items(), key=lambda kv:(-kv[1],kv[0]))),
             "history":aligned[-36:]
@@ -104,7 +132,7 @@ def main():
     data = {
         "generated_at":datetime.now(timezone.utc).isoformat(),
         "latest_price_date":latest.strftime("%Y-%m-%d"),
-        "data_source":"Yahoo Finance adjusted daily prices",
+        "data_source":"Yahoo Finance adjusted daily prices; ^IRX 13-week Treasury bill yield as risk-free proxy",
         "methodology":{
             "equity_weight":0.60, "hedge_weight":0.40,
             "equity_region_weights":"15% each across four provisional regional sleeves",
@@ -112,6 +140,7 @@ def main():
             "treasury_candidates":TREASURY, "gold_usd_candidates":GOLD_USD,
             "ranking_variants":["68-day return","68-day return / annualized volatility squared","3/6/12-month composite"],
             "absolute_momentum_filter":False,
+            "risk_free_proxy":"^IRX 13-week Treasury bill annualized yield, divided by 12 for monthly excess-return calculations",
             "fourth_region":"Other / residual universe, not verified as the official fourth LI sub-strategy",
             "warning":"Scenario test only. Historical 60/40 and internal 60/40 hedge split are documented for 2020, not verified as current. Exact regional buckets, HEDGE selection algorithms, execution timing and ranking formula remain unconfirmed. The residual bucket is not a verified region. No fees, taxes, slippage or FX."
         },
