@@ -8,7 +8,7 @@ Ricostruire una strategia momentum geografica ispirata alle informazioni pubblic
 - Lookback primario: 68 sedute di borsa.
 - Tre varianti confrontate: rendimento 68 sedute, rendimento/volatilità annualizzata al quadrato (proxy Sharpe modificato), composito momentum 3/6/12 mesi.
 - Ribilanciamento mensile: il segnale usa la chiusura del mese precedente; il rendimento viene misurato nel mese successivo.
-- Sleeve hedge di test: 20% ripartito tra i due migliori tra GLD, TLT, IEF, SHY. È una convenzione di test, non un peso attribuito a Logical Invest.
+- Filtro absolute momentum: un Paese entra nella sleeve soltanto se il rendimento degli ultimi 68 giorni è positivo. Ogni regione selezionata pesa il 20%; la quota delle regioni senza momentum positivo viene trasferita alla sleeve HEDGE. La sleeve hedge sceglie fino a due strumenti positivi tra GLD, TLT, IEF e SHY; se nessuno supera il filtro, la quota resta su SHY. È una regola prudenziale sperimentale, non un peso attribuito a Logical Invest.
 - Benchmark: ACWI buy & hold.
 
 ## Holdings pubblicati con un mese di ritardo
