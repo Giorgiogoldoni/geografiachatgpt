@@ -35,7 +35,7 @@ def rank(prices,tickers,date,variant):
 def metrics(rows):
  if not rows:return {}
  r=pd.Series([float(x["return"]) for x in rows],dtype=float)
- dates=pd.to_datetime([x.get("holding_to") for x in rows])
+ dates=pd.Series(pd.to_datetime([x.get("holding_to") for x in rows]))
  eq=(1+r).cumprod(); peak=eq.cummax(); dd=eq/peak-1
  vol=float(r.std(ddof=1)*math.sqrt(12)) if len(r)>1 else 0.0
  downside=float(np.sqrt(np.mean(np.minimum(r,0.0)**2))*math.sqrt(12)) if len(r) else 0.0
