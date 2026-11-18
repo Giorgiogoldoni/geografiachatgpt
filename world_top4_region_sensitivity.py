@@ -4,7 +4,7 @@ All Africa/Middle East classifications below are research hypotheses, not offici
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-import world_top4_6040 as engine
+import pandas as pd\nimport world_top4_6040 as engine
 
 OUT = Path("world_top4_region_sensitivity.json")
 
