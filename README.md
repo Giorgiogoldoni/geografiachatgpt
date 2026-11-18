@@ -151,3 +151,19 @@ Il motore scarica prezzi rettificati delle quotazioni europee mappate, calcola M
 - **Global**: World, ACWI, All-World, Emerging Markets e fattori globali, sempre separati dai moduli regionali.
 
 La tassonomia è la prima fase strutturale: elenchi e ticker di esempio non equivalgono a copertura quantitativa già attiva. Ogni strumento dovrà essere verificato per ISIN, listing UCITS, ticker di borsa, liquidità e serie storica prima di entrare nei ranking. Il catalogo factor resta distinto dall'universo Paesi.
+
+
+## Motore geografico a sei aree
+
+La nuova dashboard `geografia-motore.html` usa il catalogo INDEX dell'utente come universo iniziale e aggiorna i ranking tramite `geografia_engine.py`.
+
+- Aree: America del Nord, Centro/Sud America, Asia e Pacifico, Medio Oriente/Africa, Europa e Global.
+- Sotto-ranking separati: Paesi, ETF regionali, indici/strategie nazionali e Global.
+- Momentum: 1, 3, 6 e 12 mesi; score principale candidato Modified Sharpe su 68 sedute.
+- Filtro trend: prezzo rettificato sopra SMA200 e momentum a 12 mesi positivo.
+- Backtest esplorativo: segnale mensile e detenzione nel mese successivo, un vincitore per area/categoria.
+- ETF factor: archivio separato; non entrano nelle classifiche geografiche.
+- ETP espliciti: separati dal ranking UCITS principale.
+- Workflow automatico nei giorni di mercato, con avvio manuale disponibile da GitHub Actions.
+
+Il motore è una ricerca quantitativa indipendente. La formula Modified Sharpe con attenuatore 2 è una ricostruzione storica plausibile, non una formula live proprietaria verificata di Logical Invest. I prezzi Yahoo rettificati sono una proxy e richiedono controlli su listing, ISIN, valuta, liquidità e corporate actions. Il backtest non include costi, slippage o fiscalità e non genera ordini.
