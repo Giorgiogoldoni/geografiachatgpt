@@ -83,3 +83,5 @@ La pagina World Top 4 indicizzata con aggiornamento 16 ottobre 2026 riporta, com
 - **3 anni:** total return 65,7%, CAGR 18,4%, volatilità 9,7%, downside volatility 6,7%, Sharpe 1,63, Sortino 2,39, Ulcer Index 2,47, MaxDuration 131 giorni, AveDuration 26 giorni.
 
 Sono valori descrittivi pubblicati nella pagina e vanno trattati come snapshot indicativo, non come una serie dati esportata con date iniziali/finali precise. Le metriche vanno confrontate solo dopo aver allineato la finestra esatta, la frequenza dei rendimenti e la definizione di risk-free/downside deviation.
+
+La tabella riepilogativa della homepage Logical Invest, indicizzata a metà novembre 2026, riporta inoltre circa **+7,4% YTD**, **+8,7% a 1 anno**, volatilità a 1 anno **11,6%**, Sharpe **0,5** e MaxDD a 1 anno **-9,6%**. È un dato di homepage soggetto a variazione giornaliera, non va confuso con lo snapshot pluriennale sopra.
