@@ -94,6 +94,7 @@ Il calcolo viene eseguito da GitHub Actions dopo gli aggiornamenti al branch mai
 - Motore: world_top4.py
 - Dati/backtest: world_top4.json (generato dal workflow giornaliero)
 - Metodo, limiti e ritardo holdings: WORLD_TOP4_METHOD.md
+- Universo USA pubblico Logical Invest (49 ticker) e stato di classificazione: [logical_invest_universe.csv](./logical_invest_universe.csv)
 - Registro per holdings Logical Invest pubblicati in ritardo: logical_invest_holdings.csv
 
-Il modulo confronta tre varianti di momentum, quattro gruppi geografici, filtro absolute momentum e sleeve hedge variabile, con ACWI come benchmark sullo stesso periodo. Include storico delle selezioni e backtest mensile. È una replica metodologica indipendente: parametri non pubblici, quarta regione e peso hedge sono esplicitamente approssimati. Gli strumenti di ricerca sono ticker USA, non ancora la lista operativa UCITS.
+Il modulo confronta tre varianti di momentum e ACWI. L'audit ha registrato l'universo pubblico USA di Logical Invest e ha aggiunto metriche estese di rischio, drawdown, turnover e rendimenti annuali. Le sottostrategie pubbliche consultabili mostrano sovrapposizioni tra alcuni ticker; la quarta sleeve e la regola HEDGE restano da verificare. Il backtest corrente è ancora un modello indipendente preliminare, non una replica della formula proprietaria. Sharpe/Sortino interni sono calcolati con tasso risk-free/target zero e non sono direttamente confrontabili con i valori Logical Invest. Gli strumenti di ricerca sono ticker USA, non ancora la lista operativa UCITS.
