@@ -498,7 +498,8 @@ def main():
             if pool:
                 factor_rankings[factor + "|" + geography] = sorted(
                     pool, key=lambda x: rank_key(x, "modified_sharpe_candidate"), reverse=True)
-    backtests = monthly_winner_backtest(prices, rows) if not prices.empty else {}\n    momentum_weight_comparison = momentum_weight_backtest(prices, rows) if not prices.empty else {"scenarios": {}, "note": "Prezzi non disponibili."}
+    backtests = monthly_winner_backtest(prices, rows) if not prices.empty else {}
+    momentum_weight_comparison = momentum_weight_backtest(prices, rows) if not prices.empty else {"scenarios": {}, "note": "Prezzi non disponibili."}
     all_dates = [r.get("price_date") for r in calculated if r.get("price_date")]
     coverage = {
         "index_count": len(rows),
@@ -516,7 +517,8 @@ def main():
         "latest_price_date": max(all_dates) if all_dates else None,
         "method": {
             "lookback_sessions": LOOKBACK, "modified_sharpe_candidate": "mean(daily returns) / stdev(daily returns)^2",
-            "momentum_windows_sessions": WINDOWS, "composite_weights": COMPOSITE_WEIGHTS,\n            "momentum_weight_scenarios": MOMENTUM_WEIGHT_SCENARIOS,
+            "momentum_windows_sessions": WINDOWS, "composite_weights": COMPOSITE_WEIGHTS,
+            "momentum_weight_scenarios": MOMENTUM_WEIGHT_SCENARIOS,
             "trend_filter": "last adjusted price > SMA200 AND 12-month momentum > 0",
             "rebalance": "monthly signal; daily data refresh",
             "price_source": "Yahoo Finance auto_adjust=True; adjusted-price proxy, not an official total-return feed",
