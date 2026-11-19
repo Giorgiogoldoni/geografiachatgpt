@@ -580,6 +580,10 @@ TICKER_ISIN_OVERRIDES = {
     "FLXU": "IE00BF2B0P08", "SAUDI": "IE000C7DDDX4",
     "SAUS": "IE00B5377D42", "IS3U": "IE00BP3QZJ36",
     "HSTE": "IE00BMWXKN31", "LGUS": "IE00BFXR5Q31",
+    "AUHEUA": "IE00BWT3KS11", "SPXE": "IE00BYYW2V44",
+    "CSNDX": "IE00B53SZB19", "INDO": "LU1900065811",
+    "TUR": "LU1900067601", "WRTY": "XS3003324129",
+    "WS5X": "XS2427362145", "WSPX": "XS2427355958",
 }
 ETF_LAUNCH_OVERRIDES = {
     "IE00BHZRQZ17": ("2019-06-25", "Franklin Templeton", "ALTA"),
@@ -603,6 +607,14 @@ ETF_LAUNCH_OVERRIDES = {
     "IE00BP3QZJ36": ("2014-09-05", "justETF", "MEDIA"),
     "IE00BMWXKN31": ("2020-12-09", "justETF", "MEDIA"),
     "IE00BFXR5Q31": ("2018-10-08", "justETF", "MEDIA"),
+    "IE00BWT3KS11": ("2015-11-27", "justETF", "MEDIA"),
+    "IE00BYYW2V44": ("2018-10-31", "justETF / State Street", "ALTA"),
+    "IE00B53SZB19": ("2010-01-26", "justETF", "MEDIA"),
+    "LU1900065811": ("2011-07-04", "justETF", "MEDIA"),
+    "LU1900067601": ("2006-08-11", "justETF / Amundi first NAV", "MEDIA"),
+    "XS3003324129": ("2025-04-08", "WisdomTree", "ALTA"),
+    "XS2427362145": ("2022-03-02", "WisdomTree", "ALTA"),
+    "XS2427355958": ("2022-03-02", "WisdomTree", "ALTA"),
     "IE00BQN1K786": ("2015-01-16", "justETF", "MEDIA"),
     "IE00BQN1K901": ("2015-01-16", "justETF", "MEDIA"),
     "IE00BQN1KC32": ("2015-01-16", "justETF", "MEDIA"),
@@ -661,7 +673,7 @@ def build_lifecycle_registry(rows, factor_rows, prices):
             "listing_date_source": listing[1],
             "first_price_date": series.index[0].strftime("%Y-%m-%d") if not series.empty else "",
             "last_price_date": series.index[-1].strftime("%Y-%m-%d") if not series.empty else "",
-            "status": ("ETP/ETN - forma distinta da ETF" if row.get("ticker", "").split(".")[0] == "WMIB" else ("DATA LANCIO VERIFICATA" if launch[0] else "DA VERIFICARE")),
+            "status": ("ETP/ETN - forma distinta da ETF" if row.get("ticker", "").split(".")[0] in {"WMIB", "WRTY", "WS5X", "WSPX"} else ("DATA LANCIO VERIFICATA" if launch[0] else "DA VERIFICARE")),
         })
     return sorted(registry, key=lambda x: (x["ticker"], x["isin"]))
 
