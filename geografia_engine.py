@@ -79,6 +79,10 @@ FACTOR_SYMBOL_MAP = {
     "IEWQ": "IEWQ.MI", "WELE": "WELE.MI",
     # Quality
     "IWQU": "IWQU.MI", "IEQU": "IEQU.MI",
+    # Value: quotazioni Borsa Italiana verificate
+    "IWVL": "IWVL.MI", "IEVL": "IEVL.MI", "XDEV": "XDEV.MI",
+    # USA Momentum: listing Xetra verificata da iShares
+    "QDVA": "QDVA.DE",
     "IAPD.MI": "IAPD.MI",
 }
 
