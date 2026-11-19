@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ETF Lifecycle · Geografia ChatGPT</title>
+<style>
+body{margin:0;background:#f4f6f9;color:#172033;font:14px system-ui,-apple-system,Segoe UI,sans-serif}header{background:#14243b;color:white;padding:18px max(16px,calc((100% - 1400px)/2))}main{max-width:1400px;margin:18px auto;padding:0 14px}.card{background:white;border:1px solid #e1e6ed;border-radius:10px;padding:14px;margin-bottom:14px}.muted{color:#697586;font-size:12px}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:12px}th,td{text-align:left;padding:8px;border-bottom:1px solid #e1e6ed;white-space:nowrap}th{background:#f8fafc;color:#697586}a{color:#2459a6}.pill{padding:3px 7px;border-radius:12px;background:#fff4d6;color:#8a5a00;font-weight:700}.ok{background:#e7f6ed;color:#16794b}.controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}input,select,button{padding:8px;border:1px solid #cbd5e1;border-radius:7px;background:white}
+</style></head><body>
+<header><h1>ETF Lifecycle · Date di nascita e storico</h1><div>Registro controllato degli ETF geografici e factor</div><p><a style="color:#d8e7ff" href="./index.html">← Torna all'Index</a> · <a style="color:#d8e7ff" href="./geografia-motore.html">Motore</a></p></header>
+<main>
+<div class="card"><b>Come leggere le date</b><p>Data lancio fondo = data di nascita dichiarata dall'emittente o da una fonte specializzata. Data quotazione = avvio delle negoziazioni su una specifica Borsa. Prima osservazione prezzi = primo dato restituito da Yahoo Finance per il simbolo usato dal motore; non equivale alla data di lancio. I campi non verificati restano vuoti: non vengono stimati.</p><p class="muted">L'archivio viene rigenerato dal motore a ogni aggiornamento. Il registro non corregge ancora il survivorship bias dovuto agli ETF chiusi o delistati.</p></div>
+<div class="card"><div id="status" class="muted">Caricamento registro…</div><div class="controls"><input id="q" placeholder="Cerca ticker, ISIN o nome"><select id="filter"><option value="all">Tutti</option><option value="verified">Lancio verificato</option><option value="missing">Data da verificare</option></select><a href="./etf_lifecycle_registry.csv">Scarica CSV</a></div><div class="scroll" id="table"></div></div>
+<div class="card"><b>Fonti iniziali verificate</b><ul>
+<li><a href="https://www.franklintempleton.it/prodotti/i-nostri-etf">Franklin Templeton – schede e date di lancio</a></li>
+<li><a href="https://www.justetf.com/it/etf-profile.html?isin=IE00B27YCK28">justETF – iShares MSCI EM Latin America (15/10/2007)</a></li>
+<li><a href="https://www.justetf.com/it/etf-profile.html?isin=IE00BP3QZ601">justETF – iShares World Quality (03/10/2014)</a></li>
+<li><a href="https://www.justetf.com/en-it/etf-profile.html?isin=IE00BQN1K562">justETF – iShares Europe Quality (16/01/2015)</a></li>
+<li><a href="https://www.borsaitaliana.it/etf/notiziedettaglio/12etfstyleishares.htm">Borsa Italiana – avvio negoziazioni di otto ETF factor (16/02/2015)</a></li>
+</ul></div>
+</main>
+<script>
+let rows=[];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function render(){let q=document.getElementById("q").value.toLowerCase(),f=document.getElementById("filter").value;let a=rows.filter(x=>(f==="all"||(f==="verified"?!!x.fund_launch_date:!x.fund_launch_date))&&[x.ticker,x.isin,x.name,x.symbol].join(" ").toLowerCase().includes(q));document.getElementById("table").innerHTML='<table><thead><tr><th>Ticker / simbolo</th><th>ISIN</th><th>ETF</th><th>Lancio fondo</th><th>Fonte</th><th>Quotazione Borsa</th><th>Prima data prezzi</th><th>Ultima data</th><th>Stato</th></tr></thead><tbody>'+a.map(x=>'<tr><td><b>'+esc(x.ticker)+'</b><br>'+esc(x.symbol)+'</td><td>'+esc(x.isin)+'</td><td>'+esc(x.name)+'</td><td>'+esc(x.fund_launch_date||"—")+'</td><td>'+esc(x.fund_launch_source||"—")+'</td><td>'+esc(x.listing_date||"—")+'</td><td>'+esc(x.first_price_date||"—")+'</td><td>'+esc(x.last_price_date||"—")+'</td><td><span class="pill '+(x.fund_launch_date?'ok':'')+'">'+esc(x.status)+'</span></td></tr>').join("")+'</tbody></table>'}
+async function load(){try{let r=await fetch("./geografia-motore.json?ts="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error("JSON non disponibile");let d=await r.json();rows=d.etf_lifecycle_registry||[];document.getElementById("status").textContent=rows.length+" strumenti censiti · "+rows.filter(x=>x.fund_launch_date).length+" date di lancio verificate · aggiornamento "+new Date(d.generated_at).toLocaleString("it-IT");render()}catch(e){document.getElementById("status").textContent="Registro non ancora pubblicato: "+e.message}}
+document.getElementById("q").addEventListener("input",render);document.getElementById("filter").addEventListener("change",render);load();
+</script></body></html>
