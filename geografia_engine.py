@@ -584,6 +584,12 @@ TICKER_ISIN_OVERRIDES = {
     "CSNDX": "IE00B53SZB19", "INDO": "LU1900065811",
     "TUR": "LU1900067601", "WRTY": "XS3003324129",
     "WS5X": "XS2427362145", "WSPX": "XS2427355958",
+    "C40": "LU1681046931", "FMI": "LU1681037518",
+    "VJPE": "IE00BFMXYY33", "SPY5": "IE00B6YX5C33",
+    "SVE": "LU1169830103", "SP1E": "IE000YELA4E3",
+    "WNAS": "XS3003325795", "WSPE": "XS3151431957",
+    "XBAS": "LU0659578842", "XPQP": "LU0592215403",
+    "EXS1": "DE0005933931", "CN1": "LU1681044647",
 }
 ETF_LAUNCH_OVERRIDES = {
     "IE00BHZRQZ17": ("2019-06-25", "Franklin Templeton", "ALTA"),
@@ -615,6 +621,18 @@ ETF_LAUNCH_OVERRIDES = {
     "XS3003324129": ("2025-04-08", "WisdomTree", "ALTA"),
     "XS2427362145": ("2022-03-02", "WisdomTree", "ALTA"),
     "XS2427355958": ("2022-03-02", "WisdomTree", "ALTA"),
+    "LU1681046931": ("2003-02-28", "Amundi first NAV / justETF", "MEDIA"),
+    "LU1681037518": ("2010-06-08", "Amundi", "ALTA"),
+    "IE00BFMXYY33": ("2020-01-31", "Vanguard", "ALTA"),
+    "IE00B6YX5C33": ("2012-03-19", "State Street", "ALTA"),
+    "LU1169830103": ("2020-06-18", "justETF", "MEDIA"),
+    "IE000YELA4E3": ("2025-07-17", "justETF", "MEDIA"),
+    "XS3003325795": ("2025-04-08", "WisdomTree", "ALTA"),
+    "XS3151431957": ("2025-09-25", "WisdomTree", "ALTA"),
+    "LU0659578842": ("2011-09-19", "justETF", "MEDIA"),
+    "LU0592215403": ("2011-04-12", "justETF", "MEDIA"),
+    "DE0005933931": ("2000-12-27", "BlackRock", "ALTA"),
+    "LU1681044647": ("2008-09-16", "Amundi first NAV", "ALTA"),
     "IE00BQN1K786": ("2015-01-16", "justETF", "MEDIA"),
     "IE00BQN1K901": ("2015-01-16", "justETF", "MEDIA"),
     "IE00BQN1KC32": ("2015-01-16", "justETF", "MEDIA"),
@@ -636,6 +654,12 @@ ETF_LAUNCH_OVERRIDES = {
     "XS2427354985": ("2022-03-02", "WisdomTree / justETF", "ALTA"),
     "LU0779800910": ("2012-06-27", "justETF", "MEDIA"),
     "FR0007056841": ("2001-04-04", "justETF", "MEDIA"),
+}
+SHARE_CLASS_LAUNCH_OVERRIDES = {
+    "LU1681046931": ("2018-02-14", "Amundi factsheet"),
+    "LU1681037518": ("2018-01-31", "Amundi factsheet / listing"),
+    "LU1681044647": ("2018-03-22", "Amundi factsheet"),
+    "LU1900067601": ("2019-03-14", "Amundi factsheet"),
 }
 BORSA_LISTING_OVERRIDES = {
     "IE00BP3QZ601": ("2015-02-16", "Borsa Italiana"),
@@ -669,11 +693,11 @@ def build_lifecycle_registry(rows, factor_rows, prices):
             "category": row.get("bucket", row.get("category", "")),
             "fund_launch_date": launch[0], "fund_launch_source": launch[1],
             "fund_launch_confidence": launch[2],
-            "share_class_launch_date": "", "listing_date": listing[0],
+            "share_class_launch_date": SHARE_CLASS_LAUNCH_OVERRIDES.get(isin, ("", ""))[0], "listing_date": listing[0],
             "listing_date_source": listing[1],
             "first_price_date": series.index[0].strftime("%Y-%m-%d") if not series.empty else "",
             "last_price_date": series.index[-1].strftime("%Y-%m-%d") if not series.empty else "",
-            "status": ("ETP/ETN - forma distinta da ETF" if row.get("ticker", "").split(".")[0] in {"WMIB", "WRTY", "WS5X", "WSPX"} else ("DATA LANCIO VERIFICATA" if launch[0] else "DA VERIFICARE")),
+            "status": ("ETP/ETN - forma distinta da ETF" if row.get("ticker", "").split(".")[0] in {"WMIB", "WRTY", "WS5X", "WSPX", "WNAS", "WSPE"} else ("DATA LANCIO VERIFICATA" if launch[0] else "DA VERIFICARE")),
         })
     return sorted(registry, key=lambda x: (x["ticker"], x["isin"]))
 
