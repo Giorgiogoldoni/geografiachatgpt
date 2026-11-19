@@ -743,7 +743,8 @@ def main():
             ]
         },
         "modules": MODULES, "rankings": rankings, "selections": selections,
-        "universe": rows, "factor_universe": factor_rows, "factor_rankings": factor_rankings,\n        "etf_lifecycle_registry": lifecycle_registry, "backtests": backtests,
+        "universe": rows, "factor_universe": factor_rows, "factor_rankings": factor_rankings,
+        "etf_lifecycle_registry": lifecycle_registry, "backtests": backtests,
         "coverage": coverage, "momentum_weight_comparison": momentum_weight_comparison,
         "momentum_research": momentum_research, "warnings": warnings_list
     }
