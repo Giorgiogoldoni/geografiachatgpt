@@ -72,7 +72,12 @@ ETP_TICKERS = {"WNAS.MI"}
 # Yahoo Finance symbols for listings explicitly identified on Borsa Italiana.
 # Bare product tickers are never guessed into price symbols.
 FACTOR_SYMBOL_MAP = {
-    "IWMO": "IWMO.MI", "IEMO": "IEMO.MI",
+    # Momentum: listing Borsa Italiana verificato
+    "IWMO": "IWMO.MI", "IEMO": "IEMO.MI", "XDEM": "XDEM.MI",
+    # Equal weight: listing Borsa Italiana verificato
+    "SPEQ": "SPEQ.MI", "MWEQ": "MWEQ.MI", "MEEQ": "MEEQ.MI",
+    "IEWQ": "IEWQ.MI", "WELE": "WELE.MI",
+    # Quality
     "IWQU": "IWQU.MI", "IEQU": "IEQU.MI",
     "IAPD.MI": "IAPD.MI",
 }
