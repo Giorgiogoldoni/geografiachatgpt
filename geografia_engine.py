@@ -587,6 +587,7 @@ ETF_LAUNCH_OVERRIDES = {
     "IE00B4L5YX21": ("2009-09-25", "justETF", "MEDIA"),
     "IE00B1FZS574": ("2006-11-03", "justETF", "MEDIA"),
     "IE00BD1F4N50": ("2016-10-13", "justETF", "MEDIA"),
+    "IE00BP3QZG05": ("2016-01-18", "justETF", "MEDIA"),
     "IE00BQN1K786": ("2015-01-16", "justETF", "MEDIA"),
     "IE00BQN1K901": ("2015-01-16", "justETF", "MEDIA"),
     "IE00BQN1KC32": ("2015-01-16", "justETF", "MEDIA"),
