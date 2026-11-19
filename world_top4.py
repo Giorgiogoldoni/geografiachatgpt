@@ -8,7 +8,8 @@ REGIONS={
 "Asia":["ASHR","EIDO","EPHE","EPI","EWJ","EWM","EWS","EWT","EWY","FXI","THD","VNM"],
 "South America":["ARGT","ECH","EPU","EWW","EWZ"],
 "Africa & Middle East":["AFK","EZA","TUR","GREK","KSA","UAE","QAT"]}
-HEDGE=["GLD","TLT","IEF","SHY"]\nFX="EURUSD=X"  # USD per EUR; converts USD portfolio returns into EUR
+HEDGE=["GLD","TLT","IEF","SHY"]
+FX="EURUSD=X"  # USD per EUR; converts USD portfolio returns into EUR
 def download(ts):
  d=yf.download(sorted(set(ts)),start=START,auto_adjust=True,progress=False,threads=True,group_by="column")
  if d is None or d.empty: raise RuntimeError("Nessun prezzo Yahoo Finance")
