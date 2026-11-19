@@ -18,6 +18,13 @@ Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato 
 | IE00B27YCK28 | iShares MSCI EM Latin America UCITS ETF | 15/10/2007 | justETF |
 | IE00BP3QZ601 | iShares Edge MSCI World Quality Factor UCITS ETF | 03/10/2014 | justETF |
 | IE00BQN1K562 | iShares Edge MSCI Europe Quality Factor UCITS ETF | 16/01/2015 | justETF |
+| LU1681045024 | Amundi MSCI Emerging Markets Latin America UCITS ETF EUR Acc | 28/04/2011 | justETF |
+| IE00B3XXRP09 | Vanguard S&P 500 UCITS ETF USD Dist | 22/05/2012 | justETF |
+| IE00B53L4X51 | iShares FTSE MIB UCITS ETF Acc | 26/01/2010 | justETF |
+| IE00B1XNH568 | iShares FTSE MIB UCITS ETF Dist | 06/07/2007 | justETF |
+| LU0779800910 | Xtrackers CSI 300 Swap UCITS ETF 1C | 27/06/2012 | justETF |
+| FR0007056841 | Amundi Dow Jones Industrial Average UCITS ETF Dist | 04/04/2001 | justETF |
+| XS2427354985 | WisdomTree FTSE MIB | 02/03/2022 | WisdomTree (ETP/ETN, non classificato come ETF UCITS) |
 
 ## Date di quotazione verificate
 
