@@ -9,7 +9,7 @@ Separare quattro concetti che non vanno confusi:
 
 Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato come sostituto della data di lancio.
 
-## Date verificate (aggiornamento 19 novembre 2026)\n\nIl registro contiene ora 29 date di lancio verificate su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.\n\n## Date verificate nella prima tranche e successive integrazioni
+## Date verificate (aggiornamento 19 novembre 2026)\n\nIl registro contiene ora 30 date di lancio verificate su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.\n\n## Date verificate nella prima tranche e successive integrazioni
 
 | ISIN | Fondo | Data lancio fondo | Fonte |
 |---|---|---:|---|
@@ -38,6 +38,7 @@ Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato 
 | IE00BQN1K901 | iShares Edge MSCI Europe Value Factor UCITS ETF | 16/01/2015 | justETF |
 | IE00BQN1KC32 | iShares Edge MSCI Europe Size Factor UCITS ETF | 16/01/2015 | justETF |
 | IE00BD1F4N50 | iShares Edge MSCI USA Momentum Factor UCITS ETF | 13/10/2016 | justETF |
+| IE00BP3QZG05 | iShares TA-35 Israel UCITS ETF Acc | 18/01/2016 | justETF |
 | IE00BL25JP72 | Xtrackers MSCI World Momentum UCITS ETF 1C | 05/09/2014 | justETF |
 | IE00BL25JM42 | Xtrackers MSCI World Value UCITS ETF 1C | 11/09/2014 | justETF |
 | IE00BNGJJT35 | Invesco S&P 500 Equal Weight UCITS ETF Acc | 06/04/2021 | justETF |
