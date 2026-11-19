@@ -1,12 +1,13 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-18",
+  "updated_at": "2026-11-19",
   "principles": [
     "Ogni ETF appartiene a un modulo geografico in base all'esposizione sottostante, non alla borsa di quotazione.",
     "ETF regionali e singoli Paesi restano classificati separatamente.",
     "ETF Global e World restano esclusivamente nel modulo GLOBAL e non entrano nei ranking regionali.",
     "Gli ETF factor sono classificati per area geografica e fattore; non vengono trattati come ETF Paese.",
-    "Nessun ticker viene inventato: strumenti non ancora verificati restano candidati da ricercare."
+    "Nessun ticker viene inventato: strumenti non ancora verificati restano candidati da ricercare.",
+    "Sono esclusi gli ETF Expat: non sono acquistabili dall'utente."
   ],
   "factor_categories": [
     "QUALITY",
@@ -189,7 +190,7 @@
         "SRSA.MI",
         "TUR.PA"
       ],
-      "notes": "Turchia resta in questo modulo per la classificazione di mercato adottata dal progetto; eventuali classificazioni geografiche alternative saranno documentate."
+      "notes": "La Turchia è assegnata al Medio Oriente per la classificazione adottata dal progetto. Il ticker TUR / IQQ5 resta nel modulo Medio Oriente e Africa; nessun doppio conteggio nell'area Europa."
     },
     {
       "id": "europe",
@@ -249,7 +250,17 @@
         "UKE.MI",
         "IBCJ.DE"
       ],
-      "notes": "I Paesi senza ETF UCITS dedicato resteranno visibili come copertura mancante; non verranno sostituiti con proxy non dichiarati."
+      "notes": "La Grecia è inclusa nell'area Europa; ETF UCITS candidato aggiunto: GRC — Amundi MSCI Greece UCITS ETF Dist (ISIN FR0010405431), quotato in EUR su Euronext Milan. I Paesi senza ETF UCITS dedicato resteranno visibili come copertura mancante; non verranno sostituiti con proxy non dichiarati.",
+      "researched_ucits_candidates": [
+        {
+          "ticker": "GRC",
+          "name": "Amundi MSCI Greece UCITS ETF Dist",
+          "isin": "FR0010405431",
+          "exchange": "Euronext Milan",
+          "currency": "EUR",
+          "status": "UCITS e listing verificati; simbolo storico prezzi da validare"
+        }
+      ]
     },
     {
       "id": "global",
