@@ -11,7 +11,7 @@ Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato 
 
 ## Date verificate (aggiornamento 19 novembre 2026)
 
-Il registro contiene ora 44 date di lancio verificate per ETF e 4 per ETP, su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.
+Il registro contiene ora 53 date di lancio verificate per ETF e 6 per ETP, su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.
 
 ## Date verificate nella prima tranche e successive integrazioni
 
@@ -61,6 +61,18 @@ Il registro contiene ora 44 date di lancio verificate per ETF e 4 per ETP, su 75
 | XS3003324129 | WisdomTree Russell 2000 | 08/04/2025 | WisdomTree (ETP) |
 | XS2427362145 | WisdomTree EURO STOXX 50 | 02/03/2022 | WisdomTree (ETP) |
 | XS2427355958 | WisdomTree S&P 500 | 02/03/2022 | WisdomTree (ETP) |
+| LU1681046931 | Amundi CAC 40 ESG UCITS ETF Acc | 28/02/2003 | Amundi first NAV / justETF |
+| LU1681037518 | Amundi Italy MIB ESG UCITS ETF Acc | 08/06/2010 | Amundi |
+| IE00BFMXYY33 | Vanguard FTSE Japan UCITS ETF EUR Hedged Acc | 31/01/2020 | Vanguard |
+| IE00B6YX5C33 | SPDR S&P 500 UCITS ETF Dist | 19/03/2012 | State Street |
+| LU1169830103 | UBS MSCI Switzerland 20/35 UCITS ETF hEUR Acc | 18/06/2020 | justETF |
+| IE000YELA4E3 | L&G S&P 100 Equal Weight UCITS ETF USD Acc | 17/07/2025 | justETF |
+| LU0659578842 | Xtrackers MSCI Singapore UCITS ETF 1C | 19/09/2011 | justETF |
+| LU0592215403 | Xtrackers MSCI Philippines UCITS ETF 1C | 12/04/2011 | justETF |
+| DE0005933931 | iShares Core DAX UCITS ETF (DE) | 27/12/2000 | BlackRock |
+| LU1681044647 | Amundi MSCI Nordic UCITS ETF EUR Acc | 16/09/2008 | Amundi first NAV |
+| XS3003325795 | WisdomTree NASDAQ-100 | 08/04/2025 | WisdomTree (ETP) |
+| XS3151431957 | WisdomTree S&P 500 EUR Daily Hedged | 25/09/2025 | WisdomTree (ETP) |
 | IE00BL25JP72 | Xtrackers MSCI World Momentum UCITS ETF 1C | 05/09/2014 | justETF |
 | IE00BL25JM42 | Xtrackers MSCI World Value UCITS ETF 1C | 11/09/2014 | justETF |
 | IE00BNGJJT35 | Invesco S&P 500 Equal Weight UCITS ETF Acc | 06/04/2021 | justETF |
@@ -82,6 +94,15 @@ Questa è una data di quotazione su Borsa Italiana, non la data di nascita del f
 - justETF, ISIN IE00BQN1K562: https://www.justetf.com/en-it/etf-profile.html?isin=IE00BQN1K562
 - Borsa Italiana, avvio negoziazioni 16/02/2015: https://www.borsaitaliana.it/etf/notiziedettaglio/12etfstyleishares.htm
 
+
+## Date di lancio delle classi da non confondere con il fondo
+
+Per alcuni strumenti Amundi, la prima data NAV del fondo è precedente alla creazione o alla quotazione della classe oggi negoziata. Il motore registra separatamente la data della classe quando la documentazione dell'emittente la distingue:
+- C40 / LU1681046931: prima NAV 28/02/2003; creazione della classe 14/02/2018.
+- FMI / LU1681037518: lancio/inizio serie 08/06/2010; quotazione della classe attuale 31/01/2018.
+- CN1 / LU1681044647: prima NAV 16/09/2008; lancio della classe 22/03/2018.
+- TUR / LU1900067601: prima NAV 11/08/2006; lancio della classe 14/03/2019.
+
 ## Regole per il backtest
 1. Mai generare prezzi prima della prima osservazione effettiva.
 2. Mai retrodatare la storia al lancio del fondo se la serie prezzi utilizzata inizia più tardi.
@@ -90,4 +111,4 @@ Questa è una data di quotazione su Borsa Italiana, non la data di nascita del f
 5. Gli ETF delistati/chiusi devono essere ricostruiti separatamente per ridurre il survivorship bias.
 
 ## Stato e limiti
-Questa è una verifica in corso: 48 date di lancio sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
+Questa è una verifica in corso: 53 date di lancio per ETF e 6 per ETP sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
