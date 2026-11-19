@@ -83,6 +83,63 @@ def run_backtest(prices, variant="modified", regions=REGIONS):
         })
     return rows
 
+def build_current_composition(prices, variant="modified", regions=REGIONS):
+    """Latest investable 60/40 snapshot, using only the last fully closed month."""
+    latest = prices.dropna(how="all").index.max()
+    monthly = prices.resample("ME").last().dropna(how="all")
+    if latest is not None and latest.to_period("M") == pd.Timestamp.now(tz="UTC").to_period("M"):
+        monthly = monthly.iloc[:-1]
+    if monthly.empty:
+        return {"status": "NON DISPONIBILE", "holdings": [], "weights": {}}
+    signal_date = monthly.index[-1]
+    picks, hedge, weights, holdings = [], [], {}, []
+
+    def add_holding(ticker, weight, sleeve, role, score=None, momentum_12m=None):
+        weights[ticker] = weights.get(ticker, 0.0) + weight
+        existing = next((x for x in holdings if x["ticker"] == ticker), None)
+        if existing:
+            existing["weight"] += weight
+            if sleeve not in existing["sleeves"]:
+                existing["sleeves"].append(sleeve)
+        else:
+            holdings.append({"ticker": ticker, "weight": weight, "role": role,
+                             "sleeves": [sleeve], "score": score,
+                             "momentum_12m": momentum_12m})
+
+    for region, assets in regions.items():
+        ranked = rank(prices, assets, signal_date, variant)
+        if ranked:
+            item = ranked[0]
+            picks.append({"region": region, "ticker": item["ticker"], "score": item["score"],
+                          "momentum_12m": item.get("momentum_12m"), "weight": 0.15})
+            add_holding(item["ticker"], 0.15, region, "AZIONARIO",
+                        item["score"], item.get("momentum_12m"))
+    treasury = rank(prices, TREASURY, signal_date, variant)
+    gold_usd = rank(prices, GOLD_USD, signal_date, variant)
+    if treasury:
+        item = treasury[0]
+        hedge.append({"sleeve": "Treasury", "ticker": item["ticker"], "score": item["score"], "weight": 0.24})
+        add_holding(item["ticker"], 0.24, "Treasury", "DIFENSIVO", item["score"])
+    if gold_usd:
+        item = gold_usd[0]
+        hedge.append({"sleeve": "Oro / USD", "ticker": item["ticker"], "score": item["score"], "weight": 0.16})
+        add_holding(item["ticker"], 0.16, "Oro / USD", "DIFENSIVO", item["score"])
+    total = sum(weights.values())
+    complete = len(picks) == 4 and len(hedge) == 2 and abs(total - 1.0) < 1e-8
+    return {
+        "status": "COMPOSIZIONE COMPLETA" if complete else "COMPOSIZIONE PARZIALE — NON OPERATIVA",
+        "variant": variant, "signal_date": signal_date.strftime("%Y-%m-%d"),
+        "effective_from": (signal_date + pd.offsets.MonthBegin(1)).strftime("%Y-%m-%d"),
+        "effective_to": (signal_date + pd.offsets.MonthEnd(1)).strftime("%Y-%m-%d"),
+        "latest_price_date": latest.strftime("%Y-%m-%d"),
+        "equity_target_weight": 0.60, "defensive_target_weight": 0.40,
+        "picks": picks, "hedge": hedge, "holdings": holdings,
+        "weights": {k: float(v) for k, v in weights.items()},
+        "total_weight": float(total),
+        "note": "Segnale fissato all'ultima chiusura mensile completa; pesi 15% per ciascuna delle quattro sleeve azionarie, 24% Treasury e 16% oro/valuta. Snapshot di ricerca, non ordine."
+    }
+
+
 def add_risk_free_metrics(metric_block, rows, rf_by_date):
     # ^IRX is the 13-week US Treasury bill annualized yield.
     dates = [x["holding_to"] for x in rows]
@@ -145,6 +202,7 @@ def main():
             "selection_frequency":dict(sorted(counts.items(), key=lambda kv:(-kv[1],kv[0]))),
             "history":aligned[-120:]
         }
+    current_composition = build_current_composition(prices, "modified")
     data = {
         "generated_at":datetime.now(timezone.utc).isoformat(),
         "latest_price_date":latest.strftime("%Y-%m-%d"),
@@ -162,6 +220,7 @@ def main():
             "warning":"Scenario test only. Historical 60/40 and internal 60/40 hedge split are documented for 2020, not verified as current. Exact regional buckets, HEDGE selection algorithms, execution timing and ranking formula remain unconfirmed. The residual bucket is not a verified region. No fees, taxes or slippage. Risk-free ^IRX remains a USD proxy and is not currency-matched to EUR returns."
         },
         "regions":REGIONS,
+        "current_composition":current_composition,
         "variants":variants
     }
     OUT.write_text(json.dumps(data,indent=2,allow_nan=False),encoding="utf-8")
