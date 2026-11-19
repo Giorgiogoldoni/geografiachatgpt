@@ -8,7 +8,7 @@ from pathlib import Path
 import warnings
 import pandas as pd
 import yfinance as yf
-from world_top4 import BENCH, START, download, rank, metrics
+from world_top4 import BENCH, START, FX, download, rank, metrics
 
 # Public LI pages show four geographic sub-strategies but only three public
 # region pages were identified. The fourth bucket below is an explicit residual
@@ -102,7 +102,7 @@ def add_risk_free_metrics(metric_block, rows, rf_by_date):
         metric_block["periods"][key]["sortino_90d_rf"] = float(sub_excess.mean() * 12 / sub_down) if sub_down > 0 else 0.0
 
 def main():
-    tickers = sorted(set(sum(REGIONS.values(),[]) + TREASURY + GOLD_USD + [BENCH, "^IRX"]))
+    tickers = sorted(set(sum(REGIONS.values(),[]) + TREASURY + GOLD_USD + [BENCH, "^IRX", FX]))
     prices = download(tickers)
     latest = prices.dropna(how="all").index[-1]
     monthly = prices.resample("ME").last()
@@ -134,12 +134,12 @@ def main():
             "benchmark":benchmark_metrics,
             "selection_months":len(aligned),
             "selection_frequency":dict(sorted(counts.items(), key=lambda kv:(-kv[1],kv[0]))),
-            "history":aligned[-36:]
+            "history":aligned[-120:]
         }
     data = {
         "generated_at":datetime.now(timezone.utc).isoformat(),
         "latest_price_date":latest.strftime("%Y-%m-%d"),
-        "data_source":"Yahoo Finance adjusted daily prices; ^IRX 13-week Treasury bill yield as risk-free proxy",
+        "data_source":"Yahoo Finance adjusted daily prices; USD portfolio and ACWI benchmark converted to EUR using EURUSD=X; ^IRX is a USD risk-free proxy",
         "methodology":{
             "equity_weight":0.60, "hedge_weight":0.40,
             "equity_region_weights":"15% each across four provisional regional sleeves",
@@ -149,7 +149,7 @@ def main():
             "absolute_momentum_filter":False,
             "risk_free_proxy":"^IRX 13-week Treasury bill annualized yield, divided by 12 for monthly excess-return calculations",
             "fourth_region":"Other / residual universe, not verified as the official fourth LI sub-strategy",
-            "warning":"Scenario test only. Historical 60/40 and internal 60/40 hedge split are documented for 2020, not verified as current. Exact regional buckets, HEDGE selection algorithms, execution timing and ranking formula remain unconfirmed. The residual bucket is not a verified region. No fees, taxes, slippage or FX."
+            "reporting_currency":"EUR; USD holdings and ACWI benchmark converted monthly using EURUSD=X (USD per EUR)",\n            "warning":"Scenario test only. Historical 60/40 and internal 60/40 hedge split are documented for 2020, not verified as current. Exact regional buckets, HEDGE selection algorithms, execution timing and ranking formula remain unconfirmed. The residual bucket is not a verified region. No fees, taxes or slippage. Risk-free ^IRX remains a USD proxy and is not currency-matched to EUR returns."
         },
         "regions":REGIONS,
         "variants":variants
