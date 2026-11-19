@@ -423,6 +423,151 @@ def momentum_weight_backtest(prices, rows):
     output["note"] = "Confronto sperimentale walk-forward. Non modifica il ranking operativo corrente, basato sul Modified Sharpe candidato."
     return output
 
+
+def momentum_research_backtest(prices, rows):
+    """Point-in-time monthly research: three trend filters, four momentum mixes,
+    1/3/5/10y windows, explicit turnover costs and a global benchmark.
+    Current-universe survivorship and listing-currency limitations are disclosed.
+    """
+    monthly = prices.resample("ME").last()
+    if monthly.empty:
+        return {"strategies": {}, "benchmark": {}, "note": "Prezzi mensili non disponibili."}
+    latest = prices.dropna(how="all").index.max()
+    if latest is not None and latest.to_period("M") == pd.Timestamp.now(tz="UTC").to_period("M"):
+        monthly = monthly.iloc[:-1]
+    groups = {}
+    for row in rows:
+        if row["module_id"] and row["bucket"] in {"country", "regional", "index", "global"} and row["symbol"] in prices.columns:
+            groups.setdefault(row["module_id"] + "|" + row["bucket"], []).append(row)
+    dates = list(monthly.index)
+    if len(dates) < 2:
+        return {"strategies": {}, "benchmark": {}, "note": "Storico mensile insufficiente."}
+
+    mixes = {
+        "12m": {"12m": 1.0},
+        "prudente_40_30_20_10": {"12m": .40, "6m": .30, "3m": .20, "1m": .10},
+        "intermedia_35_30_20_15": {"12m": .35, "6m": .30, "3m": .20, "1m": .15},
+        "reattiva_30_30_20_20": {"12m": .30, "6m": .30, "3m": .20, "1m": .20},
+    }
+    filters = {
+        "momentum_puro": "Solo ranking momentum; nessun filtro trend",
+        "momentum_sma200": "Prezzo > SMA200",
+        "momentum_sma200_assoluto": "Prezzo > SMA200 e momentum 12m > 0",
+    }
+    # Each sleeve is kept independent; a missing signal is a cash sleeve (0 return).
+    results = {}
+    for mix_id, weights in mixes.items():
+        for filter_id, filter_label in filters.items():
+            sleeve_months = {g: {"returns": [], "picks": [], "missing": 0} for g in groups}
+            for i in range(1, len(dates)):
+                signal_date, hold_end = dates[i-1], dates[i]
+                for group_key, candidates in groups.items():
+                    ranked = []
+                    for c in candidates:
+                        hist = prices[c["symbol"]].loc[:signal_date].dropna()
+                        if len(hist) < 253:
+                            continue
+                        last = float(hist.iloc[-1])
+                        if last <= 0:
+                            continue
+                        mom = {
+                            "1m": last / float(hist.iloc[-22]) - 1,
+                            "3m": last / float(hist.iloc[-64]) - 1,
+                            "6m": last / float(hist.iloc[-127]) - 1,
+                            "12m": last / float(hist.iloc[-253]) - 1,
+                        }
+                        sma = float(hist.tail(200).mean())
+                        if filter_id in ("momentum_sma200", "momentum_sma200_assoluto") and not last > sma:
+                            continue
+                        if filter_id == "momentum_sma200_assoluto" and not mom["12m"] > 0:
+                            continue
+                        score = sum(mom[k] * w for k, w in weights.items())
+                        ranked.append((score, c))
+                    chosen = max(ranked, key=lambda z: z[0])[1] if ranked else None
+                    ret = 0.0
+                    if chosen is not None:
+                        a = monthly.at[signal_date, chosen["symbol"]] if chosen["symbol"] in monthly.columns else np.nan
+                        b = monthly.at[hold_end, chosen["symbol"]] if chosen["symbol"] in monthly.columns else np.nan
+                        if pd.notna(a) and pd.notna(b) and a > 0:
+                            ret = float(b / a - 1)
+                        else:
+                            sleeve_months[group_key]["missing"] += 1
+                    sleeve_months[group_key]["returns"].append(ret)
+                    sleeve_months[group_key]["picks"].append(chosen["ticker"] if chosen else None)
+
+            n_sleeves = max(1, len(sleeve_months))
+            gross = []
+            turnover = []
+            for mi in range(len(dates)-1):
+                vals, switches = [], 0
+                for data in sleeve_months.values():
+                    vals.append(data["returns"][mi])
+                    picks = data["picks"]
+                    if mi > 0 and picks[mi] != picks[mi-1]:
+                        switches += 1
+                gross.append(float(np.mean(vals)) if vals else 0.0)
+                turnover.append(switches / n_sleeves)
+            results[mix_id + "|" + filter_id] = {
+                "label": mix_id + " · " + filter_id,
+                "weights": weights, "filter": filter_label,
+                "gross_returns": gross, "turnover": turnover,
+                "missing_holding_prices": int(sum(x["missing"] for x in sleeve_months.values())),
+                "periods": {}
+            }
+
+    def metrics_for(arr):
+        if len(arr) == 0:
+            return {"months": 0, "cagr": None, "volatility_annual": None, "max_drawdown": None, "total_return": None}
+        equity = np.cumprod(1.0 + arr)
+        peak = np.maximum.accumulate(np.concatenate(([1.0], equity)))
+        curve = np.concatenate(([1.0], equity))
+        years = len(arr) / 12.0
+        return {
+            "months": int(len(arr)),
+            "cagr": safe_float(float(equity[-1] ** (1/years) - 1) if equity[-1] > 0 and years else None),
+            "volatility_annual": safe_float(float(np.std(arr, ddof=1) * math.sqrt(12)) if len(arr) > 1 else 0.0),
+            "max_drawdown": safe_float(float((curve / peak - 1).min())),
+            "total_return": safe_float(float(equity[-1] - 1)),
+        }
+
+    cost_sides_bps = [0, 5, 10, 15]  # per side; a full ETF switch incurs sell + buy
+    for item in results.values():
+        for period, months in (("1y",12),("3y",36),("5y",60),("10y",120)):
+            n = min(months, len(item["gross_returns"]))
+            start = len(item["gross_returns"]) - n
+            gross = np.asarray(item["gross_returns"][start:], dtype=float)
+            turns = np.asarray(item["turnover"][start:], dtype=float)
+            period_result = {"gross": metrics_for(gross), "cost_sensitivity": {}}
+            for bps in cost_sides_bps:
+                net = gross - (turns * (2.0 * bps / 10000.0))
+                period_result["cost_sensitivity"][str(bps) + "_bps_per_side"] = metrics_for(net)
+            period_result["avg_monthly_turnover"] = safe_float(float(np.mean(turns)) if len(turns) else 0.0)
+            period_result["switch_months"] = int(np.sum(turns > 0))
+            item["periods"][period] = period_result
+
+    # Global benchmark is shown independently, not blended into geographic sleeves.
+    benchmark = {}
+    if BENCHMARK in monthly.columns:
+        b = monthly[BENCHMARK].dropna().pct_change().dropna()
+        for period, months in (("1y",12),("3y",36),("5y",60),("10y",120)):
+            benchmark[period] = metrics_for(np.asarray(b.iloc[-months:], dtype=float))
+    return {
+        "strategies": results,
+        "benchmark": {"ticker": BENCHMARK, "periods": benchmark,
+                      "note": "Benchmark globale buy-and-hold; rendimento nella valuta di quotazione del simbolo."},
+        "method": {
+            "signal": "Prezzi disponibili fino alla chiusura del mese precedente; detenzione nel mese successivo.",
+            "universe": "ETF correnti dell'indice; storico minimo 253 sedute alla data del segnale.",
+            "costs": "Sensibilità 0/5/10/15 punti base per lato; cambio ETF addebita vendita + acquisto.",
+            "portfolio": "Sleeve area/categoria equiponderate; nessun segnale = liquidità a rendimento zero.",
+            "currency": "Rendimenti nella valuta della quotazione Yahoo; non convertiti in EUR in questo test.",
+            "survivorship": "Il filtro di anzianità rispetta la data di prima osservazione, ma l'indice corrente non contiene ETF delistati: survivorship bias residuo.",
+            "dividends": "Yahoo auto_adjust=True; proxy adjusted-price, non NAV ufficiale né feed total-return dell'emittente.",
+            "missing_prices": "Mese senza prezzo di uscita per l'ETF selezionato conteggiato a rendimento zero e segnalato; da verificare prima dell'uso operativo."
+        },
+        "note": "Ricerca comparativa; non modifica selezioni o ranking operativo."
+    }
+
 def main():
     rows = load_universe()
     factor_df = pd.read_csv(FACTORS, dtype=str).fillna("") if FACTORS.exists() else pd.DataFrame()
@@ -500,6 +645,7 @@ def main():
                     pool, key=lambda x: rank_key(x, "modified_sharpe_candidate"), reverse=True)
     backtests = monthly_winner_backtest(prices, rows) if not prices.empty else {}
     momentum_weight_comparison = momentum_weight_backtest(prices, rows) if not prices.empty else {"scenarios": {}, "note": "Prezzi non disponibili."}
+    momentum_research = momentum_research_backtest(prices, rows) if not prices.empty else {"strategies": {}, "benchmark": {}, "note": "Prezzi non disponibili."}
     all_dates = [r.get("price_date") for r in calculated if r.get("price_date")]
     coverage = {
         "index_count": len(rows),
@@ -533,7 +679,8 @@ def main():
         },
         "modules": MODULES, "rankings": rankings, "selections": selections,
         "universe": rows, "factor_universe": factor_rows, "factor_rankings": factor_rankings, "backtests": backtests,
-        "coverage": coverage, "momentum_weight_comparison": momentum_weight_comparison, "warnings": warnings_list
+        "coverage": coverage, "momentum_weight_comparison": momentum_weight_comparison,
+        "momentum_research": momentum_research, "warnings": warnings_list
     }
     OUT.write_text(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
     print(json.dumps(coverage, ensure_ascii=False))
