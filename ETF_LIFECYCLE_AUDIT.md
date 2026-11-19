@@ -9,7 +9,11 @@ Separare quattro concetti che non vanno confusi:
 
 Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato come sostituto della data di lancio.
 
-## Date verificate (aggiornamento 19 novembre 2026)\n\nIl registro contiene ora 30 date di lancio verificate su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.\n\n## Date verificate nella prima tranche e successive integrazioni
+## Date verificate (aggiornamento 19 novembre 2026)
+
+Il registro contiene ora 40 date di lancio verificate su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.
+
+## Date verificate nella prima tranche e successive integrazioni
 
 | ISIN | Fondo | Data lancio fondo | Fonte |
 |---|---|---:|---|
@@ -39,6 +43,16 @@ Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato 
 | IE00BQN1KC32 | iShares Edge MSCI Europe Size Factor UCITS ETF | 16/01/2015 | justETF |
 | IE00BD1F4N50 | iShares Edge MSCI USA Momentum Factor UCITS ETF | 13/10/2016 | justETF |
 | IE00BP3QZG05 | iShares TA-35 Israel UCITS ETF Acc | 18/01/2016 | justETF |
+| LU1841731745 | Amundi MSCI China UCITS ETF Acc | 05/07/2018 | justETF |
+| IE00BL25JN58 | Xtrackers MSCI World Minimum Volatility UCITS ETF 1C | 05/09/2014 | DWS / justETF |
+| IE00BK80XL30 | Invesco MSCI China All Shares Stock Connect UCITS ETF Acc | 01/03/2021 | Invesco factsheet |
+| IE000CM02H85 | Franklin FTSE Taiwan UCITS ETF | 21/03/2022 | justETF |
+| IE00BF2B0P08 | Franklin U.S. Equity UCITS ETF | 06/09/2017 | justETF |
+| IE000C7DDDX4 | Franklin FTSE Saudi Arabia UCITS ETF | 28/10/2024 | justETF |
+| IE00B5377D42 | iShares MSCI Australia UCITS ETF | 22/01/2010 | justETF |
+| IE00BP3QZJ36 | iShares MSCI France UCITS ETF | 05/09/2014 | justETF |
+| IE00BMWXKN31 | HSBC Hang Seng TECH UCITS ETF HKD | 09/12/2020 | justETF |
+| IE00BFXR5Q31 | L&G US Equity UCITS ETF | 08/10/2018 | justETF |
 | IE00BL25JP72 | Xtrackers MSCI World Momentum UCITS ETF 1C | 05/09/2014 | justETF |
 | IE00BL25JM42 | Xtrackers MSCI World Value UCITS ETF 1C | 11/09/2014 | justETF |
 | IE00BNGJJT35 | Invesco S&P 500 Equal Weight UCITS ETF Acc | 06/04/2021 | justETF |
@@ -68,4 +82,4 @@ Questa è una data di quotazione su Borsa Italiana, non la data di nascita del f
 5. Gli ETF delistati/chiusi devono essere ricostruiti separatamente per ridurre il survivorship bias.
 
 ## Stato e limiti
-Questa è una verifica in corso: 29 date di lancio sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
+Questa è una verifica in corso: 40 date di lancio sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
