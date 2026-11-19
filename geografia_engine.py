@@ -570,12 +570,25 @@ def momentum_research_backtest(prices, rows):
 
 
 # Curated inception dates: only dates supported by issuer or exchange documents.
+TICKER_ISIN_OVERRIDES = {
+    "ALAT": "LU1681045024", "VUSA": "IE00B3XXRP09",
+    "CSMIB": "IE00B53L4X51", "IMIB": "IE00B1XNH568",
+    "WMIB": "XS2427354985", "XCHA": "LU0779800910",
+    "DJE": "FR0007056841",
+}
 ETF_LAUNCH_OVERRIDES = {
     "IE00BHZRQZ17": ("2019-06-25", "Franklin Templeton", "ALTA"),
     "IE00BHZRR030": ("2019-06-04", "Franklin Templeton", "ALTA"),
     "IE00B27YCK28": ("2007-10-15", "justETF", "MEDIA"),
     "IE00BP3QZ601": ("2014-10-03", "justETF", "MEDIA"),
     "IE00BQN1K562": ("2015-01-16", "justETF", "MEDIA"),
+    "LU1681045024": ("2011-04-28", "justETF", "MEDIA"),
+    "IE00B3XXRP09": ("2012-05-22", "justETF", "MEDIA"),
+    "IE00B53L4X51": ("2010-01-26", "justETF", "MEDIA"),
+    "IE00B1XNH568": ("2007-07-06", "justETF", "MEDIA"),
+    "XS2427354985": ("2022-03-02", "WisdomTree / justETF", "ALTA"),
+    "LU0779800910": ("2012-06-27", "justETF", "MEDIA"),
+    "FR0007056841": ("2001-04-04", "justETF", "MEDIA"),
 }
 BORSA_LISTING_OVERRIDES = {
     "IE00BP3QZ601": ("2015-02-16", "Borsa Italiana"),
@@ -593,7 +606,7 @@ def build_lifecycle_registry(rows, factor_rows, prices):
     combined = [(r, "GEOGRAFICO") for r in rows] + [(r, "FACTOR") for r in factor_rows]
     registry, seen = [], set()
     for row, source_type in combined:
-        isin = row.get("isin", "") or ""
+        isin = row.get("isin", "") or TICKER_ISIN_OVERRIDES.get((row.get("ticker", "").split(".")[0]), "")
         symbol = row.get("symbol") or ""
         identity = isin or symbol or row.get("ticker", "")
         if not identity or identity in seen:
@@ -613,7 +626,7 @@ def build_lifecycle_registry(rows, factor_rows, prices):
             "listing_date_source": listing[1],
             "first_price_date": series.index[0].strftime("%Y-%m-%d") if not series.empty else "",
             "last_price_date": series.index[-1].strftime("%Y-%m-%d") if not series.empty else "",
-            "status": "DATA LANCIO VERIFICATA" if launch[0] else "DA VERIFICARE",
+            "status": ("ETP/ETN - forma distinta da ETF" if row.get("ticker", "").split(".")[0] == "WMIB" else ("DATA LANCIO VERIFICATA" if launch[0] else "DA VERIFICARE")),
         })
     return sorted(registry, key=lambda x: (x["ticker"], x["isin"]))
 
