@@ -18,13 +18,13 @@ REGIONS={
  "Developed": ["CSCA.MI","IAEX.AS","IBCJ.DE"],
  "Asia-Pacific": ["SJPA.MI","FLXK.MI","FLXI.MI"],
  "Latin America": ["D5BI.DE","FLXB.MI","LTAM.MI","ALAT.MI"],
- "Africa-Middle East": ["SRSA.MI","IQQ5.DE","QDVM.DE"],
+ "Africa-Middle East": ["SRSA.MI","IQQ5.DE"],
 }
 DEFENSIVE={"Cash-like EUR":("XEON.DE",0.24),"Gold ETC":("SGLD.MI",0.16)}
 BENCH="VWCE.DE"
 
 def download(symbols):
- raw=yf.download(sorted(set(symbols)),start=START,auto_adjust=True,progress=False,threads=True,group_by="column")
+ raw=yf.download(sorted(set(symbols)),start=START,auto_adjust=True,progress=False,threads=False,group_by="column")
  if raw is None or raw.empty: raise RuntimeError("Nessun prezzo restituito da Yahoo Finance")
  close=raw["Close"] if isinstance(raw.columns,pd.MultiIndex) else raw[["Close"]].rename(columns={"Close":symbols[0]})
  if isinstance(close,pd.Series): close=close.to_frame(name=symbols[0])
@@ -117,6 +117,6 @@ def main():
  OUT.write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False),encoding="utf-8")
  print("EURO 60/40",latest.date(),"months",len(rows),"continuous",is_contiguous,
        "first",result["quality"]["first_month"],"last",result["quality"]["last_month"],
-       "skipped",len(skipped),"fallback",result["quality"]["fallback_months"])
+       "skipped",len(skipped),"fallback",result["quality"]["cash_fallback_months"])
 if __name__=="__main__":
  warnings.filterwarnings("ignore"); main()
