@@ -590,22 +590,22 @@ BORSA_LISTING_OVERRIDES = {
 
 def build_lifecycle_registry(rows, factor_rows, prices):
     """Build auditable ETF lifecycle register; never infer inception from price history."""
-    by_isin = {}
-    for row in rows:
-        if row.get("isin"):
-            by_isin[row["isin"]] = row
-    for row in factor_rows:
-        if row.get("isin"):
-            by_isin[row["isin"]] = row
-    registry = []
-    for isin, row in by_isin.items():
+    combined = [(r, "GEOGRAFICO") for r in rows] + [(r, "FACTOR") for r in factor_rows]
+    registry, seen = [], set()
+    for row, source_type in combined:
+        isin = row.get("isin", "") or ""
+        symbol = row.get("symbol") or ""
+        identity = isin or symbol or row.get("ticker", "")
+        if not identity or identity in seen:
+            continue
+        seen.add(identity)
         launch = ETF_LAUNCH_OVERRIDES.get(isin, ("", "", "DA VERIFICARE"))
         listing = BORSA_LISTING_OVERRIDES.get(isin, ("", ""))
-        symbol = row.get("symbol") or ""
         series = prices[symbol].dropna() if symbol and symbol in prices.columns else pd.Series(dtype=float)
         registry.append({
-            "ticker": row.get("ticker", ""), "symbol": symbol, "isin": isin,
-            "name": row.get("name", ""), "geography": row.get("geography", ""),
+            "universe": source_type, "ticker": row.get("ticker", ""),
+            "symbol": symbol, "isin": isin, "name": row.get("name", ""),
+            "geography": row.get("geography", ""),
             "category": row.get("bucket", row.get("category", "")),
             "fund_launch_date": launch[0], "fund_launch_source": launch[1],
             "fund_launch_confidence": launch[2],
@@ -617,7 +617,8 @@ def build_lifecycle_registry(rows, factor_rows, prices):
         })
     return sorted(registry, key=lambda x: (x["ticker"], x["isin"]))
 
-\ndef main():
+
+def main():
     rows = load_universe()
     factor_df = pd.read_csv(FACTORS, dtype=str).fillna("") if FACTORS.exists() else pd.DataFrame()
     factor_symbols = []
@@ -685,7 +686,9 @@ def build_lifecycle_registry(rows, factor_rows, prices):
                 else:
                     factor_row["status"] = "STORICO INSUFFICIENTE"
             factor_rows.append(factor_row)
-    lifecycle_registry = build_lifecycle_registry(rows, factor_rows, prices)\n    pd.DataFrame(lifecycle_registry).to_csv(ROOT / "etf_lifecycle_registry.csv", index=False)\n    factor_rankings = {}
+    lifecycle_registry = build_lifecycle_registry(rows, factor_rows, prices)
+    pd.DataFrame(lifecycle_registry).to_csv(ROOT / "etf_lifecycle_registry.csv", index=False)
+    factor_rankings = {}
     for factor in sorted({x["category"] for x in factor_rows}):
         for geography in sorted({x["geography"] for x in factor_rows if x["category"] == factor}):
             pool = [x for x in factor_rows if x["category"] == factor and x["geography"] == geography and x["status"] == "CALCOLATO"]
