@@ -63,21 +63,22 @@ def main():
   picks=[]; weights={}; fallback_areas=[]
   for area,assets in REGIONS.items():
    ranked,has_positive=candidate_list(prices,assets,signal_date,start_prices,end_prices)
-   if not ranked:
-    picks=[]; break
-   chosen=ranked[0]
-   if not has_positive: fallback_areas.append(area)
-   picks.append({"area":area,**chosen,"positive_momentum_pool":has_positive})
-   weights[chosen["ticker"]]=weights.get(chosen["ticker"],0)+0.15
-  if len(picks)!=len(REGIONS):
-   skipped.append({"signal_date":signal_date.strftime("%Y-%m-%d"),"reason":"At least one regional sleeve has no ETF with complete 12-month history and valid month prices"})
-   continue
+   if not ranked or not has_positive:
+    # A sleeve with no positive 68-session + 12-month momentum goes to EUR cash.
+    fallback_areas.append(area)
+    picks.append({"area":area,"ticker":"XEON.DE","score":None,"return_68d":None,
+     "vol_annual":None,"momentum_12m":None,"positive_momentum_pool":False,"cash_fallback":True})
+    weights["XEON.DE"]=weights.get("XEON.DE",0)+0.15
+   else:
+    chosen=ranked[0]
+    picks.append({"area":area,**chosen,"positive_momentum_pool":True,"cash_fallback":False})
+    weights[chosen["ticker"]]=weights.get(chosen["ticker"],0)+0.15
   defensive_ok=True
   for _,(ticker,w) in DEFENSIVE.items():
    a=start_prices.get(ticker); b=end_prices.get(ticker)
    if pd.isna(a) or pd.isna(b) or a<=0:
     defensive_ok=False; break
-   weights[ticker]=w
+   weights[ticker]=weights.get(ticker,0)+w
   if not defensive_ok:
    skipped.append({"signal_date":signal_date.strftime("%Y-%m-%d"),"reason":"Missing defensive sleeve price"})
    continue
@@ -106,8 +107,8 @@ def main():
   "selection_months":len(rows),"history":rows[-120:],
   "selection_frequency":{},"quality":{"continuous_months":is_contiguous,"benchmark_continuous_months":benchmark_contiguous,
    "first_month":rows[0]["holding_to"] if rows else None,"last_month":rows[-1]["holding_to"] if rows else None,
-   "skipped_months":skipped,"fallback_months":sum(bool(x["fallback_areas"]) for x in rows),
-   "fallback_area_frequency":{area:sum(area in x["fallback_areas"] for x in rows) for area in REGIONS}},
+   "skipped_months":skipped,"cash_fallback_months":sum(bool(x["fallback_areas"]) for x in rows),
+   "cash_fallback_area_frequency":{area:sum(area in x["fallback_areas"] for x in rows) for area in REGIONS}},
   "selection_frequency":{}}
  counts={}
  for row in rows:
