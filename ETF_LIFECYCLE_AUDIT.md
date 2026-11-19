@@ -11,7 +11,7 @@ Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato 
 
 ## Date verificate (aggiornamento 19 novembre 2026)
 
-Il registro contiene ora 56 date di lancio verificate per ETF e 6 per ETP, su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.
+Il registro contiene ora 65 date di lancio verificate per ETF e 6 per ETP, su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.
 
 ## Date verificate nella prima tranche e successive integrazioni
 
@@ -72,6 +72,15 @@ Il registro contiene ora 56 date di lancio verificate per ETF e 6 per ETP, su 75
 | DE0005933931 | iShares Core DAX UCITS ETF (DE) | 27/12/2000 | BlackRock |
 | LU1900066462 | Amundi MSCI Eastern Europe Ex Russia UCITS ETF Acc | 21/07/2005 | Amundi / justETF |
 | IE000Z7P04F4 | iShares Nasdaq 100 Top 30 UCITS ETF USD Acc | 28/01/2025 | justETF |
+| IE00B0M63516 | iShares MSCI Brazil UCITS ETF Dist | 18/11/2005 | justETF |
+| IE00B4WXJD03 | iShares MSCI Pacific ex-Japan UCITS ETF Dist | 17/04/2009 | BlackRock / justETF |
+| LU0514694370 | Xtrackers MSCI Malaysia UCITS ETF 1C | 24/06/2010 | justETF |
+| LU0514694966 | Xtrackers MSCI Thailand UCITS ETF 2C | 20/12/2011 | justETF |
+| LU0994505336 | Xtrackers Spanish Equity UCITS ETF 1D | 19/12/2013 | justETF |
+| LU0274221281 | Xtrackers Swiss Large Cap UCITS ETF 1D | 22/01/2007 | DWS / justETF |
+| LU0476289466 | Xtrackers MSCI Mexico UCITS ETF 1C | 26/03/2010 | justETF |
+| IE00B0M62Y33 | iShares AEX UCITS ETF | 18/11/2005 | justETF |
+| IE00B4X9L533 | HSBC MSCI World UCITS ETF USD | 08/12/2010 | HSBC / justETF |
 | LU1681044647 | Amundi MSCI Nordic UCITS ETF EUR Acc | 16/09/2008 | Amundi first NAV |
 | XS3003325795 | WisdomTree NASDAQ-100 | 08/04/2025 | WisdomTree (ETP) |
 | XS3151431957 | WisdomTree S&P 500 EUR Daily Hedged | 25/09/2025 | WisdomTree (ETP) |
@@ -113,4 +122,4 @@ Per alcuni strumenti Amundi, la prima data NAV del fondo è precedente alla crea
 5. Gli ETF delistati/chiusi devono essere ricostruiti separatamente per ridurre il survivorship bias.
 
 ## Stato e limiti
-Questa è una verifica in corso: 56 date di lancio per ETF e 6 per ETP sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
+Questa è una verifica in corso: 65 date di lancio per ETF e 6 per ETP sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
