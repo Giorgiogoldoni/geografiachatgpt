@@ -68,7 +68,7 @@ GLOBAL_LABELS = {"globale", "global"}
 INDEX_LABELS = {"indice nazionale", "indice nazionale coperto",
                 "indice settoriale/tematico", "indice"}
 COUNTRY_LABELS = {"paese", "paese coperto"}
-ETP_TICKERS = {"WNAS.MI"}
+ETP_TICKERS = {"WNAS.MI", "WRTY.MI", "WS5X.MI", "WSPX.MI", "WSPE.MI", "WMIB.MI"}
 # Yahoo Finance symbols for listings explicitly identified on Borsa Italiana.
 # Bare product tickers are never guessed into price symbols.
 FACTOR_SYMBOL_MAP = {
@@ -590,7 +590,7 @@ TICKER_ISIN_OVERRIDES = {
     "WNAS": "XS3003325795", "WSPE": "XS3151431957",
     "XBAS": "LU0659578842", "XPQP": "LU0592215403",
     "EXS1": "DE0005933931", "CN1": "LU1681044647", "EST": "LU1900066462",
-    "QTOP": "IE000Z7P04F4",
+    "QTOP": "IE000Z7P04F4", "XFVT": "LU0322252924",
     "IBZL": "IE00B0M63516", "SPXJ": "IE00B4WXJD03",
     "XCS3": "LU0514694370", "XCS4": "LU0514694966",
     "XESD": "LU0994505336", "XSMI": "LU0274221281",
@@ -650,6 +650,8 @@ ETF_LAUNCH_OVERRIDES = {
     "IE00B0M62Y33": ("2005-11-18", "justETF", "MEDIA"),
     "IE00B4X9L533": ("2010-12-08", "HSBC / justETF", "ALTA"),
     "IE000Z7P04F4": ("2025-01-28", "justETF", "MEDIA"),
+    "IE000L2SA8K5": ("2023-07-10", "justETF", "MEDIA"),
+    "LU0322252924": ("2008-01-15", "DWS / justETF", "ALTA"),
     "IE00BQN1K786": ("2015-01-16", "justETF", "MEDIA"),
     "IE00BQN1K901": ("2015-01-16", "justETF", "MEDIA"),
     "IE00BQN1KC32": ("2015-01-16", "justETF", "MEDIA"),
