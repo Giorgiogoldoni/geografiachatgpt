@@ -103,6 +103,7 @@ def main():
    "signal_rule":"Signal at prior month-end close; hold selected assets over the following calendar month",
    "warning":"Independent European UCITS approximation, not official Logical Invest. Universe limited to mapped candidates with uneven coverage. XEON is cash-like; SGLD is an ETC, not a UCITS ETF. No fees, taxes, slippage, FX hedging or currency conversion. Benchmark VWCE.DE is a proxy."},
   "regions":REGIONS,"defensive":DEFENSIVE,"metrics":metrics(rows),
+  "benchmark_aligned_portfolio_metrics":metrics([x for x in rows if x["benchmark_return"] is not None]),
   "benchmark_metrics":metrics(benchmark_rows),"benchmark":BENCH,
   "selection_months":len(rows),"history":rows[-120:],
   "selection_frequency":{},"quality":{"continuous_months":is_contiguous,"benchmark_continuous_months":benchmark_contiguous,
