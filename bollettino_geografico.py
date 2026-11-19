@@ -98,6 +98,30 @@ def explain(row, label):
 def compact(items, limit=8):
     return items[:limit]
 
+def factor_summary():
+    result = []
+    for group, items in data.get("factor_rankings", {}).items():
+        if not isinstance(items, list):
+            continue
+        for row in items:
+            if row.get("status") != "CALCOLATO":
+                continue
+            item = instrument(row)
+            item["group"] = group
+            item["category"] = row.get("category", group.split("|")[0])
+            item["benchmark_factor"] = row.get("benchmark_factor", "")
+            if item["eligible_trend"] and (item["momentum_3m"] or 0) > 0:
+                label = "CANDIDATO FATTORE"
+            elif not item["above_sma200"] and (item["momentum_12m"] or 0) < 0:
+                label = "EVITARE PER ORA"
+            elif item["eligible_trend"]:
+                label = "MANTENERE / ATTENDERE"
+            else:
+                label = "ATTENDERE CONFERMA"
+            result.append(explain(item, label))
+    result.sort(key=lambda x: (x.get("category", ""), -(x.get("modified_sharpe_candidate") or -1e9)))
+    return result
+
 def area_summary():
     result = []
     for key, value in selected.items():
@@ -135,6 +159,7 @@ entry = {
         str(len(avoid)) + " strumenti con trend e momentum annuale negativi."
     ),
     "areas": area_summary(),
+    "factors": factor_summary(),
     "buy": compact(buy, 5),
     "hold": compact(hold, 8),
     "wait": compact(wait, 8),
@@ -149,6 +174,7 @@ entry = {
     },
     "decision_rules": {
         "buy": "Candidato soltanto se prezzo sopra SMA200, momentum 12 mesi positivo e momentum 3 mesi positivo.",
+        "factor_rule": "I fattori sono classificati separatamente dai Paesi e dalle aree; stessa lettura tecnica, nessuna fusione dei ranking geografici."
         "hold": "Filtro trend superato ma momentum 3 mesi nullo o negativo: non inseguire il prezzo.",
         "wait": "Filtro trend incompleto, ma non coesistono prezzo sotto SMA200 e momentum 12 mesi negativo.",
         "avoid": "Prezzo sotto SMA200 e momentum 12 mesi negativo."
