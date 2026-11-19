@@ -143,7 +143,13 @@ def main():
  variants={}
  for v in ["modified","momentum","composite"]:
   h=backtest(p,v,bm.index[0]);variants[v]={"metrics":metrics(h),"history":h[-120:]}
- fxm=monthly[FX].dropna()\n bh=[]\n for i in range(1,len(bm)):\n  d0,d1=bm.index[i-1],bm.index[i]\n  if d0 not in fxm.index or d1 not in fxm.index or bm.iloc[i-1]<=0 or fxm.loc[d1]<=0: continue\n  eur_ret=(bm.iloc[i]/bm.iloc[i-1])*(fxm.loc[d0]/fxm.loc[d1])-1\n  bh.append({"holding_to":d1.strftime("%Y-%m-%d"),"return":float(eur_ret)})
+ fxm=monthly[FX].dropna()
+ bh=[]
+ for i in range(1,len(bm)):
+  d0,d1=bm.index[i-1],bm.index[i]
+  if d0 not in fxm.index or d1 not in fxm.index or bm.iloc[i-1]<=0 or fxm.loc[d1]<=0: continue
+  eur_ret=(bm.iloc[i]/bm.iloc[i-1])*(fxm.loc[d0]/fxm.loc[d1])-1
+  bh.append({"holding_to":d1.strftime("%Y-%m-%d"),"return":float(eur_ret)})
  d={"generated_at":datetime.now(timezone.utc).isoformat(),"latest_price_date":latest.strftime("%Y-%m-%d"),"data_source":"Yahoo Finance adjusted daily prices; USD portfolio and ACWI benchmark converted to EUR using EURUSD=X",
  "methodology":{"lookback_trading_days":LB,"rebalance":"monthly","decision_timing":"previous month-end close; execute from next month","hedge_weight_assumption":.20,"reporting_currency":"EUR; USD asset returns converted monthly using EURUSD=X (USD per EUR)",
  "regions":"Developed, Asia, South America, Africa & Middle East (fourth sleeve approximate)","warning":"Independent approximation, not Logical Invest formula. US-listed research tickers; excludes fees, taxes, slippage and FX. Sharpe/Sortino here use zero risk-free/target assumptions and are not directly comparable with Logical Invest."},
