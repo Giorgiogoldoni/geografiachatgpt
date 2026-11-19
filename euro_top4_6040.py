@@ -99,7 +99,7 @@ def main():
   "data_source":"Yahoo Finance adjusted daily prices; European listing symbols; not official issuer NAV data",
   "methodology":{"equity_weight":0.60,"defensive_weight":0.40,"regional_equity_weights":"15% per each of four sleeves",
    "defensive_split":"24% XEON.DE EUR overnight-rate proxy + 16% SGLD.MI gold ETC",
-   "ranking":"68-session return / annualized volatility squared; prefer positive 68-session and 12-month momentum; if a sleeve has no positive candidate, use its highest-scoring candidate with full 12-month history; monthly rebalance",
+   "ranking":"68-session return / annualized volatility squared; invest in a regional ETF only when both 68-session and 12-month momentum are positive; otherwise redirect that 15% sleeve to XEON.DE; monthly rebalance",\n   "fallback_policy":"Dynamic equity exposure: each region without a positive-momentum candidate moves its 15% sleeve to XEON.DE; total cash-like allocation can therefore exceed 24% and total equity exposure can fall below 60%.",
    "signal_rule":"Signal at prior month-end close; hold selected assets over the following calendar month",
    "warning":"Independent European UCITS approximation, not official Logical Invest. Universe limited to mapped candidates with uneven coverage. XEON is cash-like; SGLD is an ETC, not a UCITS ETF. No fees, taxes, slippage, FX hedging or currency conversion. Benchmark VWCE.DE is a proxy."},
   "regions":REGIONS,"defensive":DEFENSIVE,"metrics":metrics(rows),
