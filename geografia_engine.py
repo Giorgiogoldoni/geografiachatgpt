@@ -568,7 +568,56 @@ def momentum_research_backtest(prices, rows):
         "note": "Ricerca comparativa; non modifica selezioni o ranking operativo."
     }
 
-def main():
+
+# Curated inception dates: only dates supported by issuer or exchange documents.
+ETF_LAUNCH_OVERRIDES = {
+    "IE00BHZRQZ17": ("2019-06-25", "Franklin Templeton", "ALTA"),
+    "IE00BHZRR030": ("2019-06-04", "Franklin Templeton", "ALTA"),
+    "IE00B27YCK28": ("2007-10-15", "justETF", "MEDIA"),
+    "IE00BP3QZ601": ("2014-10-03", "justETF", "MEDIA"),
+    "IE00BQN1K562": ("2015-01-16", "justETF", "MEDIA"),
+}
+BORSA_LISTING_OVERRIDES = {
+    "IE00BP3QZ601": ("2015-02-16", "Borsa Italiana"),
+    "IE00BP3QZ825": ("2015-02-16", "Borsa Italiana"),
+    "IE00BP3QZB59": ("2015-02-16", "Borsa Italiana"),
+    "IE00BP3QZD73": ("2015-02-16", "Borsa Italiana"),
+    "IE00BQN1K562": ("2015-02-16", "Borsa Italiana"),
+    "IE00BQN1K786": ("2015-02-16", "Borsa Italiana"),
+    "IE00BQN1K901": ("2015-02-16", "Borsa Italiana"),
+    "IE00BQN1KC32": ("2015-02-16", "Borsa Italiana"),
+}
+
+def build_lifecycle_registry(rows, factor_rows, prices):
+    """Build auditable ETF lifecycle register; never infer inception from price history."""
+    by_isin = {}
+    for row in rows:
+        if row.get("isin"):
+            by_isin[row["isin"]] = row
+    for row in factor_rows:
+        if row.get("isin"):
+            by_isin[row["isin"]] = row
+    registry = []
+    for isin, row in by_isin.items():
+        launch = ETF_LAUNCH_OVERRIDES.get(isin, ("", "", "DA VERIFICARE"))
+        listing = BORSA_LISTING_OVERRIDES.get(isin, ("", ""))
+        symbol = row.get("symbol") or ""
+        series = prices[symbol].dropna() if symbol and symbol in prices.columns else pd.Series(dtype=float)
+        registry.append({
+            "ticker": row.get("ticker", ""), "symbol": symbol, "isin": isin,
+            "name": row.get("name", ""), "geography": row.get("geography", ""),
+            "category": row.get("bucket", row.get("category", "")),
+            "fund_launch_date": launch[0], "fund_launch_source": launch[1],
+            "fund_launch_confidence": launch[2],
+            "share_class_launch_date": "", "listing_date": listing[0],
+            "listing_date_source": listing[1],
+            "first_price_date": series.index[0].strftime("%Y-%m-%d") if not series.empty else "",
+            "last_price_date": series.index[-1].strftime("%Y-%m-%d") if not series.empty else "",
+            "status": "DATA LANCIO VERIFICATA" if launch[0] else "DA VERIFICARE",
+        })
+    return sorted(registry, key=lambda x: (x["ticker"], x["isin"]))
+
+\ndef main():
     rows = load_universe()
     factor_df = pd.read_csv(FACTORS, dtype=str).fillna("") if FACTORS.exists() else pd.DataFrame()
     factor_symbols = []
@@ -636,7 +685,7 @@ def main():
                 else:
                     factor_row["status"] = "STORICO INSUFFICIENTE"
             factor_rows.append(factor_row)
-    factor_rankings = {}
+    lifecycle_registry = build_lifecycle_registry(rows, factor_rows, prices)\n    pd.DataFrame(lifecycle_registry).to_csv(ROOT / "etf_lifecycle_registry.csv", index=False)\n    factor_rankings = {}
     for factor in sorted({x["category"] for x in factor_rows}):
         for geography in sorted({x["geography"] for x in factor_rows if x["category"] == factor}):
             pool = [x for x in factor_rows if x["category"] == factor and x["geography"] == geography and x["status"] == "CALCOLATO"]
@@ -678,7 +727,7 @@ def main():
             ]
         },
         "modules": MODULES, "rankings": rankings, "selections": selections,
-        "universe": rows, "factor_universe": factor_rows, "factor_rankings": factor_rankings, "backtests": backtests,
+        "universe": rows, "factor_universe": factor_rows, "factor_rankings": factor_rankings,\n        "etf_lifecycle_registry": lifecycle_registry, "backtests": backtests,
         "coverage": coverage, "momentum_weight_comparison": momentum_weight_comparison,
         "momentum_research": momentum_research, "warnings": warnings_list
     }
