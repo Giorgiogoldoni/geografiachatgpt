@@ -111,8 +111,13 @@ def main():
     bench = monthly[BENCH].dropna()
     rf_series = monthly["^IRX"].dropna() / 100.0 / 12.0
     rf_by_date = {d.strftime("%Y-%m-%d"): float(rf_series.loc[d]) for d in rf_series.index}
-    by_date = {d.strftime("%Y-%m-%d"): float(bench.loc[d]/bench.shift(1).loc[d]-1)
-               for d in bench.index[1:]}
+    fx_monthly = monthly[FX].dropna()
+    by_date = {}
+    for d in bench.index[1:]:
+        prev = bench.index[bench.index.get_loc(d)-1]
+        if prev not in fx_monthly.index or d not in fx_monthly.index or bench.loc[prev] <= 0 or fx_monthly.loc[d] <= 0:
+            continue
+        by_date[d.strftime("%Y-%m-%d")] = float((bench.loc[d]/bench.loc[prev]) * (fx_monthly.loc[prev]/fx_monthly.loc[d]) - 1)
     variants = {}
     for variant in ("momentum", "modified", "composite"):
         full_history = run_backtest(prices, variant)
@@ -149,7 +154,8 @@ def main():
             "absolute_momentum_filter":False,
             "risk_free_proxy":"^IRX 13-week Treasury bill annualized yield, divided by 12 for monthly excess-return calculations",
             "fourth_region":"Other / residual universe, not verified as the official fourth LI sub-strategy",
-            "reporting_currency":"EUR; USD holdings and ACWI benchmark converted monthly using EURUSD=X (USD per EUR)",\n            "warning":"Scenario test only. Historical 60/40 and internal 60/40 hedge split are documented for 2020, not verified as current. Exact regional buckets, HEDGE selection algorithms, execution timing and ranking formula remain unconfirmed. The residual bucket is not a verified region. No fees, taxes or slippage. Risk-free ^IRX remains a USD proxy and is not currency-matched to EUR returns."
+            "reporting_currency":"EUR; USD holdings and ACWI benchmark converted monthly using EURUSD=X (USD per EUR)",
+            "warning":"Scenario test only. Historical 60/40 and internal 60/40 hedge split are documented for 2020, not verified as current. Exact regional buckets, HEDGE selection algorithms, execution timing and ranking formula remain unconfirmed. The residual bucket is not a verified region. No fees, taxes or slippage. Risk-free ^IRX remains a USD proxy and is not currency-matched to EUR returns."
         },
         "regions":REGIONS,
         "variants":variants
