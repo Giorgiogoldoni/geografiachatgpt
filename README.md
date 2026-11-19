@@ -149,6 +149,13 @@ Il motore scarica prezzi rettificati delle quotazioni europee mappate, calcola M
 - Il catalogo non alimenta automaticamente il ranking Paesi. Prima dell'uso quantitativo occorre completare la verifica dei ticker per listing, valuta negoziata, liquidità e disponibilità dello storico prezzi.
 
 
+## Aggiornamento classificazione geografica — 19/11/2026
+
+- **Grecia → Europa**: aggiunto GRC, Amundi MSCI Greece UCITS ETF Dist, ISIN FR0010405431, quotazione Euronext Milan in EUR. Il listing UCITS è verificato; il simbolo del provider prezzi `GRC.MI` resta da validare al primo aggiornamento del motore.
+- **Turchia → Medio Oriente**: TUR / IQQ5 è classificato nel modulo Medio Oriente e Africa, mai in Europa.
+- **ETF Expat esclusi** dall'universo operativo perché non acquistabili dall'utente.
+- I fondi globali restano nel modulo GLOBAL e non vengono duplicati nelle aree regionali.
+
 ## 🗺️ Architettura geografica a sei moduli
 
 - [Moduli geografici](./geografia-aree.html) e tassonomia strutturata in `geografia-moduli.json`.
