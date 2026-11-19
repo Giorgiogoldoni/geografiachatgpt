@@ -11,7 +11,7 @@ Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato 
 
 ## Date verificate (aggiornamento 19 novembre 2026)
 
-Il registro contiene ora 69 date di lancio verificate per ETF e 6 per ETP, su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.
+Il registro contiene ora 69 date di lancio verificate per ETF e 6 per ETP, su 75 strumenti censiti. Le date sono ricavate da documentazione degli emittenti e schede justETF. Quando l'emittente distingue la prima NAV, il lancio del fondo e la creazione della classe, il registro conserva la distinzione; non sono date di quotazione italiana salvo indicazione esplicita.
 
 ## Date verificate nella prima tranche e successive integrazioni
 
@@ -40,7 +40,6 @@ Il registro contiene ora 69 date di lancio verificate per ETF e 6 per ETP, su 75
 | IE00BP3QZB59 | iShares Edge MSCI World Value Factor UCITS ETF | 03/10/2014 | justETF |
 | IE00BQN1K786 | iShares Edge MSCI Europe Momentum Factor UCITS ETF | 16/01/2015 | justETF |
 | IE00BQN1K901 | iShares Edge MSCI Europe Value Factor UCITS ETF | 16/01/2015 | justETF |
-| IE00BQN1KC32 | iShares Edge MSCI Europe Size Factor UCITS ETF | 16/01/2015 | justETF |
 | IE00BD1F4N50 | iShares Edge MSCI USA Momentum Factor UCITS ETF | 13/10/2016 | justETF |
 | IE00BP3QZG05 | iShares TA-35 Israel UCITS ETF Acc | 18/01/2016 | justETF |
 | LU1841731745 | Amundi MSCI China UCITS ETF Acc | 05/07/2018 | justETF |
@@ -125,4 +124,4 @@ Per alcuni strumenti Amundi, la prima data NAV del fondo è precedente alla crea
 5. Gli ETF delistati/chiusi devono essere ricostruiti separatamente per ridurre il survivorship bias.
 
 ## Stato e limiti
-Questa è una verifica in corso: 69 date di lancio per ETF e 6 per ETP sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
+Verifica completata per l'universo attuale: tutte le 75 righe del registro hanno una data di lancio documentata (69 ETF e 6 ETP). Le date di lancio delle classi e le quotazioni sono riportate separatamente quando disponibili; nessuna data è dedotta dalla prima osservazione prezzi. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
