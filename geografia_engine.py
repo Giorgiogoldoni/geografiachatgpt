@@ -175,7 +175,6 @@ def load_universe():
         "IQQ5": ("IQQ5.DE", "Turchia"),
         "LTAM": ("LTAM.MI", "America Latina"),
         "ALAT": ("ALAT.MI", "America Latina"),
-        "QDVM": ("QDVM.DE", "Israele"),
     }
     known = {r["symbol"]: r for r in rows}
     if SEED.exists():
