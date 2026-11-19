@@ -125,7 +125,6 @@ Riconciliazione dei ticker storici:
 - IWVL: IWVL.MI (Borsa Italiana; ISIN IE00BP3QZB59).
 - XDEV: XDEV.MI (Borsa Italiana; ISIN IE00BL25JM42).
 - QDVA: QDVA.DE (Xetra; ISIN IE00BD1F4N50).
-- QDVM: QDVM.DE (Xetra; ISIN IE00BP3QZG05); il simbolo di quotazione è confermato, ma la serie Yahoo resta da verificare separatamente.
 
 Le mappature sopra identificano la quotazione corretta, non attestano da sole la presenza di prezzi nello storico del provider. La prima osservazione viene valorizzata solo se il download effettivo restituisce prezzi.
 
