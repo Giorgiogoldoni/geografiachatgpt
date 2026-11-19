@@ -11,7 +11,7 @@ Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato 
 
 ## Date verificate (aggiornamento 19 novembre 2026)
 
-Il registro contiene ora 40 date di lancio verificate su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.
+Il registro contiene ora 44 date di lancio verificate per ETF e 4 per ETP, su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.
 
 ## Date verificate nella prima tranche e successive integrazioni
 
@@ -53,6 +53,14 @@ Il registro contiene ora 40 date di lancio verificate su 75 strumenti censiti. L
 | IE00BP3QZJ36 | iShares MSCI France UCITS ETF | 05/09/2014 | justETF |
 | IE00BMWXKN31 | HSBC Hang Seng TECH UCITS ETF HKD | 09/12/2020 | justETF |
 | IE00BFXR5Q31 | L&G US Equity UCITS ETF | 08/10/2018 | justETF |
+| IE00BWT3KS11 | UBS MSCI Australia UCITS ETF hEUR Acc | 27/11/2015 | justETF |
+| IE00BYYW2V44 | State Street SPDR S&P 500 EUR Hedged UCITS ETF | 31/10/2018 | justETF / State Street |
+| IE00B53SZB19 | iShares Nasdaq 100 UCITS ETF Acc | 26/01/2010 | justETF |
+| LU1900065811 | Amundi MSCI Indonesia UCITS ETF Acc | 04/07/2011 | justETF |
+| LU1900067601 | Amundi MSCI Turkey UCITS ETF Acc | 11/08/2006 | justETF / Amundi first NAV |
+| XS3003324129 | WisdomTree Russell 2000 | 08/04/2025 | WisdomTree (ETP) |
+| XS2427362145 | WisdomTree EURO STOXX 50 | 02/03/2022 | WisdomTree (ETP) |
+| XS2427355958 | WisdomTree S&P 500 | 02/03/2022 | WisdomTree (ETP) |
 | IE00BL25JP72 | Xtrackers MSCI World Momentum UCITS ETF 1C | 05/09/2014 | justETF |
 | IE00BL25JM42 | Xtrackers MSCI World Value UCITS ETF 1C | 11/09/2014 | justETF |
 | IE00BNGJJT35 | Invesco S&P 500 Equal Weight UCITS ETF Acc | 06/04/2021 | justETF |
@@ -82,4 +90,4 @@ Questa è una data di quotazione su Borsa Italiana, non la data di nascita del f
 5. Gli ETF delistati/chiusi devono essere ricostruiti separatamente per ridurre il survivorship bias.
 
 ## Stato e limiti
-Questa è una verifica in corso: 40 date di lancio sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
+Questa è una verifica in corso: 48 date di lancio sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
