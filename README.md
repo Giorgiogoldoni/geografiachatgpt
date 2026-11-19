@@ -183,3 +183,13 @@ La nuova dashboard `geografia-motore.html` usa il catalogo INDEX dell'utente com
 - Workflow automatico nei giorni di mercato, con avvio manuale disponibile da GitHub Actions.
 
 Il motore è una ricerca quantitativa indipendente. La formula Modified Sharpe con attenuatore 2 è una ricostruzione storica plausibile, non una formula live proprietaria verificata di Logical Invest. I prezzi Yahoo rettificati sono una proxy e richiedono controlli su listing, ISIN, valuta, liquidità e corporate actions. Il backtest non include costi, slippage o fiscalità e non genera ordini.
+
+
+## 📘 Il Bollettino Geografico — diario quotidiano
+
+- **Pagina web:** [Apri il Bollettino](./bollettino.html)
+- **Generatore:** `bollettino_geografico.py`
+- **Archivio append-only:** `data/bollettino_geografico.json`
+- Il workflow del motore crea una nuova edizione ogni giorno, anche nei giorni senza nuove quotazioni; in quel caso la pagina dichiara chiaramente la data dell'ultimo prezzo disponibile.
+- Ogni edizione separa **COMPRARE** (candidati quantitativi), **MANTENERE**, **ATTENDERE** ed **EVITARE**. Le pagine precedenti restano consultabili.
+- Le etichette sono segnali del modello e non ordini automatici. Prima di ogni acquisto vanno verificati ISIN, disponibilità Fineco, spread, liquidità, sovrapposizioni e pesi.
