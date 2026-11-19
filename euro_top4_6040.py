@@ -50,6 +50,58 @@ def contiguous(rows):
  dates=[pd.Period(x["holding_to"],freq="M") for x in rows]
  return all((dates[i]-dates[i-1]).n==1 for i in range(1,len(dates)))
 
+def build_current_composition(prices):
+ latest=prices.dropna(how="all").index.max()
+ monthly=prices.resample("ME").last().dropna(how="all")
+ if latest is not None and latest.to_period("M")==pd.Timestamp.now(tz="UTC").to_period("M"):
+  monthly=monthly.iloc[:-1]
+ if monthly.empty:
+  return {"status":"NON DISPONIBILE","holdings":[],"weights":{}}
+ signal_date=monthly.index[-1]
+ signal_prices=monthly.loc[signal_date]
+ picks=[]; fallback_areas=[]; weights={}; holdings=[]
+
+ def add_holding(ticker,weight,sleeve,role,score=None,momentum_12m=None):
+  weights[ticker]=weights.get(ticker,0.0)+weight
+  existing=next((x for x in holdings if x["ticker"]==ticker),None)
+  if existing:
+   existing["weight"]+=weight
+   if sleeve not in existing["sleeves"]: existing["sleeves"].append(sleeve)
+  else:
+   holdings.append({"ticker":ticker,"weight":weight,"role":role,"sleeves":[sleeve],
+                    "score":score,"momentum_12m":momentum_12m})
+
+ for area,assets in REGIONS.items():
+  ranked,has_positive=candidate_list(prices,assets,signal_date,signal_prices,signal_prices)
+  if ranked and has_positive:
+   chosen=ranked[0]
+   picks.append({"area":area,"ticker":chosen["ticker"],"score":chosen["score"],
+                 "momentum_12m":chosen.get("momentum_12m"),"weight":0.15,"cash_fallback":False})
+   add_holding(chosen["ticker"],0.15,area,"AZIONARIO",chosen["score"],chosen.get("momentum_12m"))
+  else:
+   fallback_areas.append(area)
+   picks.append({"area":area,"ticker":"XEON.DE","score":None,"momentum_12m":None,
+                 "weight":0.15,"cash_fallback":True})
+   add_holding("XEON.DE",0.15,area+" · fallback liquidità","LIQUIDITÀ")
+ for label,(ticker,weight) in DEFENSIVE.items():
+  px=signal_prices.get(ticker)
+  if pd.isna(px) or px<=0:
+   return {"status":"COMPOSIZIONE PARZIALE — DIFENSIVO NON DISPONIBILE",
+           "signal_date":signal_date.strftime("%Y-%m-%d"),"holdings":holdings,"weights":weights}
+  add_holding(ticker,weight,label,"DIFENSIVO")
+ total=sum(weights.values())
+ complete=len(picks)==4 and abs(total-1.0)<1e-8
+ return {"status":"COMPOSIZIONE COMPLETA" if complete else "COMPOSIZIONE PARZIALE — NON OPERATIVA",
+         "signal_date":signal_date.strftime("%Y-%m-%d"),
+         "effective_from":(signal_date+pd.offsets.MonthBegin(1)).strftime("%Y-%m-%d"),
+         "effective_to":(signal_date+pd.offsets.MonthEnd(1)).strftime("%Y-%m-%d"),
+         "latest_price_date":latest.strftime("%Y-%m-%d"),
+         "equity_target_weight":0.60,"defensive_base_weight":0.40,
+         "picks":picks,"fallback_areas":fallback_areas,"holdings":holdings,
+         "weights":{k:float(v) for k,v in weights.items()},"total_weight":float(total),
+         "note":"Segnale fissato all'ultima chiusura mensile completa. 15% per ciascuna delle quattro aree; 24% XEON e 16% SGLD, con eventuali sleeve azionarie senza momentum positivo trasferite a XEON. SGLD è un ETC, non un ETF UCITS."}
+
+
 def main():
  symbols=sum(REGIONS.values(),[])+[x[0] for x in DEFENSIVE.values()]+[BENCH]
  prices=download(symbols); latest=prices.dropna(how="all").index[-1]
@@ -95,6 +147,7 @@ def main():
   raise RuntimeError("Il controllo qualità ha rilevato mesi mancanti nella serie EURO; metriche non pubblicate")
  benchmark_rows=[{"holding_to":x["holding_to"],"return":x["benchmark_return"]} for x in rows if x["benchmark_return"] is not None]
  benchmark_contiguous=contiguous(benchmark_rows)
+ current_composition=build_current_composition(prices)
  result={"generated_at":datetime.now(timezone.utc).isoformat(),"latest_price_date":latest.strftime("%Y-%m-%d"),
   "data_source":"Yahoo Finance adjusted daily prices; European listing symbols; not official issuer NAV data",
   "methodology":{"equity_weight":0.60,"defensive_weight":0.40,"regional_equity_weights":"15% per each of four sleeves",
@@ -103,7 +156,7 @@ def main():
    "fallback_policy":"Dynamic equity exposure: each region without a positive-momentum candidate moves its 15% sleeve to XEON.DE; total cash-like allocation can therefore exceed 24% and total equity exposure can fall below 60%.",
    "signal_rule":"Signal at prior month-end close; hold selected assets over the following calendar month",
    "warning":"Independent European UCITS approximation, not official Logical Invest. Universe limited to mapped candidates with uneven coverage. XEON is cash-like; SGLD is an ETC, not a UCITS ETF. No fees, taxes, slippage, FX hedging or currency conversion. Benchmark VWCE.DE is a proxy."},
-  "regions":REGIONS,"defensive":DEFENSIVE,"metrics":metrics(rows),
+  "regions":REGIONS,"defensive":DEFENSIVE,"current_composition":current_composition,"metrics":metrics(rows),
   "benchmark_aligned_portfolio_metrics":metrics([x for x in rows if x["benchmark_return"] is not None]),
   "benchmark_metrics":metrics(benchmark_rows),"benchmark":BENCH,
   "selection_months":len(rows),"history":rows[-120:],
