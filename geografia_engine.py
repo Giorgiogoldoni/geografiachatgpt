@@ -315,6 +315,114 @@ def monthly_winner_backtest(prices, rows):
             }
     return output
 
+
+MOMENTUM_WEIGHT_SCENARIOS = {
+    "prudente_40_30_20_10": {"label": "Prudente 40/30/20/10", "weights": {"12m": 0.40, "6m": 0.30, "3m": 0.20, "1m": 0.10}},
+    "intermedia_35_30_20_15": {"label": "Intermedia 35/30/20/15", "weights": {"12m": 0.35, "6m": 0.30, "3m": 0.20, "1m": 0.15}},
+    "reattiva_30_30_20_20": {"label": "Reattiva 30/30/20/20", "weights": {"12m": 0.30, "6m": 0.30, "3m": 0.20, "1m": 0.20}},
+}
+
+def momentum_weight_backtest(prices, rows):
+    """Walk-forward monthly test of 1/3/6/12m momentum weight alternatives."""
+    monthly = prices.resample("ME").last().dropna(how="all")
+    if monthly.empty:
+        return {"scenarios": {}, "note": "Prezzi mensili non disponibili."}
+    latest = prices.dropna(how="all").index.max()
+    if latest is not None and latest.to_period("M") == pd.Timestamp.now(tz="UTC").to_period("M"):
+        monthly = monthly.iloc[:-1]
+    groups = {}
+    for row in rows:
+        if row["module_id"] and row["bucket"] in {"country", "regional", "index", "global"} and row["symbol"] in prices.columns:
+            groups.setdefault(row["module_id"] + "|" + row["bucket"], []).append(row)
+    dates = list(monthly.index)
+    if len(dates) < 2:
+        return {"scenarios": {}, "note": "Storico mensile insufficiente."}
+
+    sleeve_results = {}
+    for group_key, candidates in groups.items():
+        series_by_symbol = {c["symbol"]: prices[c["symbol"]].dropna() for c in candidates}
+        scenario_data = {sid: {"returns": [], "picks": []} for sid in MOMENTUM_WEIGHT_SCENARIOS}
+        for i in range(1, len(dates)):
+            signal_date, hold_end = dates[i-1], dates[i]
+            eligible = []
+            for candidate in candidates:
+                p = series_by_symbol[candidate["symbol"]].loc[:signal_date]
+                if len(p) < MIN_HISTORY or len(p) < 253:
+                    continue
+                last = float(p.iloc[-1])
+                if last <= 0:
+                    continue
+                mom = {
+                    "1m": last / float(p.iloc[-22]) - 1,
+                    "3m": last / float(p.iloc[-64]) - 1,
+                    "6m": last / float(p.iloc[-127]) - 1,
+                    "12m": last / float(p.iloc[-253]) - 1,
+                }
+                sma200 = float(p.tail(200).mean())
+                if last > sma200 and mom["12m"] > 0:
+                    eligible.append((candidate, mom))
+            for sid, config in MOMENTUM_WEIGHT_SCENARIOS.items():
+                ranked = [(sum(mom[k] * config["weights"][k] for k in config["weights"]), candidate)
+                          for candidate, mom in eligible]
+                chosen = max(ranked, key=lambda x: x[0])[1] if ranked else None
+                ret = 0.0
+                if chosen is not None:
+                    a = monthly.loc[signal_date, chosen["symbol"]] if chosen["symbol"] in monthly.columns else np.nan
+                    b = monthly.loc[hold_end, chosen["symbol"]] if chosen["symbol"] in monthly.columns else np.nan
+                    if pd.notna(a) and pd.notna(b) and a > 0:
+                        ret = float(b / a - 1)
+                scenario_data[sid]["returns"].append(ret)
+                scenario_data[sid]["picks"].append(chosen["ticker"] if chosen else None)
+        sleeve_results[group_key] = scenario_data
+
+    output = {"scenarios": {}, "method": {
+        "signal": "Momentum composito 1/3/6/12 mesi a fine mese precedente",
+        "filter": "Prezzo > SMA200 e momentum 12 mesi > 0",
+        "holding": "Vincitore detenuto nel mese successivo; nessun vincitore = rendimento 0 (proxy liquidità)",
+        "portfolio": "Media equiponderata delle sleeve area/categoria",
+        "turnover": "Percentuale media mensile di sleeve con cambio ETF rispetto al mese precedente",
+        "warmup_sessions": MIN_HISTORY, "sleeves": sorted(sleeve_results.keys())
+    }}
+    for sid, config in MOMENTUM_WEIGHT_SCENARIOS.items():
+        returns, turnover = [], []
+        for month_i in range(len(dates) - 1):
+            sleeve_month_returns, switches, comparable = [], 0, 0
+            for data in sleeve_results.values():
+                sleeve_month_returns.append(data[sid]["returns"][month_i])
+                picks = data[sid]["picks"]
+                if month_i > 0:
+                    comparable += 1
+                    switches += int(picks[month_i] != picks[month_i-1])
+            returns.append(float(np.mean(sleeve_month_returns)) if sleeve_month_returns else 0.0)
+            turnover.append(switches / comparable if comparable else 0.0)
+        periods = {}
+        for period_key, requested_months in (("5y", 60), ("10y", 120)):
+            n_months = min(requested_months, len(returns))
+            arr = np.asarray(returns[-n_months:], dtype=float) if n_months else np.asarray([])
+            turn = np.asarray(turnover[-n_months:], dtype=float) if n_months else np.asarray([])
+            if len(arr):
+                equity = np.cumprod(1.0 + arr)
+                years = len(arr) / 12.0
+                cagr = float(equity[-1] ** (1 / years) - 1) if equity[-1] > 0 and years > 0 else None
+                vol = float(np.std(arr, ddof=1) * math.sqrt(12)) if len(arr) > 1 else None
+                peaks = np.maximum.accumulate(np.concatenate(([1.0], equity)))
+                drawdowns = np.concatenate(([1.0], equity)) / peaks - 1
+                periods[period_key] = {
+                    "months": int(len(arr)), "cagr": safe_float(cagr),
+                    "volatility_annual": safe_float(vol),
+                    "max_drawdown": safe_float(float(drawdowns.min())),
+                    "total_return": safe_float(float(equity[-1] - 1)),
+                    "avg_monthly_turnover": safe_float(float(np.mean(turn)) if len(turn) else 0.0),
+                    "switches": int(round(float(np.sum(turn)) * max(1, len(sleeve_results))))
+                }
+            else:
+                periods[period_key] = {"months": 0, "cagr": None, "volatility_annual": None,
+                                       "max_drawdown": None, "total_return": None,
+                                       "avg_monthly_turnover": None, "switches": 0}
+        output["scenarios"][sid] = {"label": config["label"], "weights": config["weights"], "periods": periods}
+    output["note"] = "Confronto sperimentale walk-forward. Non modifica il ranking operativo corrente, basato sul Modified Sharpe candidato."
+    return output
+
 def main():
     rows = load_universe()
     factor_df = pd.read_csv(FACTORS, dtype=str).fillna("") if FACTORS.exists() else pd.DataFrame()
@@ -390,7 +498,7 @@ def main():
             if pool:
                 factor_rankings[factor + "|" + geography] = sorted(
                     pool, key=lambda x: rank_key(x, "modified_sharpe_candidate"), reverse=True)
-    backtests = monthly_winner_backtest(prices, rows) if not prices.empty else {}
+    backtests = monthly_winner_backtest(prices, rows) if not prices.empty else {}\n    momentum_weight_comparison = momentum_weight_backtest(prices, rows) if not prices.empty else {"scenarios": {}, "note": "Prezzi non disponibili."}
     all_dates = [r.get("price_date") for r in calculated if r.get("price_date")]
     coverage = {
         "index_count": len(rows),
@@ -408,7 +516,7 @@ def main():
         "latest_price_date": max(all_dates) if all_dates else None,
         "method": {
             "lookback_sessions": LOOKBACK, "modified_sharpe_candidate": "mean(daily returns) / stdev(daily returns)^2",
-            "momentum_windows_sessions": WINDOWS, "composite_weights": COMPOSITE_WEIGHTS,
+            "momentum_windows_sessions": WINDOWS, "composite_weights": COMPOSITE_WEIGHTS,\n            "momentum_weight_scenarios": MOMENTUM_WEIGHT_SCENARIOS,
             "trend_filter": "last adjusted price > SMA200 AND 12-month momentum > 0",
             "rebalance": "monthly signal; daily data refresh",
             "price_source": "Yahoo Finance auto_adjust=True; adjusted-price proxy, not an official total-return feed",
@@ -423,7 +531,7 @@ def main():
         },
         "modules": MODULES, "rankings": rankings, "selections": selections,
         "universe": rows, "factor_universe": factor_rows, "factor_rankings": factor_rankings, "backtests": backtests,
-        "coverage": coverage, "warnings": warnings_list
+        "coverage": coverage, "momentum_weight_comparison": momentum_weight_comparison, "warnings": warnings_list
     }
     OUT.write_text(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
     print(json.dumps(coverage, ensure_ascii=False))
