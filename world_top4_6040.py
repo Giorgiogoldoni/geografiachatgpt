@@ -70,6 +70,10 @@ def run_backtest(prices, variant="modified", regions=REGIONS):
         if abs(total - 1.0) > 1e-8:
             continue
         ret = sum(w * (end_px[t]/start_px[t]-1) for t,w in valid.items())
+        fx_start, fx_end = start_px.get(FX), end_px.get(FX)
+        if pd.isna(fx_start) or pd.isna(fx_end) or fx_end <= 0:
+            continue
+        ret = (1 + ret) * float(fx_start / fx_end) - 1
         rows.append({
             "signal_date":signal_date.strftime("%Y-%m-%d"),
             "holding_from":hold_from.strftime("%Y-%m-%d"),
