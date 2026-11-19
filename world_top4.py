@@ -8,7 +8,7 @@ REGIONS={
 "Asia":["ASHR","EIDO","EPHE","EPI","EWJ","EWM","EWS","EWT","EWY","FXI","THD","VNM"],
 "South America":["ARGT","ECH","EPU","EWW","EWZ"],
 "Africa & Middle East":["AFK","EZA","TUR","GREK","KSA","UAE","QAT"]}
-HEDGE=["GLD","TLT","IEF","SHY"]
+HEDGE=["GLD","TLT","IEF","SHY"]\nFX="EURUSD=X"  # USD per EUR; converts USD portfolio returns into EUR
 def download(ts):
  d=yf.download(sorted(set(ts)),start=START,auto_adjust=True,progress=False,threads=True,group_by="column")
  if d is None or d.empty: raise RuntimeError("Nessun prezzo Yahoo Finance")
@@ -136,16 +136,16 @@ def backtest(p,variant,common_start=None):
    out.append({"signal_date":sig.strftime("%Y-%m-%d"),"holding_from":start.strftime("%Y-%m-%d"),"holding_to":end.strftime("%Y-%m-%d"),"return":ret,"picks":picks,"hedge":[{"ticker":h["ticker"],"score":h["score"]} for h in hr],"weights":w})
  return out
 def main():
- tickers=sum(REGIONS.values(),[])+HEDGE+[BENCH]; p=download(tickers); latest=p.dropna(how="all").index[-1]
+ tickers=sum(REGIONS.values(),[])+HEDGE+[BENCH,FX]; p=download(tickers); latest=p.dropna(how="all").index[-1]
  monthly=p.resample("ME").last()
  if latest.to_period("M")==pd.Timestamp.now(tz="UTC").to_period("M"):monthly=monthly.iloc[:-1]
  bm=monthly[BENCH].dropna()
  variants={}
  for v in ["modified","momentum","composite"]:
-  h=backtest(p,v,bm.index[0]);variants[v]={"metrics":metrics(h),"history":h[-36:]}
- bh=[{"holding_to":bm.index[i].strftime("%Y-%m-%d"),"return":float(bm.iloc[i]/bm.iloc[i-1]-1)} for i in range(1,len(bm))]
- d={"generated_at":datetime.now(timezone.utc).isoformat(),"latest_price_date":latest.strftime("%Y-%m-%d"),"data_source":"Yahoo Finance adjusted daily prices",
- "methodology":{"lookback_trading_days":LB,"rebalance":"monthly","decision_timing":"previous month-end close; execute from next month","hedge_weight_assumption":.20,
+  h=backtest(p,v,bm.index[0]);variants[v]={"metrics":metrics(h),"history":h[-120:]}
+ fxm=monthly[FX].dropna()\n bh=[]\n for i in range(1,len(bm)):\n  d0,d1=bm.index[i-1],bm.index[i]\n  if d0 not in fxm.index or d1 not in fxm.index or bm.iloc[i-1]<=0 or fxm.loc[d1]<=0: continue\n  eur_ret=(bm.iloc[i]/bm.iloc[i-1])*(fxm.loc[d0]/fxm.loc[d1])-1\n  bh.append({"holding_to":d1.strftime("%Y-%m-%d"),"return":float(eur_ret)})
+ d={"generated_at":datetime.now(timezone.utc).isoformat(),"latest_price_date":latest.strftime("%Y-%m-%d"),"data_source":"Yahoo Finance adjusted daily prices; USD portfolio and ACWI benchmark converted to EUR using EURUSD=X",
+ "methodology":{"lookback_trading_days":LB,"rebalance":"monthly","decision_timing":"previous month-end close; execute from next month","hedge_weight_assumption":.20,"reporting_currency":"EUR; USD asset returns converted monthly using EURUSD=X (USD per EUR)",
  "regions":"Developed, Asia, South America, Africa & Middle East (fourth sleeve approximate)","warning":"Independent approximation, not Logical Invest formula. US-listed research tickers; excludes fees, taxes, slippage and FX. Sharpe/Sortino here use zero risk-free/target assumptions and are not directly comparable with Logical Invest."},
  "regions":{k:rank(p,v,latest,"modified")[:10] for k,v in REGIONS.items()},
  "selected":{k:(rank(p,v,latest,"modified")[0] if rank(p,v,latest,"modified") and rank(p,v,latest,"modified")[0]["return_68d"]>0 else None) for k,v in REGIONS.items()},
