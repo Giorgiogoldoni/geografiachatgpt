@@ -47,28 +47,6 @@ def instrument(row):
         "price_date": row.get("price_date", price_date),
     }
 
-rows = []
-for group, items in rankings.items():
-    if not isinstance(items, list):
-        continue
-    for row in items:
-        if row.get("status") == "CALCOLATO":
-            item = instrument(row)
-            item["group"] = group
-            item["rank_in_group"] = len(rows) + 1
-            rows.append(item)
-
-# The signal is a watchlist classification, not an order. Keep the bar high.
-buy = [r for r in rows if r["eligible_trend"] and (r["momentum_3m"] or 0) > 0]
-buy.sort(key=lambda r: (r["modified_sharpe_candidate"] if r["modified_sharpe_candidate"] is not None else -1e9), reverse=True)
-avoid = [r for r in rows if not r["above_sma200"] and (r["momentum_12m"] or 0) < 0]
-wait = [r for r in rows if r not in buy and r not in avoid and not r["eligible_trend"]]
-hold = [r for r in rows if r["eligible_trend"] and (r["momentum_3m"] or 0) <= 0]
-buy = [explain(r, "CANDIDATO ACQUISTO") for r in buy]
-hold = [explain(r, "MANTENERE / NON INSEGUIRE") for r in hold]
-wait = [explain(r, "ATTENDERE CONFERMA") for r in wait]
-avoid = [explain(r, "EVITARE PER ORA") for r in avoid]
-
 def explain(row, label):
     reasons = []
     if row["above_sma200"]:
@@ -94,6 +72,29 @@ def explain(row, label):
     row["decision"] = label
     row["reason"] = "; ".join(reasons)
     return row
+
+
+rows = []
+for group, items in rankings.items():
+    if not isinstance(items, list):
+        continue
+    for row in items:
+        if row.get("status") == "CALCOLATO":
+            item = instrument(row)
+            item["group"] = group
+            item["rank_in_group"] = len(rows) + 1
+            rows.append(item)
+
+# The signal is a watchlist classification, not an order. Keep the bar high.
+buy = [r for r in rows if r["eligible_trend"] and (r["momentum_3m"] or 0) > 0]
+buy.sort(key=lambda r: (r["modified_sharpe_candidate"] if r["modified_sharpe_candidate"] is not None else -1e9), reverse=True)
+avoid = [r for r in rows if not r["above_sma200"] and (r["momentum_12m"] or 0) < 0]
+wait = [r for r in rows if r not in buy and r not in avoid and not r["eligible_trend"]]
+hold = [r for r in rows if r["eligible_trend"] and (r["momentum_3m"] or 0) <= 0]
+buy = [explain(r, "CANDIDATO ACQUISTO") for r in buy]
+hold = [explain(r, "MANTENERE / NON INSEGUIRE") for r in hold]
+wait = [explain(r, "ATTENDERE CONFERMA") for r in wait]
+avoid = [explain(r, "EVITARE PER ORA") for r in avoid]
 
 def compact(items, limit=8):
     return items[:limit]
@@ -174,7 +175,7 @@ entry = {
     },
     "decision_rules": {
         "buy": "Candidato soltanto se prezzo sopra SMA200, momentum 12 mesi positivo e momentum 3 mesi positivo.",
-        "factor_rule": "I fattori sono classificati separatamente dai Paesi e dalle aree; stessa lettura tecnica, nessuna fusione dei ranking geografici."
+        "factor_rule": "I fattori sono classificati separatamente dai Paesi e dalle aree; stessa lettura tecnica, nessuna fusione dei ranking geografici.",
         "hold": "Filtro trend superato ma momentum 3 mesi nullo o negativo: non inseguire il prezzo.",
         "wait": "Filtro trend incompleto, ma non coesistono prezzo sotto SMA200 e momentum 12 mesi negativo.",
         "avoid": "Prezzo sotto SMA200 e momentum 12 mesi negativo."
