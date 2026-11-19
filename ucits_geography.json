@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19T20:27:21.578879+00:00",
+  "generated_at": "2026-11-19T20:27:44.861882+00:00",
   "latest_price_date": "2026-11-19",
   "method": {
     "lookback_sessions": 68,
@@ -19,7 +19,8 @@
     "notes": [
       "Modified Sharpe is a documented historical reference, not a verified current Logical Invest formula.",
       "Country ETFs and regional Latin America ETFs are ranked separately.",
-      "Unmapped or insufficient-history instruments are not silently substituted."
+      "Unmapped or insufficient-history instruments are not silently substituted.",
+      "Greece (GRC, FR0010405431) is assigned to Europe; Turkey (IQQ5) remains in Middle East/Africa."
     ]
   },
   "areas": {
@@ -27,7 +28,8 @@
       "Poland",
       "Japan",
       "Canada",
-      "Netherlands"
+      "Netherlands",
+      "Greece"
     ],
     "Asia-Pacific emergente": [
       "South Korea",
@@ -78,6 +80,35 @@
       },
       {
         "region": "Europe",
+        "country": "Greece",
+        "fund": "Amundi MSCI Greece UCITS ETF Dist",
+        "isin": "FR0010405431",
+        "ticker": "GRC",
+        "symbol": "GRC.MI",
+        "exchange": "Borsa Italiana",
+        "currency": "EUR",
+        "kind": "country",
+        "status": "CALCOLATO",
+        "price": 2.926500082015991,
+        "return_68d": -0.003914187163455929,
+        "volatility_annual": 0.20037458036212244,
+        "modified_sharpe": 0.13308039697976665,
+        "momentum_3m": -0.006956207838866302,
+        "momentum_6m": 0.12731129871726954,
+        "momentum_12m": 0.33612114819525707,
+        "composite_momentum": 0.13624725093821144,
+        "sma200": 2.7149024987220765,
+        "above_sma200": true,
+        "absolute_momentum_positive": true,
+        "eligible_trend": true,
+        "observations": 4796,
+        "price_date": "2026-11-19",
+        "score_rank_modified": 0.13308039697976665,
+        "score_rank_momentum": -0.003914187163455929,
+        "score_rank_composite": 0.13624725093821144
+      },
+      {
+        "region": "Europe",
         "country": "Netherlands",
         "fund": "iShares AEX UCITS ETF",
         "isin": "IE00B0M62Y33",
@@ -95,7 +126,7 @@
         "momentum_6m": 0.0584276316280572,
         "momentum_12m": 0.20300181606234435,
         "composite_momentum": 0.07316751774450127,
-        "sma200": 105.73825252532959,
+        "sma200": 105.7382523727417,
         "above_sma200": true,
         "absolute_momentum_positive": true,
         "eligible_trend": true,
@@ -623,7 +654,7 @@
       "momentum_6m": 0.0584276316280572,
       "momentum_12m": 0.20300181606234435,
       "composite_momentum": 0.07316751774450127,
-      "sma200": 105.73825252532959,
+      "sma200": 105.7382523727417,
       "above_sma200": true,
       "absolute_momentum_positive": true,
       "eligible_trend": true,
@@ -855,14 +886,34 @@
       "fund": "Amundi MSCI Greece UCITS ETF Dist",
       "isin": "FR0010405431",
       "ticker": "GRC",
-      "status": "NON MAPPATO",
-      "reason": "Quotazione e serie prezzi non ancora mappate"
+      "symbol": "GRC.MI",
+      "exchange": "Borsa Italiana",
+      "currency": "EUR",
+      "kind": "country",
+      "status": "CALCOLATO",
+      "price": 2.926500082015991,
+      "return_68d": -0.003914187163455929,
+      "volatility_annual": 0.20037458036212244,
+      "modified_sharpe": 0.13308039697976665,
+      "momentum_3m": -0.006956207838866302,
+      "momentum_6m": 0.12731129871726954,
+      "momentum_12m": 0.33612114819525707,
+      "composite_momentum": 0.13624725093821144,
+      "sma200": 2.7149024987220765,
+      "above_sma200": true,
+      "absolute_momentum_positive": true,
+      "eligible_trend": true,
+      "observations": 4796,
+      "price_date": "2026-11-19",
+      "score_rank_modified": 0.13308039697976665,
+      "score_rank_momentum": -0.003914187163455929,
+      "score_rank_composite": 0.13624725093821144
     }
   ],
   "coverage": {
     "universe_count": 16,
-    "calculated_count": 12,
-    "unmapped_count": 3,
+    "calculated_count": 13,
+    "unmapped_count": 2,
     "price_unavailable_count": 0,
     "insufficient_history_count": 1
   },
