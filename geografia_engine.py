@@ -69,6 +69,13 @@ INDEX_LABELS = {"indice nazionale", "indice nazionale coperto",
                 "indice settoriale/tematico", "indice"}
 COUNTRY_LABELS = {"paese", "paese coperto"}
 ETP_TICKERS = {"WNAS.MI"}
+# Yahoo Finance symbols for listings explicitly identified on Borsa Italiana.
+# Bare product tickers are never guessed into price symbols.
+FACTOR_SYMBOL_MAP = {
+    "IWMO": "IWMO.MI", "IEMO": "IEMO.MI",
+    "IWQU": "IWQU.MI", "IEQU": "IEQU.MI",
+    "IAPD.MI": "IAPD.MI",
+}
 
 def clean(value):
     return str(value or "").strip()
@@ -308,8 +315,10 @@ def main():
     factor_df = pd.read_csv(FACTORS, dtype=str).fillna("") if FACTORS.exists() else pd.DataFrame()
     factor_symbols = []
     if not factor_df.empty:
-        factor_symbols = [clean(x) for x in factor_df["ticker"].tolist()
-                          if clean(x).endswith((".MI", ".DE", ".PA", ".AS", ".L"))]
+        factor_symbols = [FACTOR_SYMBOL_MAP.get(clean(x), clean(x))
+                          for x in factor_df["ticker"].tolist()
+                          if clean(x).endswith((".MI", ".DE", ".PA", ".AS", ".L"))
+                          or clean(x) in FACTOR_SYMBOL_MAP]
     symbols = [r["symbol"] for r in rows if r["module_id"] and r["bucket"] != "etp"]
     symbols += factor_symbols
     warnings_list = []
@@ -351,21 +360,31 @@ def main():
     if not factor_df.empty:
         for _, f in factor_df.iterrows():
             ticker = clean(f.get("ticker"))
-            factor_rows.append({
-                "category": clean(f.get("category")), "ticker": ticker,
+            symbol = FACTOR_SYMBOL_MAP.get(ticker, ticker if ticker.endswith((".MI", ".DE", ".PA", ".AS", ".L")) else "")
+            geo = clean(f.get("geography"))
+            factor_row = {
+                "category": clean(f.get("category")), "ticker": ticker, "symbol": symbol or None,
                 "name": clean(f.get("name")), "isin": clean(f.get("isin")),
-                "geography": clean(f.get("geography")),
+                "geography": geo, "module_id": module_for(geo),
                 "benchmark_factor": clean(f.get("benchmark_factor")),
                 "listing_venue": clean(f.get("listing_venue")),
-                "status": "CALCOLATO" if ticker.endswith((".MI", ".DE", ".PA", ".AS", ".L")) and ticker in prices.columns else "LISTING DA MAPPARE",
+                "status": "IN ATTESA MAPPATURA" if not symbol else ("CALCOLATO" if symbol in prices.columns else "PREZZI NON DISPONIBILI"),
                 "note": "Ranking fattoriale separato; mai mescolato al ranking geografico."
-            })
-            if factor_rows[-1]["status"] == "CALCOLATO":
-                metrics = score_series(prices[ticker])
+            }
+            if factor_row["status"] == "CALCOLATO":
+                metrics = score_series(prices[symbol])
                 if metrics:
-                    factor_rows[-1].update(metrics)
+                    factor_row.update(metrics)
                 else:
-                    factor_rows[-1]["status"] = "STORICO INSUFFICIENTE"
+                    factor_row["status"] = "STORICO INSUFFICIENTE"
+            factor_rows.append(factor_row)
+    factor_rankings = {}
+    for factor in sorted({x["category"] for x in factor_rows}):
+        for geography in sorted({x["geography"] for x in factor_rows if x["category"] == factor}):
+            pool = [x for x in factor_rows if x["category"] == factor and x["geography"] == geography and x["status"] == "CALCOLATO"]
+            if pool:
+                factor_rankings[factor + "|" + geography] = sorted(
+                    pool, key=lambda x: rank_key(x, "modified_sharpe_candidate"), reverse=True)
     backtests = monthly_winner_backtest(prices, rows) if not prices.empty else {}
     all_dates = [r.get("price_date") for r in calculated if r.get("price_date")]
     coverage = {
@@ -377,6 +396,7 @@ def main():
         "etp_separate_count": sum(r["status"] == "ETP SEPARATO" for r in rows),
         "factor_catalog_count": len(factor_rows),
         "factor_rankable_count": sum(r["status"] == "CALCOLATO" for r in factor_rows),
+        "factor_pending_mapping_count": sum(r["status"] == "IN ATTESA MAPPATURA" for r in factor_rows),
     }
     result = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -397,7 +417,7 @@ def main():
             ]
         },
         "modules": MODULES, "rankings": rankings, "selections": selections,
-        "universe": rows, "factor_universe": factor_rows, "backtests": backtests,
+        "universe": rows, "factor_universe": factor_rows, "factor_rankings": factor_rankings, "backtests": backtests,
         "coverage": coverage, "warnings": warnings_list
     }
     OUT.write_text(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
