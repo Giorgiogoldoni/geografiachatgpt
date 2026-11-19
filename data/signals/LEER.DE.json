@@ -1,1 +1,1 @@
-{"ticker":"LEER.DE","history":[{"date":"2026-11-18","ts":"2026-11-18 12:22 CET","signal":"WATCH","price":47.7,"score":23.2,"er":0.1308,"note":"Nessuna condizione di ingresso attiva"}]}
+{"ticker":"LEER.DE","history":[{"date":"2026-11-18","ts":"2026-11-18 12:22 CET","signal":"WATCH","price":47.7,"score":23.2,"er":0.1308,"note":"Nessuna condizione di ingresso attiva"},{"date":"2026-11-19","ts":"2026-11-19 18:14 CET","signal":"SELL","price":46.905,"score":20.6,"er":0.2769,"note":"Uscita per: KAMA rotta, SAR bear, AO calante, ER<0.4"}]}
