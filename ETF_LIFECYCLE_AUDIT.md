@@ -11,7 +11,7 @@ Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato 
 
 ## Date verificate (aggiornamento 19 novembre 2026)
 
-Il registro contiene ora 67 date di lancio verificate per ETF e 6 per ETP, su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.
+Il registro contiene ora 69 date di lancio verificate per ETF e 6 per ETP, su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.
 
 ## Date verificate nella prima tranche e successive integrazioni
 
@@ -66,6 +66,7 @@ Il registro contiene ora 67 date di lancio verificate per ETF e 6 per ETP, su 75
 | IE00BFMXYY33 | Vanguard FTSE Japan UCITS ETF EUR Hedged Acc | 31/01/2020 | Vanguard |
 | IE00B6YX5C33 | SPDR S&P 500 UCITS ETF Dist | 19/03/2012 | State Street |
 | LU1169830103 | UBS MSCI Switzerland 20/35 UCITS ETF hEUR Acc | 18/06/2020 | justETF |
+| LU1169821292 | UBS MSCI United Kingdom UCITS ETF hEUR Acc | 24/06/2020 | justETF |
 | IE000YELA4E3 | L&G S&P 100 Equal Weight UCITS ETF USD Acc | 17/07/2025 | justETF |
 | LU0659578842 | Xtrackers MSCI Singapore UCITS ETF 1C | 19/09/2011 | justETF |
 | LU0592215403 | Xtrackers MSCI Philippines UCITS ETF 1C | 12/04/2011 | justETF |
@@ -124,4 +125,4 @@ Per alcuni strumenti Amundi, la prima data NAV del fondo è precedente alla crea
 5. Gli ETF delistati/chiusi devono essere ricostruiti separatamente per ridurre il survivorship bias.
 
 ## Stato e limiti
-Questa è una verifica in corso: 67 date di lancio per ETF e 6 per ETP sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
+Questa è una verifica in corso: 69 date di lancio per ETF e 6 per ETP sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
