@@ -9,7 +9,7 @@ Separare quattro concetti che non vanno confusi:
 
 Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato come sostituto della data di lancio.
 
-## Date verificate in questa prima passata
+## Date verificate (aggiornamento 19 novembre 2026)\n\nIl registro contiene ora 29 date di lancio verificate su 75 strumenti censiti. Le date seguenti sono riportate come data di lancio del fondo secondo le schede justETF; non certificano necessariamente la data di avvio della singola classe o della quotazione italiana.\n\n## Date verificate nella prima tranche e successive integrazioni
 
 | ISIN | Fondo | Data lancio fondo | Fonte |
 |---|---|---:|---|
@@ -25,6 +25,25 @@ Il campo prima osservazione prezzi è calcolato dal motore. Non viene mai usato 
 | LU0779800910 | Xtrackers CSI 300 Swap UCITS ETF 1C | 27/06/2012 | justETF |
 | FR0007056841 | Amundi Dow Jones Industrial Average UCITS ETF Dist | 04/04/2001 | justETF |
 | XS2427354985 | WisdomTree FTSE MIB | 02/03/2022 | WisdomTree (ETP/ETN, non classificato come ETF UCITS) |
+| IE00B14X4T88 | iShares Asia Pacific Dividend UCITS ETF | 02/06/2006 | justETF |
+| IE00B1FZS574 | iShares MSCI Turkey UCITS ETF | 03/11/2006 | justETF |
+| IE00B4L5YX21 | iShares Core MSCI Japan IMI UCITS ETF | 25/09/2009 | justETF |
+| IE00B52SF786 | iShares MSCI Canada UCITS ETF Acc | 12/01/2010 | justETF |
+| IE00B52XQP83 | iShares MSCI South Africa UCITS ETF | 22/01/2010 | justETF |
+| IE00B4M7GH52 | iShares MSCI Poland UCITS ETF USD Acc | 21/01/2011 | justETF |
+| IE00BHZRQY00 | Franklin FTSE Brazil UCITS ETF | 04/06/2019 | justETF |
+| IE00BP3QZ825 | iShares Edge MSCI World Momentum Factor UCITS ETF | 03/10/2014 | justETF |
+| IE00BP3QZB59 | iShares Edge MSCI World Value Factor UCITS ETF | 03/10/2014 | justETF |
+| IE00BQN1K786 | iShares Edge MSCI Europe Momentum Factor UCITS ETF | 16/01/2015 | justETF |
+| IE00BQN1K901 | iShares Edge MSCI Europe Value Factor UCITS ETF | 16/01/2015 | justETF |
+| IE00BQN1KC32 | iShares Edge MSCI Europe Size Factor UCITS ETF | 16/01/2015 | justETF |
+| IE00BD1F4N50 | iShares Edge MSCI USA Momentum Factor UCITS ETF | 13/10/2016 | justETF |
+| IE00BL25JP72 | Xtrackers MSCI World Momentum UCITS ETF 1C | 05/09/2014 | justETF |
+| IE00BL25JM42 | Xtrackers MSCI World Value UCITS ETF 1C | 11/09/2014 | justETF |
+| IE00BNGJJT35 | Invesco S&P 500 Equal Weight UCITS ETF Acc | 06/04/2021 | justETF |
+| IE000LAP5Z18 | Amundi S&P 500 Equal Weight ESG UCITS ETF Acc | 24/05/2022 | justETF |
+| IE000OEF25S1 | Invesco MSCI World Equal Weight UCITS ETF Acc | 04/09/2024 | justETF |
+| IE000LUZJNI7 | Invesco MSCI Europe Equal Weight UCITS ETF Acc | 04/03/2025 | justETF |
 
 ## Date di quotazione verificate
 
@@ -48,4 +67,4 @@ Questa è una data di quotazione su Borsa Italiana, non la data di nascita del f
 5. Gli ETF delistati/chiusi devono essere ricostruiti separatamente per ridurre il survivorship bias.
 
 ## Stato e limiti
-Questa è una prima tranche verificata, non il censimento completo. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
+Questa è una verifica in corso: 29 date di lancio sono documentate, mentre gli altri strumenti restano da verificare. I campi non documentati restano vuoti. Il CSV viene aggiornato dal motore e include anche strumenti privi di ISIN verificato, per consentire il lavoro di riconciliazione. La data Yahoo può dipendere dalla quotazione scelta, dal cambio ticker e dalla disponibilità del provider.
