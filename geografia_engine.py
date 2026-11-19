@@ -48,6 +48,7 @@ COUNTRY_MAP = {
     "nuova zelanda": "asia", "pacifico ex giappone": "asia",
     "asia pacifico": "asia", "asia-pacifico": "asia", "hong kong / cina": "asia",
     "arabia saudita": "middle-east-africa", "sudafrica": "middle-east-africa",
+    # Project convention: Turkey is assigned exclusively to Middle East/Africa; Greece to Europe.
     "sud africa": "middle-east-africa", "turchia": "middle-east-africa",
     "israele": "middle-east-africa", "emirati arabi uniti": "middle-east-africa",
     "qatar": "middle-east-africa", "kuwait": "middle-east-africa",
