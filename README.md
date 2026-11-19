@@ -124,6 +124,15 @@ Il motore scarica prezzi rettificati delle quotazioni europee mappate, calcola M
 **Limiti della prima release:** il motore mostra lo snapshot corrente e non ancora un backtest walk-forward; i ticker non mappati, le quotazioni senza dati e gli storici insufficienti sono segnalati ed esclusi. Non è una replica del motore proprietario Logical Invest né un sistema di ordini automatici.
 
 
+## Portafogli USA ed EURO — 60/40
+
+- **Dashboard composizioni e confronto:** [Portafogli USA/EURO](./portafogli-usa-euro.html).
+- **USA:** quattro sleeve azionarie geografiche al 15% ciascuna; 24% Treasury e 16% oro/strumento USD difensivo. I rendimenti sono convertiti in EUR.
+- **EURO:** quattro sleeve azionarie UCITS al 15% ciascuna; 24% XEON e 16% SGLD. Se una regione non presenta momentum positivo, la relativa quota del 15% passa a XEON.
+- I segnali si formano alla chiusura del mese precedente; la composizione è mantenuta per il mese successivo. Il motore aggiorna quotidianamente i dati e pubblica la composizione corrente con ticker e pesi.
+- La dashboard mostra le composizioni mensili, i pesi, il confronto su mesi comuni e gli orizzonti 12/36/60/120 mesi.
+- Sono adattamenti indipendenti per universi USA ed europei, non una replica certificata della metodologia proprietaria Logical Invest. SGLD è un ETC, non un ETF UCITS; costi, slippage e fiscalità non sono inclusi.
+
 ## INDEX ETF geografici
 
 - Dashboard ricercabile: [INDEX ETF — 53 strumenti](./index-etf.html)
