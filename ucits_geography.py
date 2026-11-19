@@ -35,9 +35,11 @@ MAP = {
     "IE00B27YCK28": ("LTAM.MI", "Borsa Italiana", "EUR", "regional"),
     "LU1681045024": ("ALAT.MI", "Borsa Italiana", "EUR", "regional"),
     "IE00BP3QZG05": ("QDVM.DE", "Xetra", "EUR", "country"),
+    # Greece: Euronext Milan UCITS listing verified; Yahoo symbol candidate pending first-run validation.
+    "FR0010405431": ("GRC.MI", "Borsa Italiana", "EUR", "country"),
 }
 AREAS = {
-    "Developed": ["Poland", "Japan", "Canada", "Netherlands"],
+    "Developed": ["Poland", "Japan", "Canada", "Netherlands", "Greece"],
     "Asia-Pacific emergente": ["South Korea", "Taiwan", "India", "China"],
     "America Latina": ["Brazil", "Mexico"],
     "Africa e Medio Oriente": ["South Africa", "Turkey", "Israel"],
@@ -163,7 +165,8 @@ def main():
           "rebalance":"monthly; current snapshot only in this first engine release",
           "notes":["Modified Sharpe is a documented historical reference, not a verified current Logical Invest formula.",
             "Country ETFs and regional Latin America ETFs are ranked separately.",
-            "Unmapped or insufficient-history instruments are not silently substituted."]},
+            "Unmapped or insufficient-history instruments are not silently substituted.",
+            "Greece (GRC, FR0010405431) is assigned to Europe; Turkey (IQQ5) remains in Middle East/Africa."]},
         "areas":AREAS,"rankings":rankings,"selected":selected,
         "regional_alternatives":regional_rank,"universe":records,
         "coverage":{"universe_count":len(records),"calculated_count":sum(x["status"]=="CALCOLATO" for x in records),
