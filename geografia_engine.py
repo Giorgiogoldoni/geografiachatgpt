@@ -173,6 +173,8 @@ def load_universe():
         "SRSA": ("SRSA.MI", "Sudafrica"),
         "FLXB": ("FLXB.MI", "Brasile"),
         "IQQ5": ("IQQ5.DE", "Turchia"),
+        # GRC: Euronext Milan UCITS listing verified; Yahoo Finance symbol is a candidate pending first-run data validation.
+        "GRC": ("GRC.MI", "Grecia"),
         "LTAM": ("LTAM.MI", "America Latina"),
         "ALAT": ("ALAT.MI", "America Latina"),
     }
