@@ -116,6 +116,19 @@ Per alcuni strumenti Amundi, la prima data NAV del fondo è precedente alla crea
 - CN1 / LU1681044647: prima NAV 16/09/2008; lancio della classe 22/03/2018.
 - TUR / LU1900067601: prima NAV 11/08/2006; lancio della classe 14/03/2019.
 
+## Criterio della verifica dello storico maturo (19 novembre 2026)
+
+Su indicazione dell'utente, i fondi lanciati dal 1° gennaio 2023 in avanti restano nel registro anagrafico, ma non vengono considerati nel giudizio sulla copertura dello storico consolidato. I sei strumenti WisdomTree classificati come ETP/ETN restano separati dagli ETF UCITS e non entrano nel ranking UCITS. La verifica operativa si concentra quindi sui fondi lanciati entro il 2022.
+
+Riconciliazione dei ticker storici:
+- IEVL: IEVL.MI (Borsa Italiana; ISIN IE00BQN1K901).
+- IWVL: IWVL.MI (Borsa Italiana; ISIN IE00BP3QZB59).
+- XDEV: XDEV.MI (Borsa Italiana; ISIN IE00BL25JM42).
+- QDVA: QDVA.DE (Xetra; ISIN IE00BD1F4N50).
+- QDVM: QDVM.DE (Xetra; ISIN IE00BP3QZG05); il simbolo di quotazione è confermato, ma la serie Yahoo resta da verificare separatamente.
+
+Le mappature sopra identificano la quotazione corretta, non attestano da sole la presenza di prezzi nello storico del provider. La prima osservazione viene valorizzata solo se il download effettivo restituisce prezzi.
+
 ## Regole per il backtest
 1. Mai generare prezzi prima della prima osservazione effettiva.
 2. Mai retrodatare la storia al lancio del fondo se la serie prezzi utilizzata inizia più tardi.
