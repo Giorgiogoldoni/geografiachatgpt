@@ -300,8 +300,8 @@ def _portfolio_stats(monthly_returns, label):
 def monthly_validation(frames, indicators, universe):
     """
     Historical monthly walk-forward replay.
-    Scores at month t use only data through that month's final available close.
-    Rolling threshold for month t uses scores from the preceding 36 months only.
+    Each horizon is evaluated independently so the 6-month maturity lag
+    does not truncate the 1- and 3-month results.
     """
     panel = build_monthly_panel(indicators, universe)
     if panel.empty:
@@ -317,31 +317,40 @@ def monthly_validation(frames, indicators, universe):
         threshold = None
         if len(prior_periods) >= 12 and len(prior):
             threshold = finite(prior["score"].dropna().quantile(0.75))
-        valid_current = current.dropna(subset=["1m", "3m", "6m"])
-        if valid_current.empty:
-            continue
-        def monthly_mean(frame):
-            return {
-                h: finite(frame[h].mean()) if len(frame) and frame[h].notna().any() else None
-                for h in ("1m", "3m", "6m")
-            }
-        benchmark = monthly_mean(valid_current)
-        fixed = monthly_mean(valid_current[valid_current["score"] >= 65])
-        rolling = monthly_mean(valid_current[valid_current["score"] >= threshold]) if threshold is not None else None
-        date = current["date"].max().strftime("%Y-%m-%d")
-        benchmark_rows.append({"date": date, **benchmark})
-        if valid_current["score"].ge(65).any():
-            fixed_rows.append({"date": date, **fixed})
         if threshold is not None:
-            rolling_thresholds.append({"date": date, "threshold": threshold})
-            if (valid_current["score"] >= threshold).any():
-                rolling_rows.append({"date": date, **rolling})
+            rolling_thresholds.append({"date": current["date"].max().strftime("%Y-%m-%d"),
+                                       "threshold": threshold})
+        bench_rec = {"date": current["date"].max().strftime("%Y-%m-%d")}
+        fixed_rec = {"date": bench_rec["date"]}
+        rolling_rec = {"date": bench_rec["date"]}
+        for horizon in ("1m", "3m", "6m"):
+            valid = current.dropna(subset=[horizon])
+            if valid.empty:
+                bench_rec[horizon] = None
+                fixed_rec[horizon] = None
+                rolling_rec[horizon] = None
+                continue
+            bench_rec[horizon] = finite(valid[horizon].mean())
+            fixed_group = valid[valid["score"] >= 65]
+            fixed_rec[horizon] = finite(fixed_group[horizon].mean()) if len(fixed_group) else None
+            if threshold is not None:
+                rolling_group = valid[valid["score"] >= threshold]
+                rolling_rec[horizon] = finite(rolling_group[horizon].mean()) if len(rolling_group) else None
+            else:
+                rolling_rec[horizon] = None
+        if any(bench_rec[h] is not None for h in ("1m", "3m", "6m")):
+            benchmark_rows.append(bench_rec)
+        if any(fixed_rec[h] is not None for h in ("1m", "3m", "6m")):
+            fixed_rows.append(fixed_rec)
+        if threshold is not None and any(rolling_rec[h] is not None for h in ("1m", "3m", "6m")):
+            rolling_rows.append(rolling_rec)
     breadth = breadth_by_module(panel)
     validation = {
         "status": "WALK-FORWARD STORICO ESPLORATIVO · NON VALIDATO",
         "observations": int(len(panel)),
         "months": int(len(periods)),
         "out_of_sample_from": periods[0].strftime("%Y-%m"),
+        "out_of_sample_to": periods[-1].strftime("%Y-%m"),
         "benchmark_equal_weight": _portfolio_stats(benchmark_rows, "Universo ETF geografici equiponderato"),
         "oos_score_ge_65": _portfolio_stats(fixed_rows, "Selezione mensile con score >= 65"),
         "walk_forward_rolling_percentile": _portfolio_stats(rolling_rows, "Selezione mensile sopra il 75° percentile dei 36 mesi precedenti"),
@@ -352,7 +361,7 @@ def monthly_validation(frames, indicators, universe):
             "rule": "Per ogni mese, soglia = 75° percentile degli score osservati nei 36 mesi precedenti; minimo 12 mesi di storia. Nessuna informazione del mese corrente entra nella soglia."
         },
         "breadth_note": "Breadth inter-mercato per modulo: quota degli ETF geografici sopra MA50/MA200 e quota in rialzo a un mese. Non sostituisce la breadth interna calcolata sui titoli componenti di ciascun indice.",
-        "method": "Replay mensile point-in-time: snapshot all'ultima seduta disponibile del mese; rendimenti successivi a 21/63/126 sedute. Confronto con universo equiponderato e selezione score >=65. Soglia adattiva calcolata solo sui 36 mesi precedenti. I rendimenti forward si sovrappongono tra mesi e le osservazioni ETF sono correlate. Risultati lordi, senza costi, FX, spread o slippage."
+        "method": "Replay mensile point-in-time: snapshot all'ultima seduta disponibile del mese; rendimenti successivi a 21/63/126 sedute. Ogni orizzonte è valutato separatamente. Confronto con universo equiponderato, selezione score >=65 e soglia adattiva calcolata solo sui 36 mesi precedenti. I rendimenti forward a 3 e 6 mesi si sovrappongono tra snapshot mensili; gli ETF sono correlati e l'universo corrente introduce survivorship bias. Risultati lordi, senza costi, FX, spread o slippage."
     }
     return validation, breadth
 
@@ -416,6 +425,7 @@ def main():
                 "Breadth non calcolata: servono serie storiche di ampiezza di mercato/constituents per ciascun Paese.",
                 "Macro (OECD CLI, PMI nuovi ordini, revisioni utili) non inclusi finché non sono disponibili dati storici coerenti e datati.",
                 "Prezzi Yahoo Finance adjusted sono proxy e possono avere limiti, cambi valuta e differenze tra listing.",
+                "L’universo usa gli ETF attualmente presenti nel ranking: il backtest storico può soffrire di survivorship bias e non ricostruisce le composizioni storiche degli indici.",
                 "Le osservazioni sono coppie ETF-mese: non sono indipendenti e possono includere strumenti sovrapposti sulla stessa geografia.",
                 "La verifica è un replay mensile point-in-time con soglia adattiva basata solo sui 36 mesi precedenti; i rendimenti forward si sovrappongono e il test resta esplorativo, non una validazione indipendente.",
                 "Backtest esplorativo non incorpora costi, spread, slippage, tasse o rischio cambio."
