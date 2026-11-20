@@ -813,26 +813,20 @@ def compare_predictive_candidates(indicators, universe, start_date="2015-01-01")
 
 def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", train_months=60):
     """
-    Leakage-controlled monthly Ridge ranking.
-    Train only on labels whose full 21-session outcome had matured by the
-    forecast date. Compare top-3/5/10 selections with ROC21, 3/6/12 momentum
-    and the equal-weight universe on identical months.
+    Leakage-controlled monthly Ridge ranking plus a genuinely current snapshot.
+    Historical labels are used only after their full 21-session outcome matures.
+    The live ranking does not require a future return label.
     """
     panel = build_monthly_panel(indicators, universe)
     if panel.empty:
         return {"status": "DATI INSUFFICIENTI", "months": 0}
+
     panel = panel[panel["date"] >= pd.Timestamp(start_date)].copy()
     panel["future_date_1m"] = pd.to_datetime(panel["future_date_1m"])
-    required = ["roc21", "roc63", "roc126", "kama_slope21",
-                "trend_stability_21", "alligator_bull", "adx14",
-                "vortex_spread", "volatility_68", "1m", "future_date_1m"]
-    panel = panel.dropna(subset=required).copy()
-    if panel.empty:
-        return {"status": "DATI INSUFFICIENTI", "months": 0}
-    panel["directional_adx"] = panel["adx14"] * np.sign(panel["vortex_spread"])
     raw_features = ["roc21", "roc63", "roc126", "kama_slope21",
                     "trend_stability_21", "alligator_bull",
                     "directional_adx", "volatility_68"]
+    panel["directional_adx"] = panel["adx14"] * np.sign(panel["vortex_spread"])
     for col in raw_features:
         panel["rank_" + col] = panel.groupby("period")[col].rank(pct=True)
     panel["rank_low_volatility"] = 1.0 - panel["rank_volatility_68"]
@@ -840,45 +834,77 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 "rank_kama_slope21", "rank_trend_stability_21",
                 "rank_alligator_bull", "rank_directional_adx",
                 "rank_low_volatility"]
+    panel = panel.replace([np.inf, -np.inf], np.nan)
     panel = panel.dropna(subset=features).copy()
-    periods = sorted(panel["period"].unique())
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "months": 0}
+
+    latest_period = panel["period"].max()
+    live = panel[panel["period"] == latest_period].copy()
+    asof = live["date"].max()
+    if live.empty:
+        return {"status": "SNAPSHOT CORRENTE ASSENTE", "months": 0}
+
+    # Historical replay: only rows with a fully observed 21-session outcome.
+    labeled = panel.dropna(subset=["1m", "future_date_1m"]).copy()
     predictions = []
-    alpha = 12.0  # pre-registered; not selected on the test results
-    for period in periods:
-        current = panel[panel["period"] == period].copy()
-        if len(current) < 5:
-            continue
-        asof = current["date"].max()
-        # Purge every training label whose 21-session outcome is not yet known.
-        prior = panel[(panel["period"] < period) &
-                      (panel["future_date_1m"] <= asof)].copy()
-        prior_periods = sorted(prior["period"].unique())[-train_months:]
-        prior = prior[prior["period"].isin(prior_periods)].dropna(subset=features + ["1m"])
-        if len(prior_periods) < 18 or len(prior) < 100:
-            continue
-        prior["target_excess"] = prior["1m"] - prior.groupby("period")["1m"].transform("mean")
-        X = prior[features].to_numpy(dtype=float)
-        y = prior["target_excess"].to_numpy(dtype=float)
+    alpha = 12.0
+
+    def fit_ridge(training):
+        training = training.dropna(subset=features + ["1m"]).copy()
+        if training.empty:
+            return None
+        training["target_excess"] = (
+            training["1m"] -
+            training.groupby("period")["1m"].transform("mean")
+        )
+        X = training[features].to_numpy(dtype=float)
+        y = training["target_excess"].to_numpy(dtype=float)
         x_mean, y_mean = X.mean(axis=0), float(y.mean())
         Xc, yc = X - x_mean, y - y_mean
         try:
-            coef = np.linalg.solve(Xc.T @ Xc + alpha * np.eye(Xc.shape[1]), Xc.T @ yc)
+            coef = np.linalg.solve(
+                Xc.T @ Xc + alpha * np.eye(Xc.shape[1]), Xc.T @ yc
+            )
         except np.linalg.LinAlgError:
+            return None
+        return x_mean, y_mean, coef
+
+    for period in sorted(labeled["period"].unique()):
+        current = labeled[labeled["period"] == period].copy()
+        if len(current) < 5:
             continue
-        current["predicted_excess"] = (current[features].to_numpy(dtype=float) - x_mean) @ coef + y_mean
-        current["model"] = current["1m"]
+        forecast_date = current["date"].max()
+        prior = labeled[
+            (labeled["period"] < period) &
+            (labeled["future_date_1m"] <= forecast_date)
+        ].copy()
+        prior_periods = sorted(prior["period"].unique())[-train_months:]
+        prior = prior[prior["period"].isin(prior_periods)]
+        if len(prior_periods) < 18 or len(prior) < 100:
+            continue
+        fitted = fit_ridge(prior)
+        if fitted is None:
+            continue
+        x_mean, y_mean, coef = fitted
+        current["predicted_excess"] = (
+            (current[features].to_numpy(dtype=float) - x_mean) @ coef + y_mean
+        )
+        current["realized_return"] = current["1m"]
         predictions.append(current[["period", "date", "symbol", "predicted_excess",
-                                    "model", "roc21", "composite_momentum"]])
+                                    "realized_return", "roc21", "composite_momentum"]])
+
     if not predictions:
         return {"status": "DATI INSUFFICIENTI · TRAINING MATURATO NON SUFFICIENTE",
                 "months": 0, "minimum_training_months": 18,
-                "note": "Nessun risultato viene prodotto senza almeno 18 mesi e 100 osservazioni con etichette 21 sedute già maturate."}
+                "note": "Nessun risultato senza almeno 18 mesi e 100 osservazioni mature."}
+
     pred = pd.concat(predictions, ignore_index=True)
     meta = {x["symbol"]: x for x in universe}
     rows = []
     strategies = ("ridge", "roc21", "momentum_3_6_12", "benchmark")
     for period, group in pred.groupby("period", sort=True):
-        benchmark = finite(group["model"].mean())
+        benchmark = finite(group["realized_return"].mean())
         item = {"period": str(period), "benchmark": benchmark, "portfolios": {}}
         for count in (3, 5, 10):
             n = min(count, len(group))
@@ -886,23 +912,43 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 "ridge": group.nlargest(n, "predicted_excess"),
                 "roc21": group.nlargest(n, "roc21"),
                 "momentum_3_6_12": group.nlargest(n, "composite_momentum"),
+                "benchmark": group
             }
-            selectors["benchmark"] = group
             for strategy, chosen in selectors.items():
-                ret = finite(chosen["model"].mean())
+                ret = finite(chosen["realized_return"].mean())
                 item["portfolios"].setdefault(strategy, {})[str(count)] = {
                     "return": ret,
                     "excess": finite(ret - benchmark) if ret is not None and benchmark is not None else None,
-                    "hit_rate": finite((chosen["model"] > 0).mean()),
+                    "hit_rate": finite((chosen["realized_return"] > 0).mean()),
                     "selected": int(len(chosen))
                 }
         rows.append(item)
+
     summary = {}
+    robustness = {"subperiods": {}, "paired_comparisons": {}}
+
+    def hac_stats(values, max_lag=20):
+        arr = np.asarray([x for x in values if x is not None and np.isfinite(x)], dtype=float)
+        n = len(arr)
+        if n < 3:
+            return {"observations": n, "mean": finite(np.mean(arr)) if n else None,
+                    "hac_t_stat": None}
+        centered = arr - arr.mean()
+        lag = min(max_lag, n - 1)
+        long_run_var = float(np.dot(centered, centered) / n)
+        for k in range(1, lag + 1):
+            gamma = float(np.dot(centered[k:], centered[:-k]) / n)
+            long_run_var += 2.0 * (1.0 - k / (lag + 1.0)) * gamma
+        se = np.sqrt(max(long_run_var, 0.0) / n)
+        return {"observations": n, "mean": finite(arr.mean()),
+                "positive_pct": finite(np.mean(arr > 0)),
+                "hac_lags": lag,
+                "hac_t_stat": finite(arr.mean() / se) if se > 0 else None}
+
     for strategy in strategies:
         summary[strategy] = {}
         for count in (3, 5, 10):
-            vals = [x["portfolios"][strategy][str(count)] for x in rows
-                    if str(count) in x["portfolios"].get(strategy, {})]
+            vals = [x["portfolios"][strategy][str(count)] for x in rows]
             returns = [x["return"] for x in vals if x["return"] is not None]
             excess = [x["excess"] for x in vals if x["excess"] is not None]
             hits = [x["hit_rate"] for x in vals if x["hit_rate"] is not None]
@@ -914,30 +960,79 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 "positive_months_pct": finite(np.mean(np.array(returns) > 0)) if returns else None,
                 "average_portfolio_hit_rate": finite(np.mean(hits)) if hits else None
             }
-    latest_period = pred["period"].max()
-    latest = pred[pred["period"] == latest_period].sort_values("predicted_excess", ascending=False).head(15)
+
+    # Paired month-by-month comparisons; HAC t-statistics account for serial dependence.
+    for count in (3, 5, 10):
+        robustness["paired_comparisons"][str(count)] = {}
+        for comparator in ("roc21", "momentum_3_6_12", "benchmark"):
+            diffs = []
+            for row in rows:
+                a = row["portfolios"]["ridge"][str(count)]["return"]
+                b = row["portfolios"][comparator][str(count)]["return"]
+                if a is not None and b is not None:
+                    diffs.append(a - b)
+            robustness["paired_comparisons"][str(count)]["ridge_vs_" + comparator] = hac_stats(diffs)
+
+    for label, lo, hi in (("2016-2020", "2016-01", "2020-12"),
+                          ("2021-2023", "2021-01", "2023-12"),
+                          ("2024-2026", "2024-01", "2026-12")):
+        subset = [x for x in rows if lo <= x["period"] <= hi]
+        robustness["subperiods"][label] = {"months": len(subset), "portfolios": {}}
+        for count in (3, 5, 10):
+            robustness["subperiods"][label]["portfolios"][str(count)] = {}
+            for strategy in strategies:
+                vals = [x["portfolios"][strategy][str(count)]["return"] for x in subset]
+                vals = [x for x in vals if x is not None]
+                robustness["subperiods"][label]["portfolios"][str(count)][strategy] = {
+                    "mean_return": finite(np.mean(vals)) if vals else None,
+                    "positive_months_pct": finite(np.mean(np.array(vals) > 0)) if vals else None
+                }
+
+    # Current live ranking: no future 1-month return is required for these rows.
+    live_prior = labeled[
+        (labeled["period"] < latest_period) &
+        (labeled["future_date_1m"] <= asof)
+    ].copy()
+    live_prior_periods = sorted(live_prior["period"].unique())[-train_months:]
+    live_prior = live_prior[live_prior["period"].isin(live_prior_periods)]
+    live_fit = fit_ridge(live_prior) if len(live_prior_periods) >= 18 and len(live_prior) >= 100 else None
     latest_ranking = []
-    for _, row in latest.iterrows():
-        m = meta.get(row["symbol"], {})
-        latest_ranking.append({
-            "symbol": row["symbol"], "ticker": m.get("ticker", row["symbol"]),
-            "name": m.get("name", row["symbol"]), "geography": m.get("geography", ""),
-            "predicted_excess": finite(row["predicted_excess"]),
-            "roc21": finite(row["roc21"]),
-            "composite_momentum": finite(row["composite_momentum"])
-        })
+    if live_fit is not None:
+        x_mean, y_mean, coef = live_fit
+        live["predicted_excess"] = (
+            (live[features].to_numpy(dtype=float) - x_mean) @ coef + y_mean
+        )
+        latest = live.dropna(subset=["predicted_excess"]).sort_values(
+            "predicted_excess", ascending=False
+        ).head(15)
+        for _, row in latest.iterrows():
+            m = meta.get(row["symbol"], {})
+            latest_ranking.append({
+                "symbol": row["symbol"], "ticker": m.get("ticker", row["symbol"]),
+                "name": m.get("name", row["symbol"]), "geography": m.get("geography", ""),
+                "predicted_excess": finite(row["predicted_excess"]),
+                "roc21": finite(row["roc21"]),
+                "composite_momentum": finite(row["composite_momentum"])
+            })
+
     return {
-        "status": "WALK-FORWARD RIDGE 3.0 · ETICHETTE MATURATE · SPERIMENTALE",
+        "status": "WALK-FORWARD RIDGE 3.0 · STORICO SPERIMENTALE + SNAPSHOT CORRENTE",
         "from": rows[0]["period"], "to": rows[-1]["period"],
         "months": len(rows), "training_window_months": train_months,
         "minimum_training_months": 18, "minimum_training_observations": 100,
         "ridge_alpha": alpha, "features": features,
         "portfolio_sizes": [3, 5, 10], "results": summary,
+        "robustness": robustness,
         "latest_ranking_period": str(latest_period),
+        "latest_ranking_date": asof.strftime("%Y-%m-%d"),
+        "latest_training_months": len(live_prior_periods),
+        "latest_training_observations": int(len(live_prior)),
+        "latest_ranking_status": "CALCOLATA" if latest_ranking else "DATI INSUFFICIENTI",
         "latest_ranking": latest_ranking,
         "monthly_observations": rows,
-        "method": "Ogni mese Ridge stima l'extra-rendimento relativo a 21 sedute. Il training usa solo etichette con data di maturazione non successiva alla data di previsione; finestra massima 60 mesi, minimo 18 mesi e 100 righe. Feature cross-sectional rank: momentum 1/3/6 mesi, KAMA, stabilità del trend, Alligator, ADX con direzione Vortex e volatilità inversa. Confronto top 3/5/10 contro ROC21, momentum 3/6/12 e universo equiponderato sugli stessi mesi. Rendimento forward lordo e sovrapposto; costi e survivorship bias non inclusi."
+        "method": "Ogni mese Ridge stima l'extra-rendimento relativo a 21 sedute. Il training usa solo etichette con data di maturazione non successiva alla data di previsione; finestra massima 60 mesi, minimo 18 mesi e 100 righe. Feature cross-sectional rank: momentum 1/3/6 mesi, KAMA, stabilità del trend, Alligator, ADX con direzione Vortex e volatilità inversa. Confronto top 3/5/10 contro ROC21, momentum 3/6/12 e universo equiponderato sugli stessi mesi. Il ranking corrente usa gli indicatori più recenti e non richiede rendimenti futuri. Rendimenti storici lordi e sovrapposti; costi e survivorship bias non inclusi. Test HAC con 20 lag e confronto per sottoperiodi."
     }
+
 
 
 def factor_segment_validation(factor_universe, factor_frames, factor_indicators):
@@ -1124,7 +1219,9 @@ def main():
     print(json.dumps(output["coverage"],ensure_ascii=False))
     print("Latest price date:",output["latest_price_date"])
     print("Validation:",validation.get("status"),validation.get("observations"))
-    print("PREDICTIVE_V3_WALK_FORWARD_SUMMARY:", json.dumps(output["predictive_v3_walk_forward"], ensure_ascii=False, allow_nan=False, separators=(",", ":")))
+    predictive_log = dict(output["predictive_v3_walk_forward"])
+    predictive_log.pop("monthly_observations", None)
+    print("PREDICTIVE_V3_WALK_FORWARD_SUMMARY:", json.dumps(predictive_log, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
     print("Output:",OUT)
 
 if __name__=="__main__":
