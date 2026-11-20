@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "geografia-motore.json"
 OUT = ROOT / "radar-predittivo.json"
 MIN_HISTORY = 220
-START_DATE = "2005-01-01"
+START_DATE = "2015-01-01"
 CHUNK_SIZE = 10
 
 def finite(value):
@@ -52,6 +52,36 @@ def collect_universe(data):
             old = found.get(symbol)
             if old is None or (not old.get("isin") and item.get("isin")):
                 found[symbol] = item
+    return list(found.values())
+
+def collect_factor_universe():
+    """Separate verified UCITS factor universe; never mixed with geographic rankings."""
+    import re
+    path = ROOT / "data" / "geografia_index_factor_14.csv"
+    if not path.exists():
+        return []
+    catalog = pd.read_csv(path).fillna("")
+    allowed = {"MOMENTUM", "QUALITY", "VALUE"}
+    found = {}
+    for _, row in catalog.iterrows():
+        category = str(row.get("category", "")).upper()
+        if category not in allowed:
+            continue
+        status = str(row.get("verification_status", ""))
+        match = re.search(r"Yahoo Finance symbol ([A-Z0-9.^=_-]+)", status)
+        if not match:
+            continue
+        symbol = match.group(1).strip()
+        geography = str(row.get("geography", ""))
+        if geography not in {"Globale", "Stati Uniti", "Europa"}:
+            continue
+        found[symbol] = {
+            "symbol": symbol, "ticker": str(row.get("ticker", "")),
+            "name": str(row.get("name", symbol)), "geography": geography,
+            "module": f"{geography} · {category}", "group": category,
+            "bucket": "factor", "isin": str(row.get("isin", "")),
+            "factor": category, "universe": "factor"
+        }
     return list(found.values())
 
 def _clean_frame(raw, symbol):
@@ -507,6 +537,47 @@ def main():
             results.append({**latest_record(meta,ind),"status":"CALCOLATO","observations":len(frame)})
         except Exception as exc:
             results.append({**meta,"status":"ERRORE CALCOLO","error":f"{type(exc).__name__}: {exc}"})
+    # Analyze factors separately; never contaminate country or region rankings.
+    factor_universe = collect_factor_universe()
+    factor_symbols = sorted({x["symbol"] for x in factor_universe})
+    factor_frames, factor_errors = download_prices(factor_symbols) if factor_symbols else ({}, {})
+    factor_results, factor_indicators = [], {}
+    for meta in factor_universe:
+        symbol = meta["symbol"]
+        frame = factor_frames.get(symbol)
+        if frame is None:
+            factor_results.append({**meta, "status":"DATI NON DISPONIBILI", "error":factor_errors.get(symbol,"Prezzi non restituiti")})
+            continue
+        if len(frame) < MIN_HISTORY:
+            factor_results.append({**meta, "status":"STORICO INSUFFICIENTE", "observations":len(frame)})
+            continue
+        try:
+            ind = calculate(frame).dropna(subset=["score","ma200","roc38","rsi14"])
+            if ind.empty:
+                factor_results.append({**meta, "status":"STORICO INSUFFICIENTE", "observations":len(frame)})
+                continue
+            factor_indicators[symbol] = ind
+            factor_results.append({**latest_record(meta,ind), "status":"CALCOLATO", "observations":len(frame),
+                                   "first_price_date":frame.index[0].strftime("%Y-%m-%d")})
+        except Exception as exc:
+            factor_results.append({**meta, "status":"ERRORE CALCOLO", "error":f"{type(exc).__name__}: {exc}"})
+    factor_calculated = [x for x in factor_results if x["status"]=="CALCOLATO"]
+    factor_calculated.sort(key=lambda x:(x["score"],x["factor"],x["geography"]),reverse=True)
+    for rank, row in enumerate(factor_calculated,1):
+        row["rank"] = rank
+    factor_validation, factor_breadth = monthly_validation(factor_frames,factor_indicators,factor_universe) if factor_indicators else (
+        {"status":"DATI INSUFFICIENTI","observations":0,"note":"Nessun ETF factor con storico utilizzabile dal 2015."}, {})
+    factor_analysis = {
+        "history_start": "2015-01-01", "universe_count": len(factor_universe),
+        "calculated_count": len(factor_calculated),
+        "unavailable_count": sum(x["status"]=="DATI NON DISPONIBILI" for x in factor_results),
+        "short_history_count": sum(x["status"]=="STORICO INSUFFICIENTE" for x in factor_results),
+        "error_count": sum(x["status"]=="ERRORE CALCOLO" for x in factor_results),
+        "rankings": factor_calculated, "universe": factor_results,
+        "validation": factor_validation, "breadth": factor_breadth,
+        "method": "ETF factor UCITS separati: Momentum, Quality e Value su Global, USA ed Europa. Prezzi adjusted dal 2015, senza estendere artificialmente lo storico prima della quotazione.",
+        "excluded": ["Minimum Volatility e Multifactor: esclusi finché ticker, listing e serie storiche non sono verificati."]
+    }
     calculated = [x for x in results if x["status"]=="CALCOLATO"]
     calculated.sort(key=lambda x:(x["score"],x["geography"]),reverse=True)
     for rank, row in enumerate(calculated,1):
@@ -565,7 +636,8 @@ def main():
         "module_breadth":module_breadth,
         "momentum_baselines":momentum_baselines,
         "universe":results,
-        "validation":validation
+        "validation":validation,
+        "factor_analysis":factor_analysis
     }
     OUT.write_text(json.dumps(output,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
     print(json.dumps(output["coverage"],ensure_ascii=False))
