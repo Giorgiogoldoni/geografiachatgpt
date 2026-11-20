@@ -17,7 +17,8 @@ ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "geografia-motore.json"
 OUT = ROOT / "radar-predittivo.json"
 MIN_HISTORY = 220
-START_DATE = "2015-01-01"
+START_DATE = "2005-01-01"  # Storico originale del Radar geografico
+FACTOR_START_DATE = "2015-01-01"  # Finestra dedicata agli ETF factor
 CHUNK_SIZE = 10
 
 def finite(value):
@@ -108,7 +109,7 @@ def _clean_frame(raw, symbol):
     part = part[~part.index.duplicated(keep="last")].sort_index()
     return part.apply(pd.to_numeric, errors="coerce").dropna()
 
-def download_prices(symbols):
+def download_prices(symbols, start_date=START_DATE):
     frames, errors = {}, {}
     for start in range(0, len(symbols), CHUNK_SIZE):
         batch = symbols[start:start + CHUNK_SIZE]
@@ -116,7 +117,7 @@ def download_prices(symbols):
         try:
             # Same Yahoo Finance request convention as the established UCITS engine.
             raw = yf.download(
-                tickers=batch, start=START_DATE, auto_adjust=True,
+                tickers=batch, start=start_date, auto_adjust=True,
                 actions=False, progress=False, threads=True, group_by="column"
             )
         except Exception as exc:
@@ -130,7 +131,7 @@ def download_prices(symbols):
             # Individual fallback is deliberately limited to symbols missed by the batch.
             try:
                 one = yf.download(
-                    tickers=symbol, start=START_DATE, auto_adjust=True,
+                    tickers=symbol, start=start_date, auto_adjust=True,
                     actions=False, progress=False, threads=False
                 )
                 part = _clean_frame(one, symbol)
@@ -344,13 +345,15 @@ def _portfolio_stats(monthly_returns, label):
         }
     return result
 
-def monthly_validation(frames, indicators, universe):
+def monthly_validation(frames, indicators, universe, start_date=None):
     """
     Historical monthly walk-forward replay.
     Each horizon is evaluated independently so the 6-month maturity lag
     does not truncate the 1- and 3-month results.
     """
     panel = build_monthly_panel(indicators, universe)
+    if start_date and not panel.empty:
+        panel = panel[panel["date"] >= pd.Timestamp(start_date)].copy()
     if panel.empty:
         return {"status": "DATI INSUFFICIENTI", "observations": 0,
                 "note": "Nessuna serie mensile con prezzi e indicatori validi."}, {}
@@ -540,7 +543,7 @@ def main():
     # Analyze factors separately; never contaminate country or region rankings.
     factor_universe = collect_factor_universe()
     factor_symbols = sorted({x["symbol"] for x in factor_universe})
-    factor_frames, factor_errors = download_prices(factor_symbols) if factor_symbols else ({}, {})
+    factor_frames, factor_errors = download_prices(factor_symbols, start_date=FACTOR_START_DATE) if factor_symbols else ({}, {})
     factor_results, factor_indicators = [], {}
     for meta in factor_universe:
         symbol = meta["symbol"]
@@ -565,17 +568,26 @@ def main():
     factor_calculated.sort(key=lambda x:(x["score"],x["factor"],x["geography"]),reverse=True)
     for rank, row in enumerate(factor_calculated,1):
         row["rank"] = rank
-    factor_validation, factor_breadth = monthly_validation(factor_frames,factor_indicators,factor_universe) if factor_indicators else (
-        {"status":"DATI INSUFFICIENTI","observations":0,"note":"Nessun ETF factor con storico utilizzabile dal 2015."}, {})
+    insufficient = {"status":"DATI INSUFFICIENTI","observations":0,"note":"Nessun ETF factor con storico utilizzabile."}
+    factor_validation_2020, factor_breadth = monthly_validation(
+        factor_frames, factor_indicators, factor_universe, start_date="2020-01-01"
+    ) if factor_indicators else (dict(insufficient), {})
+    factor_validation_2015, _ = monthly_validation(
+        factor_frames, factor_indicators, factor_universe, start_date="2015-01-01"
+    ) if factor_indicators else (dict(insufficient), {})
     factor_analysis = {
-        "history_start": "2015-01-01", "universe_count": len(factor_universe),
+        "history_start": FACTOR_START_DATE,
+        "primary_window": "2020-01-01",
+        "extended_window": "2015-01-01",
+        "universe_count": len(factor_universe),
         "calculated_count": len(factor_calculated),
         "unavailable_count": sum(x["status"]=="DATI NON DISPONIBILI" for x in factor_results),
         "short_history_count": sum(x["status"]=="STORICO INSUFFICIENTE" for x in factor_results),
         "error_count": sum(x["status"]=="ERRORE CALCOLO" for x in factor_results),
         "rankings": factor_calculated, "universe": factor_results,
-        "validation": factor_validation, "breadth": factor_breadth,
-        "method": "ETF factor UCITS separati: Momentum, Quality e Value su Global, USA ed Europa. Prezzi adjusted dal 2015, senza estendere artificialmente lo storico prima della quotazione.",
+        "validation": factor_validation_2020, "validation_primary_2020": factor_validation_2020,
+        "validation_extended_2015": factor_validation_2015, "breadth": factor_breadth,
+        "method": "ETF factor UCITS separati: Momentum, Quality e Value su Global, USA ed Europa. Confronto principale 2020-2026 e controllo esteso 2015-2026. Prezzi adjusted dal 2015 o dalla prima quotazione disponibile; nessun backfill artificiale.",
         "excluded": ["Minimum Volatility e Multifactor: esclusi finché ticker, listing e serie storiche non sono verificati."]
     }
     calculated = [x for x in results if x["status"]=="CALCOLATO"]
