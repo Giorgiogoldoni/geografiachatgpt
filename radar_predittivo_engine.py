@@ -261,6 +261,8 @@ def build_monthly_panel(indicators, universe):
         return pd.DataFrame()
     panel = pd.DataFrame(records).sort_values(["period", "symbol"]).reset_index(drop=True)
     panel["monthly_return"] = panel.groupby("symbol")["close"].pct_change()
+    panel["score_change_1m"] = panel.groupby("symbol")["score"].diff(1)
+    panel["score_change_3m"] = panel.groupby("symbol")["score"].diff(3)
     return panel
 
 def breadth_by_module(panel):
@@ -309,6 +311,7 @@ def monthly_validation(frames, indicators, universe):
                 "note": "Nessuna serie mensile con prezzi e indicatori validi."}, {}
     periods = sorted(panel["period"].unique())
     benchmark_rows, fixed_rows, rolling_rows = [], [], []
+    improving_1m_rows, improving_3m_rows = [], []
     rolling_thresholds = []
     for period in periods:
         current = panel[panel["period"] == period].copy()
@@ -323,12 +326,16 @@ def monthly_validation(frames, indicators, universe):
         bench_rec = {"date": current["date"].max().strftime("%Y-%m-%d")}
         fixed_rec = {"date": bench_rec["date"]}
         rolling_rec = {"date": bench_rec["date"]}
+        improving_1m_rec = {"date": bench_rec["date"]}
+        improving_3m_rec = {"date": bench_rec["date"]}
         for horizon in ("1m", "3m", "6m"):
             valid = current.dropna(subset=[horizon])
             if valid.empty:
                 bench_rec[horizon] = None
                 fixed_rec[horizon] = None
                 rolling_rec[horizon] = None
+                improving_1m_rec[horizon] = None
+                improving_3m_rec[horizon] = None
                 continue
             bench_rec[horizon] = finite(valid[horizon].mean())
             fixed_group = valid[valid["score"] >= 65]
@@ -338,17 +345,27 @@ def monthly_validation(frames, indicators, universe):
                 rolling_rec[horizon] = finite(rolling_group[horizon].mean()) if len(rolling_group) else None
             else:
                 rolling_rec[horizon] = None
+            improve1 = valid[valid["score_change_1m"] >= 12.5]
+            improve3 = valid[valid["score_change_3m"] >= 25.0]
+            improving_1m_rec[horizon] = finite(improve1[horizon].mean()) if len(improve1) else None
+            improving_3m_rec[horizon] = finite(improve3[horizon].mean()) if len(improve3) else None
         if any(bench_rec[h] is not None for h in ("1m", "3m", "6m")):
             benchmark_rows.append(bench_rec)
         if any(fixed_rec[h] is not None for h in ("1m", "3m", "6m")):
             fixed_rows.append(fixed_rec)
         if threshold is not None and any(rolling_rec[h] is not None for h in ("1m", "3m", "6m")):
             rolling_rows.append(rolling_rec)
+        if any(improving_1m_rec[h] is not None for h in ("1m", "3m", "6m")):
+            improving_1m_rows.append(improving_1m_rec)
+        if any(improving_3m_rec[h] is not None for h in ("1m", "3m", "6m")):
+            improving_3m_rows.append(improving_3m_rec)
     breadth = breadth_by_module(panel)
     bucket_names = ["0-39", "40-54", "55-64", "65-74", "75-100"]
     bucket_months = {b: {h: [] for h in ("1m", "3m", "6m")} for b in bucket_names}
     bucket_counts = {b: [] for b in bucket_names}
     rank_ic = {h: [] for h in ("1m", "3m", "6m")}
+    delta1_ic = {h: [] for h in ("1m", "3m", "6m")}
+    delta3_ic = {h: [] for h in ("1m", "3m", "6m")}
     for period in periods:
         current = panel[panel["period"] == period].copy()
         conditions = [
@@ -373,6 +390,12 @@ def monthly_validation(frames, indicators, universe):
                 ic = valid["score"].rank(method="average").corr(valid[horizon].rank(method="average"))
                 if pd.notna(ic):
                     rank_ic[horizon].append(float(ic))
+            for delta_col, target in (("score_change_1m", delta1_ic), ("score_change_3m", delta3_ic)):
+                delta_valid = current.dropna(subset=[delta_col, horizon])
+                if len(delta_valid) >= 5 and delta_valid[delta_col].nunique() > 1 and delta_valid[horizon].nunique() > 1:
+                    delta_value = delta_valid[delta_col].rank(method="average").corr(delta_valid[horizon].rank(method="average"))
+                    if pd.notna(delta_value):
+                        target[horizon].append(float(delta_value))
     score_buckets = {}
     for bucket in bucket_names:
         score_buckets[bucket] = {
@@ -396,6 +419,10 @@ def monthly_validation(frames, indicators, universe):
         }
         for h in ("1m", "3m", "6m")
     }
+    delta_ic_summary = {
+        "score_change_1m": {h: {"mean_spearman_ic": finite(np.mean(delta1_ic[h])) if delta1_ic[h] else None, "positive_months_pct": finite(np.mean(np.array(delta1_ic[h]) > 0)) if delta1_ic[h] else None, "months": len(delta1_ic[h])} for h in ("1m", "3m", "6m")},
+        "score_change_3m": {h: {"mean_spearman_ic": finite(np.mean(delta3_ic[h])) if delta3_ic[h] else None, "positive_months_pct": finite(np.mean(np.array(delta3_ic[h]) > 0)) if delta3_ic[h] else None, "months": len(delta3_ic[h])} for h in ("1m", "3m", "6m")}
+    }
     validation = {
         "status": "WALK-FORWARD STORICO ESPLORATIVO · NON VALIDATO",
         "observations": int(len(panel)),
@@ -405,8 +432,11 @@ def monthly_validation(frames, indicators, universe):
         "benchmark_equal_weight": _portfolio_stats(benchmark_rows, "Universo ETF geografici equiponderato"),
         "oos_score_ge_65": _portfolio_stats(fixed_rows, "Selezione mensile con score >= 65"),
         "walk_forward_rolling_percentile": _portfolio_stats(rolling_rows, "Selezione mensile sopra il 75° percentile dei 36 mesi precedenti"),
+        "score_improving_1m": _portfolio_stats(improving_1m_rows, "Score in aumento di almeno 12,5 punti rispetto al mese precedente"),
+        "score_improving_3m": _portfolio_stats(improving_3m_rows, "Score in aumento di almeno 25 punti rispetto a tre mesi prima"),
         "score_buckets": score_buckets,
         "rank_information_coefficient": rank_ic_summary,
+        "score_change_information_coefficient": delta_ic_summary,
         "rolling_threshold": {
             "observations": len(rolling_thresholds),
             "mean": finite(np.mean([x["threshold"] for x in rolling_thresholds])) if rolling_thresholds else None,
@@ -414,7 +444,7 @@ def monthly_validation(frames, indicators, universe):
             "rule": "Per ogni mese, soglia = 75° percentile degli score osservati nei 36 mesi precedenti; minimo 12 mesi di storia. Nessuna informazione del mese corrente entra nella soglia."
         },
         "breadth_note": "Breadth inter-mercato per modulo: quota degli ETF geografici sopra MA50/MA200 e quota in rialzo a un mese. Non sostituisce la breadth interna calcolata sui titoli componenti di ciascun indice.",
-        "method": "Replay mensile point-in-time: snapshot all'ultima seduta disponibile del mese; rendimenti successivi a 21/63/126 sedute. Ogni orizzonte è valutato separatamente. Include benchmark equiponderato, selezione score >=65, soglia adattiva sui 36 mesi precedenti, rendimenti per fasce di score e Spearman rank-IC cross-sectional mensile. I rendimenti forward a 3 e 6 mesi si sovrappongono; gli ETF sono correlati e l'universo corrente introduce survivorship bias. Risultati lordi, senza costi, FX, spread o slippage."
+        "method": "Replay mensile point-in-time: snapshot all'ultima seduta disponibile del mese; rendimenti successivi a 21/63/126 sedute. Ogni orizzonte è valutato separatamente. Include benchmark equiponderato, selezione score >=65, soglia adattiva sui 36 mesi precedenti, test di miglioramento dello score a 1 e 3 mesi, rendimenti per fasce di score e Spearman rank-IC cross-sectional mensile. I rendimenti forward a 3 e 6 mesi si sovrappongono; gli ETF sono correlati e l'universo corrente introduce survivorship bias. Risultati lordi, senza costi, FX, spread o slippage."
     }
     return validation, breadth
 
