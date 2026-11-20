@@ -718,7 +718,12 @@ def compare_predictive_candidates(indicators, universe, start_date="2015-01-01")
     panel["candidate_trend_quality"] = (0.30*panel["rank_kama_slope21"] + 0.30*panel["rank_trend_stability_21"] + 0.20*panel["rank_alligator"] + 0.20*panel["rank_low_vol"])
     panel["candidate_relative_strength"] = 0.50*panel["rank_roc21"] + 0.50*panel["rank_roc63"]
     panel["candidate_roc21"] = panel["rank_roc21"]
-    names = ["candidate_momentum", "candidate_trend_quality", "candidate_relative_strength", "candidate_roc21"]
+    # Fixed blends: test whether trend quality adds value to the ROC21 baseline.
+    panel["blend_70_30"] = 0.70*panel["rank_roc21"] + 0.30*panel["candidate_trend_quality"]
+    panel["blend_50_50"] = 0.50*panel["rank_roc21"] + 0.50*panel["candidate_trend_quality"]
+    panel["blend_30_70"] = 0.30*panel["rank_roc21"] + 0.70*panel["candidate_trend_quality"]
+    names = ["candidate_momentum", "candidate_trend_quality", "candidate_relative_strength",
+             "candidate_roc21", "blend_70_30", "blend_50_50", "blend_30_70"]
     rows = {name: [] for name in names}
     regimes = {"risk_on": {name: [] for name in names}, "risk_off": {name: [] for name in names}}
     months = []
@@ -751,7 +756,28 @@ def compare_predictive_candidates(indicators, universe, start_date="2015-01-01")
                 if pd.notna(v): values.append(float(v))
         ic[name]={"mean_rank_ic":finite(np.mean(values)) if values else None,"positive_months_pct":finite(np.mean(np.array(values)>0)) if values else None,"months":len(values)}
     regime_summary={regime:{name:stats(items) for name,items in groups.items()} for regime,groups in regimes.items()}
-    return {"status":"CONFRONTO SPERIMENTALE · NON È UN SEGNALE OPERATIVO","from":months[0] if months else None,"to":months[-1] if months else None,"common_months":len(months),"models":summary,"rank_ic":ic,"by_regime":regime_summary,"benchmark_note":"Quartile superiore, stessi mesi e universo per tutti i modelli.","regime_definition":"Risk-on se almeno il 50% degli ETF del campione è sopra MA200 e ROC21 mediano positivo; altrimenti risk-off. Proxy ETF, non breadth dei titoli sottostanti.","method":"Pesi fissi: momentum 10/20/35/35 su ROC5/21/63/126; trend-quality 30% KAMA21, 30% stabilità sopra KAMA, 20% Alligator, 20% bassa volatilità; forza relativa 50% ROC21 e 50% ROC63; baseline ROC21. Rendimento forward 21 sedute, lordo e sovrapposto. Universo corrente: survivorship bias; costi, spread, tasse e cambio esclusi. Il miglior risultato non costituisce validazione indipendente."}
+    # Fixed chronological slices help expose regime/time concentration; labels still overlap by 21 sessions.
+    time_slices = {"2015-2019": [], "2020-2022": [], "2023+": []}
+    for period, g in panel.groupby("period", sort=True):
+        if len(g) < 5:
+            continue
+        pstr = str(period)
+        bucket = "2015-2019" if pstr < "2020-01" else ("2020-2022" if pstr < "2023-01" else "2023+")
+        q = max(1, int(math.ceil(len(g)*0.25)))
+        bench = finite(g["1m"].mean())
+        item = {"period": pstr, "benchmark": bench, "models": {}}
+        for name in names:
+            chosen = g.nlargest(q, name)["1m"].dropna()
+            item["models"][name] = finite(chosen.mean()) if not chosen.empty else None
+        time_slices[bucket].append(item)
+    slice_summary = {}
+    for bucket, items in time_slices.items():
+        slice_summary[bucket] = {"months":len(items),"models":{}}
+        for name in names:
+            vals=[x["models"][name] for x in items if x["models"].get(name) is not None]
+            excess=[x["models"][name]-x["benchmark"] for x in items if x["models"].get(name) is not None and x["benchmark"] is not None]
+            slice_summary[bucket]["models"][name]={"mean_forward_return":finite(np.mean(vals)) if vals else None,"mean_excess_vs_equal_weight":finite(np.mean(excess)) if excess else None}
+    return {"status":"CONFRONTO SPERIMENTALE · NON È UN SEGNALE OPERATIVO","from":months[0] if months else None,"to":months[-1] if months else None,"common_months":len(months),"models":summary,"rank_ic":ic,"by_regime":regime_summary,"by_time_slice":slice_summary,"blend_definition":"Combinazioni fisse di ranking cross-sectional: 70/30, 50/50 e 30/70 tra ROC21 e qualità del trend. Non sono ottimizzate sui risultati.","benchmark_note":"Quartile superiore, stessi mesi e universo per tutti i modelli.","regime_definition":"Risk-on se almeno il 50% degli ETF del campione è sopra MA200 e ROC21 mediano positivo; altrimenti risk-off. Proxy ETF, non breadth dei titoli sottostanti.","method":"Pesi fissi: momentum 10/20/35/35 su ROC5/21/63/126; trend-quality 30% KAMA21, 30% stabilità sopra KAMA, 20% Alligator, 20% bassa volatilità; forza relativa 50% ROC21 e 50% ROC63; baseline ROC21. Rendimento forward 21 sedute, lordo e sovrapposto. Universo corrente: survivorship bias; costi, spread, tasse e cambio esclusi. Il miglior risultato non costituisce validazione indipendente."}
 
 
 def factor_segment_validation(factor_universe, factor_frames, factor_indicators):
