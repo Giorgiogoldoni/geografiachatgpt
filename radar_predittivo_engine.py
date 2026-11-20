@@ -229,11 +229,16 @@ def calculate(frame):
         + 5.0 * ((rsi >= 45) & (rsi <= 68) & (rsi > rsi.shift(5))).astype(float)
     )
     out["score_early"] = early
+    out["roc63"] = close.pct_change(63) * 100.0
     out["roc126"] = close.pct_change(126) * 100.0
+    out["roc252"] = close.pct_change(252) * 100.0
     daily_returns = close.pct_change()
     out["return_68d"] = close.pct_change(68) * 100.0
     out["composite_momentum"] = (0.4*close.pct_change(63) + 0.3*close.pct_change(126) + 0.3*close.pct_change(252)) * 100.0
     rolling_vol = daily_returns.rolling(68).std(ddof=1)
+    out["volatility_68"] = rolling_vol * np.sqrt(252) * 100.0
+    out["trend_stability_21"] = (close > k).rolling(21).mean() * 100.0
+    out["kama_slope21"] = k.pct_change(21) * 100.0
     out["modified_sharpe_68"] = daily_returns.rolling(68).mean() / rolling_vol.pow(2)
     return out
 
@@ -318,7 +323,14 @@ def build_monthly_panel(indicators, universe):
                 "roc5": finite(row["roc5"]),
                 "roc10": finite(row["roc10"]),
                 "roc21": finite(row["roc21"]),
+                "roc63": finite(row["roc63"]),
+                "roc126": finite(row["roc126"]),
+                "roc252": finite(row["roc252"]),
                 "kama_slope5": finite(row["kama_slope5"]),
+                "kama_slope21": finite(row["kama_slope21"]),
+                "trend_stability_21": finite(row["trend_stability_21"]),
+                "volatility_68": finite(row["volatility_68"]),
+                "alligator_bull": bool(row["alligator_bull"]),
                 "return_68d": finite(row["return_68d"]),
                 "composite_momentum": finite(row["composite_momentum"]),
                 "modified_sharpe_68": finite(row["modified_sharpe_68"]),
@@ -685,6 +697,63 @@ def walk_forward_early_model(indicators, universe, start_date="2008-01-01", trai
     }
 
 
+def compare_predictive_candidates(indicators, universe, start_date="2015-01-01"):
+    """Compare fixed cross-sectional candidates on identical month-end samples."""
+    panel = build_monthly_panel(indicators, universe)
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "models": {}}
+    panel = panel[panel["date"] >= pd.Timestamp(start_date)].copy()
+    required = ["roc5", "roc21", "roc63", "roc126", "kama_slope21",
+                "trend_stability_21", "volatility_68", "alligator_bull", "above_ma200", "1m"]
+    panel = panel.dropna(subset=required)
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "models": {}}
+    rank_cols = ["roc5", "roc21", "roc63", "roc126", "kama_slope21",
+                 "trend_stability_21", "volatility_68"]
+    for col in rank_cols:
+        panel["rank_" + col] = panel.groupby("period")[col].rank(pct=True)
+    panel["rank_low_vol"] = 1.0 - panel["rank_volatility_68"]
+    panel["rank_alligator"] = panel.groupby("period")["alligator_bull"].rank(pct=True)
+    panel["candidate_momentum"] = (0.10*panel["rank_roc5"] + 0.20*panel["rank_roc21"] + 0.35*panel["rank_roc63"] + 0.35*panel["rank_roc126"])
+    panel["candidate_trend_quality"] = (0.30*panel["rank_kama_slope21"] + 0.30*panel["rank_trend_stability_21"] + 0.20*panel["rank_alligator"] + 0.20*panel["rank_low_vol"])
+    panel["candidate_relative_strength"] = 0.50*panel["rank_roc21"] + 0.50*panel["rank_roc63"]
+    panel["candidate_roc21"] = panel["rank_roc21"]
+    names = ["candidate_momentum", "candidate_trend_quality", "candidate_relative_strength", "candidate_roc21"]
+    rows = {name: [] for name in names}
+    regimes = {"risk_on": {name: [] for name in names}, "risk_off": {name: [] for name in names}}
+    months = []
+    for period, g in panel.groupby("period", sort=True):
+        if len(g) < 5:
+            continue
+        regime = "risk_on" if float(g["above_ma200"].mean()) >= 0.50 and float(g["roc21"].median()) > 0 else "risk_off"
+        q = max(1, int(math.ceil(len(g)*0.25)))
+        months.append(str(period))
+        benchmark = finite(g["1m"].mean())
+        for name in names:
+            chosen = g.nlargest(q, name)["1m"].dropna()
+            if chosen.empty:
+                continue
+            item = {"return": finite(chosen.mean()), "excess": finite(chosen.mean()-benchmark) if benchmark is not None else None, "hit": finite((chosen>0).mean())}
+            rows[name].append(item)
+            regimes[regime][name].append(item)
+    def stats(items):
+        r=[x["return"] for x in items if x["return"] is not None]
+        e=[x["excess"] for x in items if x["excess"] is not None]
+        h=[x["hit"] for x in items if x["hit"] is not None]
+        return {"months":len(r),"mean_forward_return":finite(np.mean(r)) if r else None,"median_forward_return":finite(np.median(r)) if r else None,"mean_excess_vs_equal_weight":finite(np.mean(e)) if e else None,"hit_rate":finite(np.mean(h)) if h else None}
+    summary={name:stats(items) for name,items in rows.items()}
+    ic={}
+    for name in names:
+        values=[]
+        for _,g in panel.groupby("period",sort=True):
+            if len(g)>=5 and g[name].nunique()>1 and g["1m"].nunique()>1:
+                v=g[name].rank().corr(g["1m"].rank())
+                if pd.notna(v): values.append(float(v))
+        ic[name]={"mean_rank_ic":finite(np.mean(values)) if values else None,"positive_months_pct":finite(np.mean(np.array(values)>0)) if values else None,"months":len(values)}
+    regime_summary={regime:{name:stats(items) for name,items in groups.items()} for regime,groups in regimes.items()}
+    return {"status":"CONFRONTO SPERIMENTALE · NON È UN SEGNALE OPERATIVO","from":months[0] if months else None,"to":months[-1] if months else None,"common_months":len(months),"models":summary,"rank_ic":ic,"by_regime":regime_summary,"benchmark_note":"Quartile superiore, stessi mesi e universo per tutti i modelli.","regime_definition":"Risk-on se almeno il 50% degli ETF del campione è sopra MA200 e ROC21 mediano positivo; altrimenti risk-off. Proxy ETF, non breadth dei titoli sottostanti.","method":"Pesi fissi: momentum 10/20/35/35 su ROC5/21/63/126; trend-quality 30% KAMA21, 30% stabilità sopra KAMA, 20% Alligator, 20% bassa volatilità; forza relativa 50% ROC21 e 50% ROC63; baseline ROC21. Rendimento forward 21 sedute, lordo e sovrapposto. Universo corrente: survivorship bias; costi, spread, tasse e cambio esclusi. Il miglior risultato non costituisce validazione indipendente."}
+
+
 def factor_segment_validation(factor_universe, factor_frames, factor_indicators):
     """Separate walk-forward summaries by factor and geography, without mixing segments."""
     calculated_symbols = set(factor_indicators)
@@ -808,6 +877,7 @@ def main():
     validation, module_breadth = monthly_validation(frames,indicators,universe)
     early_v2 = early_signal_validation(indicators, universe)
     learned_v2 = walk_forward_early_model(indicators, universe)
+    candidate_v3 = compare_predictive_candidates(indicators, universe, start_date="2015-01-01")
     momentum_baselines = {}
     for metric in ("modified_sharpe_68", "composite_momentum", "return_68d"):
         pool = [dict(x) for x in calculated if x.get(metric) is not None]
@@ -860,6 +930,7 @@ def main():
         "universe":results,
         "validation":validation,
         "predictive_v2": {"name": "Predittivo 2.0 · focus primo mese", "validation_1m": early_v2, "walk_forward_model_1m": learned_v2, "priority_horizon": "1m", "score_definition": "Score anticipatore 0-100: ROC5/10/21, accelerazione ROC, prezzo e pendenza KAMA, Lips/Teeth Alligator, Vortex e RSI in fascia costruttiva; nessun filtro MA200.", "status": "SPERIMENTALE FINO A SUPERAMENTO DEL TEST OUT-OF-SAMPLE"},
+        "predictive_v3": candidate_v3,
         "factor_analysis":factor_analysis
     }
     OUT.write_text(json.dumps(output,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
