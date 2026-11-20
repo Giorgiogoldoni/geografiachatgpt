@@ -315,6 +315,7 @@ def build_monthly_panel(indicators, universe):
             row = ind.iloc[pos]
             rec = {
                 "symbol": symbol,
+                "geography": str(meta.get(symbol, {}).get("geography") or meta.get(symbol, {}).get("name") or symbol),
                 "module": str(meta.get(symbol, {}).get("module") or "Non classificato"),
                 "period": period,
                 "date": ind.index[pos],
@@ -823,10 +824,29 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
 
     panel = panel[panel["date"] >= pd.Timestamp(start_date)].copy()
     panel["future_date_1m"] = pd.to_datetime(panel["future_date_1m"])
+    panel["directional_adx"] = panel["adx14"] * np.sign(panel["vortex_spread"])
+    # The objective is geographic allocation, not ETF listing selection.
+    # Collapse multiple share classes/listings into one equal-weight geography
+    # before ranking or fitting, so countries with many ETFs do not get extra votes.
+    panel["geography"] = panel["geography"].fillna("").astype(str).str.strip()
+    panel.loc[panel["geography"] == "", "geography"] = panel.loc[panel["geography"] == "", "symbol"]
+    panel = panel.sort_values(["period", "geography", "symbol"]).groupby(
+        ["period", "geography"], as_index=False
+    ).agg(
+        symbol=("symbol", "first"),
+        symbols=("symbol", lambda values: sorted(set(values.astype(str)))),
+        date=("date", "max"),
+        future_date_1m=("future_date_1m", "max"),
+        module=("module", "first"),
+        **{col: (col, "mean") for col in (
+            "1m", "roc21", "roc63", "roc126", "kama_slope21",
+            "trend_stability_21", "alligator_bull", "directional_adx",
+            "volatility_68", "composite_momentum"
+        )}
+    )
     raw_features = ["roc21", "roc63", "roc126", "kama_slope21",
                     "trend_stability_21", "alligator_bull",
                     "directional_adx", "volatility_68"]
-    panel["directional_adx"] = panel["adx14"] * np.sign(panel["vortex_spread"])
     for col in raw_features:
         panel["rank_" + col] = panel.groupby("period")[col].rank(pct=True)
     panel["rank_low_volatility"] = 1.0 - panel["rank_volatility_68"]
@@ -921,7 +941,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                     "excess": finite(ret - benchmark) if ret is not None and benchmark is not None else None,
                     "hit_rate": finite((chosen["realized_return"] > 0).mean()),
                     "selected": int(len(chosen)),
-                    "symbols": sorted(chosen["symbol"].astype(str).tolist())
+                    "geographies": sorted(chosen["geography"].astype(str).tolist())
                 }
         rows.append(item)
 
@@ -997,9 +1017,9 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
             net_by_cost = {str(bps): [] for bps in cost_scenarios_bps}
             for row in rows:
                 portfolio = row["portfolios"][strategy][str(count)]
-                chosen_symbols = portfolio.get("symbols", [])
-                current_weights = ({sym: 1.0 / len(chosen_symbols) for sym in chosen_symbols}
-                                   if chosen_symbols else {})
+                chosen_geographies = portfolio.get("geographies", [])
+                current_weights = ({geo: 1.0 / len(chosen_geographies) for geo in chosen_geographies}
+                                   if chosen_geographies else {})
                 all_symbols = set(prior_weights) | set(current_weights)
                 turnover = 0.5 * sum(abs(current_weights.get(sym, 0.0) - prior_weights.get(sym, 0.0))
                                      for sym in all_symbols)
@@ -1067,7 +1087,8 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
             m = meta.get(row["symbol"], {})
             latest_ranking.append({
                 "symbol": row["symbol"], "ticker": m.get("ticker", row["symbol"]),
-                "name": m.get("name", row["symbol"]), "geography": m.get("geography", ""),
+                "tickers": [meta.get(sym, {}).get("ticker", sym) for sym in row.get("symbols", [row["symbol"]])],
+                "name": m.get("name", row["symbol"]), "geography": row.get("geography", m.get("geography", "")),
                 "predicted_excess": finite(row["predicted_excess"]),
                 "roc21": finite(row["roc21"]),
                 "composite_momentum": finite(row["composite_momentum"])
@@ -1090,7 +1111,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         "latest_ranking_status": "CALCOLATA" if latest_ranking else "DATI INSUFFICIENTI",
         "latest_ranking": latest_ranking,
         "monthly_observations": rows,
-        "method": "Ogni mese Ridge stima l'extra-rendimento relativo a 21 sedute. Il training usa solo etichette con data di maturazione non successiva alla data di previsione; finestra massima 60 mesi, minimo 18 mesi e 100 righe. Feature cross-sectional rank: momentum 1/3/6 mesi, KAMA, stabilità del trend, Alligator, ADX con direzione Vortex e volatilità inversa. Confronto top 3/5/10 contro ROC21, momentum 3/6/12 e universo equiponderato sugli stessi mesi. Il ranking corrente usa gli indicatori più recenti e non richiede rendimenti futuri. Rendimenti storici lordi e sovrapposti; costi e survivorship bias non inclusi. Test HAC con 20 lag e confronto per sottoperiodi."
+        "method": "Ogni mese Ridge stima l'extra-rendimento geografico relativo a 21 sedute. ETF multipli della stessa geografia sono aggregati in un'unica osservazione equiponderata prima del ranking e del training, evitando sovrappeso dei Paesi con più listing. Il training usa solo etichette con data di maturazione non successiva alla data di previsione; finestra massima 60 mesi, minimo 18 mesi e 100 osservazioni geografia-mese. Feature cross-sectional rank: momentum 1/3/6 mesi, KAMA, stabilità del trend, Alligator, ADX con direzione Vortex e volatilità inversa. Confronto top 3/5/10 geografie contro ROC21, momentum 3/6/12 e universo equiponderato. Costi ipotetici applicati al turnover geografico; risultati lordi e netti, drawdown, volatilità e Sharpe. Test HAC con 20 lag e confronto per sottoperiodi. Resta survivorship bias e non sono inclusi spread, tasse, FX e slippage reali."
     }
 
 
