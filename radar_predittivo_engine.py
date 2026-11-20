@@ -217,7 +217,8 @@ def calculate(frame):
     out["alligator_bull"] = alligator_bull
     out["alligator_open"] = alligator_open
     out["kama_rising"] = k > k.shift(5)
-    out["vortex_bull"] = vi_plus > vi_minus    out["investable_filter"] = (close > ma200) & (ma38 > ma200) & (roc > 0)
+    out["vortex_bull"] = vi_plus > vi_minus
+    out["investable_filter"] = (close > ma200) & (ma38 > ma200) & (roc > 0)
     out["roc5"] = close.pct_change(5) * 100.0
     out["roc10"] = close.pct_change(10) * 100.0
     out["roc21"] = close.pct_change(21) * 100.0
