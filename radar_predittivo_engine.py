@@ -266,7 +266,7 @@ def monthly_validation(frames, indicators):
         "out_of_sample_from":split_date.strftime("%Y-%m-%d"),
         "out_of_sample":stats(test,"Tutte le osservazioni OOS"),
         "oos_score_ge_65":stats(high,"Score >= 65 OOS"),
-        "method":"Snapshot mensili; split cronologico 70/30; rendimenti futuri a 21/63/126 sedute. Nessun parametro ottimizzato. Rendimenti lordi, senza costi, FX e slippage.",
+        "method":"Snapshot mensili; split temporale unico 70/30 (non ancora walk-forward rolling); rendimenti futuri a 21/63/126 sedute. Nessun parametro ottimizzato. Rendimenti lordi, senza costi, FX e slippage.",
     }
 
 def main():
@@ -310,7 +310,7 @@ def main():
     output = {
         "generated_at":datetime.now(timezone.utc).isoformat(),
         "latest_price_date":max(price_dates) if price_dates else None,
-        "status":("RADAR TECNICO ATTIVO · VALIDAZIONE IN CORSO" if calculated else "NON OPERATIVO · DATI PREZZO ASSENTI"),
+        "status":("RADAR TECNICO ATTIVO · SCORE NON VALIDATO" if calculated else "NON OPERATIVO · DATI PREZZO ASSENTI"),
         "method":{
             "name":"Radar anticipatore tecnico — modello B preliminare",
             "score_max":100,
@@ -327,6 +327,8 @@ def main():
                 "Breadth non calcolata: servono serie storiche di ampiezza di mercato/constituents per ciascun Paese.",
                 "Macro (OECD CLI, PMI nuovi ordini, revisioni utili) non inclusi finché non sono disponibili dati storici coerenti e datati.",
                 "Prezzi Yahoo Finance adjusted sono proxy e possono avere limiti, cambi valuta e differenze tra listing.",
+                "Le osservazioni sono coppie ETF-mese: non sono indipendenti e possono includere strumenti sovrapposti sulla stessa geografia.",
+                "Il test attuale è un singolo holdout cronologico 70/30, non un walk-forward rolling; serve una validazione rolling e confronto con benchmark prima dell’uso operativo.",
                 "Backtest esplorativo non incorpora costi, spread, slippage, tasse o rischio cambio."
             ],
             "no_lookahead":"Indicatori calcolati usando solo dati disponibili alla data dello snapshot. I rendimenti futuri sono usati esclusivamente nella sezione di valutazione.",
