@@ -1055,6 +1055,23 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                     diffs.append(a - b)
             robustness["paired_comparisons"][str(count)]["ridge_vs_" + comparator] = hac_stats(diffs)
 
+    # Direct paired tests for every fixed blend against ROC21 and the universe.
+    # This prevents choosing a blend from average returns alone.
+    for count in (3, 5, 10):
+        for strategy in strategies:
+            if strategy in ("roc21", "benchmark"):
+                continue
+            for comparator in ("roc21", "benchmark"):
+                diffs = []
+                for row in rows:
+                    a = row["portfolios"][strategy][str(count)]["return"]
+                    b = row["portfolios"][comparator][str(count)]["return"]
+                    if a is not None and b is not None:
+                        diffs.append(a - b)
+                robustness["paired_comparisons"][str(count)][
+                    strategy + "_vs_" + comparator
+                ] = hac_stats(diffs)
+
     for label, lo, hi in (("2016-2019", "2016-01", "2019-12"),
                           ("2020-2022", "2020-01", "2022-12"),
                           ("2023-2026", "2023-01", "2026-12")):
