@@ -437,7 +437,8 @@ def monthly_validation(frames, indicators, universe, start_date=None, universe_l
                 improving_1m_rec[horizon] = None
                 improving_3m_rec[horizon] = None
                 for rec in top_quartile_rec.values(): rec[horizon] = None
-                continue            bench_rec[horizon] = finite(valid[horizon].mean())
+                continue
+            bench_rec[horizon] = finite(valid[horizon].mean())
             fixed_group = valid[valid["score"] >= 65]
             fixed_rec[horizon] = finite(fixed_group[horizon].mean()) if len(fixed_group) else None
             if threshold is not None:
@@ -656,7 +657,8 @@ def walk_forward_early_model(indicators, universe, start_date="2008-01-01", trai
         prior["target"] = prior["1m"] - prior.groupby("period")["1m"].transform("mean")
         X = prior[xcols].to_numpy(dtype=float)
         y = prior["target"].to_numpy(dtype=float)
-        x_mean = X.mean(axis=0)        y_mean = y.mean()
+        x_mean = X.mean(axis=0)
+        y_mean = y.mean()
         Xc, yc = X - x_mean, y - y_mean
         alpha = 10.0
         try:
