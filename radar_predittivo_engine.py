@@ -152,13 +152,14 @@ def calculate(frame):
     rsi = 100 - 100/(1+rs)
     rsi = rsi.where(loss.ne(0), 100.0)
     ma38 = close.rolling(38).mean()
+    ma50 = close.rolling(50).mean()
     ma200 = close.rolling(200).mean()
 
     out = pd.DataFrame({
         "close": close, "jaw": jaw, "teeth": teeth, "lips": lips,
         "kama": k, "roc38": roc, "ao": ao, "ao_signal": ao_signal,
         "vi_plus": vi_plus, "vi_minus": vi_minus, "rsi14": rsi,
-        "ma38": ma38, "ma200": ma200,
+        "ma38": ma38, "ma50": ma50, "ma200": ma200,
     }).dropna(subset=["close"])
     # Block scores avoid counting several near-duplicate oscillators as independent votes.
     alligator_bull = (lips > teeth) & (teeth > jaw)
@@ -178,6 +179,7 @@ def calculate(frame):
     out["kama_rising"] = k > k.shift(5)
     out["vortex_bull"] = vi_plus > vi_minus
     out["investable_filter"] = (close > ma200) & (ma38 > ma200) & (roc > 0)
+    out["roc21"] = close.pct_change(21) * 100.0
     out["roc126"] = close.pct_change(126) * 100.0
     return out
 
@@ -214,7 +216,9 @@ def latest_record(meta, ind):
         "vortex_minus": finite(r["vi_minus"]),
         "rsi14": finite(r["rsi14"]),
         "ma38": finite(r["ma38"]),
+        "ma50": finite(r["ma50"]),
         "ma200": finite(r["ma200"]),
+        "roc21": finite(r["roc21"]),
         "roc126": finite(r["roc126"]),
         "investable_filter": bool(r["investable_filter"]),
         "investable": investable,
@@ -224,50 +228,133 @@ def latest_record(meta, ind):
         "macro": None,
     }
 
-def monthly_validation(frames, indicators):
-    observations = []
+def build_monthly_panel(indicators, universe):
+    """Create point-in-time month-end snapshots and forward outcomes."""
+    meta = {x["symbol"]: x for x in universe}
+    records = []
     for symbol, ind in indicators.items():
-        # One observation per month; future returns are outcomes, never inputs to score.
-        monthly = ind[["score"]].resample("ME").last().dropna()
-        close = frames[symbol]["Close"].reindex(ind.index)
-        for date, row in monthly.iterrows():
-            pos = ind.index.searchsorted(date)
-            if pos >= len(ind.index):
-                continue
-            rec = {"symbol": symbol, "date": date, "score": float(row["score"])}
-            for horizon, n in (("1m",21),("3m",63),("6m",126)):
-                if pos+n < len(ind.index):
-                    rec[horizon] = float(ind["close"].iloc[pos+n] / ind["close"].iloc[pos] - 1)
-            observations.append(rec)
-    if not observations:
-        return {"status":"DATI INSUFFICIENTI","observations":0,"note":"Nessuna serie mensile con rendimenti futuri completi."}
-    panel = pd.DataFrame(observations).sort_values("date")
-    panel = panel.dropna(subset=["1m","3m","6m"])
-    if panel.empty:
-        return {"status":"DATI INSUFFICIENTI","observations":0}
-    split_date = panel["date"].quantile(0.70)
-    test = panel[panel["date"] > split_date].copy()
-    if test.empty:
-        test = panel.copy()
-        split_date = panel["date"].min()
-    high = test[test["score"] >= 65]
-    def stats(frame, label):
-        result = {"label":label,"n":int(len(frame))}
-        for h in ("1m","3m","6m"):
-            values = frame[h] if len(frame) else pd.Series(dtype=float)
-            result[h] = {
-                "mean_return": finite(values.mean()) if len(values) else None,
-                "hit_rate": finite((values > 0).mean()) if len(values) else None,
+        grouped = ind.groupby(ind.index.to_period("M"), sort=True)
+        positions = grouped.indices
+        for period, idxs in positions.items():
+            pos = int(idxs[-1])
+            row = ind.iloc[pos]
+            rec = {
+                "symbol": symbol,
+                "module": str(meta.get(symbol, {}).get("module") or "Non classificato"),
+                "period": period,
+                "date": ind.index[pos],
+                "score": finite(row["score"]),
+                "close": finite(row["close"]),
+                "ma50": finite(row["ma50"]),
+                "ma200": finite(row["ma200"]),
+                "above_ma50": bool(row["close"] > row["ma50"]) if pd.notna(row["ma50"]) else None,
+                "above_ma200": bool(row["close"] > row["ma200"]) if pd.notna(row["ma200"]) else None,
+                "roc21": finite(row["roc21"]),
             }
-        return result
-    return {
-        "status":"ESPLORATIVO NON VALIDATO",
-        "observations":int(len(panel)),
-        "out_of_sample_from":split_date.strftime("%Y-%m-%d"),
-        "out_of_sample":stats(test,"Tutte le osservazioni OOS"),
-        "oos_score_ge_65":stats(high,"Score >= 65 OOS"),
-        "method":"Snapshot mensili; split temporale unico 70/30 (non ancora walk-forward rolling); rendimenti futuri a 21/63/126 sedute. Nessun parametro ottimizzato. Rendimenti lordi, senza costi, FX e slippage.",
+            for horizon, n in (("1m", 21), ("3m", 63), ("6m", 126)):
+                rec[horizon] = (
+                    finite(ind["close"].iloc[pos+n] / ind["close"].iloc[pos] - 1)
+                    if pos+n < len(ind) and ind["close"].iloc[pos] else None
+                )
+            records.append(rec)
+    if not records:
+        return pd.DataFrame()
+    panel = pd.DataFrame(records).sort_values(["period", "symbol"]).reset_index(drop=True)
+    panel["monthly_return"] = panel.groupby("symbol")["close"].pct_change()
+    return panel
+
+def breadth_by_module(panel):
+    """Cross-market ETF breadth, not constituent-level stock-market breadth."""
+    if panel.empty:
+        return {}
+    latest_period = panel["period"].max()
+    snap = panel[panel["period"] == latest_period]
+    result = {}
+    for module, group in snap.groupby("module"):
+        valid50 = group["above_ma50"].dropna()
+        valid200 = group["above_ma200"].dropna()
+        valid_adv = group["monthly_return"].dropna()
+        result[str(module)] = {
+            "as_of": max(x.strftime("%Y-%m-%d") for x in group["date"]),
+            "markets": int(len(group)),
+            "above_ma50_pct": finite(valid50.mean()) if len(valid50) else None,
+            "above_ma200_pct": finite(valid200.mean()) if len(valid200) else None,
+            "advancers_1m_pct": finite((valid_adv > 0).mean()) if len(valid_adv) else None,
+            "median_roc21": finite(group["roc21"].median()),
+            "definition": "Percentuale degli ETF geografici del modulo sopra MA50/MA200 e in rialzo nell'ultimo mese; non è breadth dei singoli componenti azionari."
+        }
+    return result
+
+def _portfolio_stats(monthly_returns, label):
+    result = {"label": label, "months": int(len(monthly_returns))}
+    for horizon in ("1m", "3m", "6m"):
+        values = [x[horizon] for x in monthly_returns if x.get(horizon) is not None]
+        result[horizon] = {
+            "mean_return": finite(np.mean(values)) if values else None,
+            "median_return": finite(np.median(values)) if values else None,
+            "hit_rate": finite(np.mean(np.array(values) > 0)) if values else None,
+            "observations": len(values),
+        }
+    return result
+
+def monthly_validation(frames, indicators, universe):
+    """
+    Historical monthly walk-forward replay.
+    Scores at month t use only data through that month's final available close.
+    Rolling threshold for month t uses scores from the preceding 36 months only.
+    """
+    panel = build_monthly_panel(indicators, universe)
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "observations": 0,
+                "note": "Nessuna serie mensile con prezzi e indicatori validi."}, {}
+    periods = sorted(panel["period"].unique())
+    benchmark_rows, fixed_rows, rolling_rows = [], [], []
+    rolling_thresholds = []
+    for period in periods:
+        current = panel[panel["period"] == period].copy()
+        prior_periods = [p for p in periods if p < period][-36:]
+        prior = panel[panel["period"].isin(prior_periods)]
+        threshold = None
+        if len(prior_periods) >= 12 and len(prior):
+            threshold = finite(prior["score"].dropna().quantile(0.75))
+        valid_current = current.dropna(subset=["1m", "3m", "6m"])
+        if valid_current.empty:
+            continue
+        def monthly_mean(frame):
+            return {
+                h: finite(frame[h].mean()) if len(frame) and frame[h].notna().any() else None
+                for h in ("1m", "3m", "6m")
+            }
+        benchmark = monthly_mean(valid_current)
+        fixed = monthly_mean(valid_current[valid_current["score"] >= 65])
+        rolling = monthly_mean(valid_current[valid_current["score"] >= threshold]) if threshold is not None else None
+        date = current["date"].max().strftime("%Y-%m-%d")
+        benchmark_rows.append({"date": date, **benchmark})
+        if valid_current["score"].ge(65).any():
+            fixed_rows.append({"date": date, **fixed})
+        if threshold is not None:
+            rolling_thresholds.append({"date": date, "threshold": threshold})
+            if (valid_current["score"] >= threshold).any():
+                rolling_rows.append({"date": date, **rolling})
+    breadth = breadth_by_module(panel)
+    validation = {
+        "status": "WALK-FORWARD STORICO ESPLORATIVO · NON VALIDATO",
+        "observations": int(len(panel)),
+        "months": int(len(periods)),
+        "out_of_sample_from": periods[0].strftime("%Y-%m"),
+        "benchmark_equal_weight": _portfolio_stats(benchmark_rows, "Universo ETF geografici equiponderato"),
+        "oos_score_ge_65": _portfolio_stats(fixed_rows, "Selezione mensile con score >= 65"),
+        "walk_forward_rolling_percentile": _portfolio_stats(rolling_rows, "Selezione mensile sopra il 75° percentile dei 36 mesi precedenti"),
+        "rolling_threshold": {
+            "observations": len(rolling_thresholds),
+            "mean": finite(np.mean([x["threshold"] for x in rolling_thresholds])) if rolling_thresholds else None,
+            "last": rolling_thresholds[-1] if rolling_thresholds else None,
+            "rule": "Per ogni mese, soglia = 75° percentile degli score osservati nei 36 mesi precedenti; minimo 12 mesi di storia. Nessuna informazione del mese corrente entra nella soglia."
+        },
+        "breadth_note": "Breadth inter-mercato per modulo: quota degli ETF geografici sopra MA50/MA200 e quota in rialzo a un mese. Non sostituisce la breadth interna calcolata sui titoli componenti di ciascun indice.",
+        "method": "Replay mensile point-in-time: snapshot all'ultima seduta disponibile del mese; rendimenti successivi a 21/63/126 sedute. Confronto con universo equiponderato e selezione score >=65. Soglia adattiva calcolata solo sui 36 mesi precedenti. I rendimenti forward si sovrappongono tra mesi e le osservazioni ETF sono correlate. Risultati lordi, senza costi, FX, spread o slippage."
     }
+    return validation, breadth
 
 def main():
     if not SOURCE.exists():
@@ -305,7 +392,9 @@ def main():
     by_module = {}
     for row in calculated:
         by_module.setdefault(row.get("module") or "Non classificato",[]).append(row)
-    validation = monthly_validation(frames,indicators)
+    validation, module_breadth = monthly_validation(frames,indicators,universe)
+    for row in calculated:
+        row["breadth"] = module_breadth.get(str(row.get("module") or "Non classificato"))
     price_dates = [x["date"] for x in calculated if x.get("date")]
     output = {
         "generated_at":datetime.now(timezone.utc).isoformat(),
@@ -328,7 +417,7 @@ def main():
                 "Macro (OECD CLI, PMI nuovi ordini, revisioni utili) non inclusi finché non sono disponibili dati storici coerenti e datati.",
                 "Prezzi Yahoo Finance adjusted sono proxy e possono avere limiti, cambi valuta e differenze tra listing.",
                 "Le osservazioni sono coppie ETF-mese: non sono indipendenti e possono includere strumenti sovrapposti sulla stessa geografia.",
-                "Il test attuale è un singolo holdout cronologico 70/30, non un walk-forward rolling; serve una validazione rolling e confronto con benchmark prima dell’uso operativo.",
+                "La verifica è un replay mensile point-in-time con soglia adattiva basata solo sui 36 mesi precedenti; i rendimenti forward si sovrappongono e il test resta esplorativo, non una validazione indipendente.",
                 "Backtest esplorativo non incorpora costi, spread, slippage, tasse o rischio cambio."
             ],
             "no_lookahead":"Indicatori calcolati usando solo dati disponibili alla data dello snapshot. I rendimenti futuri sono usati esclusivamente nella sezione di valutazione.",
@@ -343,6 +432,7 @@ def main():
         },
         "rankings":calculated,
         "by_module":by_module,
+        "module_breadth":module_breadth,
         "universe":results,
         "validation":validation
     }
