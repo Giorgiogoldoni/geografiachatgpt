@@ -799,25 +799,28 @@ def main():
             if factor_row["status"] == "CALCOLATO":
                 p = prices[symbol].dropna()
                 factor_row["observations"] = int(len(p))
-                if not p.empty:
+                if p.empty:
+                    factor_row["status"] = "PREZZI NON DISPONIBILI"
+                    factor_row["signal_note"] = "Il simbolo è presente nel download ma non restituisce prezzi validi; verificare il mapping."
+                else:
                     factor_row["first_price_date"] = p.index[0].strftime("%Y-%m-%d")
                     factor_row["price_date"] = p.index[-1].strftime("%Y-%m-%d")
-                metrics = score_series(p, min_history=FACTOR_MIN_HISTORY)
-                if metrics:
-                    factor_row.update(metrics)
-                    factor_row["status"] = (
-                        "CALCOLATO" if metrics.get("momentum_12m") is not None
-                        and metrics.get("sma200") is not None
-                        else "CALCOLATO PROVVISORIO"
-                    )
-                    factor_row["signal_note"] = (
-                        "Indicatori completi: trend e momentum 12 mesi disponibili."
-                        if factor_row["status"] == "CALCOLATO"
-                        else "Ranking provvisorio: storico inferiore a 12 mesi; indicatori lunghi e/o SMA200 non disponibili."
-                    )
-                else:
-                    factor_row["status"] = "IN OSSERVAZIONE"
-                    factor_row["signal_note"] = "Meno di sei mesi di prezzi: escluso dal ranking, in monitoraggio."
+                    metrics = score_series(p, min_history=FACTOR_MIN_HISTORY)
+                    if metrics:
+                        factor_row.update(metrics)
+                        factor_row["status"] = (
+                            "CALCOLATO" if metrics.get("momentum_12m") is not None
+                            and metrics.get("sma200") is not None
+                            else "CALCOLATO PROVVISORIO"
+                        )
+                        factor_row["signal_note"] = (
+                            "Indicatori completi: trend e momentum 12 mesi disponibili."
+                            if factor_row["status"] == "CALCOLATO"
+                            else "Ranking provvisorio: storico inferiore a 12 mesi; indicatori lunghi e/o SMA200 non disponibili."
+                        )
+                    else:
+                        factor_row["status"] = "IN OSSERVAZIONE"
+                        factor_row["signal_note"] = "Meno di sei mesi di prezzi: escluso dal ranking, in monitoraggio."
             elif factor_row["status"] == "PREZZI NON DISPONIBILI":
                 factor_row["signal_note"] = "Prezzi non restituiti dal provider."
             factor_rows.append(factor_row)
@@ -845,6 +848,7 @@ def main():
         "factor_rankable_count": sum(r["status"] in {"CALCOLATO", "CALCOLATO PROVVISORIO"} for r in factor_rows),
         "factor_provisional_count": sum(r["status"] == "CALCOLATO PROVVISORIO" for r in factor_rows),
         "factor_observation_count": sum(r["status"] == "IN OSSERVAZIONE" for r in factor_rows),
+        "factor_price_unavailable_count": sum(r["status"] == "PREZZI NON DISPONIBILI" for r in factor_rows),
         "factor_pending_mapping_count": sum(r["status"] == "IN ATTESA MAPPATURA" for r in factor_rows),
     }
     result = {
