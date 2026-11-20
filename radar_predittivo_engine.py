@@ -252,6 +252,10 @@ def build_monthly_panel(indicators, universe):
                 "period": period,
                 "date": ind.index[pos],
                 "score": finite(row["score"]),
+                "score_awakening": finite(row["score_awakening"]),
+                "score_acceleration": finite(row["score_acceleration"]),
+                "score_reversal": finite(row["score_reversal"]),
+                "score_confirmation": finite(row["score_confirmation"]),
                 "close": finite(row["close"]),
                 "ma50": finite(row["ma50"]),
                 "ma200": finite(row["ma200"]),
@@ -323,7 +327,7 @@ def monthly_validation(frames, indicators, universe):
     periods = sorted(panel["period"].unique())
     benchmark_rows, fixed_rows, rolling_rows = [], [], []
     improving_1m_rows, improving_3m_rows = [], []
-    top_quartile_rows = {m: [] for m in ("score", "return_68d", "modified_sharpe_68", "composite_momentum")}
+    top_quartile_rows = {m: [] for m in ("score", "score_awakening", "score_acceleration", "score_reversal", "score_confirmation", "return_68d", "modified_sharpe_68", "composite_momentum")}
     rolling_thresholds = []
     for period in periods:
         current = panel[panel["period"] == period].copy()
@@ -459,7 +463,7 @@ def monthly_validation(frames, indicators, universe):
         "walk_forward_rolling_percentile": _portfolio_stats(rolling_rows, "Selezione mensile sopra il 75° percentile dei 36 mesi precedenti"),
         "score_improving_1m": _portfolio_stats(improving_1m_rows, "Score in aumento di almeno 12,5 punti rispetto al mese precedente"),
         "score_improving_3m": _portfolio_stats(improving_3m_rows, "Score in aumento di almeno 25 punti rispetto a tre mesi prima"),
-        "cross_sectional_top_quartile": {m: _portfolio_stats(rows, {"score":"Radar score top quartile","return_68d":"Rendimento 68 sedute top quartile","modified_sharpe_68":"Modified Sharpe 68 sedute top quartile","composite_momentum":"Momentum composito 3/6/12 mesi top quartile"}[m]) for m, rows in top_quartile_rows.items()},
+        "cross_sectional_top_quartile": {m: _portfolio_stats(rows, {"score":"Radar score top quartile","score_awakening":"Risveglio Alligator/KAMA top quartile","score_acceleration":"Accelerazione ROC/AO top quartile","score_reversal":"Inversione Vortex/RSI top quartile","score_confirmation":"Conferma MA38/MA200 top quartile","return_68d":"Rendimento 68 sedute top quartile","modified_sharpe_68":"Modified Sharpe 68 sedute top quartile","composite_momentum":"Momentum composito 3/6/12 mesi top quartile"}[m]) for m, rows in top_quartile_rows.items()},
         "score_buckets": score_buckets,
         "rank_information_coefficient": rank_ic_summary,
         "score_change_information_coefficient": delta_ic_summary,
@@ -470,7 +474,7 @@ def monthly_validation(frames, indicators, universe):
             "rule": "Per ogni mese, soglia = 75° percentile degli score osservati nei 36 mesi precedenti; minimo 12 mesi di storia. Nessuna informazione del mese corrente entra nella soglia."
         },
         "breadth_note": "Breadth inter-mercato per modulo: quota degli ETF geografici sopra MA50/MA200 e quota in rialzo a un mese. Non sostituisce la breadth interna calcolata sui titoli componenti di ciascun indice.",
-        "method": "Replay mensile point-in-time: snapshot all'ultima seduta disponibile del mese; rendimenti successivi a 21/63/126 sedute. Ogni orizzonte è valutato separatamente. Include benchmark equiponderato, selezione score >=65, soglia adattiva sui 36 mesi precedenti, test di miglioramento dello score a 1 e 3 mesi, confronto con top quartile di momentum 68 sedute, Modified Sharpe 68 sedute e momentum composito 3/6/12 mesi, rendimenti per fasce di score e Spearman rank-IC cross-sectional mensile. I rendimenti forward a 3 e 6 mesi si sovrappongono; gli ETF sono correlati e l'universo corrente introduce survivorship bias. Risultati lordi, senza costi, FX, spread o slippage."
+        "method": "Replay mensile point-in-time: snapshot all'ultima seduta disponibile del mese; rendimenti successivi a 21/63/126 sedute. Ogni orizzonte è valutato separatamente. Include benchmark equiponderato, selezione score >=65, soglia adattiva sui 36 mesi precedenti, test di miglioramento dello score a 1 e 3 mesi, confronto con i quattro blocchi tecnici separati e con top quartile di momentum 68 sedute, Modified Sharpe 68 sedute e momentum composito 3/6/12 mesi, rendimenti per fasce di score e Spearman rank-IC cross-sectional mensile. I rendimenti forward a 3 e 6 mesi si sovrappongono; gli ETF sono correlati e l'universo corrente introduce survivorship bias. Risultati lordi, senza costi, FX, spread o slippage."
     }
     return validation, breadth
 
