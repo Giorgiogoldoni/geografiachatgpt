@@ -983,10 +983,8 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
             }
 
     # Portfolio-level validation: compound genuinely out-of-sample monthly
-    # selections, measure drawdown/volatility and charge turnover-based costs.
-    # Returns are decimals; turnover is one-way (half the absolute weight change).
+    # selections and measure drawdown/volatility. No transaction-cost assumptions.
     portfolio_validation = {}
-    cost_scenarios_bps = (0, 10, 20, 30)
 
     def portfolio_metrics(net_returns):
         arr = np.asarray([x for x in net_returns if x is not None and np.isfinite(x)], dtype=float)
@@ -1014,7 +1012,6 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
             prior_weights = {}
             gross_series = []
             turnover_series = []
-            net_by_cost = {str(bps): [] for bps in cost_scenarios_bps}
             for row in rows:
                 portfolio = row["portfolios"][strategy][str(count)]
                 chosen_geographies = portfolio.get("geographies", [])
@@ -1026,17 +1023,10 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 gross = portfolio.get("return")
                 gross_series.append(gross)
                 turnover_series.append(turnover)
-                for bps in cost_scenarios_bps:
-                    net_by_cost[str(bps)].append(
-                        gross - turnover * (bps / 10000.0) if gross is not None else None
-                    )
                 prior_weights = current_weights
             portfolio_validation[str(count)][strategy] = {
                 "average_one_way_turnover": finite(np.mean(turnover_series)) if turnover_series else None,
-                "gross": portfolio_metrics(gross_series),
-                "net_by_cost_bps": {
-                    bps: portfolio_metrics(values) for bps, values in net_by_cost.items()
-                }
+                "gross": portfolio_metrics(gross_series)
             }
 
     # Paired month-by-month comparisons; HAC t-statistics account for serial dependence.
@@ -1051,9 +1041,9 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                     diffs.append(a - b)
             robustness["paired_comparisons"][str(count)]["ridge_vs_" + comparator] = hac_stats(diffs)
 
-    for label, lo, hi in (("2016-2020", "2016-01", "2020-12"),
-                          ("2021-2023", "2021-01", "2023-12"),
-                          ("2024-2026", "2024-01", "2026-12")):
+    for label, lo, hi in (("2016-2019", "2016-01", "2019-12"),
+                          ("2020-2022", "2020-01", "2022-12"),
+                          ("2023-2026", "2023-01", "2026-12")):
         subset = [x for x in rows if lo <= x["period"] <= hi]
         robustness["subperiods"][label] = {"months": len(subset), "portfolios": {}}
         for count in (3, 5, 10):
@@ -1064,6 +1054,23 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 robustness["subperiods"][label]["portfolios"][str(count)][strategy] = {
                     "mean_return": finite(np.mean(vals)) if vals else None,
                     "positive_months_pct": finite(np.mean(np.array(vals) > 0)) if vals else None
+                }
+
+    # Market-regime check: classify each month by the contemporaneous
+    # equal-weight universe outcome, then compare selection returns by regime.
+    robustness["market_regimes"] = {}
+    for regime, selector in (("risk_on", lambda value: value > 0),
+                             ("risk_off", lambda value: value <= 0)):
+        subset = [row for row in rows if row["benchmark"] is not None and selector(row["benchmark"])]
+        robustness["market_regimes"][regime] = {"months": len(subset), "portfolios": {}}
+        for count in (3, 5, 10):
+            robustness["market_regimes"][regime]["portfolios"][str(count)] = {}
+            for strategy in strategies:
+                vals = [row["portfolios"][strategy][str(count)]["return"] for row in subset]
+                vals = [value for value in vals if value is not None]
+                robustness["market_regimes"][regime]["portfolios"][str(count)][strategy] = {
+                    "mean_return": finite(np.mean(vals)) if vals else None,
+                    "positive_months_pct": finite(np.mean(np.asarray(vals) > 0)) if vals else None
                 }
 
     # Current live ranking: no future 1-month return is required for these rows.
@@ -1103,7 +1110,6 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         "portfolio_sizes": [3, 5, 10], "results": summary,
         "robustness": robustness,
         "portfolio_validation": portfolio_validation,
-        "portfolio_cost_scenarios_bps": list(cost_scenarios_bps),
         "latest_ranking_period": str(latest_period),
         "latest_ranking_date": asof.strftime("%Y-%m-%d"),
         "latest_training_months": len(live_prior_periods),
@@ -1111,7 +1117,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         "latest_ranking_status": "CALCOLATA" if latest_ranking else "DATI INSUFFICIENTI",
         "latest_ranking": latest_ranking,
         "monthly_observations": rows,
-        "method": "Ogni mese Ridge stima l'extra-rendimento geografico relativo a 21 sedute. ETF multipli della stessa geografia sono aggregati in un'unica osservazione equiponderata prima del ranking e del training, evitando sovrappeso dei Paesi con più listing. Il training usa solo etichette con data di maturazione non successiva alla data di previsione; finestra massima 60 mesi, minimo 18 mesi e 100 osservazioni geografia-mese. Feature cross-sectional rank: momentum 1/3/6 mesi, KAMA, stabilità del trend, Alligator, ADX con direzione Vortex e volatilità inversa. Confronto top 3/5/10 geografie contro ROC21, momentum 3/6/12 e universo equiponderato. Costi ipotetici applicati al turnover geografico; risultati lordi e netti, drawdown, volatilità e Sharpe. Test HAC con 20 lag e confronto per sottoperiodi. Resta survivorship bias e non sono inclusi spread, tasse, FX e slippage reali."
+        "method": "Ogni mese Ridge stima l'extra-rendimento geografico relativo a 21 sedute. ETF multipli della stessa geografia sono aggregati in un'unica osservazione equiponderata prima del ranking e del training, evitando sovrappeso dei Paesi con più listing. Il training usa solo etichette con data di maturazione non successiva alla data di previsione; finestra massima 60 mesi, minimo 18 mesi e 100 osservazioni geografia-mese. Feature cross-sectional rank: momentum 1/3/6 mesi, KAMA, stabilità del trend, Alligator, ADX con direzione Vortex e volatilità inversa. Confronto top 3/5/10 geografie contro ROC21, momentum 3/6/12 e universo equiponderato. Verifica del rischio con drawdown, volatilità e Sharpe; test HAC con 20 lag, sottoperiodi e regimi risk-on/risk-off. Resta survivorship bias."
     }
 
 
