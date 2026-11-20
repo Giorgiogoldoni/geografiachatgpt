@@ -24,6 +24,7 @@ LOOKBACK = 68
 WINDOWS = {"1m": 21, "3m": 63, "6m": 126, "12m": 252}
 COMPOSITE_WEIGHTS = {"3m": 0.40, "6m": 0.30, "12m": 0.30}
 MIN_HISTORY = 253
+FACTOR_MIN_HISTORY = 126  # circa sei mesi: ranking fattoriale provvisorio
 BENCHMARK = "WRD.PA"
 
 MODULES = {
@@ -228,9 +229,9 @@ def download_prices(symbols):
     close.index = pd.to_datetime(close.index).tz_localize(None)
     return close.apply(pd.to_numeric, errors="coerce").sort_index()
 
-def score_series(series):
+def score_series(series, min_history=MIN_HISTORY):
     p = series.dropna()
-    if len(p) < MIN_HISTORY:
+    if len(p) < min_history:
         return None
     daily = p.pct_change().dropna()
     w = daily.tail(LOOKBACK)
@@ -796,18 +797,36 @@ def main():
                 "note": "Ranking fattoriale separato; mai mescolato al ranking geografico."
             }
             if factor_row["status"] == "CALCOLATO":
-                metrics = score_series(prices[symbol])
+                p = prices[symbol].dropna()
+                factor_row["observations"] = int(len(p))
+                if not p.empty:
+                    factor_row["first_price_date"] = p.index[0].strftime("%Y-%m-%d")
+                    factor_row["price_date"] = p.index[-1].strftime("%Y-%m-%d")
+                metrics = score_series(p, min_history=FACTOR_MIN_HISTORY)
                 if metrics:
                     factor_row.update(metrics)
+                    factor_row["status"] = (
+                        "CALCOLATO" if metrics.get("momentum_12m") is not None
+                        and metrics.get("sma200") is not None
+                        else "CALCOLATO PROVVISORIO"
+                    )
+                    factor_row["signal_note"] = (
+                        "Indicatori completi: trend e momentum 12 mesi disponibili."
+                        if factor_row["status"] == "CALCOLATO"
+                        else "Ranking provvisorio: storico inferiore a 12 mesi; indicatori lunghi e/o SMA200 non disponibili."
+                    )
                 else:
-                    factor_row["status"] = "STORICO INSUFFICIENTE"
+                    factor_row["status"] = "IN OSSERVAZIONE"
+                    factor_row["signal_note"] = "Meno di sei mesi di prezzi: escluso dal ranking, in monitoraggio."
+            elif factor_row["status"] == "PREZZI NON DISPONIBILI":
+                factor_row["signal_note"] = "Prezzi non restituiti dal provider."
             factor_rows.append(factor_row)
     lifecycle_registry = build_lifecycle_registry(rows, factor_rows, prices)
     pd.DataFrame(lifecycle_registry).to_csv(ROOT / "etf_lifecycle_registry.csv", index=False)
     factor_rankings = {}
     for factor in sorted({x["category"] for x in factor_rows}):
         for geography in sorted({x["geography"] for x in factor_rows if x["category"] == factor}):
-            pool = [x for x in factor_rows if x["category"] == factor and x["geography"] == geography and x["status"] == "CALCOLATO"]
+            pool = [x for x in factor_rows if x["category"] == factor and x["geography"] == geography and x["status"] in {"CALCOLATO", "CALCOLATO PROVVISORIO"}]
             if pool:
                 factor_rankings[factor + "|" + geography] = sorted(
                     pool, key=lambda x: rank_key(x, "modified_sharpe_candidate"), reverse=True)
@@ -823,7 +842,9 @@ def main():
         "insufficient_history_count": sum(r["status"] == "STORICO INSUFFICIENTE" for r in rows),
         "etp_separate_count": sum(r["status"] == "ETP SEPARATO" for r in rows),
         "factor_catalog_count": len(factor_rows),
-        "factor_rankable_count": sum(r["status"] == "CALCOLATO" for r in factor_rows),
+        "factor_rankable_count": sum(r["status"] in {"CALCOLATO", "CALCOLATO PROVVISORIO"} for r in factor_rows),
+        "factor_provisional_count": sum(r["status"] == "CALCOLATO PROVVISORIO" for r in factor_rows),
+        "factor_observation_count": sum(r["status"] == "IN OSSERVAZIONE" for r in factor_rows),
         "factor_pending_mapping_count": sum(r["status"] == "IN ATTESA MAPPATURA" for r in factor_rows),
     }
     result = {
@@ -832,6 +853,8 @@ def main():
         "method": {
             "lookback_sessions": LOOKBACK, "modified_sharpe_candidate": "mean(daily returns) / stdev(daily returns)^2",
             "momentum_windows_sessions": WINDOWS, "composite_weights": COMPOSITE_WEIGHTS,
+            "factor_min_history_sessions": FACTOR_MIN_HISTORY,
+            "factor_history_policy": ">=126 sedute: ranking provvisorio se mancano 12m/SMA200; <126 sedute: osservazione. I segnali trend restano subordinati a SMA200 e momentum 12m.",
             "momentum_weight_scenarios": MOMENTUM_WEIGHT_SCENARIOS,
             "trend_filter": "last adjusted price > SMA200 AND 12-month momentum > 0",
             "rebalance": "monthly signal; daily data refresh",
