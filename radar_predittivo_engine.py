@@ -318,6 +318,7 @@ def build_monthly_panel(indicators, universe):
                 "roc5": finite(row["roc5"]),
                 "roc10": finite(row["roc10"]),
                 "roc21": finite(row["roc21"]),
+                "kama_slope5": finite(row["kama_slope5"]),
                 "return_68d": finite(row["return_68d"]),
                 "composite_momentum": finite(row["composite_momentum"]),
                 "modified_sharpe_68": finite(row["modified_sharpe_68"]),
