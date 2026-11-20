@@ -17,8 +17,8 @@ ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "geografia-motore.json"
 OUT = ROOT / "radar-predittivo.json"
 MIN_HISTORY = 220
-DOWNLOAD_PERIOD = "max"
-CHUNK_SIZE = 18
+START_DATE = "2005-01-01"
+CHUNK_SIZE = 10
 
 def finite(value):
     try:
@@ -54,55 +54,63 @@ def collect_universe(data):
                 found[symbol] = item
     return list(found.values())
 
+def _clean_frame(raw, symbol):
+    if raw is None or raw.empty:
+        return None
+    if isinstance(raw.columns, pd.MultiIndex):
+        if symbol in raw.columns.get_level_values(0):
+            part = raw[symbol]
+        elif symbol in raw.columns.get_level_values(-1):
+            part = raw.xs(symbol, axis=1, level=-1)
+        elif "Close" in raw.columns.get_level_values(0):
+            return None
+        else:
+            return None
+    else:
+        part = raw
+    required = {"High", "Low", "Close"}
+    if not required.issubset(set(part.columns)):
+        return None
+    part = part[["High", "Low", "Close"]].copy()
+    part.index = pd.to_datetime(part.index)
+    if getattr(part.index, "tz", None) is not None:
+        part.index = part.index.tz_localize(None)
+    part = part[~part.index.duplicated(keep="last")].sort_index()
+    return part.apply(pd.to_numeric, errors="coerce").dropna()
+
 def download_prices(symbols):
-    frames = {}
-    errors = {}
+    frames, errors = {}, {}
     for start in range(0, len(symbols), CHUNK_SIZE):
         batch = symbols[start:start + CHUNK_SIZE]
+        raw = None
         try:
+            # Same Yahoo Finance request convention as the established UCITS engine.
             raw = yf.download(
-                tickers=batch, period=DOWNLOAD_PERIOD, interval="1d",
-                auto_adjust=True, actions=False, progress=False,
-                threads=True, group_by="ticker", repair=True
+                tickers=batch, start=START_DATE, auto_adjust=True,
+                actions=False, progress=False, threads=True, group_by="column"
             )
-            if raw is None or raw.empty:
-                for symbol in batch:
-                    errors[symbol] = "Provider returned no rows"
-                continue
-            for symbol in batch:
-                try:
-                    if isinstance(raw.columns, pd.MultiIndex):
-                        if symbol in raw.columns.get_level_values(0):
-                            part = raw[symbol]
-                        elif symbol in raw.columns.get_level_values(-1):
-                            part = raw.xs(symbol, axis=1, level=-1)
-                        else:
-                            errors[symbol] = "Ticker absent from returned columns"
-                            continue
-                    elif len(batch) == 1:
-                        part = raw
-                    else:
-                        errors[symbol] = "Unexpected provider column layout"
-                        continue
-                    required = {"High", "Low", "Close"}
-                    if not required.issubset(set(part.columns)):
-                        errors[symbol] = "OHLC fields unavailable"
-                        continue
-                    part = part[["High", "Low", "Close"]].copy()
-                    part.index = pd.to_datetime(part.index)
-                    if getattr(part.index, "tz", None) is not None:
-                        part.index = part.index.tz_localize(None)
-                    part = part[~part.index.duplicated(keep="last")].sort_index()
-                    part = part.apply(pd.to_numeric, errors="coerce").dropna()
-                    if not part.empty:
-                        frames[symbol] = part
-                    else:
-                        errors[symbol] = "No valid OHLC observations"
-                except Exception as exc:
-                    errors[symbol] = f"Parse error: {type(exc).__name__}: {exc}"
         except Exception as exc:
             for symbol in batch:
-                errors[symbol] = f"Download error: {type(exc).__name__}: {exc}"
+                errors[symbol] = f"Batch download error: {type(exc).__name__}: {exc}"
+        for symbol in batch:
+            part = _clean_frame(raw, symbol) if raw is not None and not raw.empty else None
+            if part is not None and not part.empty:
+                frames[symbol] = part
+                continue
+            # Individual fallback is deliberately limited to symbols missed by the batch.
+            try:
+                one = yf.download(
+                    tickers=symbol, start=START_DATE, auto_adjust=True,
+                    actions=False, progress=False, threads=False
+                )
+                part = _clean_frame(one, symbol)
+                if part is not None and not part.empty:
+                    frames[symbol] = part
+                    errors.pop(symbol, None)
+                else:
+                    errors[symbol] = "Yahoo Finance returned no usable OHLC rows (batch and individual retry)."
+            except Exception as exc:
+                errors[symbol] = f"Individual retry error: {type(exc).__name__}: {exc}"
     return frames, errors
 
 def kama(series, er_period=10, fast=2, slow=30):
@@ -302,7 +310,7 @@ def main():
     output = {
         "generated_at":datetime.now(timezone.utc).isoformat(),
         "latest_price_date":max(price_dates) if price_dates else None,
-        "status":"RADAR TECNICO ATTIVO · VALIDAZIONE IN CORSO",
+        "status":("RADAR TECNICO ATTIVO · VALIDAZIONE IN CORSO" if calculated else "NON OPERATIVO · DATI PREZZO ASSENTI"),
         "method":{
             "name":"Radar anticipatore tecnico — modello B preliminare",
             "score_max":100,
