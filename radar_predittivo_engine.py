@@ -511,6 +511,39 @@ def monthly_validation(frames, indicators, universe, start_date=None, universe_l
     }
     return validation, breadth
 
+
+def factor_segment_validation(factor_universe, factor_frames, factor_indicators):
+    """Separate walk-forward summaries by factor and geography, without mixing segments."""
+    calculated_symbols = set(factor_indicators)
+    segments = []
+    for factor in ("MOMENTUM", "QUALITY", "VALUE"):
+        for geography in ("Globale", "Stati Uniti", "Europa"):
+            members = [x for x in factor_universe if x.get("factor") == factor and x.get("geography") == geography]
+            usable = [x for x in members if x.get("symbol") in calculated_symbols]
+            if not members:
+                continue
+            symbols = {x["symbol"] for x in usable}
+            sub_frames = {k: v for k, v in factor_frames.items() if k in symbols}
+            sub_indicators = {k: v for k, v in factor_indicators.items() if k in symbols}
+            if usable:
+                primary, _ = monthly_validation(sub_frames, sub_indicators, usable, start_date="2020-01-01", universe_label=f"{factor} · {geography}")
+                extended, _ = monthly_validation(sub_frames, sub_indicators, usable, start_date="2015-01-01", universe_label=f"{factor} · {geography}")
+            else:
+                primary = {"status": "DATI INSUFFICIENTI", "observations": 0}
+                extended = {"status": "DATI INSUFFICIENTI", "observations": 0}
+            segments.append({
+                "factor": factor, "geography": geography,
+                "candidate_count": len(members), "calculated_count": len(usable),
+                "tickers": [x.get("ticker") for x in usable],
+                "symbols": [x.get("symbol") for x in usable],
+                "first_price_date": min((factor_frames[x["symbol"]].index[0].strftime("%Y-%m-%d") for x in usable), default=None),
+                "primary_2020": primary, "extended_2015": extended
+            })
+    return {
+        "method": "Confronto separato per fattore e area. Rendimento medio forward del paniere equiponderato degli ETF disponibili in ciascuna combinazione; se c'è un solo ETF, il risultato descrive quell'ETF e non una replica diversificata del fattore. I gruppi non vengono mescolati.",
+        "segments": segments
+    }
+
 def main():
     if not SOURCE.exists():
         raise SystemExit("geografia-motore.json non trovato: eseguire prima il motore geografico.")
@@ -575,7 +608,9 @@ def main():
     factor_validation_2015, _ = monthly_validation(
         factor_frames, factor_indicators, factor_universe, start_date="2015-01-01", universe_label="ETF factor"
     ) if factor_indicators else (dict(insufficient), {})
+    factor_comparison = factor_segment_validation(factor_universe, factor_frames, factor_indicators)
     factor_analysis = {
+        "comparison_by_factor_geography": factor_comparison,
         "history_start": FACTOR_START_DATE,
         "primary_window": "2020-01-01",
         "extended_window": "2015-01-01",
