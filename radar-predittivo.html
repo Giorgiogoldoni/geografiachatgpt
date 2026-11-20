@@ -2,27 +2,61 @@
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Radar Predittivo · GeografiaChatGPT</title>
 <style>
-:root{--bg:#f4f6f9;--card:#fff;--ink:#172033;--muted:#697586;--line:#e1e6ed;--blue:#2459a6;--amber:#9a6700}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
-header{background:#14243b;color:#fff;padding:18px max(16px,calc((100% - 1100px)/2));display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-a{color:#2459a6}.headlink{color:#d8e7ff}.wrap{max-width:1100px;margin:22px auto;padding:0 14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px}
-h1{font-size:21px;margin:0}h2{font-size:17px;margin:0 0 10px}.muted{color:var(--muted);font-size:13px;line-height:1.55}
-.pill{display:inline-block;border-radius:20px;padding:4px 9px;font-size:11px;font-weight:700;background:#fff4d6;color:var(--amber)}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.item{border:1px solid var(--line);border-radius:9px;padding:12px}.item b{display:block;margin-bottom:5px}
-@media(max-width:700px){.grid{grid-template-columns:1fr}header{padding:14px}}
+:root{--bg:#f4f6f9;--card:#fff;--ink:#172033;--muted:#697586;--line:#e1e6ed;--blue:#2459a6;--green:#16794b;--amber:#9a6700;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:#14243b;color:#fff;padding:18px max(16px,calc((100% - 1200px)/2));display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+a{color:var(--blue)}.headlink{color:#d8e7ff}.wrap{max-width:1200px;margin:20px auto;padding:0 14px}
+h1{font-size:21px;margin:0}h2{font-size:17px;margin:0 0 10px}.muted{color:var(--muted);font-size:12px;line-height:1.55}
+.card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:16px;margin-bottom:13px;min-width:0}
+.pill{display:inline-block;border-radius:20px;padding:4px 9px;font-size:11px;font-weight:700;background:#edf2f7;color:#344054}.ok{background:#e7f6ed;color:var(--green)}.warn{background:#fff4d6;color:var(--amber)}.bad{background:#ffebe9;color:var(--red)}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.metric{font-size:23px;font-weight:750;margin-top:3px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.block{border:1px solid var(--line);border-radius:9px;padding:12px}.block b{display:block;margin-bottom:5px}
+.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:12px}th,td{text-align:left;padding:8px 7px;border-bottom:1px solid var(--line);white-space:nowrap}th{background:#f8fafc;color:var(--muted)}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}button,select{border:1px solid #cbd5e1;border-radius:7px;background:#fff;padding:7px 11px;font-weight:650;cursor:pointer}
+.score{font-size:16px;font-weight:800}.small{font-size:11px;color:var(--muted)}.notice{background:#fff6df;border:1px solid #f0d28b;color:#684b10;border-radius:9px;padding:12px;margin-bottom:13px}
+@media(max-width:760px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}header{padding:14px}}
 </style></head><body>
-<header><div><h1>🔭 RADAR PREDITTIVO</h1><div style="font-size:12px;color:#c7d3e2;margin-top:4px">GeografiaChatGPT · modulo di ricerca indipendente</div></div><nav><a class="headlink" href="./index.html">← Torna a GeografiaChatGPT</a></nav></header>
+<header><div><h1>🔭 RADAR PREDITTIVO</h1><div style="font-size:12px;color:#c7d3e2;margin-top:4px">GeografiaChatGPT · modulo tecnico indipendente</div></div><nav><a class="headlink" href="./index.html">← Torna a GeografiaChatGPT</a></nav></header>
 <main class="wrap">
-<section class="card"><span class="pill">MODULO IN COSTRUZIONE · NON OPERATIVO</span><h2 style="margin-top:12px">Anticipare le rotazioni geografiche</h2><p>Questa pagina ospiterà il modello predittivo equilibrato (B), separato dal ranking geografico attuale. Non genera segnali di acquisto finché gli indicatori e i test storici non sono stati implementati e verificati.</p></section>
-<section class="card"><h2>Architettura prevista</h2><div class="grid">
-<div class="item"><b>Risveglio del trend</b><span class="muted">Alligator e KAMA: compressione, cambio di direzione e apertura delle linee.</span></div>
-<div class="item"><b>Accelerazione</b><span class="muted">ROC 38 e Awesome Oscillator: miglioramento del momentum e accelerazione.</span></div>
-<div class="item"><b>Inversione</b><span class="muted">Vortex e RSI: prevalenza direzionale, forza e possibili divergenze.</span></div>
-<div class="item"><b>Conferma</b><span class="muted">Breadth e filtro MA 38/200: partecipazione e qualità del trend.</span></div>
-<div class="item"><b>Contesto fondamentale</b><span class="muted">OECD CLI, PMI nuovi ordini e revisioni degli utili, solo quando sono disponibili serie storiche affidabili.</span></div>
-<div class="item"><b>Orizzonti</b><span class="muted">Radar a 1-3 mesi e verifica delle prospettive a 6 mesi.</span></div>
-</div></section>
-<section class="card"><h2>Regole di validazione</h2><ul><li>Backtest walk-forward senza look-ahead bias.</li><li>Confronto tra indicatori singoli e combinazioni, evitando doppio conteggio di segnali simili.</li><li>ETF UCITS e universo geografico già censito come universo investibile.</li><li>Separazione tra radar anticipatore e radar investibile.</li><li>Nessuna previsione o graduatoria mostrata come reale prima della validazione.</li></ul></section>
-<p class="muted">Il motore geografico esistente e RAPTOR restano invariati. Questa pagina è soltanto l'accesso dedicato al nuovo modulo.</p>
-</main></body></html>
+<div class="notice"><b>Come leggere il radar.</b> Lo score individua miglioramenti tecnici precoci, non prevede con certezza i rendimenti e non costituisce un ordine. Il filtro investibile è più severo e separato dal radar anticipatore. Breadth e dati macro non sono ancora inclusi.</div>
+<section class="card"><div class="controls"><span id="status" class="pill warn">Caricamento motore…</span><button id="reload">Aggiorna</button></div><div class="muted" id="updated">Attendo il primo aggiornamento automatico.</div></section>
+<section class="metrics" id="metrics"></section>
+<section class="card"><h2>Radar anticipatore · ranking tecnico</h2><p class="muted">Punteggio 0–100. Ordinamento per score, non per rendimento passato.</p><div class="controls"><label for="module">Modulo:</label><select id="module"><option value="">Tutti i moduli</option></select><label for="sort">Ordina:</label><select id="sort"><option value="score">Score radar</option><option value="roc38">ROC 38</option><option value="roc126">ROC 126</option></select></div><div class="scroll" id="ranking"></div></section>
+<section class="card"><h2>Composizione del punteggio</h2><div class="grid" id="blocks"></div></section>
+<section class="card"><h2>Radar investibile</h2><p class="muted">Un ETF entra qui solo se supera contemporaneamente prezzo sopra MA200, MA38 sopra MA200, ROC38 positivo e score almeno 65. È un filtro tecnico preliminare, non un invito automatico all'acquisto.</p><div class="scroll" id="investable"></div></section>
+<section class="card"><h2>Verifica storica · walk-forward esplorativo</h2><div id="validation" class="muted">Dati di validazione in caricamento…</div></section>
+<section class="card"><h2>Copertura e qualità dei dati</h2><div class="scroll" id="universe"></div></section>
+<section class="card"><h2>Limiti attuali e prossimi sviluppi</h2><ul class="muted" id="limitations"></ul></section>
+<footer class="muted" style="padding:5px 2px 24px">Prezzi OHLC adjusted da Yahoo Finance. Indicatori calcolati sui dati disponibili alla data dello snapshot. Il backtest usa rendimenti futuri soltanto per valutare i segnali, non per calcolarli. Non sono inclusi costi, spread, slippage, tasse o rischio cambio.</footer>
+</main>
+<script>
+let DATA=null;
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct=x=>x==null?"—":(Number(x)*100).toFixed(1)+"%";
+const n=x=>x==null?"—":Number(x).toFixed(1);
+const pill=(txt,cls="")=>'<span class="pill '+cls+'">'+esc(txt)+'</span>';
+function render(){
+ const d=DATA,c=d.coverage||{},rows=d.rankings||[];
+ document.getElementById("status").outerHTML='<span id="status" class="pill '+(d.status?"ok":"warn")+'">'+esc(d.status||"Motore aggiornato")+'</span>';
+ document.getElementById("updated").textContent="Prezzi al "+(d.latest_price_date||"—")+" · generato "+new Date(d.generated_at).toLocaleString("it-IT");
+ document.getElementById("metrics").innerHTML=[
+ ["ETF nell'universo",c.universe_count??0],["Calcolati",c.calculated_count??0],["Non disponibili",c.unavailable_count??0],["Storico breve / errori",(c.short_history_count??0)+(c.error_count??0)]
+ ].map(x=>'<div class="card"><div class="muted">'+x[0]+'</div><div class="metric">'+x[1]+'</div></div>').join("");
+ const modules=[...new Set(rows.map(x=>x.module||"Non classificato"))].sort(),sel=document.getElementById("module"),old=sel.value;
+ sel.innerHTML='<option value="">Tutti i moduli</option>'+modules.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join("");sel.value=modules.includes(old)?old:"";
+ const sorted=()=>rows.filter(x=>!sel.value||x.module===sel.value).sort((a,b)=>(Number(b[document.getElementById("sort").value]??-1e9)-Number(a[document.getElementById("sort").value]??-1e9)));
+ const rowTable=a=>!a.length?'<p class="muted">Nessuno strumento in questa categoria.</p>':'<table><thead><tr><th>#</th><th>Paese / strumento</th><th>Score</th><th>Risveglio</th><th>Accel.</th><th>Inversione</th><th>Conferma</th><th>ROC38</th><th>RSI</th><th>MA38/200</th><th>Stato</th></tr></thead><tbody>'+a.map((x,i)=>'<tr><td>'+(i+1)+'</td><td><b>'+esc(x.geography||x.name)+'</b><br><span class="small">'+esc(x.ticker)+' · '+esc(x.symbol)+'</span></td><td class="score">'+n(x.score)+'</td><td>'+n(x.score_awakening)+'/25</td><td>'+n(x.score_acceleration)+'/25</td><td>'+n(x.score_reversal)+'/20</td><td>'+n(x.score_confirmation)+'/30</td><td>'+pct(x.roc38/100)+'</td><td>'+n(x.rsi14)+'</td><td>'+(x.ma38!=null&&x.ma200!=null?(x.ma38>x.ma200?pill("MA38 > MA200","ok"):pill("MA38 ≤ MA200","warn")):"—")+'</td><td>'+pill(x.radar_label,x.score>=75?"ok":x.score>=55?"warn":"")+'</td></tr>').join("")+'</tbody></table>';
+ document.getElementById("ranking").innerHTML=rowTable(sorted());
+ document.getElementById("investable").innerHTML=rowTable(rows.filter(x=>x.investable).sort((a,b)=>b.score-a.score));
+ document.getElementById("blocks").innerHTML=Object.entries(d.method.blocks||{}).map(([k,v])=>'<div class="block"><b>'+esc(k.replaceAll("_"," "))+'</b><span class="muted">'+esc(v)+'</span></div>').join("");
+ const v=d.validation||{};
+ if(v.out_of_sample){const make=(obj)=>'<h3>'+esc(obj.label)+'</h3><table><thead><tr><th>Orizzonte</th><th>Rendimento medio</th><th>Quota positiva</th><th>Osservazioni</th></tr></thead><tbody>'+["1m","3m","6m"].map(h=>'<tr><td>'+h+'</td><td>'+pct(obj[h]?.mean_return)+'</td><td>'+pct(obj[h]?.hit_rate)+'</td><td>'+obj.n+'</td></tr>').join("")+'</tbody></table>';document.getElementById("validation").innerHTML=pill(v.status||"ESPLORATIVO","warn")+'<p>Campione complessivo: '+(v.observations??0)+' snapshot mensili · test fuori campione dal '+esc(v.out_of_sample_from||"—")+'.</p>'+make(v.out_of_sample)+(v.oos_score_ge_65?make(v.oos_score_ge_65):"")+'<p class="muted">'+esc(v.method||"")+'</p>'}else document.getElementById("validation").textContent=v.note||"Validazione non ancora disponibile.";
+ document.getElementById("universe").innerHTML='<table><thead><tr><th>Paese</th><th>Ticker</th><th>Simbolo dati</th><th>Stato</th><th>Dettaglio</th></tr></thead><tbody>'+(d.universe||[]).map(x=>'<tr><td>'+esc(x.geography||x.name)+'</td><td>'+esc(x.ticker)+'</td><td>'+esc(x.symbol)+'</td><td>'+pill(x.status,x.status==="CALCOLATO"?"ok":x.status==="DATI NON DISPONIBILI"?"bad":"warn")+'</td><td>'+esc(x.error||((x.observations??"")+" osservazioni"))+'</td></tr>').join("")+'</tbody></table>';
+ document.getElementById("limitations").innerHTML=(d.method.limitations||[]).map(x=>'<li>'+esc(x)+'</li>').join("");
+}
+async function load(){document.getElementById("status").textContent="Caricamento motore…";try{const r=await fetch("./radar-predittivo.json?ts="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error("Il primo run automatico non ha ancora prodotto i dati.");DATA=await r.json();render()}catch(e){document.getElementById("status").textContent="In attesa del primo run";document.getElementById("updated").textContent=e.message+" Avviare il workflow Radar Predittivo da GitHub Actions."}}
+document.getElementById("reload").addEventListener("click",load);
+document.getElementById("module").addEventListener("change",()=>DATA&&render());
+document.getElementById("sort").addEventListener("change",()=>DATA&&render());
+load();
+</script></body></html>
