@@ -920,9 +920,18 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 "note": "Nessun risultato senza almeno 18 mesi e 100 osservazioni mature."}
 
     pred = pd.concat(predictions, ignore_index=True)
+    # Fixed, pre-declared blends combine the learned Ridge signal with the
+    # transparent ROC21 baseline. Percentile ranks avoid scale mismatch.
+    pred["rank_ridge_prediction"] = pred.groupby("period")["predicted_excess"].rank(pct=True)
+    pred["rank_roc21_baseline"] = pred.groupby("period")["roc21"].rank(pct=True)
+    pred["blend_ridge_25_roc21_75"] = 0.25 * pred["rank_ridge_prediction"] + 0.75 * pred["rank_roc21_baseline"]
+    pred["blend_ridge_50_roc21_50"] = 0.50 * pred["rank_ridge_prediction"] + 0.50 * pred["rank_roc21_baseline"]
+    pred["blend_ridge_75_roc21_25"] = 0.75 * pred["rank_ridge_prediction"] + 0.25 * pred["rank_roc21_baseline"]
     meta = {x["symbol"]: x for x in universe}
     rows = []
-    strategies = ("ridge", "roc21", "momentum_3_6_12", "benchmark")
+    strategies = ("ridge", "roc21", "blend_ridge_25_roc21_75",
+                  "blend_ridge_50_roc21_50", "blend_ridge_75_roc21_25",
+                  "momentum_3_6_12", "benchmark")
     for period, group in pred.groupby("period", sort=True):
         benchmark = finite(group["realized_return"].mean())
         item = {"period": str(period), "benchmark": benchmark, "portfolios": {}}
@@ -931,6 +940,9 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
             selectors = {
                 "ridge": group.nlargest(n, "predicted_excess"),
                 "roc21": group.nlargest(n, "roc21"),
+                "blend_ridge_25_roc21_75": group.nlargest(n, "blend_ridge_25_roc21_75"),
+                "blend_ridge_50_roc21_50": group.nlargest(n, "blend_ridge_50_roc21_50"),
+                "blend_ridge_75_roc21_25": group.nlargest(n, "blend_ridge_75_roc21_25"),
                 "momentum_3_6_12": group.nlargest(n, "composite_momentum"),
                 "benchmark": group
             }
@@ -1032,7 +1044,9 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
     # Paired month-by-month comparisons; HAC t-statistics account for serial dependence.
     for count in (3, 5, 10):
         robustness["paired_comparisons"][str(count)] = {}
-        for comparator in ("roc21", "momentum_3_6_12", "benchmark"):
+        for comparator in ("roc21", "blend_ridge_25_roc21_75",
+                           "blend_ridge_50_roc21_50", "blend_ridge_75_roc21_25",
+                           "momentum_3_6_12", "benchmark"):
             diffs = []
             for row in rows:
                 a = row["portfolios"]["ridge"][str(count)]["return"]
