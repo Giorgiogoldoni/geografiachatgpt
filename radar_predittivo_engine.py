@@ -210,7 +210,25 @@ def calculate(frame):
     out["kama_rising"] = k > k.shift(5)
     out["vortex_bull"] = vi_plus > vi_minus
     out["investable_filter"] = (close > ma200) & (ma38 > ma200) & (roc > 0)
+    out["roc5"] = close.pct_change(5) * 100.0
+    out["roc10"] = close.pct_change(10) * 100.0
     out["roc21"] = close.pct_change(21) * 100.0
+    out["kama_slope5"] = k.pct_change(5) * 100.0
+    # Early-warning score: deliberately avoids MA200/long-trend confirmation.
+    # It rewards short-term positive momentum, acceleration and an improving structure.
+    early = (
+        15.0 * (out["roc5"] > 0).astype(float)
+        + 10.0 * (out["roc10"] > 0).astype(float)
+        + 10.0 * (out["roc21"] > 0).astype(float)
+        + 15.0 * (out["roc5"] > out["roc10"]).astype(float)
+        + 10.0 * (out["roc10"] > out["roc21"]).astype(float)
+        + 10.0 * (close > k).astype(float)
+        + 10.0 * (out["kama_slope5"] > 0).astype(float)
+        + 10.0 * (lips > teeth).astype(float)
+        + 5.0 * (vi_plus > vi_minus).astype(float)
+        + 5.0 * ((rsi >= 45) & (rsi <= 68) & (rsi > rsi.shift(5))).astype(float)
+    )
+    out["score_early"] = early
     out["roc126"] = close.pct_change(126) * 100.0
     daily_returns = close.pct_change()
     out["return_68d"] = close.pct_change(68) * 100.0
@@ -254,6 +272,10 @@ def latest_record(meta, ind):
         "ma38": finite(r["ma38"]),
         "ma50": finite(r["ma50"]),
         "ma200": finite(r["ma200"]),
+        "roc5": finite(r["roc5"]),
+        "roc10": finite(r["roc10"]),
+        "score_early": finite(r["score_early"]),
+        "kama_slope5": finite(r["kama_slope5"]),
         "roc21": finite(r["roc21"]),
         "roc126": finite(r["roc126"]),
         "return_68d": finite(r["return_68d"]),
@@ -292,6 +314,9 @@ def build_monthly_panel(indicators, universe):
                 "ma200": finite(row["ma200"]),
                 "above_ma50": bool(row["close"] > row["ma50"]) if pd.notna(row["ma50"]) else None,
                 "above_ma200": bool(row["close"] > row["ma200"]) if pd.notna(row["ma200"]) else None,
+                "score_early": finite(row["score_early"]),
+                "roc5": finite(row["roc5"]),
+                "roc10": finite(row["roc10"]),
                 "roc21": finite(row["roc21"]),
                 "return_68d": finite(row["return_68d"]),
                 "composite_momentum": finite(row["composite_momentum"]),
@@ -512,6 +537,68 @@ def monthly_validation(frames, indicators, universe, start_date=None, universe_l
     return validation, breadth
 
 
+
+def early_signal_validation(indicators, universe, start_date="2008-01-01"):
+    """Monthly cross-sectional test of the early-warning score vs momentum baselines."""
+    panel = build_monthly_panel(indicators, universe)
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "months": 0, "note": "Nessun dato mensile."}
+    panel = panel[panel["date"] >= pd.Timestamp(start_date)].copy()
+    panel = panel.dropna(subset=["1m", "score_early", "roc21", "composite_momentum"])
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "months": 0, "note": "Nessuna osservazione completa."}
+    monthly = []
+    ic_early, ic_roc21, ic_mom = [], [], []
+    for period, group in panel.groupby("period", sort=True):
+        g = group.copy()
+        if len(g) < 5:
+            continue
+        q = max(1, int(math.ceil(len(g) * 0.25)))
+        candidates = {
+            "early_score": g.nlargest(q, "score_early"),
+            "momentum_21d": g.nlargest(q, "roc21"),
+            "momentum_3_6_12": g.nlargest(q, "composite_momentum"),
+        }
+        row = {"period": str(period), "date": g["date"].max().strftime("%Y-%m-%d"),
+               "universe": finite(g["1m"].mean()), "universe_hit": finite((g["1m"] > 0).mean())}
+        for key, selected in candidates.items():
+            row[key] = finite(selected["1m"].mean())
+            row[key + "_hit"] = finite((selected["1m"] > 0).mean())
+            row[key + "_n"] = int(len(selected))
+        for col, bucket in (("score_early", ic_early), ("roc21", ic_roc21), ("composite_momentum", ic_mom)):
+            if g[col].nunique() > 1 and g["1m"].nunique() > 1:
+                val = g[col].rank(method="average").corr(g["1m"].rank(method="average"))
+                if pd.notna(val):
+                    bucket.append(float(val))
+        monthly.append(row)
+    if not monthly:
+        return {"status": "DATI INSUFFICIENTI", "months": 0, "note": "Meno di cinque ETF per mese."}
+    def summary(key):
+        vals = [x[key] for x in monthly if x.get(key) is not None]
+        return {"mean_return": finite(np.mean(vals)) if vals else None,
+                "median_return": finite(np.median(vals)) if vals else None,
+                "hit_rate": finite(np.mean(np.array(vals) > 0)) if vals else None,
+                "months": len(vals)}
+    def ic_summary(vals):
+        return {"mean_spearman_ic": finite(np.mean(vals)) if vals else None,
+                "positive_months_pct": finite(np.mean(np.array(vals) > 0)) if vals else None,
+                "months": len(vals)}
+    return {
+        "status": "TEST ESPLORATIVO · NESSUNA GARANZIA PREDITTIVA",
+        "from": monthly[0]["period"], "to": monthly[-1]["period"],
+        "months": len(monthly), "minimum_universe_per_month": 5,
+        "benchmark_equal_weight": summary("universe"),
+        "early_score_top_quartile": summary("early_score"),
+        "momentum_21d_top_quartile": summary("momentum_21d"),
+        "momentum_3_6_12_top_quartile": summary("momentum_3_6_12"),
+        "rank_ic": {"early_score": ic_summary(ic_early),
+                    "momentum_21d": ic_summary(ic_roc21),
+                    "momentum_3_6_12": ic_summary(ic_mom)},
+        "monthly_observations": monthly,
+        "method": "Snapshot a fine mese; selezione del quartile superiore usando soltanto score/indicatori disponibili a quella data; rendimento nei successivi 21 giorni di borsa. Confronto equiponderato con ROC21 e momentum composito 3/6/12 mesi. Rendimenti lordi, orizzonte sovrapposto, ETF correlati e universo corrente con survivorship bias."
+    }
+
+
 def factor_segment_validation(factor_universe, factor_frames, factor_indicators):
     """Separate walk-forward summaries by factor and geography, without mixing segments."""
     calculated_symbols = set(factor_indicators)
@@ -633,6 +720,7 @@ def main():
     for row in calculated:
         by_module.setdefault(row.get("module") or "Non classificato",[]).append(row)
     validation, module_breadth = monthly_validation(frames,indicators,universe)
+    early_v2 = early_signal_validation(indicators, universe)
     momentum_baselines = {}
     for metric in ("modified_sharpe_68", "composite_momentum", "return_68d"):
         pool = [dict(x) for x in calculated if x.get(metric) is not None]
@@ -684,6 +772,7 @@ def main():
         "momentum_baselines":momentum_baselines,
         "universe":results,
         "validation":validation,
+        "predictive_v2": {"name": "Predittivo 2.0 · focus primo mese", "validation_1m": early_v2, "priority_horizon": "1m", "score_definition": "Score anticipatore 0-100: ROC5/10/21, accelerazione ROC, prezzo e pendenza KAMA, Lips/Teeth Alligator, Vortex e RSI in fascia costruttiva; nessun filtro MA200.", "status": "SPERIMENTALE FINO A SUPERAMENTO DEL TEST OUT-OF-SAMPLE"},
         "factor_analysis":factor_analysis
     }
     OUT.write_text(json.dumps(output,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
