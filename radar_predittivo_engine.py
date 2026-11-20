@@ -515,6 +515,13 @@ def main():
     for row in calculated:
         by_module.setdefault(row.get("module") or "Non classificato",[]).append(row)
     validation, module_breadth = monthly_validation(frames,indicators,universe)
+    momentum_baselines = {}
+    for metric in ("modified_sharpe_68", "composite_momentum", "return_68d"):
+        pool = [dict(x) for x in calculated if x.get(metric) is not None]
+        pool.sort(key=lambda x: x.get(metric, -1e99), reverse=True)
+        for rank, row in enumerate(pool, 1):
+            row["baseline_rank"] = rank
+        momentum_baselines[metric] = pool[:15]
     for row in calculated:
         row["breadth"] = module_breadth.get(str(row.get("module") or "Non classificato"))
     price_dates = [x["date"] for x in calculated if x.get("date")]
@@ -556,6 +563,7 @@ def main():
         "rankings":calculated,
         "by_module":by_module,
         "module_breadth":module_breadth,
+        "momentum_baselines":momentum_baselines,
         "universe":results,
         "validation":validation
     }
