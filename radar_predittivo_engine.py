@@ -920,7 +920,8 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                     "return": ret,
                     "excess": finite(ret - benchmark) if ret is not None and benchmark is not None else None,
                     "hit_rate": finite((chosen["realized_return"] > 0).mean()),
-                    "selected": int(len(chosen))
+                    "selected": int(len(chosen)),
+                    "symbols": sorted(chosen["symbol"].astype(str).tolist())
                 }
         rows.append(item)
 
@@ -959,6 +960,63 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 "mean_excess_vs_universe": finite(np.mean(excess)) if excess else None,
                 "positive_months_pct": finite(np.mean(np.array(returns) > 0)) if returns else None,
                 "average_portfolio_hit_rate": finite(np.mean(hits)) if hits else None
+            }
+
+    # Portfolio-level validation: compound genuinely out-of-sample monthly
+    # selections, measure drawdown/volatility and charge turnover-based costs.
+    # Returns are decimals; turnover is one-way (half the absolute weight change).
+    portfolio_validation = {}
+    cost_scenarios_bps = (0, 10, 20, 30)
+
+    def portfolio_metrics(net_returns):
+        arr = np.asarray([x for x in net_returns if x is not None and np.isfinite(x)], dtype=float)
+        if len(arr) == 0:
+            return {"months": 0}
+        equity = np.cumprod(1.0 + arr)
+        peaks = np.maximum.accumulate(np.r_[1.0, equity])[1:]
+        drawdowns = equity / peaks - 1.0
+        annualized_vol = float(np.std(arr, ddof=1) * np.sqrt(12)) if len(arr) > 1 else None
+        cagr = float(equity[-1] ** (12.0 / len(arr)) - 1.0) if np.all(1.0 + arr > 0) else None
+        sharpe = float(np.mean(arr) / np.std(arr, ddof=1) * np.sqrt(12)) if len(arr) > 1 and np.std(arr, ddof=1) > 0 else None
+        return {
+            "months": int(len(arr)),
+            "cumulative_return": finite(equity[-1] - 1.0),
+            "annualized_return": finite(cagr),
+            "annualized_volatility": finite(annualized_vol),
+            "sharpe_annualized": finite(sharpe),
+            "max_drawdown": finite(np.min(drawdowns)),
+            "positive_months_pct": finite(np.mean(arr > 0))
+        }
+
+    for count in (3, 5, 10):
+        portfolio_validation[str(count)] = {}
+        for strategy in strategies:
+            prior_weights = {}
+            gross_series = []
+            turnover_series = []
+            net_by_cost = {str(bps): [] for bps in cost_scenarios_bps}
+            for row in rows:
+                portfolio = row["portfolios"][strategy][str(count)]
+                chosen_symbols = portfolio.get("symbols", [])
+                current_weights = ({sym: 1.0 / len(chosen_symbols) for sym in chosen_symbols}
+                                   if chosen_symbols else {})
+                all_symbols = set(prior_weights) | set(current_weights)
+                turnover = 0.5 * sum(abs(current_weights.get(sym, 0.0) - prior_weights.get(sym, 0.0))
+                                     for sym in all_symbols)
+                gross = portfolio.get("return")
+                gross_series.append(gross)
+                turnover_series.append(turnover)
+                for bps in cost_scenarios_bps:
+                    net_by_cost[str(bps)].append(
+                        gross - turnover * (bps / 10000.0) if gross is not None else None
+                    )
+                prior_weights = current_weights
+            portfolio_validation[str(count)][strategy] = {
+                "average_one_way_turnover": finite(np.mean(turnover_series)) if turnover_series else None,
+                "gross": portfolio_metrics(gross_series),
+                "net_by_cost_bps": {
+                    bps: portfolio_metrics(values) for bps, values in net_by_cost.items()
+                }
             }
 
     # Paired month-by-month comparisons; HAC t-statistics account for serial dependence.
@@ -1023,6 +1081,8 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         "ridge_alpha": alpha, "features": features,
         "portfolio_sizes": [3, 5, 10], "results": summary,
         "robustness": robustness,
+        "portfolio_validation": portfolio_validation,
+        "portfolio_cost_scenarios_bps": list(cost_scenarios_bps),
         "latest_ranking_period": str(latest_period),
         "latest_ranking_date": asof.strftime("%Y-%m-%d"),
         "latest_training_months": len(live_prior_periods),
