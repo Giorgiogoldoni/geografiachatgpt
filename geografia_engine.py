@@ -79,11 +79,11 @@ FACTOR_SYMBOL_MAP = {
     "SPEQ": "SPEQ.MI", "MWEQ": "MWEQ.MI", "MEEQ": "MEEQ.MI",
     "IEWQ": "IEWQ.MI", "WELE": "WELE.MI",
     # Quality
-    "IWQU": "IWQU.MI", "IEQU": "IEQU.MI",
+    "IWQU": "IWQU.MI", "IEQU": "IEQU.MI", "XDEQ": "XDEQ.MI", "QDVB": "QDVB.DE", "QCEU": "QCEU.MI",
     # Value: quotazioni Borsa Italiana verificate
-    "IWVL": "IWVL.MI", "IEVL": "IEVL.MI", "XDEV": "XDEV.MI",
+    "IWVL": "IWVL.MI", "IEVL": "IEVL.MI", "XDEV": "XDEV.MI", "QDVI": "QDVI.DE", "VCEU": "VCEU.MI",
     # USA Momentum: listing Xetra verificata da iShares
-    "QDVA": "QDVA.DE",
+    "QDVA": "QDVA.DE", "MCEU": "MCEU.MI",
     "IAPD.MI": "IAPD.MI",
 }
 
@@ -672,6 +672,12 @@ ETF_LAUNCH_OVERRIDES = {
     "IE00B27YCK28": ("2007-10-15", "justETF", "MEDIA"),
     "IE00BP3QZ601": ("2014-10-03", "justETF", "MEDIA"),
     "IE00BQN1K562": ("2015-01-16", "justETF", "MEDIA"),
+    "IE00BD1F4L37": ("2016-10-13", "BlackRock", "ALTA"),
+    "IE00BL25JL35": ("2014-09-05", "DWS / justETF", "ALTA"),
+    "LU1681041890": ("2016-05-22", "Amundi / justETF", "ALTA"),
+    "LU1681041460": ("2016-05-22", "Amundi / justETF", "ALTA"),
+    "IE00BD1F4M44": ("2016-10-13", "BlackRock", "ALTA"),
+    "LU1681042518": ("2009-02-26", "Amundi / justETF", "MEDIA"),
     "LU1681045024": ("2011-04-28", "justETF", "MEDIA"),
     "IE00B3XXRP09": ("2012-05-22", "justETF", "MEDIA"),
     "IE00B53L4X51": ("2010-01-26", "justETF", "MEDIA"),
