@@ -155,9 +155,15 @@ entry = {
     "headline": "Segnali quantitativi, non ordini automatici",
     "market_summary": (
         "Dati aggiornati al " + price_date + ". " +
-        str(len(rows)) + " strumenti con serie calcolata. " +
-        str(len(buy)) + " candidati con trend positivo e momentum a 3 mesi positivo; " +
-        str(len(avoid)) + " strumenti con trend e momentum annuale negativi."
+        str(data.get("coverage", {}).get("index_count", len(rows))) + " strumenti geografici monitorati: " +
+        str(data.get("coverage", {}).get("calculated_count", len(rows))) + " calcolati e " +
+        str(data.get("coverage", {}).get("etp_separate_count", 0)) + " ETP separati. " +
+        str(data.get("coverage", {}).get("factor_catalog_count", len(data.get("factor_universe", [])))) +
+        " strumenti fattoriali aggiuntivi, di cui " +
+        str(data.get("coverage", {}).get("factor_rankable_count", len(data.get("factor_universe", [])))) +
+        " classificabili. " +
+        str(len(buy)) + " candidati geografici con trend positivo e momentum a 3 mesi positivo; " +
+        str(len(avoid)) + " strumenti geografici con trend e momentum annuale negativi."
     ),
     "areas": area_summary(),
     "factors": factor_summary(),
