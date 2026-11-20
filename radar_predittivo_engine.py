@@ -911,7 +911,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
             (current[features].to_numpy(dtype=float) - x_mean) @ coef + y_mean
         )
         current["realized_return"] = current["1m"]
-        predictions.append(current[["period", "date", "symbol", "predicted_excess",
+        predictions.append(current[["period", "date", "symbol", "geography", "predicted_excess",
                                     "realized_return", "roc21", "composite_momentum"]])
 
     if not predictions:
