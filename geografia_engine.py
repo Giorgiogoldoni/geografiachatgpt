@@ -84,7 +84,7 @@ FACTOR_SYMBOL_MAP = {
     # Value: quotazioni Borsa Italiana verificate
     "IWVL": "IWVL.MI", "IEVL": "IEVL.MI", "XDEV": "XDEV.MI", "QDVI": "QDVI.DE", "VCEU": "VCEU.MI",
     # USA Momentum: listing Xetra verificata da iShares
-    "QDVA": "QDVA.DE", "MCEU": "MCEU.MI",
+    "QDVA": "QDVA.DE", "MCEU": "MCEU.PA"  # Yahoo restituisce lo storico sulla quotazione Euronext Paris,
     "IAPD.MI": "IAPD.MI",
 }
 
