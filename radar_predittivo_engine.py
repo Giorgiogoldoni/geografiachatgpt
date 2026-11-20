@@ -1010,7 +1010,8 @@ def main():
         symbol = meta["symbol"]
         frame = factor_frames.get(symbol)
         if frame is None:
-            factor_results.append({**meta, "status":"DATI NON DISPONIBILI", "error":factor_errors.get(symbol,"Prezzi non restituiti")})            continue
+            factor_results.append({**meta, "status":"DATI NON DISPONIBILI", "error":factor_errors.get(symbol,"Prezzi non restituiti")})
+            continue
         if len(frame) < MIN_HISTORY:
             factor_results.append({**meta, "status":"STORICO INSUFFICIENTE", "observations":len(frame)})
             continue
