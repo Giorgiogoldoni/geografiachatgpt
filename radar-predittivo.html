@@ -64,7 +64,7 @@ function render(){
   const ic=v.rank_information_coefficient||{};
   const icTable='<h3>Capacità ordinante dello score · Spearman IC</h3><table><thead><tr><th>Orizzonte</th><th>IC medio</th><th>IC mediano</th><th>Mesi con IC positivo</th><th>Campione</th></tr></thead><tbody>'+["1m","3m","6m"].map(h=>'<tr><td>'+h+'</td><td>'+n(ic[h]?.mean_spearman_ic)+'</td><td>'+n(ic[h]?.median_spearman_ic)+'</td><td>'+pct(ic[h]?.positive_months_pct)+'</td><td>'+esc(ic[h]?.months??0)+'</td></tr>').join("")+'</tbody></table>';
   const tq=v.cross_sectional_top_quartile||{};
-  const edge=(key,h)=>{const a=tq[key]?.[h]?.mean_return,b=v.benchmark_equal_weight?.[h]?.mean_return;return a==null||b==null?"n.d.":((a-b)*100).toFixed(2)+" punti percentuali"};
+  const edge=(key,h)=>{const a=tq[key]?.[h]?.mean_return,b=v.benchmark_equal_weight?.[h]?.mean_return;if(a==null||b==null)return "n.d.";const z=(a-b)*100;return (z>=0?"+":"")+z.toFixed(2)};
   const edgeSummary='<p><b>Lettura del test:</b> Radar score top quartile vs universo: 1m '+edge("score","1m")+' pp; 3m '+edge("score","3m")+' pp; 6m '+edge("score","6m")+' pp. Modified Sharpe 68 sedute vs universo: 1m '+edge("modified_sharpe_68","1m")+' pp; 3m '+edge("modified_sharpe_68","3m")+' pp; 6m '+edge("modified_sharpe_68","6m")+' pp. Differenziali storici lordi, non validazione indipendente.</p>';
   const tqTable='<h3>Confronto con benchmark momentum · top 25% mensile</h3><p class="muted">Ogni mese seleziona il quartile superiore del rispettivo indicatore, usando solo i valori disponibili a quella data.</p>'+Object.values(tq).map(make).join("");
   const deltaIc=v.score_change_information_coefficient||{};
