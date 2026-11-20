@@ -217,8 +217,7 @@ def calculate(frame):
     out["alligator_bull"] = alligator_bull
     out["alligator_open"] = alligator_open
     out["kama_rising"] = k > k.shift(5)
-    out["vortex_bull"] = vi_plus > vi_minus
-    out["investable_filter"] = (close > ma200) & (ma38 > ma200) & (roc > 0)
+    out["vortex_bull"] = vi_plus > vi_minus    out["investable_filter"] = (close > ma200) & (ma38 > ma200) & (roc > 0)
     out["roc5"] = close.pct_change(5) * 100.0
     out["roc10"] = close.pct_change(10) * 100.0
     out["roc21"] = close.pct_change(21) * 100.0
@@ -437,8 +436,7 @@ def monthly_validation(frames, indicators, universe, start_date=None, universe_l
                 improving_1m_rec[horizon] = None
                 improving_3m_rec[horizon] = None
                 for rec in top_quartile_rec.values(): rec[horizon] = None
-                continue
-            bench_rec[horizon] = finite(valid[horizon].mean())
+                continue            bench_rec[horizon] = finite(valid[horizon].mean())
             fixed_group = valid[valid["score"] >= 65]
             fixed_rec[horizon] = finite(fixed_group[horizon].mean()) if len(fixed_group) else None
             if threshold is not None:
@@ -657,8 +655,7 @@ def walk_forward_early_model(indicators, universe, start_date="2008-01-01", trai
         prior["target"] = prior["1m"] - prior.groupby("period")["1m"].transform("mean")
         X = prior[xcols].to_numpy(dtype=float)
         y = prior["target"].to_numpy(dtype=float)
-        x_mean = X.mean(axis=0)
-        y_mean = y.mean()
+        x_mean = X.mean(axis=0)        y_mean = y.mean()
         Xc, yc = X - x_mean, y - y_mean
         alpha = 10.0
         try:
@@ -736,7 +733,10 @@ def compare_predictive_candidates(indicators, universe, start_date="2015-01-01")
     panel["candidate_roc21"] = panel["rank_roc21"]
     panel["candidate_alligator"] = panel["rank_alligator"]
     panel["candidate_kama"] = panel["rank_kama_slope21"]
-    panel["candidate_adx"] = panel["rank_adx14"]
+    # ADX measures trend strength, not direction: only reward it when Vortex is bullish.
+    panel["directional_adx"] = panel["adx14"] * np.sign(panel["vortex_spread"])
+    panel["rank_directional_adx"] = panel.groupby("period")["directional_adx"].rank(pct=True)
+    panel["candidate_adx"] = panel["rank_directional_adx"]
     panel["candidate_vortex"] = panel["rank_vortex"]
     panel["candidate_low_vol"] = panel["rank_low_vol"]
     panel["candidate_risk_adjusted"] = panel["rank_risk_adjusted_momentum"]
@@ -805,6 +805,136 @@ def compare_predictive_candidates(indicators, universe, start_date="2015-01-01")
             excess=[x["models"][name]-x["benchmark"] for x in items if x["models"].get(name) is not None and x["benchmark"] is not None]
             slice_summary[bucket]["models"][name]={"mean_forward_return":finite(np.mean(vals)) if vals else None,"mean_excess_vs_equal_weight":finite(np.mean(excess)) if excess else None}
     return {"status":"CONFRONTO SPERIMENTALE · NON È UN SEGNALE OPERATIVO","from":months[0] if months else None,"to":months[-1] if months else None,"common_months":len(months),"models":summary,"rank_ic":ic,"by_regime":regime_summary,"by_time_slice":slice_summary,"blend_definition":"Combinazioni fisse di ranking cross-sectional: 70/30, 50/50 e 30/70 tra ROC21 e qualità del trend. Non sono ottimizzate sui risultati.","benchmark_note":"Quartile superiore, stessi mesi e universo per tutti i modelli.","regime_definition":"Risk-on se almeno il 50% degli ETF del campione è sopra MA200 e ROC21 mediano positivo; altrimenti risk-off. Proxy ETF, non breadth dei titoli sottostanti.","method":"Pesi fissi e ranking cross-sectional. Oltre alle basi ROC21, momentum multi-orizzonte, trend quality e forza relativa, test separati Alligator, pendenza KAMA, ADX14, spread Vortex, bassa volatilità e Sharpe modificato 68 sedute; test combinati ROC21+low-vol e ROC21+ADX con peso 75/25. Rendimento forward 21 sedute, lordo e sovrapposto. Universo corrente: survivorship bias; costi, spread, tasse e cambio esclusi. Il miglior risultato non costituisce validazione indipendente."}
+
+
+
+def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", train_months=60):
+    """
+    Leakage-controlled monthly Ridge ranking.
+    Train only on labels whose full 21-session outcome had matured by the
+    forecast date. Compare top-3/5/10 selections with ROC21, 3/6/12 momentum
+    and the equal-weight universe on identical months.
+    """
+    panel = build_monthly_panel(indicators, universe)
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "months": 0}
+    panel = panel[panel["date"] >= pd.Timestamp(start_date)].copy()
+    panel["future_date_1m"] = pd.to_datetime(panel["future_date_1m"])
+    required = ["roc21", "roc63", "roc126", "kama_slope21",
+                "trend_stability_21", "alligator_bull", "adx14",
+                "vortex_spread", "volatility_68", "1m", "future_date_1m"]
+    panel = panel.dropna(subset=required).copy()
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "months": 0}
+    panel["directional_adx"] = panel["adx14"] * np.sign(panel["vortex_spread"])
+    raw_features = ["roc21", "roc63", "roc126", "kama_slope21",
+                    "trend_stability_21", "alligator_bull",
+                    "directional_adx", "volatility_68"]
+    for col in raw_features:
+        panel["rank_" + col] = panel.groupby("period")[col].rank(pct=True)
+    panel["rank_low_volatility"] = 1.0 - panel["rank_volatility_68"]
+    features = ["rank_roc21", "rank_roc63", "rank_roc126",
+                "rank_kama_slope21", "rank_trend_stability_21",
+                "rank_alligator_bull", "rank_directional_adx",
+                "rank_low_volatility"]
+    panel = panel.dropna(subset=features).copy()
+    periods = sorted(panel["period"].unique())
+    predictions = []
+    alpha = 12.0  # pre-registered; not selected on the test results
+    for period in periods:
+        current = panel[panel["period"] == period].copy()
+        if len(current) < 5:
+            continue
+        asof = current["date"].max()
+        # Purge every training label whose 21-session outcome is not yet known.
+        prior = panel[(panel["period"] < period) &
+                      (panel["future_date_1m"] <= asof)].copy()
+        prior_periods = sorted(prior["period"].unique())[-train_months:]
+        prior = prior[prior["period"].isin(prior_periods)].dropna(subset=features + ["1m"])
+        if len(prior_periods) < 18 or len(prior) < 100:
+            continue
+        prior["target_excess"] = prior["1m"] - prior.groupby("period")["1m"].transform("mean")
+        X = prior[features].to_numpy(dtype=float)
+        y = prior["target_excess"].to_numpy(dtype=float)
+        x_mean, y_mean = X.mean(axis=0), float(y.mean())
+        Xc, yc = X - x_mean, y - y_mean
+        try:
+            coef = np.linalg.solve(Xc.T @ Xc + alpha * np.eye(Xc.shape[1]), Xc.T @ yc)
+        except np.linalg.LinAlgError:
+            continue
+        current["predicted_excess"] = (current[features].to_numpy(dtype=float) - x_mean) @ coef + y_mean
+        current["model"] = current["1m"]
+        predictions.append(current[["period", "date", "symbol", "predicted_excess",
+                                    "model", "roc21", "composite_momentum"]])
+    if not predictions:
+        return {"status": "DATI INSUFFICIENTI · TRAINING MATURATO NON SUFFICIENTE",
+                "months": 0, "minimum_training_months": 18,
+                "note": "Nessun risultato viene prodotto senza almeno 18 mesi e 100 osservazioni con etichette 21 sedute già maturate."}
+    pred = pd.concat(predictions, ignore_index=True)
+    meta = {x["symbol"]: x for x in universe}
+    rows = []
+    strategies = ("ridge", "roc21", "momentum_3_6_12", "benchmark")
+    for period, group in pred.groupby("period", sort=True):
+        benchmark = finite(group["model"].mean())
+        item = {"period": str(period), "benchmark": benchmark, "portfolios": {}}
+        for count in (3, 5, 10):
+            n = min(count, len(group))
+            selectors = {
+                "ridge": group.nlargest(n, "predicted_excess"),
+                "roc21": group.nlargest(n, "roc21"),
+                "momentum_3_6_12": group.nlargest(n, "composite_momentum"),
+            }
+            selectors["benchmark"] = group
+            for strategy, chosen in selectors.items():
+                ret = finite(chosen["model"].mean())
+                item["portfolios"].setdefault(strategy, {})[str(count)] = {
+                    "return": ret,
+                    "excess": finite(ret - benchmark) if ret is not None and benchmark is not None else None,
+                    "hit_rate": finite((chosen["model"] > 0).mean()),
+                    "selected": int(len(chosen))
+                }
+        rows.append(item)
+    summary = {}
+    for strategy in strategies:
+        summary[strategy] = {}
+        for count in (3, 5, 10):
+            vals = [x["portfolios"][strategy][str(count)] for x in rows
+                    if str(count) in x["portfolios"].get(strategy, {})]
+            returns = [x["return"] for x in vals if x["return"] is not None]
+            excess = [x["excess"] for x in vals if x["excess"] is not None]
+            hits = [x["hit_rate"] for x in vals if x["hit_rate"] is not None]
+            summary[strategy][str(count)] = {
+                "months": len(returns),
+                "mean_return": finite(np.mean(returns)) if returns else None,
+                "median_return": finite(np.median(returns)) if returns else None,
+                "mean_excess_vs_universe": finite(np.mean(excess)) if excess else None,
+                "positive_months_pct": finite(np.mean(np.array(returns) > 0)) if returns else None,
+                "average_portfolio_hit_rate": finite(np.mean(hits)) if hits else None
+            }
+    latest_period = pred["period"].max()
+    latest = pred[pred["period"] == latest_period].sort_values("predicted_excess", ascending=False).head(15)
+    latest_ranking = []
+    for _, row in latest.iterrows():
+        m = meta.get(row["symbol"], {})
+        latest_ranking.append({
+            "symbol": row["symbol"], "ticker": m.get("ticker", row["symbol"]),
+            "name": m.get("name", row["symbol"]), "geography": m.get("geography", ""),
+            "predicted_excess": finite(row["predicted_excess"]),
+            "roc21": finite(row["roc21"]),
+            "composite_momentum": finite(row["composite_momentum"])
+        })
+    return {
+        "status": "WALK-FORWARD RIDGE 3.0 · ETICHETTE MATURATE · SPERIMENTALE",
+        "from": rows[0]["period"], "to": rows[-1]["period"],
+        "months": len(rows), "training_window_months": train_months,
+        "minimum_training_months": 18, "minimum_training_observations": 100,
+        "ridge_alpha": alpha, "features": features,
+        "portfolio_sizes": [3, 5, 10], "results": summary,
+        "latest_ranking_period": str(latest_period),
+        "latest_ranking": latest_ranking,
+        "monthly_observations": rows,
+        "method": "Ogni mese Ridge stima l'extra-rendimento relativo a 21 sedute. Il training usa solo etichette con data di maturazione non successiva alla data di previsione; finestra massima 60 mesi, minimo 18 mesi e 100 righe. Feature cross-sectional rank: momentum 1/3/6 mesi, KAMA, stabilità del trend, Alligator, ADX con direzione Vortex e volatilità inversa. Confronto top 3/5/10 contro ROC21, momentum 3/6/12 e universo equiponderato sugli stessi mesi. Rendimento forward lordo e sovrapposto; costi e survivorship bias non inclusi."
+    }
 
 
 def factor_segment_validation(factor_universe, factor_frames, factor_indicators):
@@ -877,8 +1007,7 @@ def main():
         symbol = meta["symbol"]
         frame = factor_frames.get(symbol)
         if frame is None:
-            factor_results.append({**meta, "status":"DATI NON DISPONIBILI", "error":factor_errors.get(symbol,"Prezzi non restituiti")})
-            continue
+            factor_results.append({**meta, "status":"DATI NON DISPONIBILI", "error":factor_errors.get(symbol,"Prezzi non restituiti")})            continue
         if len(frame) < MIN_HISTORY:
             factor_results.append({**meta, "status":"STORICO INSUFFICIENTE", "observations":len(frame)})
             continue
@@ -984,6 +1113,7 @@ def main():
         "validation":validation,
         "predictive_v2": {"name": "Predittivo 2.0 · focus primo mese", "validation_1m": early_v2, "walk_forward_model_1m": learned_v2, "priority_horizon": "1m", "score_definition": "Score anticipatore 0-100: ROC5/10/21, accelerazione ROC, prezzo e pendenza KAMA, Lips/Teeth Alligator, Vortex e RSI in fascia costruttiva; nessun filtro MA200.", "status": "SPERIMENTALE FINO A SUPERAMENTO DEL TEST OUT-OF-SAMPLE"},
         "predictive_v3": candidate_v3,
+        "predictive_v3_walk_forward": walk_forward_predictive_v3(indicators, universe),
         "factor_analysis":factor_analysis
     }
     OUT.write_text(json.dumps(output,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
