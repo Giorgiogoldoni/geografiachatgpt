@@ -345,7 +345,7 @@ def _portfolio_stats(monthly_returns, label):
         }
     return result
 
-def monthly_validation(frames, indicators, universe, start_date=None):
+def monthly_validation(frames, indicators, universe, start_date=None, universe_label="ETF geografici"):
     """
     Historical monthly walk-forward replay.
     Each horizon is evaluated independently so the 6-month maturity lag
@@ -491,7 +491,7 @@ def monthly_validation(frames, indicators, universe, start_date=None):
         "months": int(len(periods)),
         "out_of_sample_from": periods[0].strftime("%Y-%m"),
         "out_of_sample_to": periods[-1].strftime("%Y-%m"),
-        "benchmark_equal_weight": _portfolio_stats(benchmark_rows, "Universo ETF geografici equiponderato"),
+        "benchmark_equal_weight": _portfolio_stats(benchmark_rows, f"Universo {universe_label} equiponderato"),
         "oos_score_ge_65": _portfolio_stats(fixed_rows, "Selezione mensile con score >= 65"),
         "walk_forward_rolling_percentile": _portfolio_stats(rolling_rows, "Selezione mensile sopra il 75° percentile dei 36 mesi precedenti"),
         "score_improving_1m": _portfolio_stats(improving_1m_rows, "Score in aumento di almeno 12,5 punti rispetto al mese precedente"),
@@ -570,10 +570,10 @@ def main():
         row["rank"] = rank
     insufficient = {"status":"DATI INSUFFICIENTI","observations":0,"note":"Nessun ETF factor con storico utilizzabile."}
     factor_validation_2020, factor_breadth = monthly_validation(
-        factor_frames, factor_indicators, factor_universe, start_date="2020-01-01"
+        factor_frames, factor_indicators, factor_universe, start_date="2020-01-01", universe_label="ETF factor"
     ) if factor_indicators else (dict(insufficient), {})
     factor_validation_2015, _ = monthly_validation(
-        factor_frames, factor_indicators, factor_universe, start_date="2015-01-01"
+        factor_frames, factor_indicators, factor_universe, start_date="2015-01-01", universe_label="ETF factor"
     ) if factor_indicators else (dict(insufficient), {})
     factor_analysis = {
         "history_start": FACTOR_START_DATE,
