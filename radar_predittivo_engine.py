@@ -370,7 +370,7 @@ def monthly_validation(frames, indicators, universe):
         for horizon in ("1m", "3m", "6m"):
             valid = current.dropna(subset=["score", horizon])
             if len(valid) >= 5 and valid["score"].nunique() > 1 and valid[horizon].nunique() > 1:
-                ic = valid["score"].corr(valid[horizon], method="spearman")
+                ic = valid["score"].rank(method="average").corr(valid[horizon].rank(method="average"))
                 if pd.notna(ic):
                     rank_ic[horizon].append(float(ic))
     score_buckets = {}
