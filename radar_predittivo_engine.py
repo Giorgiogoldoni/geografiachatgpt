@@ -1124,6 +1124,7 @@ def main():
     print(json.dumps(output["coverage"],ensure_ascii=False))
     print("Latest price date:",output["latest_price_date"])
     print("Validation:",validation.get("status"),validation.get("observations"))
+    print("PREDICTIVE_V3_WALK_FORWARD_SUMMARY:", json.dumps(output["predictive_v3_walk_forward"], ensure_ascii=False, allow_nan=False, separators=(",", ":")))
     print("Output:",OUT)
 
 if __name__=="__main__":
