@@ -322,6 +322,7 @@ def build_monthly_panel(indicators, universe):
                 "composite_momentum": finite(row["composite_momentum"]),
                 "modified_sharpe_68": finite(row["modified_sharpe_68"]),
             }
+            rec["future_date_1m"] = ind.index[pos+21] if pos+21 < len(ind) else pd.NaT
             for horizon, n in (("1m", 21), ("3m", 63), ("6m", 126)):
                 rec[horizon] = (
                     finite(ind["close"].iloc[pos+n] / ind["close"].iloc[pos] - 1)
@@ -599,6 +600,90 @@ def early_signal_validation(indicators, universe, start_date="2008-01-01"):
     }
 
 
+
+def walk_forward_early_model(indicators, universe, start_date="2008-01-01", train_months=60):
+    """Ridge model for next-month relative returns; only use matured historical labels."""
+    panel = build_monthly_panel(indicators, universe)
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "months": 0}
+    panel = panel[panel["date"] >= pd.Timestamp(start_date)].copy()
+    panel["future_date_1m"] = pd.to_datetime(panel["future_date_1m"])
+    features = ["roc5", "roc10", "roc21", "kama_slope5", "score_early",
+                "score_awakening", "score_acceleration", "score_reversal"]
+    panel = panel.dropna(subset=features + ["1m", "future_date_1m"])
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "months": 0}
+    # Percentile ranks are calculated within each month, so different ETF scales are comparable.
+    for col in features:
+        panel["rank_" + col] = panel.groupby("period")[col].rank(pct=True)
+    xcols = ["rank_" + x for x in features]
+    predictions = []
+    periods = sorted(panel["period"].unique())
+    for period in periods:
+        current = panel[panel["period"] == period].copy()
+        if len(current) < 5:
+            continue
+        asof = current["date"].max()
+        prior = panel[(panel["period"] < period) & (panel["future_date_1m"] <= asof)].copy()
+        prior_periods = sorted(prior["period"].unique())[-train_months:]
+        prior = prior[prior["period"].isin(prior_periods)].dropna(subset=xcols + ["1m"])
+        if len(prior_periods) < 18 or len(prior) < 100:
+            continue
+        # Learn excess return over that month's universe average, not absolute market direction.
+        prior["target"] = prior["1m"] - prior.groupby("period")["1m"].transform("mean")
+        X = prior[xcols].to_numpy(dtype=float)
+        y = prior["target"].to_numpy(dtype=float)
+        x_mean = X.mean(axis=0)
+        y_mean = y.mean()
+        Xc, yc = X - x_mean, y - y_mean
+        alpha = 10.0
+        try:
+            coef = np.linalg.solve(Xc.T @ Xc + alpha * np.eye(Xc.shape[1]), Xc.T @ yc)
+        except np.linalg.LinAlgError:
+            continue
+        Xnow = current[xcols].to_numpy(dtype=float)
+        current["model_prediction"] = (Xnow - x_mean) @ coef + y_mean
+        current["model_excess"] = current["1m"] - current["1m"].mean()
+        predictions.append(current[["period", "date", "symbol", "model_prediction", "model_excess", "1m", "roc21"]])
+    if not predictions:
+        return {"status": "DATI INSUFFICIENTI · SERVONO PIÙ MESI DI TRAINING", "months": 0,
+                "note": "Il modello richiede almeno 18 mesi di etichette 1m già maturate e 100 osservazioni ETF-mese."}
+    pred = pd.concat(predictions, ignore_index=True)
+    rows = []
+    ic_values = []
+    for period, g in pred.groupby("period", sort=True):
+        q = max(1, int(math.ceil(len(g) * 0.25)))
+        chosen = g.nlargest(q, "model_prediction")
+        mom = g.nlargest(q, "roc21")
+        rows.append({"period": str(period), "model": finite(chosen["1m"].mean()),
+                     "model_hit": finite((chosen["1m"] > 0).mean()),
+                     "momentum21": finite(mom["1m"].mean()),
+                     "benchmark": finite(g["1m"].mean()), "n": int(len(chosen))})
+        if g["model_prediction"].nunique() > 1 and g["model_excess"].nunique() > 1:
+            ic = g["model_prediction"].rank().corr(g["model_excess"].rank())
+            if pd.notna(ic):
+                ic_values.append(float(ic))
+    def stat(key, hit=False):
+        vals = [x[key] for x in rows if x.get(key) is not None]
+        return {"mean_return": finite(np.mean(vals)) if vals else None,
+                "hit_rate": finite(np.mean([x["model_hit"] for x in rows])) if hit else None,
+                "months": len(vals)}
+    return {
+        "status": "WALK-FORWARD RIDGE · ETICHETTE MATURATE",
+        "from": rows[0]["period"], "to": rows[-1]["period"], "months": len(rows),
+        "training_window_months": train_months, "minimum_training_months": 18,
+        "ridge_alpha": 10.0, "features": features,
+        "model_top_quartile": stat("model", True),
+        "momentum21_top_quartile": stat("momentum21"),
+        "benchmark_equal_weight": stat("benchmark"),
+        "rank_ic_excess": {"mean": finite(np.mean(ic_values)) if ic_values else None,
+                           "positive_months_pct": finite(np.mean(np.array(ic_values) > 0)) if ic_values else None,
+                           "months": len(ic_values)},
+        "monthly_observations": rows,
+        "method": "Ogni mese il modello Ridge è stimato soltanto su rendimenti a 21 sedute già maturati alla data di previsione, finestra mobile massima 60 mesi, almeno 18 mesi di training e 100 osservazioni. Le feature sono ranghi cross-sectional del mese. Target: rendimento 1m relativo alla media del mese. Il test è walk-forward; costi e survivorship bias restano da considerare."
+    }
+
+
 def factor_segment_validation(factor_universe, factor_frames, factor_indicators):
     """Separate walk-forward summaries by factor and geography, without mixing segments."""
     calculated_symbols = set(factor_indicators)
@@ -721,6 +806,7 @@ def main():
         by_module.setdefault(row.get("module") or "Non classificato",[]).append(row)
     validation, module_breadth = monthly_validation(frames,indicators,universe)
     early_v2 = early_signal_validation(indicators, universe)
+    learned_v2 = walk_forward_early_model(indicators, universe)
     momentum_baselines = {}
     for metric in ("modified_sharpe_68", "composite_momentum", "return_68d"):
         pool = [dict(x) for x in calculated if x.get(metric) is not None]
@@ -772,7 +858,7 @@ def main():
         "momentum_baselines":momentum_baselines,
         "universe":results,
         "validation":validation,
-        "predictive_v2": {"name": "Predittivo 2.0 · focus primo mese", "validation_1m": early_v2, "priority_horizon": "1m", "score_definition": "Score anticipatore 0-100: ROC5/10/21, accelerazione ROC, prezzo e pendenza KAMA, Lips/Teeth Alligator, Vortex e RSI in fascia costruttiva; nessun filtro MA200.", "status": "SPERIMENTALE FINO A SUPERAMENTO DEL TEST OUT-OF-SAMPLE"},
+        "predictive_v2": {"name": "Predittivo 2.0 · focus primo mese", "validation_1m": early_v2, "walk_forward_model_1m": learned_v2, "priority_horizon": "1m", "score_definition": "Score anticipatore 0-100: ROC5/10/21, accelerazione ROC, prezzo e pendenza KAMA, Lips/Teeth Alligator, Vortex e RSI in fascia costruttiva; nessun filtro MA200.", "status": "SPERIMENTALE FINO A SUPERAMENTO DEL TEST OUT-OF-SAMPLE"},
         "factor_analysis":factor_analysis
     }
     OUT.write_text(json.dumps(output,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
