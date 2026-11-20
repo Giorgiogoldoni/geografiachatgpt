@@ -181,6 +181,11 @@ def calculate(frame):
     out["investable_filter"] = (close > ma200) & (ma38 > ma200) & (roc > 0)
     out["roc21"] = close.pct_change(21) * 100.0
     out["roc126"] = close.pct_change(126) * 100.0
+    daily_returns = close.pct_change()
+    out["return_68d"] = close.pct_change(68) * 100.0
+    out["composite_momentum"] = (0.4*close.pct_change(63) + 0.3*close.pct_change(126) + 0.3*close.pct_change(252)) * 100.0
+    rolling_vol = daily_returns.rolling(68).std(ddof=1)
+    out["modified_sharpe_68"] = daily_returns.rolling(68).mean() / rolling_vol.pow(2)
     return out
 
 def latest_record(meta, ind):
@@ -220,6 +225,9 @@ def latest_record(meta, ind):
         "ma200": finite(r["ma200"]),
         "roc21": finite(r["roc21"]),
         "roc126": finite(r["roc126"]),
+        "return_68d": finite(r["return_68d"]),
+        "composite_momentum": finite(r["composite_momentum"]),
+        "modified_sharpe_68": finite(r["modified_sharpe_68"]),
         "investable_filter": bool(r["investable_filter"]),
         "investable": investable,
         "radar_label": label,
@@ -250,6 +258,9 @@ def build_monthly_panel(indicators, universe):
                 "above_ma50": bool(row["close"] > row["ma50"]) if pd.notna(row["ma50"]) else None,
                 "above_ma200": bool(row["close"] > row["ma200"]) if pd.notna(row["ma200"]) else None,
                 "roc21": finite(row["roc21"]),
+                "return_68d": finite(row["return_68d"]),
+                "composite_momentum": finite(row["composite_momentum"]),
+                "modified_sharpe_68": finite(row["modified_sharpe_68"]),
             }
             for horizon, n in (("1m", 21), ("3m", 63), ("6m", 126)):
                 rec[horizon] = (
@@ -312,6 +323,7 @@ def monthly_validation(frames, indicators, universe):
     periods = sorted(panel["period"].unique())
     benchmark_rows, fixed_rows, rolling_rows = [], [], []
     improving_1m_rows, improving_3m_rows = [], []
+    top_quartile_rows = {m: [] for m in ("score", "return_68d", "modified_sharpe_68", "composite_momentum")}
     rolling_thresholds = []
     for period in periods:
         current = panel[panel["period"] == period].copy()
@@ -328,6 +340,7 @@ def monthly_validation(frames, indicators, universe):
         rolling_rec = {"date": bench_rec["date"]}
         improving_1m_rec = {"date": bench_rec["date"]}
         improving_3m_rec = {"date": bench_rec["date"]}
+        top_quartile_rec = {m: {"date": bench_rec["date"]} for m in top_quartile_rows}
         for horizon in ("1m", "3m", "6m"):
             valid = current.dropna(subset=[horizon])
             if valid.empty:
@@ -336,6 +349,7 @@ def monthly_validation(frames, indicators, universe):
                 rolling_rec[horizon] = None
                 improving_1m_rec[horizon] = None
                 improving_3m_rec[horizon] = None
+                for rec in top_quartile_rec.values(): rec[horizon] = None
                 continue
             bench_rec[horizon] = finite(valid[horizon].mean())
             fixed_group = valid[valid["score"] >= 65]
@@ -349,6 +363,14 @@ def monthly_validation(frames, indicators, universe):
             improve3 = valid[valid["score_change_3m"] >= 25.0]
             improving_1m_rec[horizon] = finite(improve1[horizon].mean()) if len(improve1) else None
             improving_3m_rec[horizon] = finite(improve3[horizon].mean()) if len(improve3) else None
+            for metric in top_quartile_rec:
+                metric_group = valid.dropna(subset=[metric])
+                if len(metric_group) >= 4:
+                    cutoff_metric = metric_group[metric].quantile(0.75)
+                    chosen = metric_group[metric_group[metric] >= cutoff_metric]
+                    top_quartile_rec[metric][horizon] = finite(chosen[horizon].mean()) if len(chosen) else None
+                else:
+                    top_quartile_rec[metric][horizon] = None
         if any(bench_rec[h] is not None for h in ("1m", "3m", "6m")):
             benchmark_rows.append(bench_rec)
         if any(fixed_rec[h] is not None for h in ("1m", "3m", "6m")):
@@ -359,6 +381,9 @@ def monthly_validation(frames, indicators, universe):
             improving_1m_rows.append(improving_1m_rec)
         if any(improving_3m_rec[h] is not None for h in ("1m", "3m", "6m")):
             improving_3m_rows.append(improving_3m_rec)
+        for metric, rec in top_quartile_rec.items():
+            if any(rec[h] is not None for h in ("1m", "3m", "6m")):
+                top_quartile_rows[metric].append(rec)
     breadth = breadth_by_module(panel)
     bucket_names = ["0-39", "40-54", "55-64", "65-74", "75-100"]
     bucket_months = {b: {h: [] for h in ("1m", "3m", "6m")} for b in bucket_names}
@@ -434,6 +459,7 @@ def monthly_validation(frames, indicators, universe):
         "walk_forward_rolling_percentile": _portfolio_stats(rolling_rows, "Selezione mensile sopra il 75° percentile dei 36 mesi precedenti"),
         "score_improving_1m": _portfolio_stats(improving_1m_rows, "Score in aumento di almeno 12,5 punti rispetto al mese precedente"),
         "score_improving_3m": _portfolio_stats(improving_3m_rows, "Score in aumento di almeno 25 punti rispetto a tre mesi prima"),
+        "cross_sectional_top_quartile": {m: _portfolio_stats(rows, {"score":"Radar score top quartile","return_68d":"Rendimento 68 sedute top quartile","modified_sharpe_68":"Modified Sharpe 68 sedute top quartile","composite_momentum":"Momentum composito 3/6/12 mesi top quartile"}[m]) for m, rows in top_quartile_rows.items()},
         "score_buckets": score_buckets,
         "rank_information_coefficient": rank_ic_summary,
         "score_change_information_coefficient": delta_ic_summary,
@@ -444,7 +470,7 @@ def monthly_validation(frames, indicators, universe):
             "rule": "Per ogni mese, soglia = 75° percentile degli score osservati nei 36 mesi precedenti; minimo 12 mesi di storia. Nessuna informazione del mese corrente entra nella soglia."
         },
         "breadth_note": "Breadth inter-mercato per modulo: quota degli ETF geografici sopra MA50/MA200 e quota in rialzo a un mese. Non sostituisce la breadth interna calcolata sui titoli componenti di ciascun indice.",
-        "method": "Replay mensile point-in-time: snapshot all'ultima seduta disponibile del mese; rendimenti successivi a 21/63/126 sedute. Ogni orizzonte è valutato separatamente. Include benchmark equiponderato, selezione score >=65, soglia adattiva sui 36 mesi precedenti, test di miglioramento dello score a 1 e 3 mesi, rendimenti per fasce di score e Spearman rank-IC cross-sectional mensile. I rendimenti forward a 3 e 6 mesi si sovrappongono; gli ETF sono correlati e l'universo corrente introduce survivorship bias. Risultati lordi, senza costi, FX, spread o slippage."
+        "method": "Replay mensile point-in-time: snapshot all'ultima seduta disponibile del mese; rendimenti successivi a 21/63/126 sedute. Ogni orizzonte è valutato separatamente. Include benchmark equiponderato, selezione score >=65, soglia adattiva sui 36 mesi precedenti, test di miglioramento dello score a 1 e 3 mesi, confronto con top quartile di momentum 68 sedute, Modified Sharpe 68 sedute e momentum composito 3/6/12 mesi, rendimenti per fasce di score e Spearman rank-IC cross-sectional mensile. I rendimenti forward a 3 e 6 mesi si sovrappongono; gli ETF sono correlati e l'universo corrente introduce survivorship bias. Risultati lordi, senza costi, FX, spread o slippage."
     }
     return validation, breadth
 
