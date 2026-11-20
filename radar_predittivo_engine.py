@@ -414,7 +414,7 @@ def monthly_validation(frames, indicators, universe):
             "rule": "Per ogni mese, soglia = 75° percentile degli score osservati nei 36 mesi precedenti; minimo 12 mesi di storia. Nessuna informazione del mese corrente entra nella soglia."
         },
         "breadth_note": "Breadth inter-mercato per modulo: quota degli ETF geografici sopra MA50/MA200 e quota in rialzo a un mese. Non sostituisce la breadth interna calcolata sui titoli componenti di ciascun indice.",
-        "method": "Replay mensile point-in-time: snapshot all'ultima seduta disponibile del mese; rendimenti successivi a 21/63/126 sedute. Ogni orizzonte è valutato separatamente. Confronto con universo equiponderato, selezione score >=65 e soglia adattiva calcolata solo sui 36 mesi precedenti. I rendimenti forward a 3 e 6 mesi si sovrappongono tra snapshot mensili; gli ETF sono correlati e l'universo corrente introduce survivorship bias. Risultati lordi, senza costi, FX, spread o slippage."
+        "method": "Replay mensile point-in-time: snapshot all'ultima seduta disponibile del mese; rendimenti successivi a 21/63/126 sedute. Ogni orizzonte è valutato separatamente. Include benchmark equiponderato, selezione score >=65, soglia adattiva sui 36 mesi precedenti, rendimenti per fasce di score e Spearman rank-IC cross-sectional mensile. I rendimenti forward a 3 e 6 mesi si sovrappongono; gli ETF sono correlati e l'universo corrente introduce survivorship bias. Risultati lordi, senza costi, FX, spread o slippage."
     }
     return validation, breadth
 
