@@ -345,6 +345,57 @@ def monthly_validation(frames, indicators, universe):
         if threshold is not None and any(rolling_rec[h] is not None for h in ("1m", "3m", "6m")):
             rolling_rows.append(rolling_rec)
     breadth = breadth_by_module(panel)
+    bucket_names = ["0-39", "40-54", "55-64", "65-74", "75-100"]
+    bucket_months = {b: {h: [] for h in ("1m", "3m", "6m")} for b in bucket_names}
+    bucket_counts = {b: [] for b in bucket_names}
+    rank_ic = {h: [] for h in ("1m", "3m", "6m")}
+    for period in periods:
+        current = panel[panel["period"] == period].copy()
+        conditions = [
+            current["score"] < 40,
+            (current["score"] >= 40) & (current["score"] < 55),
+            (current["score"] >= 55) & (current["score"] < 65),
+            (current["score"] >= 65) & (current["score"] < 75),
+            current["score"] >= 75,
+        ]
+        current["score_bucket"] = np.select(conditions, bucket_names, default="0-39")
+        for bucket in bucket_names:
+            group = current[current["score_bucket"] == bucket]
+            if len(group):
+                bucket_counts[bucket].append(int(len(group)))
+            for horizon in ("1m", "3m", "6m"):
+                valid_group = group.dropna(subset=[horizon])
+                if len(valid_group):
+                    bucket_months[bucket][horizon].append(float(valid_group[horizon].mean()))
+        for horizon in ("1m", "3m", "6m"):
+            valid = current.dropna(subset=["score", horizon])
+            if len(valid) >= 5 and valid["score"].nunique() > 1 and valid[horizon].nunique() > 1:
+                ic = valid["score"].corr(valid[horizon], method="spearman")
+                if pd.notna(ic):
+                    rank_ic[horizon].append(float(ic))
+    score_buckets = {}
+    for bucket in bucket_names:
+        score_buckets[bucket] = {
+            "months_with_signals": max((len(bucket_months[bucket][h]) for h in ("1m", "3m", "6m")), default=0),
+            "average_etfs_per_month": finite(np.mean(bucket_counts[bucket])) if bucket_counts[bucket] else None,
+            **{
+                h: {
+                    "mean_forward_return": finite(np.mean(bucket_months[bucket][h])) if bucket_months[bucket][h] else None,
+                    "positive_months_pct": finite(np.mean(np.array(bucket_months[bucket][h]) > 0)) if bucket_months[bucket][h] else None,
+                    "months": len(bucket_months[bucket][h]),
+                }
+                for h in ("1m", "3m", "6m")
+            }
+        }
+    rank_ic_summary = {
+        h: {
+            "mean_spearman_ic": finite(np.mean(rank_ic[h])) if rank_ic[h] else None,
+            "median_spearman_ic": finite(np.median(rank_ic[h])) if rank_ic[h] else None,
+            "positive_months_pct": finite(np.mean(np.array(rank_ic[h]) > 0)) if rank_ic[h] else None,
+            "months": len(rank_ic[h]),
+        }
+        for h in ("1m", "3m", "6m")
+    }
     validation = {
         "status": "WALK-FORWARD STORICO ESPLORATIVO · NON VALIDATO",
         "observations": int(len(panel)),
@@ -354,6 +405,8 @@ def monthly_validation(frames, indicators, universe):
         "benchmark_equal_weight": _portfolio_stats(benchmark_rows, "Universo ETF geografici equiponderato"),
         "oos_score_ge_65": _portfolio_stats(fixed_rows, "Selezione mensile con score >= 65"),
         "walk_forward_rolling_percentile": _portfolio_stats(rolling_rows, "Selezione mensile sopra il 75° percentile dei 36 mesi precedenti"),
+        "score_buckets": score_buckets,
+        "rank_information_coefficient": rank_ic_summary,
         "rolling_threshold": {
             "observations": len(rolling_thresholds),
             "mean": finite(np.mean([x["threshold"] for x in rolling_thresholds])) if rolling_thresholds else None,
