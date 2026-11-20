@@ -172,6 +172,15 @@ def calculate(frame):
     tr = pd.concat([
         high-low, (high-close.shift()).abs(), (low-close.shift()).abs()
     ], axis=1).max(axis=1)
+    up_move = high.diff()
+    down_move = -low.diff()
+    plus_dm = up_move.where((up_move > down_move) & (up_move > 0), 0.0)
+    minus_dm = down_move.where((down_move > up_move) & (down_move > 0), 0.0)
+    atr14 = tr.ewm(alpha=1/14, adjust=False, min_periods=14).mean()
+    plus_di = 100.0 * plus_dm.ewm(alpha=1/14, adjust=False, min_periods=14).mean() / atr14
+    minus_di = 100.0 * minus_dm.ewm(alpha=1/14, adjust=False, min_periods=14).mean() / atr14
+    dx = 100.0 * (plus_di-minus_di).abs() / (plus_di+minus_di).replace(0, np.nan)
+    adx14 = dx.ewm(alpha=1/14, adjust=False, min_periods=14).mean()
     vm_plus = (high-low.shift()).abs()
     vm_minus = (low-high.shift()).abs()
     vi_plus = vm_plus.rolling(14).sum() / tr.rolling(14).sum()
@@ -189,7 +198,7 @@ def calculate(frame):
     out = pd.DataFrame({
         "close": close, "jaw": jaw, "teeth": teeth, "lips": lips,
         "kama": k, "roc38": roc, "ao": ao, "ao_signal": ao_signal,
-        "vi_plus": vi_plus, "vi_minus": vi_minus, "rsi14": rsi,
+        "vi_plus": vi_plus, "vi_minus": vi_minus, "adx14": adx14, "plus_di": plus_di, "minus_di": minus_di, "rsi14": rsi,
         "ma38": ma38, "ma50": ma50, "ma200": ma200,
     }).dropna(subset=["close"])
     # Block scores avoid counting several near-duplicate oscillators as independent votes.
@@ -334,6 +343,8 @@ def build_monthly_panel(indicators, universe):
                 "return_68d": finite(row["return_68d"]),
                 "composite_momentum": finite(row["composite_momentum"]),
                 "modified_sharpe_68": finite(row["modified_sharpe_68"]),
+                "adx14": finite(row["adx14"]),
+                "vortex_spread": finite(row["vi_plus"] - row["vi_minus"]) if pd.notna(row["vi_plus"]) and pd.notna(row["vi_minus"]) else None,
             }
             rec["future_date_1m"] = ind.index[pos+21] if pos+21 < len(ind) else pd.NaT
             for horizon, n in (("1m", 21), ("3m", 63), ("6m", 126)):
@@ -704,26 +715,42 @@ def compare_predictive_candidates(indicators, universe, start_date="2015-01-01")
         return {"status": "DATI INSUFFICIENTI", "models": {}}
     panel = panel[panel["date"] >= pd.Timestamp(start_date)].copy()
     required = ["roc5", "roc21", "roc63", "roc126", "kama_slope21",
-                "trend_stability_21", "volatility_68", "alligator_bull", "above_ma200", "1m"]
+                "trend_stability_21", "volatility_68", "alligator_bull", "above_ma200", "1m",
+                "adx14", "vortex_spread", "modified_sharpe_68"]
     panel = panel.dropna(subset=required)
     if panel.empty:
         return {"status": "DATI INSUFFICIENTI", "models": {}}
     rank_cols = ["roc5", "roc21", "roc63", "roc126", "kama_slope21",
-                 "trend_stability_21", "volatility_68"]
+                 "trend_stability_21", "volatility_68", "adx14", "vortex_spread",
+                 "modified_sharpe_68"]
     for col in rank_cols:
         panel["rank_" + col] = panel.groupby("period")[col].rank(pct=True)
     panel["rank_low_vol"] = 1.0 - panel["rank_volatility_68"]
     panel["rank_alligator"] = panel.groupby("period")["alligator_bull"].rank(pct=True)
+    panel["rank_adx14"] = panel.groupby("period")["adx14"].rank(pct=True)
+    panel["rank_vortex"] = panel.groupby("period")["vortex_spread"].rank(pct=True)
+    panel["rank_risk_adjusted_momentum"] = panel.groupby("period")["modified_sharpe_68"].rank(pct=True)
     panel["candidate_momentum"] = (0.10*panel["rank_roc5"] + 0.20*panel["rank_roc21"] + 0.35*panel["rank_roc63"] + 0.35*panel["rank_roc126"])
     panel["candidate_trend_quality"] = (0.30*panel["rank_kama_slope21"] + 0.30*panel["rank_trend_stability_21"] + 0.20*panel["rank_alligator"] + 0.20*panel["rank_low_vol"])
     panel["candidate_relative_strength"] = 0.50*panel["rank_roc21"] + 0.50*panel["rank_roc63"]
     panel["candidate_roc21"] = panel["rank_roc21"]
+    panel["candidate_alligator"] = panel["rank_alligator"]
+    panel["candidate_kama"] = panel["rank_kama_slope21"]
+    panel["candidate_adx"] = panel["rank_adx14"]
+    panel["candidate_vortex"] = panel["rank_vortex"]
+    panel["candidate_low_vol"] = panel["rank_low_vol"]
+    panel["candidate_risk_adjusted"] = panel["rank_risk_adjusted_momentum"]
+    panel["candidate_roc21_low_vol"] = 0.75*panel["rank_roc21"] + 0.25*panel["rank_low_vol"]
+    panel["candidate_roc21_adx"] = 0.75*panel["rank_roc21"] + 0.25*panel["rank_adx14"]
     # Fixed blends: test whether trend quality adds value to the ROC21 baseline.
     panel["blend_70_30"] = 0.70*panel["rank_roc21"] + 0.30*panel["candidate_trend_quality"]
     panel["blend_50_50"] = 0.50*panel["rank_roc21"] + 0.50*panel["candidate_trend_quality"]
     panel["blend_30_70"] = 0.30*panel["rank_roc21"] + 0.70*panel["candidate_trend_quality"]
     names = ["candidate_momentum", "candidate_trend_quality", "candidate_relative_strength",
-             "candidate_roc21", "blend_70_30", "blend_50_50", "blend_30_70"]
+             "candidate_roc21", "candidate_alligator", "candidate_kama", "candidate_adx",
+             "candidate_vortex", "candidate_low_vol", "candidate_risk_adjusted",
+             "candidate_roc21_low_vol", "candidate_roc21_adx",
+             "blend_70_30", "blend_50_50", "blend_30_70"]
     rows = {name: [] for name in names}
     regimes = {"risk_on": {name: [] for name in names}, "risk_off": {name: [] for name in names}}
     months = []
@@ -777,7 +804,7 @@ def compare_predictive_candidates(indicators, universe, start_date="2015-01-01")
             vals=[x["models"][name] for x in items if x["models"].get(name) is not None]
             excess=[x["models"][name]-x["benchmark"] for x in items if x["models"].get(name) is not None and x["benchmark"] is not None]
             slice_summary[bucket]["models"][name]={"mean_forward_return":finite(np.mean(vals)) if vals else None,"mean_excess_vs_equal_weight":finite(np.mean(excess)) if excess else None}
-    return {"status":"CONFRONTO SPERIMENTALE · NON È UN SEGNALE OPERATIVO","from":months[0] if months else None,"to":months[-1] if months else None,"common_months":len(months),"models":summary,"rank_ic":ic,"by_regime":regime_summary,"by_time_slice":slice_summary,"blend_definition":"Combinazioni fisse di ranking cross-sectional: 70/30, 50/50 e 30/70 tra ROC21 e qualità del trend. Non sono ottimizzate sui risultati.","benchmark_note":"Quartile superiore, stessi mesi e universo per tutti i modelli.","regime_definition":"Risk-on se almeno il 50% degli ETF del campione è sopra MA200 e ROC21 mediano positivo; altrimenti risk-off. Proxy ETF, non breadth dei titoli sottostanti.","method":"Pesi fissi: momentum 10/20/35/35 su ROC5/21/63/126; trend-quality 30% KAMA21, 30% stabilità sopra KAMA, 20% Alligator, 20% bassa volatilità; forza relativa 50% ROC21 e 50% ROC63; baseline ROC21. Rendimento forward 21 sedute, lordo e sovrapposto. Universo corrente: survivorship bias; costi, spread, tasse e cambio esclusi. Il miglior risultato non costituisce validazione indipendente."}
+    return {"status":"CONFRONTO SPERIMENTALE · NON È UN SEGNALE OPERATIVO","from":months[0] if months else None,"to":months[-1] if months else None,"common_months":len(months),"models":summary,"rank_ic":ic,"by_regime":regime_summary,"by_time_slice":slice_summary,"blend_definition":"Combinazioni fisse di ranking cross-sectional: 70/30, 50/50 e 30/70 tra ROC21 e qualità del trend. Non sono ottimizzate sui risultati.","benchmark_note":"Quartile superiore, stessi mesi e universo per tutti i modelli.","regime_definition":"Risk-on se almeno il 50% degli ETF del campione è sopra MA200 e ROC21 mediano positivo; altrimenti risk-off. Proxy ETF, non breadth dei titoli sottostanti.","method":"Pesi fissi e ranking cross-sectional. Oltre alle basi ROC21, momentum multi-orizzonte, trend quality e forza relativa, test separati Alligator, pendenza KAMA, ADX14, spread Vortex, bassa volatilità e Sharpe modificato 68 sedute; test combinati ROC21+low-vol e ROC21+ADX con peso 75/25. Rendimento forward 21 sedute, lordo e sovrapposto. Universo corrente: survivorship bias; costi, spread, tasse e cambio esclusi. Il miglior risultato non costituisce validazione indipendente."}
 
 
 def factor_segment_validation(factor_universe, factor_frames, factor_indicators):
