@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19T16:19:27.536789+00:00",
+  "generated_at": "2026-11-20T03:40:54.915578+00:00",
   "latest_price_date": "2026-11-19",
   "data_source": "Yahoo Finance adjusted daily prices; same engine, hedge and ranking settings across scenarios",
   "candidate_audit_method": "EWY (Korea) is ranked against the Asia ETF universe; GREK (Greece) against each scenario\u2019s fourth-sleeve universe. Reports selection frequency, rank distribution and next-month return difference versus the actually selected ETF. No forced inclusion or portfolio weight change.",
