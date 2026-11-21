@@ -2,7 +2,7 @@
 
 Ultimo controllo: 21 novembre 2026 (manutenzione Radar e dismissione RAPTOR)  
 Branch esaminato: `main`  
-Commit di riferimento: `4d4bca3d498607e4c1d3337ad0dd447927ea5977`
+Commit di riferimento: `bde51b348b5f763b807b2718ba7edc8aafe6426b`
 
 Questo documento descrive le dipendenze rilevate nel repository. È una mappa di orientamento, non una specifica matematica dei modelli. I file generati e gli archivi storici non vanno cancellati o rinominati senza prima aggiornare e testare tutti i riferimenti.
 
@@ -108,7 +108,7 @@ Questa classificazione è funzionale, non una proposta di spostamento in cartell
 
 ## 6. Workflow presenti
 
-- `.github/workflows/update.yml` — ritirato, conservato nell'archivio Git (non più presente nel branch operativo)
+- `.github/workflows/update.yml` — workflow RAPTOR ritirato e rimosso dal branch main; la cronologia Git conserva il vecchio file
 - `.github/workflows/ucits-geography.yml`
 - `.github/workflows/geografia-engine.yml`
 - `.github/workflows/radar-predittivo.yml`
