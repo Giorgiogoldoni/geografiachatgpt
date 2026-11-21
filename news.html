@@ -7,27 +7,41 @@
 header{background:#14243b;color:white;padding:20px 16px}header>div,main{max-width:900px;margin:auto}h1{font-size:23px;margin:0}header a{color:#d8e7ff}main{padding:18px 14px}.muted{color:var(--muted);font-size:12px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:15px;margin-bottom:11px}.top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}h2{font-size:16px;margin:0 0 5px}.date{font-size:12px;color:var(--muted)}.result{margin-top:9px}.result b{font-weight:700}.tag{display:inline-block;border-radius:20px;background:#eaf1fb;color:var(--blue);padding:3px 8px;font-size:11px;font-weight:700}
 a{color:var(--blue)}footer{max-width:900px;margin:auto;padding:8px 14px 28px;color:var(--muted);font-size:11px}
-</style></head><body>
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}.grid3 ul{padding-left:18px}.grid3 li{margin:5px 0}.buy{color:#16794b}.hold{color:#9a6700}.sell{color:#b42318}@media(max-width:620px){.grid3{grid-template-columns:1fr}}\n</style></head><body>
 <header><div><h1>📰 News · risultati dei motori</h1><p><a href="./index.html">← Homepage</a></p></div></header>
 <main><p class="muted">Riepilogo automatico dei dati pubblicati. Ogni scheda mostra la data dei prezzi e l'ora di generazione quando presenti nei file del motore.</p><div id="news"><p>Caricamento risultati…</p></div></main>
 <footer>Aggiornamento automatico alla pubblicazione dei JSON. Una data più vecchia indica che il relativo motore non ha ancora prodotto un nuovo aggiornamento.</footer>
 <script>
 const $=id=>document.getElementById(id), esc=s=>String(s??"—").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const date=s=>{if(!s)return "non disponibile";let d=new Date(s);return isNaN(d) ? esc(s) : d.toLocaleString("it-IT",{dateStyle:"short",timeStyle:s.includes("T")?"short":undefined})};
+const date=s=>{if(!s)return "n.d.";let d=new Date(s);return isNaN(d)?esc(s):d.toLocaleString("it-IT",{dateStyle:"short",timeStyle:String(s).includes("T")?"short":undefined})};
 const pct=x=>x==null?"—":(Number(x)*100).toFixed(1)+"%";
-async function get(path){const r=await fetch("./"+path+"?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error(path+" non disponibile");return r.json()}
-function card(name,d,html,link){return '<section class="card"><div class="top"><div><h2>'+name+'</h2><div class="date">Prezzi al '+date(d.latest_price_date||d.price_date)+' · aggiornato '+date(d.generated_at||d.updated_at||d.date)+'</div></div><span class="tag">DATI PUBBLICATI</span></div><div class="result">'+html+'</div><p class="muted"><a href="./'+link+'">Apri motore</a></p></section>'}
+async function get(p){let r=await fetch("./"+p+"?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error(p+" non disponibile");return r.json()}
+function section(title,body,sub=""){return '<section class="card"><div class="top"><div><h2>'+title+'</h2><div class="date">'+sub+'</div></div></div>'+body+'</section>'}
+function signalLists(rows){
+ const buy=rows.filter(x=>x.eligible_trend===true);
+ const sell=rows.filter(x=>x.above_sma200===false || x.absolute_momentum_positive===false);
+ const hold=rows.filter(x=>x.eligible_trend!==true && x.above_sma200!==false && x.absolute_momentum_positive!==false);
+ const list=a=>a.slice(0,5).map(x=>'<li><b>'+esc(x.ticker||x.symbol)+'</b> · '+esc(x.geography||x.country||x.name||"")+' <span class="muted">('+pct(x.composite_momentum??x.momentum_12m)+')</span></li>').join("")||"<li>nessun elemento</li>";
+ return '<div class="grid3"><div><b class="buy">ACQUISTARE / INGRESSO</b><ul>'+list(buy)+'</ul></div><div><b class="hold">MANTENERE / OSSERVARE</b><ul>'+list(hold)+'</ul></div><div><b class="sell">RIDURRE / USCITA</b><ul>'+list(sell)+'</ul></div></div><p class="muted">Segnali tecnici automatici: acquisto = trend positivo (sopra SMA200 e momentum 12m positivo); vendita/uscita = almeno uno dei due filtri non rispettato. Non sono ordini automatici.</p>';
+}
 async function load(){
  const jobs=[
-  ["Motore UCITS","ucits_geography.json","ucits-geography.html",d=>{let s=Object.entries(d.selected||{}).map(([a,x])=>a+": "+(x?.ticker||"nessuna selezione"));return '<b>Selezioni:</b> '+esc(s.join(" · ")||"dati disponibili")+'<br><span class="muted">'+(d.coverage?.calculated_count??"—")+' serie calcolate</span>'}],
-  ["Motore geografico · 6 aree","geografia-motore.json","geografia-motore.html",d=>{let s=Object.entries(d.selections||{}).map(([k,x])=>k.replace("|"," · ")+": "+(x?.ticker||"nessuna selezione"));return '<b>Selezioni:</b> '+esc(s.join(" · ")||"ranking disponibile")+'<br><span class="muted">'+(d.coverage?.calculated_count??"—")+' serie calcolate · '+(d.factor_universe||[]).filter(x=>x.status==="CALCOLATO").length+' ETF factor calcolabili</span>'}],
-  ["Radar predittivo · Momentum / Ridge","radar-predittivo.json","radar-predittivo.html",d=>{let a=d.latest_ranking||d.ranking||d.current_ranking||[];if(!Array.isArray(a))a=Object.values(a);let top=a.slice(0,3).map((x,i)=>(i+1)+". "+(x.geography||x.area||x.country||"") +" "+(x.ticker||x.tickers?.join(", ")||""));return '<b>Stato:</b> '+esc(d.status||d.validation?.status||"risultati disponibili")+(top.length?'<br><b>Prime posizioni:</b> '+esc(top.join(" · ")):"")+'<br><span class="muted">Classifica completa e verifiche nella pagina Radar</span>'}],
-  ["World Top 4","world_top4.json","world-top4.html",d=>{let s=Object.entries(d.selected||{}).map(([a,x])=>a+": "+(x?.ticker||"copertura difensiva"));return '<b>Selezioni:</b> '+esc(s.join(" · ")||"portafoglio aggiornato")+'<br><span class="muted">CAGR modello: '+pct(d.variants?.modified?.metrics?.cagr)+' · Max drawdown: '+pct(d.variants?.modified?.metrics?.max_drawdown)+'</span>'}],
-  ["Portafoglio EURO 60/40","euro_top4_6040.json","portafogli-usa-euro.html",d=>{let p=d.current_composition||{},s=(p.picks||[]).map(x=>x.area+": "+x.ticker);return '<b>Composizione:</b> '+esc(s.join(" · ")||p.status||"non disponibile")+'<br><span class="muted">Periodo segnale: '+date(p.signal_date)+' · liquidità '+pct(p.holdings?.find(x=>x.role==="LIQUIDITÀ")?.weight)+'</span>'}]
+  ["Motore UCITS","ucits_geography.json",d=>{let rows=Object.values(d.rankings||{}).flat().filter(x=>x.status==="CALCOLATO");return signalLists(rows)}],
+  ["Motore geografico · 6 aree","geografia-motore.json",d=>{let rows=Object.values(d.rankings||{}).flat().filter(x=>x.status==="CALCOLATO");return signalLists(rows)}],
  ];
- const results=await Promise.all(jobs.map(async j=>{try{let d=await get(j[1]);return card(j[0],d,j[3](d),j[2])}catch(e){return '<section class="card"><h2>'+j[0]+'</h2><div class="date">Aggiornamento non disponibile</div><div class="muted">'+esc(e.message)+'</div></section>'}}));
- let extra="";try{let b=await get("data/bollettino_geografico.json"),e=b.editions?.[b.editions.length-1];if(e)extra='<section class="card"><div class="top"><div><h2>Bollettino geografico</h2><div class="date">Edizione '+date(e.date)+' · prezzi al '+date(e.price_date)+'</div></div><span class="tag">ULTIMA EDIZIONE</span></div><div class="result"><b>'+esc(e.market_summary)+'</b></div><p class="muted"><a href="./bollettino.html">Apri archivio bollettino</a></p></section>'}catch(e){}
- $("news").innerHTML=results.join("")+extra;
+ const out=await Promise.all(jobs.map(async ([name,path,render])=>{try{let d=await get(path);return section(name,render(d),"Prezzi al "+date(d.latest_price_date)+" · generato "+date(d.generated_at))}catch(e){return section(name,"<p class='muted'>"+esc(e.message)+"</p>")}}));
+ let predictor="";
+ try{
+  const d=await get("radar-predittivo.json"),wf=d.predictive_v3_walk_forward||{},ranking=wf.latest_ranking||d.latest_ranking||[];
+  const rows=(Array.isArray(ranking)?ranking:Object.values(ranking)).slice(0,5);
+  const body='<p><b>Modello:</b> Ridge 3.0 · previsione relativa a 1 mese</p>'+
+   (rows.length?'<ol>'+rows.map(x=>'<li><b>'+esc(x.geography||x.area||"")+' · '+esc((x.tickers||[x.ticker]).filter(Boolean).join(", "))+'</b> — extra-rendimento previsto '+pct(x.predicted_excess)+' · ROC21 '+(x.roc21==null?"—":Number(x.roc21).toFixed(1)+"%")+'</li>').join("")+'</ol>':'<p>Classifica predittiva non disponibile nel file corrente.</p>')+
+   '<p class="muted">Validazione: '+esc(wf.status||"da verificare")+' · '+esc(wf.months??"—")+' mesi di test · aggiornamento classifica '+date(wf.latest_ranking_date||wf.latest_ranking_period||d.generated_at)+'. Il punteggio è un ranking, non una probabilità di rendimento.</p><p><a href="./radar-predittivo.html">Apri Radar completo</a></p>';
+  predictor=section("PREDICTOR · priorità prossimo mese",body,"Generato "+date(d.generated_at)+" · prezzi al "+date(d.latest_price_date));
+ }catch(e){predictor=section("PREDICTOR · priorità prossimo mese","<p class='muted'>Dati predittivi non disponibili: "+esc(e.message)+"</p>")}
+ let portfolio="";
+ try{const d=await get("euro_top4_6040.json"),p=d.current_composition||{},h=p.holdings||[];portfolio=section("Portafoglio EURO 60/40 · mantenere",'<p><b>Composizione modello:</b></p><ul>'+h.map(x=>'<li><b>'+esc(x.ticker)+'</b> · '+esc(x.role)+' · '+pct(x.weight)+'</li>').join("")+'</ul><p class="muted">Segnale '+date(p.signal_date)+' · valido '+date(p.effective_from)+' – '+date(p.effective_to)+'</p>',"Prezzi al "+date(d.latest_price_date)+" · generato "+date(d.generated_at))}catch(e){}
+ $("news").innerHTML=predictor+out.join("")+portfolio;
 }
 load();
 </script></body></html>
