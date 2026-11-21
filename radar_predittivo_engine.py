@@ -934,7 +934,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                   "momentum_3_6_12", "benchmark")
     for period, group in pred.groupby("period", sort=True):
         benchmark = finite(group["realized_return"].mean())
-        item = {"period": str(period), "benchmark": benchmark, "portfolios": {}}
+        item = {"period": str(period), "benchmark": benchmark, "geographies_available": int(len(group)), "portfolios": {}}
         for count in (3, 5, 10):
             n = min(count, len(group))
             selectors = {
@@ -1072,7 +1072,9 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                     strategy + "_vs_" + comparator
                 ] = hac_stats(diffs)
 
-    for label, lo, hi in (("2016-2019", "2016-01", "2019-12"),
+    for label, lo, hi in (("2007-2009", "2007-01", "2009-12"),
+                          ("2010-2012", "2010-01", "2012-12"),
+                          ("2013-2019", "2013-01", "2019-12"),
                           ("2020-2022", "2020-01", "2022-12"),
                           ("2023-2026", "2023-01", "2026-12")):
         subset = [x for x in rows if lo <= x["period"] <= hi]
@@ -1283,8 +1285,21 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
 
     return {
         "status": "WALK-FORWARD RIDGE 3.0 · STORICO SPERIMENTALE + SNAPSHOT CORRENTE",
+        "requested_start_date": start_date,
         "from": rows[0]["period"], "to": rows[-1]["period"],
         "months": len(rows), "training_window_months": train_months,
+        "historical_coverage": {
+            "first_out_of_sample_month": rows[0]["period"],
+            "last_month": rows[-1]["period"],
+            "months_by_slice": {label: len([x for x in rows if lo <= x["period"] <= hi])
+                for label, lo, hi in (("2007-2009", "2007-01", "2009-12"),
+                                      ("2010-2012", "2010-01", "2012-12"),
+                                      ("2013-2019", "2013-01", "2019-12"),
+                                      ("2020-2022", "2020-01", "2022-12"),
+                                      ("2023-2026", "2023-01", "2026-12"))},
+            "minimum_geographies_per_month": min(x["geographies_available"] for x in rows),
+            "median_geographies_per_month": finite(np.median([x["geographies_available"] for x in rows]))
+        },
         "minimum_training_months": 18, "minimum_training_observations": 100,
         "ridge_alpha": alpha, "features": features,
         "portfolio_sizes": [3, 5, 10], "results": summary,
@@ -1427,7 +1442,7 @@ def main():
     validation, module_breadth = monthly_validation(frames,indicators,universe)
     early_v2 = early_signal_validation(indicators, universe)
     learned_v2 = walk_forward_early_model(indicators, universe)
-    candidate_v3 = compare_predictive_candidates(indicators, universe, start_date="2015-01-01")
+    candidate_v3 = compare_predictive_candidates(indicators, universe, start_date="2007-01-01")
     momentum_baselines = {}
     for metric in ("modified_sharpe_68", "composite_momentum", "return_68d"):
         pool = [dict(x) for x in calculated if x.get(metric) is not None]
@@ -1481,7 +1496,7 @@ def main():
         "validation":validation,
         "predictive_v2": {"name": "Predittivo 2.0 · focus primo mese", "validation_1m": early_v2, "walk_forward_model_1m": learned_v2, "priority_horizon": "1m", "score_definition": "Score anticipatore 0-100: ROC5/10/21, accelerazione ROC, prezzo e pendenza KAMA, Lips/Teeth Alligator, Vortex e RSI in fascia costruttiva; nessun filtro MA200.", "status": "SPERIMENTALE FINO A SUPERAMENTO DEL TEST OUT-OF-SAMPLE"},
         "predictive_v3": candidate_v3,
-        "predictive_v3_walk_forward": walk_forward_predictive_v3(indicators, universe),
+        "predictive_v3_walk_forward": walk_forward_predictive_v3(indicators, universe, start_date="2007-01-01"),
         "factor_analysis":factor_analysis
     }
     OUT.write_text(json.dumps(output,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
