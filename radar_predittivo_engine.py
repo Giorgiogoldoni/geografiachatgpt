@@ -830,6 +830,8 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
     # Collapse multiple share classes/listings into one equal-weight geography
     # before ranking or fitting, so countries with many ETFs do not get extra votes.
     panel["geography"] = panel["geography"].fillna("").astype(str).str.strip()
+    # Real calendar month-end to next month-end return, separate from the fixed 21-session label.
+    panel["next_month_return"] = panel.groupby("symbol")["close"].shift(-1) / panel["close"] - 1.0
     panel.loc[panel["geography"] == "", "geography"] = panel.loc[panel["geography"] == "", "symbol"]
     panel = panel.sort_values(["period", "geography", "symbol"]).groupby(
         ["period", "geography"], as_index=False
@@ -1478,7 +1480,7 @@ def definitive_one_month_test(indicators, universe, start_date="2007-01-01",
     panel = panel.groupby(["period", "geography"], as_index=False).agg(
         date=("date", "max"), future_date_1m=("future_date_1m", "max"),
         **{c: (c, "mean") for c in required if c not in ("1m", "future_date_1m")},
-        **{"forward_1m": ("1m", "mean")}
+        **{"forward_1m": ("1m", "mean"), "next_month_return": ("next_month_return", "mean")}
     )
     rank_cols = ["roc5", "roc10", "roc21", "roc63", "roc126",
                  "kama_slope5", "trend_stability_21", "directional_adx",
@@ -1514,17 +1516,26 @@ def definitive_one_month_test(indicators, universe, start_date="2007-01-01",
         if len(group) < 5:
             continue
         row = {"period": str(period), "date": group["date"].max().strftime("%Y-%m-%d"),
-               "geographies": int(len(group)), "models": {}}
+               "geographies": int(len(group)), "models": {}, "calendar_models": {}}
         for model in models:
             row["models"][model] = {}
+            row["calendar_models"][model] = {}
             for n in (3, 5):
                 selected = group.nlargest(min(n, len(group)), model)
+                selected_names = selected["geography"].astype(str).tolist()
                 row["models"][model][f"top{n}"] = {
                     "return": finite(selected["forward_1m"].mean()),
                     "hit_rate": finite((selected["forward_1m"] > 0).mean()),
-                    "selected": selected["geography"].astype(str).tolist()
+                    "selected": selected_names
                 }
+                calendar_valid = selected["next_month_return"].dropna()
+                row["calendar_models"][model][f"top{n}"] = {
+                    "return": finite(calendar_valid.mean()) if len(calendar_valid) else None,
+                    "selected": selected_names
+                }
+        calendar_equal = group["next_month_return"].dropna()
         row["equal_weight"] = finite(group["forward_1m"].mean())
+        row["calendar_equal_weight"] = finite(calendar_equal.mean()) if len(calendar_equal) else None
         monthly.append(row)
 
     def metrics(values):
@@ -1577,6 +1588,38 @@ def definitive_one_month_test(indicators, universe, start_date="2007-01-01",
         }
         return result
 
+    def summarize_calendar(rows, n):
+        result = {}
+        for model in models:
+            gross = [r["calendar_models"][model][f"top{n}"]["return"] for r in rows]
+            result[model] = {"gross": metrics(gross), "net_cost_scenarios": {}}
+            turnover_values = []
+            for cost_bps in (5, 10, 20):
+                net_values = []
+                previous = None
+                local_turnover = []
+                for row in rows:
+                    item = row["calendar_models"][model][f"top{n}"]
+                    value = item["return"]
+                    if value is None or not np.isfinite(value):
+                        continue
+                    selected_set = set(item["selected"])
+                    if previous is None:
+                        turnover = 1.0
+                        cost_fraction = cost_bps / 10000.0
+                    else:
+                        turnover = 1.0 - len(selected_set & previous) / float(n)
+                        cost_fraction = 2.0 * turnover * cost_bps / 10000.0
+                    local_turnover.append(turnover)
+                    net_values.append(value - cost_fraction)
+                    previous = selected_set
+                result[model]["net_cost_scenarios"][f"{cost_bps}_bps_per_side"] = metrics(net_values)
+                if cost_bps == 10:
+                    turnover_values = local_turnover
+            result[model]["average_one_way_turnover"] = finite(np.mean(turnover_values)) if turnover_values else None
+        result["equal_weight_universe"] = metrics([r["calendar_equal_weight"] for r in rows])
+        return result
+
     development = [r for r in monthly if r["period"] <= development_end]
     holdout = [r for r in monthly if r["period"] >= holdout_start]
     subperiods = {}
@@ -1590,6 +1633,8 @@ def definitive_one_month_test(indicators, universe, start_date="2007-01-01",
         "holdout_period": holdout_start + "–ultimo mese con 21 sedute maturate",
         "development_months": len(development), "holdout_months": len(holdout),
         "top3_holdout": summarize(holdout, 3), "top5_holdout": summarize(holdout, 5),
+        "calendar_month_end_top3_holdout": summarize_calendar(holdout, 3),
+        "calendar_month_end_top5_holdout": summarize_calendar(holdout, 5),
         "holdout_subperiods": subperiods,
         "monthly_observations": monthly,
         "pre_registered_rules": {
