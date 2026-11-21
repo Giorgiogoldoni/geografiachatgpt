@@ -136,7 +136,7 @@ Il motore scarica prezzi rettificati delle quotazioni europee mappate, calcola M
 ## INDEX ETF geografici
 
 - Dashboard ricercabile: [INDEX ETF — 53 strumenti](./index-etf.html)
-- Archivio CSV dell'elenco PAESI originale fornito il 18 novembre 2026: [data/geografia_index_user_53.csv](./data/geografia_index_user_51.csv)
+- Archivio CSV dell'elenco PAESI originale fornito il 18 novembre 2026: [data/geografia_index_user_53.csv](./data/geografia_index_user_53.csv)
 - L'INDEX contiene 53 strumenti: i 51 ticker dell'elenco originario più Canada (CSCA.MI) e Polonia (IBCJ.DE). I Paesi Bassi erano già presenti. La verifica di ISIN, borsa, valuta, struttura ETF/ETP, liquidità e disponibilità dei prezzi è un passaggio distinto prima dell'inclusione nel motore quantitativo.
 
 
@@ -144,7 +144,7 @@ Il motore scarica prezzi rettificati delle quotazioni europee mappate, calcola M
 
 È stato aggiunto un archivio separato di ETF UCITS factor, distinto dall'universo geografico:
 - [Dashboard ETF Factor](./factor-etf.html)
-- [CSV Factor (20 strumenti)](./data/geografia_index_factor_20.csv)
+- [CSV Factor (21 strumenti)](./data/geografia_index_factor_21.csv)
 - Categorie: Equal Weight, Momentum, Value e Quality.
 - Il catalogo non alimenta automaticamente il ranking Paesi. Prima dell'uso quantitativo occorre completare la verifica dei ticker per listing, valuta negoziata, liquidità e disponibilità dello storico prezzi.
 
