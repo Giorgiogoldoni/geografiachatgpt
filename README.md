@@ -1,89 +1,21 @@
 # 🌍 GEOGRAFIA CHATGPT
 
-Dashboard e motore di rotazione geografica per ETF UCITS quotati in Europa. La precedente dashboard RAPTOR è conservata in `raptor-geografia-legacy.html`.
+Dashboard e motori quantitativi indipendenti per ETF UCITS quotati in Europa.
 
-> **Mappa tecnica del repository:** [ARCHITETTURA_REPOSITORY.md](./ARCHITETTURA_REPOSITORY.md) — flussi dati, motori, dashboard, workflow e file duplicati. Nessun file operativo viene spostato o rimosso.
+> **Mappa tecnica del repository:** [ARCHITETTURA_REPOSITORY.md](./ARCHITETTURA_REPOSITORY.md) — flussi dati, motori, dashboard, workflow e archivi.
 
-## 📐 Regole operative
+## Stato operativo
 
-### ENTRATA (tutte e 7 soddisfatte)
-| # | Condizione | Soglia |
-|---|---|---|
-| 1 | Segnale RAPTOR | LONG / EARLY / WATCH |
-| 2 | Score | ≥ 40 |
-| 3 | Trendycator | 🟢 VERDE |
-| 4 | ER (Efficiency Ratio) | ≥ 0.50 |
-| 5 | AO + Baffetti | ≥ 3 barre consecutive |
-| 6 | Parabolic SAR | Bullish (prezzo > SAR) |
-| 7 | Supertrend | Bullish |
+- **Homepage:** [Geografia ChatGPT](https://giorgiogoldoni.github.io/geografiachatgpt/).
+- **Motore UCITS principale:** `ucits_geography.py` → `ucits_geography.json`, eseguito da GitHub Actions.
+- **Motore geografico a sei aree:** `geografia_engine.py` → `geografia-motore.json`.
+- **Radar predittivo Momentum/Ridge:** [pagina dedicata](./radar-predittivo.html), alimentata da `radar_predittivo_engine.py` e `radar-predittivo.json`.
+- **Bollettino:** [pagina dedicata](./bollettino.html), con archivio storico append-only.
+- **RAPTOR precedente:** dashboard e aggiornamento automatico ritirati. I file storici e il vecchio sorgente sono conservati come archivio e non fanno parte del flusso operativo.
 
-- **Conferma**: a chiusura di sessione
-- **Giorno preferito**: Mercoledì
-- **Ranking**: per ER decrescente
-- **Pesi**: proporzionali allo Score
-
-### USCITA (basta 1)
-| Condizione | Tipo |
-|---|---|
-| K% negativo (prezzo sotto KAMA) | Immediata |
-| Trailing Stop colpito (Prezzo − 2×ATR) | Immediata |
-| Score < 20 | Immediata |
-| Supertrend gira rosso | Pre-allerta |
-| Giorno 7 e gain < +5% | Pre-allerta |
-| Giorno 10 | Time stop obbligatorio |
-
-### Obiettivo per operazione
-- **Target**: +5% dal prezzo di ingresso
-- **Stop Loss**: MAX(Trailing Stop, Entry − 2×ATR)
-
-### Cuscinetto
-- **XEON** (Xtrackers EUR Overnight Rate) quando nessun ETF qualifica
-- Allocazione XEON: 100% se 0 posizioni
-
-## 🔄 Aggiornamento automatico
-
-GitHub Actions esegue `raptor_geografia.py` ogni ora dalle 09:00 alle 19:00 CET (Lun–Ven).
-
-## 🚀 Setup
-
-```bash
-git clone https://github.com/TUO_USERNAME/geografiachatgpt
-cd geografiachatgpt
-pip install -r requirements.txt
-python raptor_geografia.py
-python -m http.server 8080  # apri http://localhost:8080
-```
-
-## 📁 File
-
-| File | Descrizione |
-|---|---|
-| `raptor_geografia.py` | Script principale — calcola indicatori, aggiorna portafogli, genera JSON |
-| `index.html` | Dashboard visuale |
-| `geografia.json` | Dati generati dallo script (auto-aggiornato) |
-| `portfolio_state.json` | Stato portafogli persistente |
-| `.github/workflows/update.yml` | GitHub Actions — aggiornamento orario |
-
-## 📊 Indicatori calcolati
-
-| Indicatore | Parametri |
-|---|---|
-| KAMA | n=10, fast=2, slow=30 |
-| ER (Efficiency Ratio) | n=10 |
-| AO (Awesome Oscillator) | SMA5 − SMA34 midpoint |
-| Baffetti | barre AO consecutive crescenti |
-| RSI | n=14 |
-| Trendycator | EMA21 vs EMA55 |
-| ATR | n=14 |
-| Trailing Stop | Prezzo − 2×ATR |
-| K% | (Prezzo/KAMA−1)×100 |
-| MM Align | Prezzo > MM20 > MM50 > MM200 |
-| Parabolic SAR | AF=0.02, max=0.20 |
-| Supertrend | period=10, mult=3.0 |
+I file Python sono motori server-side: GitHub Actions li esegue e pubblica i JSON consumati dalle pagine HTML. Non vanno aperti come pagine web.
 
 ---
-🦅 GEOGRAFIA CHATGPT — *Fly High, Trade Smart*
-
 
 ## 🌍 World Top 4 — nuova area di ricerca
 
@@ -119,7 +51,7 @@ La pagina principale del repository è ora la dashboard della strategia geografi
 - **Dati giornalieri:** \`ucits_geography.json\`
 - **Workflow:** \`.github/workflows/ucits-geography.yml\`
 - **Universo di partenza:** \`ucits_country_universe_seed_2026-11-18.csv\`
-- **Vecchia dashboard RAPTOR conservata:** [raptor-geografia-legacy.html](./raptor-geografia-legacy.html)
+- **Archivio RAPTOR precedente:** sorgente e dati storici sono conservati nel repository, ma la vecchia dashboard non è più pubblicata.
 
 Il motore scarica prezzi rettificati delle quotazioni europee mappate, calcola Modified Sharpe su 68 sedute, momentum a 3/6/12 mesi e filtro prezzo sopra SMA200 + momentum 12 mesi positivo. Le quattro aree sono classificate separatamente. LTAM e ALAT sono alternative regionali e non vengono confuse con Brasile e Messico.
 
