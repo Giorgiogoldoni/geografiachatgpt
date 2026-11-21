@@ -357,6 +357,8 @@ def build_monthly_panel(indicators, universe):
     if not records:
         return pd.DataFrame()
     panel = pd.DataFrame(records).sort_values(["period", "symbol"]).reset_index(drop=True)
+    # Month-end close-to-close return for the next available monthly snapshot.
+    panel["next_month_return"] = panel.groupby("symbol")["close"].shift(-1) / panel["close"] - 1.0
     panel["monthly_return"] = panel.groupby("symbol")["close"].pct_change()
     panel["score_change_1m"] = panel.groupby("symbol")["score"].diff(1)
     panel["score_change_3m"] = panel.groupby("symbol")["score"].diff(3)
