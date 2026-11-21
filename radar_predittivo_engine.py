@@ -1451,6 +1451,161 @@ def compare_one_month_signal_horizons(indicators, universe, start_date="2007-01-
     }
 
 
+
+def definitive_one_month_test(indicators, universe, start_date="2007-01-01",
+                              development_end="2019-12", holdout_start="2020-01"):
+    """
+    Pre-registered, fixed-rule comparison for the next 21 trading sessions.
+    Development period is descriptive only; final decision uses the untouched
+    chronological holdout from 2020-01 onward. No parameters are fitted.
+    """
+    panel = build_monthly_panel(indicators, universe)
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "holdout_months": 0}
+    panel = panel[panel["date"] >= pd.Timestamp(start_date)].copy()
+    panel["directional_adx"] = panel["adx14"] * np.sign(panel["vortex_spread"])
+    panel["geography"] = panel["geography"].fillna("").astype(str).str.strip()
+    panel.loc[panel["geography"] == "", "geography"] = panel.loc[panel["geography"] == "", "symbol"]
+    required = ["roc5", "roc10", "roc21", "roc63", "roc126", "kama_slope5",
+                "trend_stability_21", "alligator_bull", "directional_adx",
+                "composite_momentum", "1m", "future_date_1m"]
+    panel = panel.dropna(subset=required).copy()
+    # Keep only outcomes that are genuinely observed after the forecast date.
+    panel = panel[panel["future_date_1m"] > panel["date"]].copy()
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "holdout_months": 0}
+    # One point-in-time observation per geography/month, irrespective of ETF listings.
+    panel = panel.groupby(["period", "geography"], as_index=False).agg(
+        date=("date", "max"), future_date_1m=("future_date_1m", "max"),
+        **{c: (c, "mean") for c in required if c not in ("1m", "future_date_1m")},
+        **{"forward_1m": ("1m", "mean")}
+    )
+    rank_cols = ["roc5", "roc10", "roc21", "roc63", "roc126",
+                 "kama_slope5", "trend_stability_21", "directional_adx",
+                 "composite_momentum"]
+    for col in rank_cols:
+        panel["rank_" + col] = panel.groupby("period")[col].rank(pct=True, method="average")
+    panel["rank_alligator"] = panel.groupby("period")["alligator_bull"].rank(pct=True, method="average")
+    panel["short_rank"] = (
+        0.25 * panel["rank_roc5"] + 0.25 * panel["rank_roc10"] +
+        0.30 * panel["rank_roc21"] + 0.20 * panel["rank_kama_slope5"]
+    )
+    panel["medium_rank"] = (
+        0.35 * panel["rank_roc63"] + 0.25 * panel["rank_roc126"] +
+        0.20 * panel["rank_trend_stability_21"] +
+        0.10 * panel["rank_alligator"] + 0.10 * panel["rank_directional_adx"]
+    )
+    panel["deterioration"] = ((panel["roc5"] < 0) & (panel["roc10"] < 0)).astype(float)
+    panel["roc21_model"] = panel["rank_roc21"]
+    panel["momentum_3612"] = panel["rank_composite_momentum"]
+    panel["medium_trend"] = panel["medium_rank"]
+    panel["momentum_filter"] = (
+        0.70 * panel["momentum_3612"] + 0.30 * panel["medium_rank"]
+        - 0.15 * panel["deterioration"]
+    )
+    panel["model_40"] = (
+        0.50 * panel["momentum_3612"] + 0.30 * panel["medium_rank"] +
+        0.20 * panel["short_rank"] - 0.10 * panel["deterioration"]
+    )
+    models = ["roc21_model", "momentum_3612", "medium_trend", "momentum_filter", "model_40"]
+
+    monthly = []
+    for period, group in panel.groupby("period", sort=True):
+        if len(group) < 5:
+            continue
+        row = {"period": str(period), "date": group["date"].max().strftime("%Y-%m-%d"),
+               "geographies": int(len(group)), "models": {}}
+        for model in models:
+            row["models"][model] = {}
+            for n in (3, 5):
+                selected = group.nlargest(min(n, len(group)), model)
+                row["models"][model][f"top{n}"] = {
+                    "return": finite(selected["forward_1m"].mean()),
+                    "hit_rate": finite((selected["forward_1m"] > 0).mean()),
+                    "selected": selected["geography"].astype(str).tolist()
+                }
+        row["equal_weight"] = finite(group["forward_1m"].mean())
+        monthly.append(row)
+
+    def metrics(values):
+        arr = np.asarray([v for v in values if v is not None and np.isfinite(v)], dtype=float)
+        if not len(arr):
+            return {"months": 0}
+        wealth = np.cumprod(1.0 + arr)
+        peaks = np.maximum.accumulate(np.r_[1.0, wealth])[1:]
+        return {
+            "months": int(len(arr)),
+            "mean_monthly_return": finite(arr.mean()),
+            "median_monthly_return": finite(np.median(arr)),
+            "annualized_return": finite(wealth[-1] ** (12.0 / len(arr)) - 1.0) if np.all(1.0 + arr > 0) else None,
+            "annualized_volatility": finite(np.std(arr, ddof=1) * np.sqrt(12)) if len(arr) > 1 else None,
+            "sharpe": finite(arr.mean() / np.std(arr, ddof=1) * np.sqrt(12)) if len(arr) > 1 and np.std(arr, ddof=1) > 0 else None,
+            "max_drawdown": finite(np.min(wealth / peaks - 1.0)),
+            "positive_months_pct": finite(np.mean(arr > 0))
+        }
+
+    def hac_difference(values, baseline):
+        pairs = [(x, b) for x, b in zip(values, baseline)
+                 if x is not None and b is not None and np.isfinite(x) and np.isfinite(b)]
+        d = np.asarray([x-b for x,b in pairs], dtype=float)
+        n = len(d)
+        if n < 3:
+            return {"months": n, "mean_difference": finite(d.mean()) if n else None, "hac_t": None}
+        centered = d - d.mean()
+        # Monthly rebalance returns are nearly non-overlapping; two lags allow
+        # for small calendar/trading-day overlap without excessive truncation.
+        lag = min(2, n-1)
+        lrv = float(np.dot(centered, centered) / n)
+        for k in range(1, lag+1):
+            gamma = float(np.dot(centered[k:], centered[:-k]) / n)
+            lrv += 2.0 * (1.0-k/(lag+1.0)) * gamma
+        se = np.sqrt(max(lrv, 0.0)/n)
+        return {"months": n, "mean_difference": finite(d.mean()),
+                "positive_difference_pct": finite(np.mean(d > 0)),
+                "hac_lags": lag, "hac_t": finite(d.mean()/se) if se > 0 else None}
+
+    def summarize(rows, n):
+        result = {}
+        for model in models:
+            vals = [r["models"][model][f"top{n}"]["return"] for r in rows]
+            result[model] = metrics(vals)
+        result["equal_weight_universe"] = metrics([r["equal_weight"] for r in rows])
+        baseline = [r["models"]["roc21_model"][f"top{n}"]["return"] for r in rows]
+        result["paired_vs_roc21"] = {
+            model: hac_difference([r["models"][model][f"top{n}"]["return"] for r in rows], baseline)
+            for model in models if model != "roc21_model"
+        }
+        return result
+
+    development = [r for r in monthly if r["period"] <= development_end]
+    holdout = [r for r in monthly if r["period"] >= holdout_start]
+    subperiods = {}
+    for label, lo, hi in (("2020-2022", "2020-01", "2022-12"),
+                          ("2023-2026", "2023-01", "2026-12")):
+        sub = [r for r in holdout if lo <= r["period"] <= hi]
+        subperiods[label] = {"months": len(sub), "top3": summarize(sub, 3), "top5": summarize(sub, 5)}
+    return {
+        "status": "TEST CRONOLOGICO A REGOLE FISSE · HOLDOUT 2020-2026",
+        "requested_start": start_date, "development_period": f"{start_date[:7]}–{development_end}",
+        "holdout_period": holdout_start + "–ultimo mese con 21 sedute maturate",
+        "development_months": len(development), "holdout_months": len(holdout),
+        "top3_holdout": summarize(holdout, 3), "top5_holdout": summarize(holdout, 5),
+        "holdout_subperiods": subperiods,
+        "monthly_observations": monthly,
+        "pre_registered_rules": {
+            "roc21_model": "Rank cross-sectional ROC21.",
+            "momentum_3612": "Rank del momentum composito 40% ROC63 + 30% ROC126 + 30% ROC252.",
+            "medium_trend": "35% ROC63, 25% ROC126, 20% stabilità trend, 10% Alligator, 10% ADX direzionale.",
+            "momentum_filter": "70% momentum 3/6/12 + 30% trend medio; penalità fissa 0,15 se ROC5 e ROC10 sono entrambi negativi.",
+            "model_40": "50% momentum 3/6/12 + 30% trend medio + 20% segnale breve; penalità fissa 0,10 se ROC5 e ROC10 sono entrambi negativi.",
+            "selection": "Top3 e Top5; equiponderazione; una osservazione per geografia/mese.",
+            "no_optimization": "Pesi e regole fissati nel codice prima di osservare i risultati dell'holdout; nessun fit/retuning sull'holdout.",
+            "maturity": "Sono inclusi solo rendimenti forward 21 sedute effettivamente osservati e con future_date_1m successiva alla data di previsione.",
+            "limitations": "Holdout 2020+ non è più intatto se già consultato in precedenti esperimenti; rendimenti mensili possono avere lieve sovrapposizione; survivorship bias e proxy USA; esclusi costi, FX, spread, slippage e imposte. Test di ricerca, non garanzia predittiva."
+        }
+    }
+
+
 def factor_segment_validation(factor_universe, factor_frames, factor_indicators):
     """Separate walk-forward summaries by factor and geography, without mixing segments."""
     calculated_symbols = set(factor_indicators)
@@ -1604,6 +1759,10 @@ def main():
     historical_horizon_comparison = compare_one_month_signal_horizons(
         historical_indicators, historical_universe, start_date="2007-01-01"
     ) if historical_indicators else {"status": "DATI STORICI NON DISPONIBILI", "months": 0}
+    definitive_test = definitive_one_month_test(
+        historical_indicators, historical_universe, start_date="2007-01-01",
+        development_end="2019-12", holdout_start="2020-01"
+    ) if historical_indicators else {"status": "DATI STORICI NON DISPONIBILI", "holdout_months": 0}
     early_v2 = early_signal_validation(indicators, universe)
     learned_v2 = walk_forward_early_model(indicators, universe)
     candidate_v3 = compare_predictive_candidates(indicators, universe, start_date="2007-01-01")
@@ -1663,6 +1822,7 @@ def main():
         "predictive_v3_walk_forward": walk_forward_predictive_v3(indicators, universe, start_date="2007-01-01"),
         "historical_etf_crisis_test": historical_crisis_test,
         "one_month_horizon_comparison": historical_horizon_comparison,
+        "definitive_one_month_test": definitive_test,
         "factor_analysis":factor_analysis
     }
     OUT.write_text(json.dumps(output,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
@@ -1678,6 +1838,7 @@ def main():
     print("HISTORICAL_ETF_CRISIS_TEST_SUMMARY:", json.dumps(historical_log, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
     print("HISTORICAL_ETF_COVERAGE:", json.dumps(historical_coverage, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
     print("ONE_MONTH_HORIZON_COMPARISON:", json.dumps({k:v for k,v in historical_horizon_comparison.items() if k != "monthly_observations"}, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
+    print("DEFINITIVE_ONE_MONTH_TEST:", json.dumps({k:v for k,v in definitive_test.items() if k != "monthly_observations"}, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
     print("Output:",OUT)
 
 if __name__=="__main__":
