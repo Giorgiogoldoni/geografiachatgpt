@@ -1,6 +1,6 @@
 # Mappa tecnica del repository
 
-Ultimo controllo: 21 novembre 2026  
+Ultimo controllo: 21 novembre 2026 (manutenzione Radar e dismissione RAPTOR)  
 Branch esaminato: `main`  
 Commit di riferimento: `4d4bca3d498607e4c1d3337ad0dd447927ea5977`
 
@@ -10,7 +10,7 @@ Questo documento descrive le dipendenze rilevate nel repository. È una mappa di
 
 | Pagina | Ruolo / dati principali |
 |---|---|
-| `index.html` | Homepage UCITS; legge `ucits_geography.json` e `geografia-motore.json`; incorpora anche il Radar in iframe |
+| `index.html` | Homepage UCITS; legge `ucits_geography.json` e `geografia-motore.json`; rimanda alla pagina Radar dedicata senza incorporarla in iframe |
 | `radar-predittivo.html` | Radar Momentum + Ridge; legge `radar-predittivo.json` |
 | `geografia-motore.html` | Dashboard del motore geografico a sei aree; legge `geografia-motore.json` |
 | `geografia-aree.html` | Tassonomia dei sei moduli; legge `geografia-moduli.json` |
@@ -21,7 +21,7 @@ Questo documento descrive le dipendenze rilevate nel repository. È una mappa di
 | `portafogli-usa-euro.html` | Confronto portafogli; legge `world_top4_6040.json` e `euro_top4_6040.json` |
 | `world-top4.html` | Dashboard ricerca World Top 4; legge `world_top4.json` |
 | `etf-lifecycle.html` | Registro ciclo di vita ETF; usa `etf_lifecycle_registry.csv` e `geografia-motore.json` |
-| `raptor-geografia-legacy.html` | Vecchia dashboard RAPTOR, ancora raggiungibile dalla homepage |
+| `raptor-geografia-legacy.html` | Dashboard ritirata e rimossa dal sito; il sorgente storico è conservato solo nel repository fino a una successiva pulizia |
 | `index-legacy.html` | Copia di sicurezza della homepage; conservarla finché non sia verificato che non serve più |
 
 ## 2. Motori e flussi dati
@@ -94,7 +94,7 @@ La duplicazione del contenuto non rende intercambiabili i percorsi: workflow, sc
 
 - **Operativi**: `index.html`, `ucits_geography.py`, `ucits_geography.json`, `geografia_engine.py`, `geografia-motore.json`, `radar_predittivo_engine.py`, `radar-predittivo.json`, `bollettino_geografico.py` e i rispettivi workflow/output.
 - **Ricerca e validazione**: famiglia `world_top4*`, report di audit e ricerca, cataloghi factor, analisi ETF lifecycle e file storici di test.
-- **Legacy / storico ancora accessibile**: `raptor_geografia.py`, `raptor-geografia-legacy.html`, `geografia.json`, `data/charts/`, `data/signals/`, `index-legacy.html`.
+- **Legacy / archivio non operativo**: `raptor_geografia.py`, `geografia.json`, `data/charts/`, `data/signals/`, `index-legacy.html`. La vecchia pagina pubblica è stata rimossa e il workflow non è più attivo.
 
 Questa classificazione è funzionale, non una proposta di spostamento in cartelle: spostare file può rompere GitHub Pages, workflow, link e percorsi relativi.
 
@@ -108,7 +108,7 @@ Questa classificazione è funzionale, non una proposta di spostamento in cartell
 
 ## 6. Workflow presenti
 
-- `.github/workflows/update.yml`
+- `.github/workflows/update.yml` — ritirato, conservato nell'archivio Git (non più presente nel branch operativo)
 - `.github/workflows/ucits-geography.yml`
 - `.github/workflows/geografia-engine.yml`
 - `.github/workflows/radar-predittivo.yml`
