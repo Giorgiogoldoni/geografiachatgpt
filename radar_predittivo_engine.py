@@ -1326,6 +1326,131 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
 
 
 
+
+def compare_one_month_signal_horizons(indicators, universe, start_date="2007-01-01"):
+    """Compare short-horizon, medium-trend and hybrid rankings for the next 21 sessions."""
+    panel = build_monthly_panel(indicators, universe)
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "months": 0, "models": {}}
+    panel = panel[panel["date"] >= pd.Timestamp(start_date)].copy()
+    panel["directional_adx"] = panel["adx14"] * np.sign(panel["vortex_spread"])
+    panel["geography"] = panel["geography"].fillna("").astype(str).str.strip()
+    panel.loc[panel["geography"] == "", "geography"] = panel.loc[panel["geography"] == "", "symbol"]
+    needed = ["roc5", "roc10", "roc21", "roc63", "roc126", "kama_slope5",
+              "trend_stability_21", "alligator_bull", "directional_adx",
+              "volatility_68", "composite_momentum", "1m"]
+    panel = panel.dropna(subset=needed).copy()
+    if panel.empty:
+        return {"status": "DATI INSUFFICIENTI", "months": 0, "models": {}}
+    panel = panel.groupby(["period", "geography"], as_index=False).agg(
+        date=("date", "max"), future_date_1m=("future_date_1m", "max"),
+        **{c: (c, "mean") for c in needed}
+    )
+    rank_cols = ["roc5", "roc10", "roc21", "roc63", "roc126", "kama_slope5",
+                 "trend_stability_21", "directional_adx", "volatility_68",
+                 "composite_momentum"]
+    for col in rank_cols:
+        panel["rank_" + col] = panel.groupby("period")[col].rank(pct=True)
+    panel["rank_alligator"] = panel.groupby("period")["alligator_bull"].rank(pct=True)
+    panel["rank_low_vol"] = 1.0 - panel["rank_volatility_68"]
+    panel["short_signal"] = (
+        0.20 * panel["rank_roc5"] + 0.20 * panel["rank_roc10"] +
+        0.25 * panel["rank_roc21"] + 0.20 * panel["rank_kama_slope5"] +
+        0.15 * panel["rank_roc10"].where(panel["roc10"] > panel["roc21"], 0.0)
+    )
+    panel["medium_confirmation"] = (
+        0.35 * panel["rank_roc63"] + 0.25 * panel["rank_roc126"] +
+        0.20 * panel["rank_trend_stability_21"] +
+        0.10 * panel["rank_alligator"] + 0.10 * panel["rank_directional_adx"]
+    )
+    panel["hybrid_signal"] = 0.70 * panel["short_signal"] + 0.30 * panel["medium_confirmation"]
+    panel["roc21_baseline"] = panel["rank_roc21"]
+    panel["momentum_3_6_12"] = panel["rank_composite_momentum"]
+    names = ["short_signal", "medium_confirmation", "hybrid_signal",
+             "roc21_baseline", "momentum_3_6_12"]
+    monthly = []
+    for period, group in panel.groupby("period", sort=True):
+        if len(group) < 5:
+            continue
+        n = min(3, len(group))
+        row = {"period": str(period), "date": group["date"].max().strftime("%Y-%m-%d"),
+               "geographies": int(len(group)), "top3": {}}
+        for name in names:
+            chosen = group.nlargest(n, name)
+            row["top3"][name] = {
+                "return": finite(chosen["1m"].mean()),
+                "hit_rate": finite((chosen["1m"] > 0).mean()),
+                "selected": chosen["geography"].astype(str).tolist()
+            }
+        row["benchmark"] = finite(group["1m"].mean())
+        monthly.append(row)
+    if not monthly:
+        return {"status": "DATI INSUFFICIENTI", "months": 0, "models": {}}
+    def stats(values):
+        arr = np.asarray([v for v in values if v is not None and np.isfinite(v)], dtype=float)
+        if not len(arr):
+            return {"months": 0}
+        wealth = np.cumprod(1.0 + arr)
+        peaks = np.maximum.accumulate(np.r_[1.0, wealth])[1:]
+        return {
+            "months": int(len(arr)), "mean_monthly_return": finite(arr.mean()),
+            "median_monthly_return": finite(np.median(arr)),
+            "annualized_return": finite(wealth[-1] ** (12.0 / len(arr)) - 1.0) if np.all(1.0 + arr > 0) else None,
+            "annualized_volatility": finite(np.std(arr, ddof=1) * np.sqrt(12)) if len(arr) > 1 else None,
+            "sharpe": finite(arr.mean() / np.std(arr, ddof=1) * np.sqrt(12)) if len(arr) > 1 and np.std(arr, ddof=1) > 0 else None,
+            "max_drawdown": finite(np.min(wealth / peaks - 1.0)),
+            "positive_months_pct": finite(np.mean(arr > 0))
+        }
+    def hac(values):
+        arr = np.asarray([v for v in values if v is not None and np.isfinite(v)], dtype=float)
+        n = len(arr)
+        if n < 3:
+            return {"months": n, "mean_difference": finite(arr.mean()) if n else None, "hac_t": None}
+        centered = arr - arr.mean()
+        lag = min(20, n - 1)
+        lrv = float(np.dot(centered, centered) / n)
+        for k in range(1, lag + 1):
+            gamma = float(np.dot(centered[k:], centered[:-k]) / n)
+            lrv += 2.0 * (1.0 - k / (lag + 1.0)) * gamma
+        se = np.sqrt(max(lrv, 0.0) / n)
+        return {"months": n, "mean_difference": finite(arr.mean()),
+                "positive_pct": finite(np.mean(arr > 0)), "hac_lags": lag,
+                "hac_t": finite(arr.mean() / se) if se > 0 else None}
+    models = {name: stats([r["top3"][name]["return"] for r in monthly]) for name in names}
+    models["equal_weight_universe"] = stats([r["benchmark"] for r in monthly])
+    paired = {
+        name: hac([r["top3"][name]["return"] - r["top3"]["roc21_baseline"]["return"]
+                   for r in monthly if r["top3"][name]["return"] is not None and
+                   r["top3"]["roc21_baseline"]["return"] is not None])
+        for name in names if name != "roc21_baseline"
+    }
+    slices = {}
+    for label, lo, hi in (("2007-2009", "2007-01", "2009-12"),
+                          ("2010-2012", "2010-01", "2012-12"),
+                          ("2013-2019", "2013-01", "2019-12"),
+                          ("2020-2022", "2020-01", "2022-12"),
+                          ("2023-2026", "2023-01", "2026-12")):
+        subset = [r for r in monthly if lo <= r["period"] <= hi]
+        slices[label] = {"months": len(subset), "models": {
+            name: stats([r["top3"][name]["return"] for r in subset]) for name in names
+        }}
+    return {
+        "status": "CONFRONTO POINT-IN-TIME · PREVISIONE 21 SEDUTE · TOP 3",
+        "from": monthly[0]["period"], "to": monthly[-1]["period"], "months": len(monthly),
+        "portfolio_size": 3, "models": models, "paired_vs_roc21": paired,
+        "subperiods": slices, "monthly_observations": monthly,
+        "definitions": {
+            "short_signal": "ROC 5/10/21 sedute e pendenza KAMA breve; solo dati disponibili a fine mese.",
+            "medium_confirmation": "ROC 63/126 sedute, stabilità trend, Alligator e ADX direzionale.",
+            "hybrid_signal": "70% segnale breve + 30% conferma intermedia.",
+            "benchmarks": "ROC21 puro e momentum composito 3/6/12 mesi.",
+            "target": "Rendimento totale delle successive 21 sedute di Borsa.",
+            "selection": "Top 3 geografie; una osservazione equiponderata per geografia e mese.",
+            "caveats": "Rendimenti forward sovrapposti; proxy ETF storici e survivorship bias; costi/FX/slippage esclusi; test esplorativo."
+        }
+    }
+
+
 def factor_segment_validation(factor_universe, factor_frames, factor_indicators):
     """Separate walk-forward summaries by factor and geography, without mixing segments."""
     calculated_symbols = set(factor_indicators)
@@ -1476,6 +1601,9 @@ def main():
     historical_crisis_test["price_source"] = "Yahoo Finance adjusted daily OHLC; actual ETF price observations only; no index backfill."
     historical_crisis_test["universe_type"] = "US-listed long-lived country ETFs used as historical geographic proxies; not UCITS share classes."
     historical_crisis_test["coverage"] = historical_coverage
+    historical_horizon_comparison = compare_one_month_signal_horizons(
+        historical_indicators, historical_universe, start_date="2007-01-01"
+    ) if historical_indicators else {"status": "DATI STORICI NON DISPONIBILI", "months": 0}
     early_v2 = early_signal_validation(indicators, universe)
     learned_v2 = walk_forward_early_model(indicators, universe)
     candidate_v3 = compare_predictive_candidates(indicators, universe, start_date="2007-01-01")
@@ -1534,6 +1662,7 @@ def main():
         "predictive_v3": candidate_v3,
         "predictive_v3_walk_forward": walk_forward_predictive_v3(indicators, universe, start_date="2007-01-01"),
         "historical_etf_crisis_test": historical_crisis_test,
+        "one_month_horizon_comparison": historical_horizon_comparison,
         "factor_analysis":factor_analysis
     }
     OUT.write_text(json.dumps(output,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
@@ -1548,6 +1677,7 @@ def main():
     historical_log.pop("coverage", None)
     print("HISTORICAL_ETF_CRISIS_TEST_SUMMARY:", json.dumps(historical_log, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
     print("HISTORICAL_ETF_COVERAGE:", json.dumps(historical_coverage, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
+    print("ONE_MONTH_HORIZON_COMPARISON:", json.dumps({k:v for k,v in historical_horizon_comparison.items() if k != "monthly_observations"}, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
     print("Output:",OUT)
 
 if __name__=="__main__":
