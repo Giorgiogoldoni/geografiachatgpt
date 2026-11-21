@@ -9,7 +9,7 @@ header{background:#14243b;color:white;padding:20px 16px}header>div,main{max-widt
 a{color:var(--blue)}footer{max-width:900px;margin:auto;padding:8px 14px 28px;color:var(--muted);font-size:11px}
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}.grid3 ul{padding-left:18px}.grid3 li{margin:5px 0}.buy{color:#16794b}.hold{color:#9a6700}.sell{color:#b42318}@media(max-width:620px){.grid3{grid-template-columns:1fr}}\n</style></head><body>
 <header><div><h1>📰 News · risultati dei motori</h1><p><a href="./index.html">← Homepage</a></p></div></header>
-<main><p class="muted">Riepilogo automatico dei dati pubblicati. Ogni scheda mostra la data dei prezzi e l'ora di generazione quando presenti nei file del motore.</p><div id="news"><p>Caricamento risultati…</p></div></main>
+<main><p class="muted">Riepilogo automatico dei dati pubblicati. Ogni scheda mostra la data dei prezzi e l'ora di generazione quando presenti nei file del motore.</p><section class="card"><div class="top"><div><h2>Quadrante Momentum × Predictor Ridge</h2><div class="date">Ranking Ridge 3.0 · orizzonte un mese · soglia mediana 50/100</div></div><button id="downloadQuadrant" style="border:0;border-radius:8px;background:#2459a6;color:#fff;padding:10px 14px;font-weight:700;cursor:pointer">Scarica quadrante Excel</button></div><p class="muted">File con quadrante 2×2, tabella completa degli ETF e metodo di lettura. I dati vengono riletti dai motori al momento dello scaricamento.</p><div id="exportStatus" class="muted"></div></section><div id="news"><p>Caricamento risultati…</p></div></main>
 <footer>Aggiornamento automatico alla pubblicazione dei JSON. Una data più vecchia indica che il relativo motore non ha ancora prodotto un nuovo aggiornamento.</footer>
 <script>
 const $=id=>document.getElementById(id), esc=s=>String(s??"—").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -43,5 +43,77 @@ async function load(){
  try{const d=await get("euro_top4_6040.json"),p=d.current_composition||{},h=p.holdings||[];portfolio=section("Portafoglio EURO 60/40 · mantenere",'<p><b>Composizione modello:</b></p><ul>'+h.map(x=>'<li><b>'+esc(x.ticker)+'</b> · '+esc(x.role)+' · '+pct(x.weight)+'</li>').join("")+'</ul><p class="muted">Segnale '+date(p.signal_date)+' · valido '+date(p.effective_from)+' – '+date(p.effective_to)+'</p>',"Prezzi al "+date(d.latest_price_date)+" · generato "+date(d.generated_at))}catch(e){}
  $("news").innerHTML=predictor+out.join("")+portfolio;
 }
+
+async function loadSheetJS(){
+ if(window.XLSX)return;
+ await new Promise((resolve,reject)=>{
+  const s=document.createElement("script");
+  s.src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js";
+  s.onload=resolve;s.onerror=()=>reject(Error("Libreria Excel non raggiungibile"));
+  document.head.appendChild(s);
+ });
+}
+async function exportQuadrant(){
+ const btn=$("downloadQuadrant"),status=$("exportStatus");
+ btn.disabled=true;btn.textContent="Preparazione…";status.textContent="Lettura ranking aggiornato…";
+ try{
+  await loadSheetJS();
+  const d=await get("radar-predittivo.json");
+  const wf=d.predictive_v3_walk_forward||{}, rows=wf.latest_ranking||[];
+  if(!rows.length)throw Error("Classifica Ridge 3.0 non disponibile");
+  const data=rows.map(x=>({
+   Geografia:x.geography||"",ETF:x.name||"",Ticker:(x.tickers||[x.ticker]).filter(Boolean).join(", "),
+   "Momentum 3/6/12 (score)":Number(x.momentum_3612_score_100),
+   "Predictor Ridge (score)":Number(x.ridge_score_100),
+   "Extra-rendimento previsto":Number(x.predicted_excess),
+   "ROC 21 sedute (%)":Number(x.roc21),
+   "Rank Momentum":Number(x.momentum_3612_rank),
+   "Rank Ridge":Number(x.ridge_rank),
+   "Stabilizzazione (score)":Number(x.stabilization_score_100)
+  }));
+  const groups=[
+   data.filter(x=>x["Predictor Ridge (score)"]>=50&&x["Momentum 3/6/12 (score)"]<50),
+   data.filter(x=>x["Predictor Ridge (score)"]>=50&&x["Momentum 3/6/12 (score)"]>=50),
+   data.filter(x=>x["Predictor Ridge (score)"]<50&&x["Momentum 3/6/12 (score)"]<50),
+   data.filter(x=>x["Predictor Ridge (score)"]<50&&x["Momentum 3/6/12 (score)"]>=50)
+  ];
+  const q=[
+   ["QUADRANTE MOMENTUM × PREDICTOR RIDGE 3.0"],
+   ["Prezzi al "+(d.latest_price_date||"n.d.")+" · classifica "+(wf.latest_ranking_date||wf.latest_ranking_period||"n.d.")+" · soglia: 50/100"],[],
+   ["RIDGE FORTE · MOMENTUM DEBOLE","","RIDGE FORTE · MOMENTUM FORTE"]
+  ];
+  for(let i=0;i<Math.max(1,groups[0].length,groups[1].length);i++){
+   q.push([groups[0][i]?groups[0][i].Geografia+" ("+groups[0][i].Ticker+")":"", "", groups[1][i]?groups[1][i].Geografia+" ("+groups[1][i].Ticker+")":""]);
+  }
+  q.push([],["RIDGE DEBOLE · MOMENTUM DEBOLE","","RIDGE DEBOLE · MOMENTUM FORTE"]);
+  for(let i=0;i<Math.max(1,groups[2].length,groups[3].length);i++){
+   q.push([groups[2][i]?groups[2][i].Geografia+" ("+groups[2][i].Ticker+")":"", "", groups[3][i]?groups[3][i].Geografia+" ("+groups[3][i].Ticker+")":""]);
+  }
+  const wb=XLSX.utils.book_new(), wsq=XLSX.utils.aoa_to_sheet(q);
+  wsq["!cols"]=[{wch:43},{wch:4},{wch:43}];
+  wsq["!merges"]=[{s:{r:0,c:0},e:{r:0,c:2}},{s:{r:1,c:0},e:{r:1,c:2}}];
+  XLSX.utils.book_append_sheet(wb,wsq,"Quadrante");
+  const wsd=XLSX.utils.json_to_sheet(data);
+  wsd["!cols"]=[{wch:20},{wch:38},{wch:22},{wch:22},{wch:22},{wch:24},{wch:20},{wch:16},{wch:12},{wch:20}];
+  XLSX.utils.book_append_sheet(wb,wsd,"Tutti gli ETF");
+  const method=[
+   ["METODO E LETTURA"],
+   ["Asse orizzontale","Momentum 3/6/12: percentile 0–100; >=50 = metà superiore dell'universo."],
+   ["Asse verticale","Predictor Ridge 3.0: percentile 0–100; >=50 = metà superiore dell'universo."],
+   ["Extra-rendimento","Stima relativa a un mese, non una probabilità."],
+   ["ROC21","Variazione percentuale sulle ultime 21 sedute."],
+   ["Data prezzi",d.latest_price_date||"n.d."],
+   ["Data classifica",wf.latest_ranking_date||wf.latest_ranking_period||"n.d."],
+   ["Nota","Strumento di confronto, non ordine automatico di acquisto o vendita."]
+  ];
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(method),"Metodo");
+  const tag=(wf.latest_ranking_date||d.latest_price_date||"oggi").replace(/-/g,"");
+  XLSX.writeFile(wb,"Quadrante_Momentum_Ridge_"+tag+".xlsx");
+  status.textContent="Excel pronto · "+data.length+" ETF · dati aggiornati.";
+ }catch(e){status.textContent="Esportazione non riuscita: "+e.message}
+ finally{btn.disabled=false;btn.textContent="Scarica quadrante Excel"}
+}
+document.getElementById("downloadQuadrant").addEventListener("click",exportQuadrant);
+
 load();
 </script></body></html>
