@@ -987,6 +987,59 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 "hac_lags": lag,
                 "hac_t_stat": finite(arr.mean() / se) if se > 0 else None}
 
+    # Historical point-in-time diagnosis of Ridge disagreements with price momentum.
+    pred["rank_momentum_3612"] = pred.groupby("period")["composite_momentum"].rank(pct=True)
+    pred["rank_roc21"] = pred.groupby("period")["roc21"].rank(pct=True)
+    pred["realized_excess_vs_universe"] = (
+        pred["realized_return"] -
+        pred.groupby("period")["realized_return"].transform("mean")
+    )
+    ridge_top = pred["rank_ridge_prediction"] >= 0.75
+    ridge_bottom = pred["rank_ridge_prediction"] <= 0.25
+    momentum_top = pred["rank_momentum_3612"] >= 0.75
+    momentum_bottom = pred["rank_momentum_3612"] <= 0.25
+    roc21_top = pred["rank_roc21"] >= 0.75
+    roc21_bottom = pred["rank_roc21"] <= 0.25
+
+    def divergence_bucket_stats(mask):
+        sample = pred.loc[mask].copy().sort_values(["period", "geography"])
+        if sample.empty:
+            return {"observations": 0, "months": 0}
+        returns = sample["realized_return"].to_numpy(dtype=float)
+        excess = sample["realized_excess_vs_universe"].to_numpy(dtype=float)
+        return {
+            "observations": int(len(sample)),
+            "months": int(sample["period"].nunique()),
+            "mean_forward_21d_return": finite(np.mean(returns)),
+            "median_forward_21d_return": finite(np.median(returns)),
+            "positive_forward_return_pct": finite(np.mean(returns > 0)),
+            "mean_excess_vs_universe": finite(np.mean(excess)),
+            "positive_excess_vs_universe_pct": finite(np.mean(excess > 0)),
+            "worst_forward_21d_return": finite(np.min(returns)),
+            "geographies": sample["geography"].value_counts().head(12).to_dict()
+        }
+
+    historical_divergence_diagnostics = {
+        "status": "WALK-FORWARD · SOLO PREVISIONI CON ETICHETTA A 21 SEDUTE MATURATA",
+        "thresholds": {
+            "high_rank": "quartile superiore cross-sectional (percentile >= 0.75)",
+            "low_rank": "quartile inferiore cross-sectional (percentile <= 0.25)",
+            "price_shock": "ROC21 <= -10% oppure <= -15%",
+            "returns": "Rendimento effettivo successivo a 21 sedute; excess rispetto alla media equiponderata delle geografie dello stesso mese."
+        },
+        "buckets": {
+            "ridge_top_momentum_bottom": divergence_bucket_stats(ridge_top & momentum_bottom),
+            "ridge_top_roc21_bottom": divergence_bucket_stats(ridge_top & roc21_bottom),
+            "ridge_top_momentum_and_roc21_bottom": divergence_bucket_stats(ridge_top & momentum_bottom & roc21_bottom),
+            "ridge_top_after_roc21_drop_10pct": divergence_bucket_stats(ridge_top & (pred["roc21"] <= -10.0)),
+            "ridge_top_after_roc21_drop_15pct": divergence_bucket_stats(ridge_top & (pred["roc21"] <= -15.0)),
+            "momentum_top_ridge_bottom": divergence_bucket_stats(momentum_top & ridge_bottom),
+            "both_top": divergence_bucket_stats(ridge_top & momentum_top),
+            "both_bottom": divergence_bucket_stats(ridge_bottom & momentum_bottom)
+        },
+        "interpretation": "Rendimenti forward, non probabilità. Osservazioni geografia-mese; rendimenti a 21 sedute potenzialmente sovrapposti, test esplorativo."
+    }
+
     for strategy in strategies:
         summary[strategy] = {}
         for count in (3, 5, 10):
@@ -1136,6 +1189,20 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         live["momentum_score_100"] = live["composite_momentum"].rank(pct=True) * 100.0
         live["ridge_rank"] = live["predicted_excess"].rank(ascending=False, method="min").astype(int)
         live["momentum_rank"] = live["composite_momentum"].rank(ascending=False, method="min").astype(int)
+        latest_ridge_feature_contributions = []
+        for _, live_row in live.iterrows():
+            centered_features = live_row[features].to_numpy(dtype=float) - x_mean
+            contributions = centered_features * coef
+            latest_ridge_feature_contributions.append({
+                "symbol": live_row["symbol"],
+                "geography": live_row.get("geography", ""),
+                "predicted_excess": finite(live_row["predicted_excess"]),
+                "training_mean_component": finite(y_mean),
+                "feature_contributions": {
+                    feature: finite(value) for feature, value in zip(features, contributions)
+                },
+                "contribution_sum_check": finite(y_mean + float(np.sum(contributions)))
+            })
         latest = live.dropna(subset=["predicted_excess", "composite_momentum"]).sort_values(
             "predicted_excess", ascending=False
         )
@@ -1357,6 +1424,8 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         "latest_training_observations": int(len(live_prior)),
         "latest_ranking_status": "CALCOLATA" if latest_ranking else "DATI INSUFFICIENTI",
         "latest_ranking": latest_ranking,
+        "latest_ridge_feature_contributions": latest_ridge_feature_contributions if live_fit is not None else [],
+        "historical_divergence_diagnostics": historical_divergence_diagnostics,
         "latest_etf_comparison_status": "CALCOLATA" if latest_etf_comparison else "DATI INSUFFICIENTI",
         "latest_etf_comparison_count": len(latest_etf_comparison),
         "latest_etf_comparison": latest_etf_comparison,
