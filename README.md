@@ -2,6 +2,8 @@
 
 Dashboard e motore di rotazione geografica per ETF UCITS quotati in Europa. La precedente dashboard RAPTOR è conservata in `raptor-geografia-legacy.html`.
 
+> **Mappa tecnica del repository:** [ARCHITETTURA_REPOSITORY.md](./ARCHITETTURA_REPOSITORY.md) — flussi dati, motori, dashboard, workflow e file duplicati. Nessun file operativo viene spostato o rimosso.
+
 ## 📐 Regole operative
 
 ### ENTRATA (tutte e 7 soddisfatte)
