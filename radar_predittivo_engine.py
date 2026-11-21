@@ -846,7 +846,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         **{col: (col, "mean") for col in (
             "1m", "roc21", "roc63", "roc126", "kama_slope21",
             "trend_stability_21", "alligator_bull", "directional_adx",
-            "volatility_68", "composite_momentum"
+            "volatility_68", "composite_momentum", "roc5", "roc10", "kama_slope5"
         )}
     )
     raw_features = ["roc21", "roc63", "roc126", "kama_slope21",
@@ -855,6 +855,17 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
     for col in raw_features:
         panel["rank_" + col] = panel.groupby("period")[col].rank(pct=True)
     panel["rank_low_volatility"] = 1.0 - panel["rank_volatility_68"]
+    # Point-in-time stabilization: ROC deceleration and improving short KAMA slope.
+    panel["acceleration_5_10"] = panel["roc5"] - panel["roc10"]
+    panel["acceleration_10_21"] = panel["roc10"] - panel["roc21"]
+    panel["rank_acceleration_5_10"] = panel.groupby("period")["acceleration_5_10"].rank(pct=True)
+    panel["rank_acceleration_10_21"] = panel.groupby("period")["acceleration_10_21"].rank(pct=True)
+    panel["rank_kama_slope5"] = panel.groupby("period")["kama_slope5"].rank(pct=True)
+    panel["stabilization_score"] = (
+        0.40 * panel["rank_acceleration_5_10"]
+        + 0.35 * panel["rank_acceleration_10_21"]
+        + 0.25 * panel["rank_kama_slope5"]
+    )
     features = ["rank_roc21", "rank_roc63", "rank_roc126",
                 "rank_kama_slope21", "rank_trend_stability_21",
                 "rank_alligator_bull", "rank_directional_adx",
@@ -919,7 +930,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         )
         current["realized_return"] = current["1m"]
         predictions.append(current[["period", "date", "future_date_1m", "symbol", "geography", "predicted_excess",
-                                    "realized_return", "roc21", "composite_momentum"]])
+                                    "realized_return", "roc21", "composite_momentum", "stabilization_score"]])
 
     if not predictions:
         return {"status": "DATI INSUFFICIENTI · TRAINING MATURATO NON SUFFICIENTE",
@@ -931,6 +942,8 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
     # transparent ROC21 baseline. Percentile ranks avoid scale mismatch.
     pred["rank_ridge_prediction"] = pred.groupby("period")["predicted_excess"].rank(pct=True)
     pred["rank_roc21_baseline"] = pred.groupby("period")["roc21"].rank(pct=True)
+    pred["rank_stabilization"] = pred.groupby("period")["stabilization_score"].rank(pct=True)
+    pred["blend_ridge_stabilization_70_30"] = 0.70 * pred["rank_ridge_prediction"] + 0.30 * pred["rank_stabilization"]
     pred["blend_ridge_25_roc21_75"] = 0.25 * pred["rank_ridge_prediction"] + 0.75 * pred["rank_roc21_baseline"]
     pred["blend_ridge_50_roc21_50"] = 0.50 * pred["rank_ridge_prediction"] + 0.50 * pred["rank_roc21_baseline"]
     pred["blend_ridge_75_roc21_25"] = 0.75 * pred["rank_ridge_prediction"] + 0.25 * pred["rank_roc21_baseline"]
@@ -938,7 +951,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
     rows = []
     strategies = ("ridge", "roc21", "blend_ridge_25_roc21_75",
                   "blend_ridge_50_roc21_50", "blend_ridge_75_roc21_25",
-                  "momentum_3_6_12", "benchmark")
+                  "blend_ridge_stabilization_70_30", "momentum_3_6_12", "benchmark")
     for period, group in pred.groupby("period", sort=True):
         benchmark = finite(group["realized_return"].mean())
         item = {"period": str(period), "forecast_date": group["date"].max().strftime("%Y-%m-%d"),
@@ -952,6 +965,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 "blend_ridge_25_roc21_75": group.nlargest(n, "blend_ridge_25_roc21_75"),
                 "blend_ridge_50_roc21_50": group.nlargest(n, "blend_ridge_50_roc21_50"),
                 "blend_ridge_75_roc21_25": group.nlargest(n, "blend_ridge_75_roc21_25"),
+                "blend_ridge_stabilization_70_30": group.nlargest(n, "blend_ridge_stabilization_70_30"),
                 "momentum_3_6_12": group.nlargest(n, "composite_momentum"),
                 "benchmark": group
             }
@@ -1187,6 +1201,11 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         # its score is mapped to each ETF listing belonging to that geography.
         live["ridge_score_100"] = live["predicted_excess"].rank(pct=True) * 100.0
         live["momentum_score_100"] = live["composite_momentum"].rank(pct=True) * 100.0
+        live["stabilization_score_100"] = live["stabilization_score"].rank(pct=True) * 100.0
+        live["ridge_stabilization_score_100"] = (
+            0.70 * live["predicted_excess"].rank(pct=True)
+            + 0.30 * live["stabilization_score"].rank(pct=True)
+        ) * 100.0
         live["ridge_rank"] = live["predicted_excess"].rank(ascending=False, method="min").astype(int)
         live["momentum_rank"] = live["composite_momentum"].rank(ascending=False, method="min").astype(int)
         latest_ridge_feature_contributions = []
@@ -1218,6 +1237,8 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 "ridge_rank": int(row["ridge_rank"]),
                 "predicted_excess": finite(row["predicted_excess"]),
                 "momentum_3612_score_100": finite(row["momentum_score_100"]),
+                "stabilization_score_100": finite(row["stabilization_score_100"]),
+                "ridge_stabilization_score_100": finite(row["ridge_stabilization_score_100"]),
                 "momentum_3612_rank": int(row["momentum_rank"]),
                 "roc21": finite(row["roc21"]),
                 "composite_momentum": finite(row["composite_momentum"])
@@ -1234,6 +1255,8 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 "name": m.get("name", symbol),
                 "geography": geo_row.get("geography", ""),
                 "momentum_3612_score_100": geo_row.get("momentum_3612_score_100"),
+                "stabilization_score_100": geo_row.get("stabilization_score_100"),
+                "ridge_stabilization_score_100": geo_row.get("ridge_stabilization_score_100"),
                 "momentum_3612_rank": geo_row.get("momentum_3612_rank"),
                 "ridge_score_100": geo_row.get("ridge_score_100"),
                 "ridge_rank": geo_row.get("ridge_rank"),
@@ -1432,6 +1455,8 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         "latest_score_definitions": {
             "momentum_3612_score_100": "Percentile cross-sectional 0-100 del composito 40% ROC63 + 30% ROC126 + 30% ROC252.",
             "ridge_score_100": "Percentile cross-sectional 0-100 della previsione Ridge di extra-rendimento geografico a 21 sedute, stimata solo su etichette già mature.",
+            "stabilization_score_100": "Percentile 0-100 di accelerazione ROC a 5/10 e 10/21 sedute e pendenza KAMA a 5 sedute.",
+            "ridge_stabilization_score_100": "Punteggio combinato 70% Ridge + 30% stabilizzazione, entrambi percentili cross-sectional.",
             "important": "I punteggi sono relativi all'universo disponibile alla data dello snapshot, non probabilità di rendimento. Ridge è stimato per geografia e replicato sui listing ETF della stessa geografia; gli ETF della stessa geografia possono quindi avere punteggi identici."
         },
         "monthly_observations": rows,
