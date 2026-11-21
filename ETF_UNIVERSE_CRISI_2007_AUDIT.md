@@ -2,47 +2,73 @@
 
 Aggiornamento: 21 novembre 2026.
 
-## Criterio
+## Obiettivo e separazione dei campioni
 
-Per il backtest si distingue fra:
-- data di lancio del fondo/classe;
-- prima osservazione effettiva della serie prezzi usata dal motore;
-- data da cui lo strumento può entrare nel ranking point-in-time.
+Il test storico della crisi 2007-2009 usa un campione dedicato di ETF azionari geografici quotati negli Stati Uniti, con data di lancio anteriore al 2007 e prezzi adjusted giornalieri reali. Sono ETF effettivamente negoziati, non indici ricostruiti; tuttavia **non sono le classi UCITS europee** del radar operativo. Sono proxy geografici storici, scelti perché le serie UCITS attualmente scaricate dal registro non arrivano al 2005-2006.
 
-La data di lancio da sola non autorizza a ricostruire prezzi precedenti alla prima osservazione disponibile. Le serie devono essere scaricate e verificate prima del calcolo. Nessun ETF viene retrodatato.
+Il campione operativo UCITS resta separato e non viene modificato da questo test. I risultati storici non vanno trasferiti automaticamente ai ticker UCITS o a un portafoglio in EUR.
 
-## Shortlist storica verificata nel registro corrente
+## Universo storico selezionato
 
-| Simbolo dati | ISIN | ETF / esposizione | Lancio fondo | Prima osservazione prezzi registrata | Esito |
-|---|---|---|---:|---:|---|
-| EXS1.DE | DE0005933931 | iShares Core DAX / Germania | 27/12/2000 | 02/01/2008 | Selezionato dal primo prezzo effettivo |
-| DJE.PA | FR0007056841 | Amundi Dow Jones Industrial Average / USA | 04/04/2001 | 02/01/2008 | Selezionato dal primo prezzo effettivo |
-| IAEX.AS | IE00B0M62Y33 | iShares AEX / Paesi Bassi | 18/11/2005 | 02/01/2008 | Selezionato dal primo prezzo effettivo |
-| IBZL.MI | IE00B0M63516 | iShares MSCI Brazil / Brasile | 18/11/2005 | 02/01/2008 | Selezionato dal primo prezzo effettivo |
-| IAPD.MI | IE00B14X4T88 | iShares Asia Pacific Dividend / Asia-Pacifico | 02/06/2006 | 02/01/2008 | Selezionato dal primo prezzo effettivo |
-| IQQ5.DE | IE00B1FZS574 | iShares MSCI Turkey / Turchia | 03/11/2006 | 22/12/2008 | Selezionato dal primo prezzo effettivo; entra più tardi |
-| XSMI.MI | LU0274221281 | Xtrackers Switzerland / Svizzera | 22/01/2007 | 02/01/2008 | Selezionato dal primo prezzo effettivo |
-| IMIB.MI | IE00B1XNH568 | iShares FTSE MIB / Italia | 06/07/2007 | 02/01/2008 | Selezionato dal primo prezzo effettivo |
-| LTAM.MI | IE00B27YCK28 | iShares MSCI EM Latin America / America Latina | 15/10/2007 | 18/03/2008 | Selezionato dal primo prezzo effettivo; entra più tardi |
+File sorgente: `data/historical_country_etfs_2007.csv`.
 
-Le date di lancio sono quelle del registro ETF_LIFECYCLE_AUDIT.md; le prime osservazioni sono quelle restituite dal download prezzi del motore e conservate in etf_lifecycle_registry.csv.
+Sono stati selezionati ETF iShares country-specific con lunga storia, più SPY come mercato USA:
 
-## Esclusioni e cautele
+| Ticker | Area | ETF | Lancio |
+|---|---|---|---:|
+| SPY | Stati Uniti | SPDR S&P 500 ETF Trust | 1993 |
+| EWA | Australia | iShares MSCI Australia | 1996 |
+| EWC | Canada | iShares MSCI Canada | 1996 |
+| EWD | Svezia | iShares MSCI Sweden | 1996 |
+| EWG | Germania | iShares MSCI Germany | 1996 |
+| EWH | Hong Kong | iShares MSCI Hong Kong | 1996 |
+| EWI | Italia | iShares MSCI Italy | 1996 |
+| EWJ | Giappone | iShares MSCI Japan | 1996 |
+| EWL | Svizzera | iShares MSCI Switzerland | 1996 |
+| EWM | Malaysia | iShares MSCI Malaysia | 1996 |
+| EWN | Paesi Bassi | iShares MSCI Netherlands | 1996 |
+| EWO | Austria | iShares MSCI Austria | 1996 |
+| EWP | Spagna | iShares MSCI Spain | 1996 |
+| EWQ | Francia | iShares MSCI France | 1996 |
+| EWS | Singapore | iShares MSCI Singapore | 1996 |
+| EWU | Regno Unito | iShares MSCI United Kingdom | 1996 |
+| EWW | Messico | iShares MSCI Mexico | 1996 |
+| EWK | Belgio | iShares MSCI Belgium | 1996 |
+| EWT | Taiwan | iShares MSCI Taiwan | 2000 |
+| EWY | Corea del Sud | iShares MSCI South Korea | 2000 |
+| EWZ | Brasile | iShares MSCI Brazil | 2000 |
+| FXI | Cina | iShares China Large-Cap | 2004 |
 
-- C40.PA non viene incluso nella shortlist principale: la prima NAV del fondo è del 2003, ma la classe oggi identificata è stata creata nel 2018. Non si deve confondere la storia del fondo con quella della classe.
-- I fondi factor momentum, quality e value disponibili nell'universo attuale sono nati dal 2014 in avanti. Entrano soltanto nel test dal momento in cui esistono; non sono utilizzabili per una selezione nel 2007.
-- Gli ETF lanciati dopo il 2007 possono entrare nel ranking solo dalla loro prima osservazione effettiva.
-- Questa shortlist è una base storica più pulita, ma non elimina il survivorship bias: include fondi sopravvissuti e presenti nel registro corrente.
+Le date di lancio sono documentate nel catalogo ufficiale iShares/BlackRock (product list, sezione international ETFs): https://www.blackrock.com/it/consulenti/literature/brochure/ishares-product-list-en-us.pdf. Il file CSV conserva simbolo, area, nome, data di lancio e mercato di quotazione.
 
-## Limite decisivo per il test 2007
+## Regole di ammissione e controlli
 
-Nel registro attuale, la prima osservazione prezzi dei candidati più vecchi è il 2 gennaio 2008, non il 2005-2006. Di conseguenza non esistono, in questa fonte prezzi, osservazioni ETF effettive sufficienti per addestrare il modello nel 2005-2006 e iniziare un walk-forward nel 2007.
+1. Download giornaliero adjusted da Yahoo Finance a partire dal 2005-01-01.
+2. Nessun prezzo viene inventato prima della data di effettiva disponibilità del fondo.
+3. Ogni ticker viene riportato con prima/ultima data osservata, numero di sedute e stato del download nel JSON.
+4. Il fondo entra nel ranking soltanto dopo che gli indicatori richiesti sono calcolabili; le geografie non ancora quotate non vengono retrodatate.
+5. Il modello può usare come training le osservazioni pre-2007, ma genera risultati OOS soltanto dal 2007-01 in avanti.
+6. Il modello Ridge usa solo etichette a 21 sedute già maturate alla data della previsione.
+7. La selezione nested Top 3 usa soltanto i rendimenti dei mesi precedenti il cui orizzonte a 21 sedute è già maturato; i rendimenti sovrapposti non vengono anticipati nella selezione.
 
-Il run 44871424936 ha infatti richiesto il 2007 ma ha prodotto il primo mese out-of-sample in 2010-05 (197 mesi fino a 2026-09). Non va descritto come test della crisi 2007-2009.
+## Interpretazione e limiti
 
-## Prossimo passaggio tecnico
+- Le quote sono ETF reali, ma il campione è US-listed e i prezzi sono in USD. Il test misura quindi rendimenti total-return in USD (secondo l'aggiustamento del provider), non la performance di un investitore EUR al netto del cambio.
+- Il campione è composto da ETF sopravvissuti e presenta survivorship bias; non include tutti i fondi chiusi o liquidati prima del 2026.
+- La selezione dei fondi usa la storia di lancio e non prova che ogni fondo fosse già accessibile a ogni investitore europeo.
+- Il campione non è un universo investibile UCITS del 2007 e non deve essere mescolato con il radar corrente.
+- I risultati sono lordi: costi, spread, imposte, commissioni, slippage e fiscalità non sono inclusi.
+- Le performance mensili forward a 21 sedute si sovrappongono; le statistiche HAC e il confronto con ROC21/equal-weight sono necessari per evitare conclusioni basate soltanto sul CAGR.
 
-1. Mantenere questi ETF come shortlist UCITS/ETF storici.
-2. Cercare una fonte storica alternativa per le quotazioni effettive 2005-2007 (preferibilmente NAV/total-return ufficiali o dati di borsa).
-3. Verificare per ogni ISIN la data iniziale e la continuità, prima di usare la serie.
-4. Se i dati 2005-2007 non sono recuperabili, eseguire un test distinto su indici/proxy e mantenerlo chiaramente separato dal test ETF.
+## Precedente limite del campione UCITS
+
+Il test del run 44871424936 aveva richiesto il 2007 ma il primo mese out-of-sample era 2010-05: la serie prezzi del registro UCITS corrente cominciava troppo tardi per addestrare il modello nel 2005-2006. Quel run non costituisce un test della crisi 2007-2009.
+
+## Esito del nuovo test
+
+Il nuovo workflow aggiunge un campo separato `historical_etf_crisis_test` in `radar-predittivo.json`. Il risultato sarà considerato valido solo se:
+- la copertura mostra un numero sufficiente di ETF con prezzi effettivi prima del 2007;
+- il primo mese OOS è 2007 (o il primo mese successivo in cui sono soddisfatti i minimi predefiniti, dichiarato esplicitamente);
+- i mesi 2007-2009 sono effettivamente presenti;
+- il confronto Top 3 vs ROC21 ed equal-weight è riportato separatamente dal test UCITS operativo.
+
