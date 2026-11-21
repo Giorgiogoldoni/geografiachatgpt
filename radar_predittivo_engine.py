@@ -1194,6 +1194,63 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
             "positive_months_pct": finite(np.mean(arr > 0))
         }
 
+    # Nested walk-forward strategy selection for the primary Top-3 portfolio.
+    # At each month, select among pre-declared candidates using only the
+    # previous 36 matured monthly outcomes; apply the frozen choice to this month.
+    rolling_candidates = ("ridge", "roc21", "blend_ridge_25_roc21_75",
+                          "blend_ridge_50_roc21_50", "blend_ridge_75_roc21_25")
+    rolling_top3_rows = []
+    for idx, current_row in enumerate(rows):
+        prior_rows = rows[max(0, idx - 36):idx]
+        if len(prior_rows) < 12:
+            continue
+        candidate_scores = {}
+        for candidate in rolling_candidates:
+            diffs = []
+            for prior_row in prior_rows:
+                a = prior_row["portfolios"][candidate]["3"]["return"]
+                b = prior_row["portfolios"]["roc21"]["3"]["return"]
+                if a is not None and b is not None:
+                    diffs.append(a - b)
+            if len(diffs) >= 12:
+                candidate_scores[candidate] = float(np.mean(diffs))
+        if not candidate_scores:
+            continue
+        selected = max(candidate_scores, key=candidate_scores.get)
+        selected_return = current_row["portfolios"][selected]["3"]["return"]
+        roc_return = current_row["portfolios"]["roc21"]["3"]["return"]
+        benchmark_return = current_row["portfolios"]["benchmark"]["3"]["return"]
+        if selected_return is None or roc_return is None or benchmark_return is None:
+            continue
+        rolling_top3_rows.append({
+            "period": current_row["period"],
+            "selected_strategy": selected,
+            "selected_return": selected_return,
+            "roc21_return": roc_return,
+            "equal_weight_return": benchmark_return,
+            "selection_history_months": len(prior_rows),
+            "selected_strategy_trailing_excess": candidate_scores[selected]
+        })
+    rolling_top3_selection = {
+        "status": "WALK-FORWARD NESTED · SELEZIONE SOLO SU MESI PRECEDENTI",
+        "portfolio_size": 3,
+        "lookback_months": 36,
+        "minimum_selection_history_months": 12,
+        "candidate_strategies": list(rolling_candidates),
+        "months": len(rolling_top3_rows),
+        "selected_strategy_counts": {
+            name: sum(x["selected_strategy"] == name for x in rolling_top3_rows)
+            for name in rolling_candidates
+        },
+        "selected_strategy_metrics": strict_metrics([x["selected_return"] for x in rolling_top3_rows]),
+        "roc21_metrics": strict_metrics([x["roc21_return"] for x in rolling_top3_rows]),
+        "equal_weight_metrics": strict_metrics([x["equal_weight_return"] for x in rolling_top3_rows]),
+        "paired_vs_roc21": strict_hac([x["selected_return"] - x["roc21_return"] for x in rolling_top3_rows]),
+        "paired_vs_equal_weight": strict_hac([x["selected_return"] - x["equal_weight_return"] for x in rolling_top3_rows]),
+        "monthly_selections": rolling_top3_rows,
+        "method": "Ogni mese seleziona la strategia Top-3 con il maggior excess medio rispetto a ROC21 nei 36 mesi precedenti (minimo 12); la scelta è congelata prima di osservare il rendimento del mese corrente. Il test è nested walk-forward; i rendimenti mensili a 21 sedute si sovrappongono e l'universo corrente conserva survivorship bias."
+    }
+
     strict_holdout = {
         "status": "NON VALUTABILE: campione insufficiente",
         "selection_window": "2020-01/2022-12",
@@ -1234,6 +1291,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         "robustness": robustness,
         "portfolio_validation": portfolio_validation,
         "strict_holdout": strict_holdout,
+        "rolling_top3_selection": rolling_top3_selection,
         "latest_ranking_period": str(latest_period),
         "latest_ranking_date": asof.strftime("%Y-%m-%d"),
         "latest_training_months": len(live_prior_periods),
