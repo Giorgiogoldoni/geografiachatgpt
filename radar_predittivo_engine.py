@@ -1129,18 +1129,51 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         live["predicted_excess"] = (
             (live[features].to_numpy(dtype=float) - x_mean) @ coef + y_mean
         )
-        latest = live.dropna(subset=["predicted_excess"]).sort_values(
+        # Two independent, side-by-side cross-sectional scores for every
+        # currently covered geography. Ridge remains geography-level by design;
+        # its score is mapped to each ETF listing belonging to that geography.
+        live["ridge_score_100"] = live["predicted_excess"].rank(pct=True) * 100.0
+        live["momentum_score_100"] = live["composite_momentum"].rank(pct=True) * 100.0
+        live["ridge_rank"] = live["predicted_excess"].rank(ascending=False, method="min").astype(int)
+        live["momentum_rank"] = live["composite_momentum"].rank(ascending=False, method="min").astype(int)
+        latest = live.dropna(subset=["predicted_excess", "composite_momentum"]).sort_values(
             "predicted_excess", ascending=False
-        ).head(15)
+        )
         for _, row in latest.iterrows():
             m = meta.get(row["symbol"], {})
+            symbols_for_geo = row.get("symbols", [row["symbol"]])
             latest_ranking.append({
                 "symbol": row["symbol"], "ticker": m.get("ticker", row["symbol"]),
-                "tickers": [meta.get(sym, {}).get("ticker", sym) for sym in row.get("symbols", [row["symbol"]])],
+                "tickers": [meta.get(sym, {}).get("ticker", sym) for sym in symbols_for_geo],
+                "symbols": list(symbols_for_geo),
                 "name": m.get("name", row["symbol"]), "geography": row.get("geography", m.get("geography", "")),
+                "ridge_score_100": finite(row["ridge_score_100"]),
+                "ridge_rank": int(row["ridge_rank"]),
                 "predicted_excess": finite(row["predicted_excess"]),
+                "momentum_3612_score_100": finite(row["momentum_score_100"]),
+                "momentum_3612_rank": int(row["momentum_rank"]),
                 "roc21": finite(row["roc21"]),
                 "composite_momentum": finite(row["composite_momentum"])
+            })
+    latest_etf_comparison = []
+    for geo_row in latest_ranking:
+        for symbol in geo_row.get("symbols", [geo_row.get("symbol")]):
+            if not symbol:
+                continue
+            m = meta.get(symbol, {})
+            latest_etf_comparison.append({
+                "symbol": symbol,
+                "ticker": m.get("ticker", symbol),
+                "name": m.get("name", symbol),
+                "geography": geo_row.get("geography", ""),
+                "momentum_3612_score_100": geo_row.get("momentum_3612_score_100"),
+                "momentum_3612_rank": geo_row.get("momentum_3612_rank"),
+                "ridge_score_100": geo_row.get("ridge_score_100"),
+                "ridge_rank": geo_row.get("ridge_rank"),
+                "ridge_predicted_excess": geo_row.get("predicted_excess"),
+                "rank_gap_ridge_minus_momentum": (
+                    geo_row.get("momentum_3612_rank", 0) - geo_row.get("ridge_rank", 0)
+                )
             })
 
     # Strict chronological model-selection protocol:
@@ -1324,6 +1357,14 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         "latest_training_observations": int(len(live_prior)),
         "latest_ranking_status": "CALCOLATA" if latest_ranking else "DATI INSUFFICIENTI",
         "latest_ranking": latest_ranking,
+        "latest_etf_comparison_status": "CALCOLATA" if latest_etf_comparison else "DATI INSUFFICIENTI",
+        "latest_etf_comparison_count": len(latest_etf_comparison),
+        "latest_etf_comparison": latest_etf_comparison,
+        "latest_score_definitions": {
+            "momentum_3612_score_100": "Percentile cross-sectional 0-100 del composito 40% ROC63 + 30% ROC126 + 30% ROC252.",
+            "ridge_score_100": "Percentile cross-sectional 0-100 della previsione Ridge di extra-rendimento geografico a 21 sedute, stimata solo su etichette già mature.",
+            "important": "I punteggi sono relativi all'universo disponibile alla data dello snapshot, non probabilità di rendimento. Ridge è stimato per geografia e replicato sui listing ETF della stessa geografia; gli ETF della stessa geografia possono quindi avere punteggi identici."
+        },
         "monthly_observations": rows,
         "method": "Ogni mese Ridge stima l'extra-rendimento geografico relativo a 21 sedute. ETF multipli della stessa geografia sono aggregati in un'unica osservazione equiponderata prima del ranking e del training, evitando sovrappeso dei Paesi con più listing. Il training usa solo etichette con data di maturazione non successiva alla data di previsione; finestra massima 60 mesi, minimo 18 mesi e 100 osservazioni geografia-mese. Feature cross-sectional rank: momentum 1/3/6 mesi, KAMA, stabilità del trend, Alligator, ADX con direzione Vortex e volatilità inversa. Confronto top 3/5/10 geografie contro ROC21, momentum 3/6/12 e universo equiponderato. Verifica del rischio con drawdown, volatilità e Sharpe; test HAC con 20 lag, sottoperiodi e regimi risk-on/risk-off. Resta survivorship bias."
     }
