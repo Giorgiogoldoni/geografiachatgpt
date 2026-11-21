@@ -1,0 +1,23 @@
+symbol,geography,name,inception_date,listing,proxy_type
+SPY,Stati Uniti,SPDR S&P 500 ETF Trust,1993-01-22,NYSE Arca,ETF paese/mercato reale
+EWA,Australia,iShares MSCI Australia ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWC,Canada,iShares MSCI Canada ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWD,Svezia,iShares MSCI Sweden ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWG,Germania,iShares MSCI Germany ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWH,Hong Kong,iShares MSCI Hong Kong ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWI,Italia,iShares MSCI Italy ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWJ,Giappone,iShares MSCI Japan ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWL,Svizzera,iShares MSCI Switzerland ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWM,Malaysia,iShares MSCI Malaysia ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWN,Paesi Bassi,iShares MSCI Netherlands ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWO,Austria,iShares MSCI Austria ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWP,Spagna,iShares MSCI Spain ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWQ,Francia,iShares MSCI France ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWS,Singapore,iShares MSCI Singapore ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWU,Regno Unito,iShares MSCI United Kingdom ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWW,Messico,iShares MSCI Mexico ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWK,Belgio,iShares MSCI Belgium ETF,1996-03-12,NYSE Arca,ETF paese reale
+EWT,Taiwan,iShares MSCI Taiwan ETF,2000-06-20,NYSE Arca,ETF paese reale
+EWY,Corea del Sud,iShares MSCI South Korea ETF,2000-05-09,NYSE Arca,ETF paese reale
+EWZ,Brasile,iShares MSCI Brazil ETF,2000-07-10,NYSE Arca,ETF paese reale
+FXI,Cina,iShares China Large-Cap ETF,2004-10-05,NYSE Arca,ETF paese reale
