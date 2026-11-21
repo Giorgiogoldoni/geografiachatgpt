@@ -1440,6 +1440,32 @@ def main():
     for row in calculated:
         by_module.setdefault(row.get("module") or "Non classificato",[]).append(row)
     validation, module_breadth = monthly_validation(frames,indicators,universe)
+    # Separate long-lived US-listed country ETFs supply actual traded histories for crisis replay.
+    historical_catalog_path = ROOT / "data" / "historical_country_etfs_2007.csv"
+    historical_universe = pd.read_csv(historical_catalog_path).fillna("").to_dict("records") if historical_catalog_path.exists() else []
+    historical_symbols = sorted({str(x["symbol"]).strip() for x in historical_universe if str(x.get("symbol", "")).strip()})
+    historical_frames, historical_errors = download_prices(historical_symbols, start_date="2005-01-01") if historical_symbols else ({}, {})
+    historical_indicators, historical_coverage = {}, []
+    for meta in historical_universe:
+        symbol = meta["symbol"]
+        frame = historical_frames.get(symbol)
+        if frame is None:
+            historical_coverage.append({**meta, "status": "PREZZI NON DISPONIBILI", "error": historical_errors.get(symbol, "Nessuna serie")})
+            continue
+        try:
+            ind = calculate(frame).dropna(subset=["score", "ma200", "roc38", "rsi14"])
+            if ind.empty:
+                historical_coverage.append({**meta, "status": "STORICO NON SUFFICIENTE", "first_price_date": frame.index.min().strftime("%Y-%m-%d"), "observations": len(frame)})
+                continue
+            historical_indicators[symbol] = ind
+            historical_coverage.append({**meta, "status": "CALCOLATO", "first_price_date": frame.index.min().strftime("%Y-%m-%d"), "last_price_date": frame.index.max().strftime("%Y-%m-%d"), "observations": len(frame)})
+        except Exception as exc:
+            historical_coverage.append({**meta, "status": "ERRORE CALCOLO", "error": f"{type(exc).__name__}: {exc}"})
+    historical_crisis_test = walk_forward_predictive_v3(historical_indicators, historical_universe, start_date="2007-01-01") if historical_indicators else {"status": "DATI STORICI NON DISPONIBILI", "months": 0}
+    historical_crisis_test["requested_start_date"] = "2007-01-01"
+    historical_crisis_test["price_source"] = "Yahoo Finance adjusted daily OHLC; actual ETF price observations only; no index backfill."
+    historical_crisis_test["universe_type"] = "US-listed long-lived country ETFs used as historical geographic proxies; not UCITS share classes."
+    historical_crisis_test["coverage"] = historical_coverage
     early_v2 = early_signal_validation(indicators, universe)
     learned_v2 = walk_forward_early_model(indicators, universe)
     candidate_v3 = compare_predictive_candidates(indicators, universe, start_date="2007-01-01")
@@ -1497,6 +1523,7 @@ def main():
         "predictive_v2": {"name": "Predittivo 2.0 · focus primo mese", "validation_1m": early_v2, "walk_forward_model_1m": learned_v2, "priority_horizon": "1m", "score_definition": "Score anticipatore 0-100: ROC5/10/21, accelerazione ROC, prezzo e pendenza KAMA, Lips/Teeth Alligator, Vortex e RSI in fascia costruttiva; nessun filtro MA200.", "status": "SPERIMENTALE FINO A SUPERAMENTO DEL TEST OUT-OF-SAMPLE"},
         "predictive_v3": candidate_v3,
         "predictive_v3_walk_forward": walk_forward_predictive_v3(indicators, universe, start_date="2007-01-01"),
+        "historical_etf_crisis_test": historical_crisis_test,
         "factor_analysis":factor_analysis
     }
     OUT.write_text(json.dumps(output,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf-8")
@@ -1506,6 +1533,11 @@ def main():
     predictive_log = dict(output["predictive_v3_walk_forward"])
     predictive_log.pop("monthly_observations", None)
     print("PREDICTIVE_V3_WALK_FORWARD_SUMMARY:", json.dumps(predictive_log, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
+    historical_log = dict(output["historical_etf_crisis_test"])
+    historical_log.pop("monthly_observations", None)
+    historical_log.pop("coverage", None)
+    print("HISTORICAL_ETF_CRISIS_TEST_SUMMARY:", json.dumps(historical_log, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
+    print("HISTORICAL_ETF_COVERAGE:", json.dumps(historical_coverage, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
     print("Output:",OUT)
 
 if __name__=="__main__":
