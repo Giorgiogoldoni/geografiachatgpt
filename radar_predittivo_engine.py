@@ -812,7 +812,7 @@ def compare_predictive_candidates(indicators, universe, start_date="2015-01-01")
 
 
 
-def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", train_months=60):
+def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", train_months=60, min_train_months=18, min_train_observations=100):
     """
     Leakage-controlled monthly Ridge ranking plus a genuinely current snapshot.
     Historical labels are used only after their full 21-session outcome matures.
@@ -822,7 +822,8 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
     if panel.empty:
         return {"status": "DATI INSUFFICIENTI", "months": 0}
 
-    panel = panel[panel["date"] >= pd.Timestamp(start_date)].copy()
+    # Keep pre-evaluation history for training; only score forecast months on/after start_date.
+    evaluation_start = pd.Timestamp(start_date)
     panel["future_date_1m"] = pd.to_datetime(panel["future_date_1m"])
     panel["directional_adx"] = panel["adx14"] * np.sign(panel["vortex_spread"])
     # The objective is geographic allocation, not ETF listing selection.
@@ -895,13 +896,15 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         if len(current) < 5:
             continue
         forecast_date = current["date"].max()
+        if forecast_date < evaluation_start:
+            continue
         prior = labeled[
             (labeled["period"] < period) &
             (labeled["future_date_1m"] <= forecast_date)
         ].copy()
         prior_periods = sorted(prior["period"].unique())[-train_months:]
         prior = prior[prior["period"].isin(prior_periods)]
-        if len(prior_periods) < 18 or len(prior) < 100:
+        if len(prior_periods) < min_train_months or len(prior) < min_train_observations:
             continue
         fitted = fit_ridge(prior)
         if fitted is None:
@@ -934,7 +937,9 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                   "momentum_3_6_12", "benchmark")
     for period, group in pred.groupby("period", sort=True):
         benchmark = finite(group["realized_return"].mean())
-        item = {"period": str(period), "benchmark": benchmark, "geographies_available": int(len(group)), "portfolios": {}}
+        item = {"period": str(period), "forecast_date": group["date"].max().strftime("%Y-%m-%d"),
+                "label_maturity_date": group["future_date_1m"].max().strftime("%Y-%m-%d"),
+                "benchmark": benchmark, "geographies_available": int(len(group)), "portfolios": {}}
         for count in (3, 5, 10):
             n = min(count, len(group))
             selectors = {
@@ -1113,7 +1118,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
     ].copy()
     live_prior_periods = sorted(live_prior["period"].unique())[-train_months:]
     live_prior = live_prior[live_prior["period"].isin(live_prior_periods)]
-    live_fit = fit_ridge(live_prior) if len(live_prior_periods) >= 18 and len(live_prior) >= 100 else None
+    live_fit = fit_ridge(live_prior) if len(live_prior_periods) >= min_train_months and len(live_prior) >= min_train_observations else None
     latest_ranking = []
     if live_fit is not None:
         x_mean, y_mean, coef = live_fit
@@ -1203,7 +1208,9 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                           "blend_ridge_50_roc21_50", "blend_ridge_75_roc21_25")
     rolling_top3_rows = []
     for idx, current_row in enumerate(rows):
-        prior_rows = rows[max(0, idx - 36):idx]
+        forecast_date = pd.Timestamp(current_row["forecast_date"])
+        prior_rows = [r for r in rows[:idx]
+                      if pd.Timestamp(r["label_maturity_date"]) <= forecast_date][-36:]
         if len(prior_rows) < 12:
             continue
         candidate_scores = {}
@@ -1300,7 +1307,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
             "minimum_geographies_per_month": min(x["geographies_available"] for x in rows),
             "median_geographies_per_month": finite(np.median([x["geographies_available"] for x in rows]))
         },
-        "minimum_training_months": 18, "minimum_training_observations": 100,
+        "minimum_training_months": min_train_months, "minimum_training_observations": min_train_observations,
         "ridge_alpha": alpha, "features": features,
         "portfolio_sizes": [3, 5, 10], "results": summary,
         "robustness": robustness,
@@ -1461,7 +1468,10 @@ def main():
             historical_coverage.append({**meta, "status": "CALCOLATO", "first_price_date": frame.index.min().strftime("%Y-%m-%d"), "last_price_date": frame.index.max().strftime("%Y-%m-%d"), "observations": len(frame)})
         except Exception as exc:
             historical_coverage.append({**meta, "status": "ERRORE CALCOLO", "error": f"{type(exc).__name__}: {exc}"})
-    historical_crisis_test = walk_forward_predictive_v3(historical_indicators, historical_universe, start_date="2007-01-01") if historical_indicators else {"status": "DATI STORICI NON DISPONIBILI", "months": 0}
+    historical_crisis_test = walk_forward_predictive_v3(
+        historical_indicators, historical_universe, start_date="2007-01-01",
+        min_train_months=12, min_train_observations=100
+    ) if historical_indicators else {"status": "DATI STORICI NON DISPONIBILI", "months": 0}
     historical_crisis_test["requested_start_date"] = "2007-01-01"
     historical_crisis_test["price_source"] = "Yahoo Finance adjusted daily OHLC; actual ETF price observations only; no index backfill."
     historical_crisis_test["universe_type"] = "US-listed long-lived country ETFs used as historical geographic proxies; not UCITS share classes."
