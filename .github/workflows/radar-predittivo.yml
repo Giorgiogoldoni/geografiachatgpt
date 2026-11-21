@@ -6,6 +6,7 @@ on:
       - 'radar_predittivo_engine.py'
       - 'geografia-motore.json'
       - 'data/geografia_index_factor_14.csv'
+      - 'data/historical_country_etfs_2007.csv'
       - '.github/workflows/radar-predittivo.yml'
   schedule:
     - cron: '15 23 * * 1-5'
