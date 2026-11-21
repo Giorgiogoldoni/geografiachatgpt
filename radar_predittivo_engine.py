@@ -1132,6 +1132,98 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
                 "composite_momentum": finite(row["composite_momentum"])
             })
 
+    # Strict chronological model-selection protocol:
+    # use 2020-2022 only to select one blend for the primary Top-5 portfolio;
+    # freeze that choice and evaluate it once on the untouched 2023+ holdout.
+    validation_rows = [r for r in rows if "2020-01" <= r["period"] <= "2022-12"]
+    holdout_rows = [r for r in rows if r["period"] >= "2023-01"]
+    candidate_strategies = [
+        "roc21", "blend_ridge_25_roc21_75",
+        "blend_ridge_50_roc21_50", "blend_ridge_75_roc21_25"
+    ]
+    validation_scores = {}
+    for candidate in candidate_strategies:
+        diffs = []
+        for r in validation_rows:
+            a = r["portfolios"][candidate]["5"]["return"]
+            b = r["portfolios"]["roc21"]["5"]["return"]
+            if a is not None and b is not None:
+                diffs.append(a - b)
+        validation_scores[candidate] = {
+            "months": len(diffs),
+            "mean_excess_vs_roc21": finite(np.mean(diffs)) if diffs else None
+        }
+    eligible = [k for k, v in validation_scores.items()
+                if v["months"] >= 12 and v["mean_excess_vs_roc21"] is not None]
+    selected_strategy = max(
+        eligible,
+        key=lambda k: validation_scores[k]["mean_excess_vs_roc21"]
+    ) if eligible else None
+
+    def strict_hac(values, max_lag=20):
+        arr = np.asarray([v for v in values if v is not None and np.isfinite(v)], dtype=float)
+        n = len(arr)
+        if n < 3:
+            return {"months": n, "mean_difference": finite(arr.mean()) if n else None, "hac_t": None}
+        centered = arr - arr.mean()
+        lag = min(max_lag, n - 1)
+        lrv = float(np.dot(centered, centered) / n)
+        for k in range(1, lag + 1):
+            gamma = float(np.dot(centered[k:], centered[:-k]) / n)
+            lrv += 2.0 * (1.0 - k / (lag + 1.0)) * gamma
+        se = np.sqrt(max(lrv, 0.0) / n)
+        return {"months": n, "mean_difference": finite(arr.mean()),
+                "positive_months_pct": finite(np.mean(arr > 0)),
+                "hac_lags": lag, "hac_t": finite(arr.mean() / se) if se > 0 else None}
+
+    def strict_metrics(values):
+        arr = np.asarray([v for v in values if v is not None and np.isfinite(v)], dtype=float)
+        if not len(arr):
+            return {"months": 0}
+        wealth = np.cumprod(1.0 + arr)
+        peaks = np.maximum.accumulate(np.r_[1.0, wealth])[1:]
+        vol = float(np.std(arr, ddof=1) * np.sqrt(12)) if len(arr) > 1 else None
+        return {
+            "months": int(len(arr)),
+            "mean_monthly_return": finite(arr.mean()),
+            "cumulative_return": finite(wealth[-1] - 1.0),
+            "annualized_return": finite(wealth[-1] ** (12.0 / len(arr)) - 1.0) if np.all(1.0 + arr > 0) else None,
+            "annualized_volatility": finite(vol),
+            "sharpe": finite(arr.mean() / np.std(arr, ddof=1) * np.sqrt(12)) if len(arr) > 1 and np.std(arr, ddof=1) > 0 else None,
+            "max_drawdown": finite(np.min(wealth / peaks - 1.0)),
+            "positive_months_pct": finite(np.mean(arr > 0))
+        }
+
+    strict_holdout = {
+        "status": "NON VALUTABILE: campione insufficiente",
+        "selection_window": "2020-01/2022-12",
+        "untouched_test_window": "2023-01 in avanti",
+        "selection_rule": "Seleziona una sola strategia in base al maggiore excess medio mensile Top-5 rispetto a ROC21 nel solo periodo 2020-2022; scelta congelata prima del test 2023+.",
+        "validation_candidates_top5": validation_scores,
+        "selected_strategy": selected_strategy,
+        "validation_months": len(validation_rows),
+        "holdout_months": len(holdout_rows),
+        "holdout": {}
+    }
+    if selected_strategy is not None and len(holdout_rows) >= 12:
+        strict_holdout["status"] = "TEST CRONOLOGICO INDIPENDENTE ESEGUITO"
+        for count in (3, 5, 10):
+            chosen_returns, roc_returns, benchmark_returns = [], [], []
+            for r in holdout_rows:
+                chosen_returns.append(r["portfolios"][selected_strategy][str(count)]["return"])
+                roc_returns.append(r["portfolios"]["roc21"][str(count)]["return"])
+                benchmark_returns.append(r["portfolios"]["benchmark"][str(count)]["return"])
+            paired_roc = [a-b for a,b in zip(chosen_returns, roc_returns) if a is not None and b is not None]
+            paired_bench = [a-b for a,b in zip(chosen_returns, benchmark_returns) if a is not None and b is not None]
+            strict_holdout["holdout"][str(count)] = {
+                "selected_strategy": selected_strategy,
+                "selected_strategy_metrics": strict_metrics(chosen_returns),
+                "roc21_metrics": strict_metrics(roc_returns),
+                "equal_weight_metrics": strict_metrics(benchmark_returns),
+                "paired_vs_roc21": strict_hac(paired_roc),
+                "paired_vs_equal_weight": strict_hac(paired_bench)
+            }
+
     return {
         "status": "WALK-FORWARD RIDGE 3.0 · STORICO SPERIMENTALE + SNAPSHOT CORRENTE",
         "from": rows[0]["period"], "to": rows[-1]["period"],
@@ -1141,6 +1233,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         "portfolio_sizes": [3, 5, 10], "results": summary,
         "robustness": robustness,
         "portfolio_validation": portfolio_validation,
+        "strict_holdout": strict_holdout,
         "latest_ranking_period": str(latest_period),
         "latest_ranking_date": asof.strftime("%Y-%m-%d"),
         "latest_training_months": len(live_prior_periods),
