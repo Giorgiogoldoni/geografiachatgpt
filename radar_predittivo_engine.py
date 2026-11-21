@@ -1108,7 +1108,7 @@ def walk_forward_predictive_v3(indicators, universe, start_date="2015-01-01", tr
         robustness["paired_comparisons"][str(count)] = {}
         for comparator in ("roc21", "blend_ridge_25_roc21_75",
                            "blend_ridge_50_roc21_50", "blend_ridge_75_roc21_25",
-                           "momentum_3_6_12", "benchmark"):
+                           "blend_ridge_stabilization_70_30", "momentum_3_6_12", "benchmark"):
             diffs = []
             for row in rows:
                 a = row["portfolios"]["ridge"][str(count)]["return"]
