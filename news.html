@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>News motori · Geografia ChatGPT</title>
+<style>
+:root{--bg:#f3f6fa;--card:#fff;--ink:#17243a;--muted:#64748b;--line:#dfe6ef;--blue:#2459a6;--green:#16794b;--amber:#9a6700}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.45}
+header{background:#14243b;color:white;padding:20px 16px}header>div,main{max-width:900px;margin:auto}h1{font-size:23px;margin:0}header a{color:#d8e7ff}main{padding:18px 14px}.muted{color:var(--muted);font-size:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:15px;margin-bottom:11px}.top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}h2{font-size:16px;margin:0 0 5px}.date{font-size:12px;color:var(--muted)}.result{margin-top:9px}.result b{font-weight:700}.tag{display:inline-block;border-radius:20px;background:#eaf1fb;color:var(--blue);padding:3px 8px;font-size:11px;font-weight:700}
+a{color:var(--blue)}footer{max-width:900px;margin:auto;padding:8px 14px 28px;color:var(--muted);font-size:11px}
+</style></head><body>
+<header><div><h1>📰 News · risultati dei motori</h1><p><a href="./index.html">← Homepage</a></p></div></header>
+<main><p class="muted">Riepilogo automatico dei dati pubblicati. Ogni scheda mostra la data dei prezzi e l'ora di generazione quando presenti nei file del motore.</p><div id="news"><p>Caricamento risultati…</p></div></main>
+<footer>Aggiornamento automatico alla pubblicazione dei JSON. Una data più vecchia indica che il relativo motore non ha ancora prodotto un nuovo aggiornamento.</footer>
+<script>
+const $=id=>document.getElementById(id), esc=s=>String(s??"—").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const date=s=>{if(!s)return "non disponibile";let d=new Date(s);return isNaN(d) ? esc(s) : d.toLocaleString("it-IT",{dateStyle:"short",timeStyle:s.includes("T")?"short":undefined})};
+const pct=x=>x==null?"—":(Number(x)*100).toFixed(1)+"%";
+async function get(path){const r=await fetch("./"+path+"?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error(path+" non disponibile");return r.json()}
+function card(name,d,html,link){return '<section class="card"><div class="top"><div><h2>'+name+'</h2><div class="date">Prezzi al '+date(d.latest_price_date||d.price_date)+' · aggiornato '+date(d.generated_at||d.updated_at||d.date)+'</div></div><span class="tag">DATI PUBBLICATI</span></div><div class="result">'+html+'</div><p class="muted"><a href="./'+link+'">Apri motore</a></p></section>'}
+async function load(){
+ const jobs=[
+  ["Motore UCITS","ucits_geography.json","index.html",d=>{let s=Object.entries(d.selected||{}).map(([a,x])=>a+": "+(x?.ticker||"nessuna selezione"));return '<b>Selezioni:</b> '+esc(s.join(" · ")||"dati disponibili")+'<br><span class="muted">'+(d.coverage?.calculated_count??"—")+' serie calcolate</span>'}],
+  ["Motore geografico · 6 aree","geografia-motore.json","geografia-motore.html",d=>{let s=Object.entries(d.selections||{}).map(([k,x])=>k.replace("|"," · ")+": "+(x?.ticker||"nessuna selezione"));return '<b>Selezioni:</b> '+esc(s.join(" · ")||"ranking disponibile")+'<br><span class="muted">'+(d.coverage?.calculated_count??"—")+' serie calcolate · '+(d.factor_universe||[]).filter(x=>x.status==="CALCOLATO").length+' ETF factor calcolabili</span>'}],
+  ["Radar predittivo · Momentum / Ridge","radar-predittivo.json","radar-predittivo.html",d=>{let a=d.latest_ranking||d.ranking||d.current_ranking||[];if(!Array.isArray(a))a=Object.values(a);let top=a.slice(0,3).map((x,i)=>(i+1)+". "+(x.geography||x.area||x.country||"") +" "+(x.ticker||x.tickers?.join(", ")||""));return '<b>Stato:</b> '+esc(d.status||d.validation?.status||"risultati disponibili")+(top.length?'<br><b>Prime posizioni:</b> '+esc(top.join(" · ")):"")+'<br><span class="muted">Classifica completa e verifiche nella pagina Radar</span>'}],
+  ["World Top 4","world_top4.json","world-top4.html",d=>{let s=Object.entries(d.selected||{}).map(([a,x])=>a+": "+(x?.ticker||"copertura difensiva"));return '<b>Selezioni:</b> '+esc(s.join(" · ")||"portafoglio aggiornato")+'<br><span class="muted">CAGR modello: '+pct(d.variants?.modified?.metrics?.cagr)+' · Max drawdown: '+pct(d.variants?.modified?.metrics?.max_drawdown)+'</span>'}],
+  ["Portafoglio EURO 60/40","euro_top4_6040.json","portafogli-usa-euro.html",d=>{let p=d.current_composition||{},s=(p.picks||[]).map(x=>x.area+": "+x.ticker);return '<b>Composizione:</b> '+esc(s.join(" · ")||p.status||"non disponibile")+'<br><span class="muted">Periodo segnale: '+date(p.signal_date)+' · liquidità '+pct(p.holdings?.find(x=>x.role==="LIQUIDITÀ")?.weight)+'</span>'}]
+ ];
+ const results=await Promise.all(jobs.map(async j=>{try{let d=await get(j[1]);return card(j[0],d,j[3](d),j[2])}catch(e){return '<section class="card"><h2>'+j[0]+'</h2><div class="date">Aggiornamento non disponibile</div><div class="muted">'+esc(e.message)+'</div></section>'}}));
+ let extra="";try{let b=await get("data/bollettino_geografico.json"),e=b.editions?.[b.editions.length-1];if(e)extra='<section class="card"><div class="top"><div><h2>Bollettino geografico</h2><div class="date">Edizione '+date(e.date)+' · prezzi al '+date(e.price_date)+'</div></div><span class="tag">ULTIMA EDIZIONE</span></div><div class="result"><b>'+esc(e.market_summary)+'</b></div><p class="muted"><a href="./bollettino.html">Apri archivio bollettino</a></p></section>'}catch(e){}
+ $("news").innerHTML=results.join("")+extra;
+}
+load();
+</script></body></html>
