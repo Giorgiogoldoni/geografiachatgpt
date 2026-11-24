@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-21T03:23:39.020021+00:00",
-  "latest_price_date": "2026-11-20",
+  "generated_at": "2026-11-24T06:18:24.276610+00:00",
+  "latest_price_date": "2026-11-23",
   "data_source": "Yahoo Finance adjusted daily prices; same engine, hedge and ranking settings across scenarios",
   "candidate_audit_method": "EWY (Korea) is ranked against the Asia ETF universe; GREK (Greece) against each scenario\u2019s fourth-sleeve universe. Reports selection frequency, rank distribution and next-month return difference versus the actually selected ETF. No forced inclusion or portfolio weight change.",
   "warning": "Exploratory sensitivity only. Africa/Middle East sleeve assignments are not confirmed by Logical Invest. Strict price coverage: all four equity picks and both hedge picks must have valid start/end prices; months with missing selected prices are excluded. Legacy closed funds may yield no usable history. Results exclude fees, taxes, slippage and FX.",
