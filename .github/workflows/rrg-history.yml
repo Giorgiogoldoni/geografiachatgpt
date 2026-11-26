@@ -1,0 +1,39 @@
+name: ETF RRG weekly history
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'rrg_history_engine.py'
+      - 'rrg-etf.html'
+      - 'data/geografia_index_user_53.csv'
+      - 'data/geografia_index_factor_21.csv'
+      - '.github/workflows/rrg-history.yml'
+  schedule:
+    - cron: '30 22 * * 1-5'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: rrg-history-main
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install price-data dependencies
+        run: pip install pandas yfinance --break-system-packages -q
+      - name: Calculate weekly relative-rotation history
+        run: python rrg_history_engine.py
+      - name: Commit updated trail data
+        run: |
+          git config user.name "geografia-bot"
+          git config user.email "geografia-bot@users.noreply.github.com"
+          git add rrg-history.json
+          git diff --staged --quiet || git commit -m "Refresh weekly RRG ETF history"
+          git pull --rebase
+          git push
