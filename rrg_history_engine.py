@@ -25,7 +25,10 @@ def download_weekly(tickers):
  else:
   weekly=raw[["Close"]].rename(columns={"Close":tickers[0]})
  weekly.index=pd.to_datetime(weekly.index)
- return weekly.resample("W-FRI").last().dropna(how="all")
+ weekly=weekly.resample("W-FRI").last().dropna(how="all")
+ actual_dates=raw.index.to_series().resample("W-FRI").last().reindex(weekly.index)
+ weekly.index=pd.DatetimeIndex(actual_dates.values)
+ return weekly
 def main():
  geo=pd.read_csv(GEO,dtype=str).fillna(""); fac=pd.read_csv(FAC,dtype=str).fillna("")
  rows=[]
