@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-25T05:01:38.394388+00:00",
-  "latest_price_date": "2026-11-24",
+  "generated_at": "2026-11-26T04:18:28.962513+00:00",
+  "latest_price_date": "2026-11-25",
   "data_source": "Yahoo Finance adjusted daily prices; monthly close-to-close holding returns",
   "methodology": {
     "asia_two_slots": "Asia 15% sleeve split equally between rank 1 and rank 2 (7.5% each); other equity sleeves 15%; hedge 40%.",
