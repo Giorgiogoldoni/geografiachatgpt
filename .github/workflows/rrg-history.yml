@@ -4,7 +4,6 @@ on:
     branches: [main]
     paths:
       - 'rrg_history_engine.py'
-      - 'rrg-etf.html'
       - 'data/geografia_index_user_53.csv'
       - 'data/geografia_index_factor_21.csv'
       - '.github/workflows/rrg-history.yml'
