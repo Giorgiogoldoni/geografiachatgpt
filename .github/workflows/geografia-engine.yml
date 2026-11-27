@@ -12,7 +12,8 @@ on:
       - 'requirements.txt'
       - '.github/workflows/geografia-engine.yml'
   schedule:
-    - cron: '45 22 * * *'
+    - cron: '0 10 * * *'
+    - cron: '0 22 * * *'
   workflow_dispatch:
 permissions:
   contents: write
