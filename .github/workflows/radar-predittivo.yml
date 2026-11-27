@@ -9,7 +9,8 @@ on:
       - 'data/historical_country_etfs_2007.csv'
       - '.github/workflows/radar-predittivo.yml'
   schedule:
-    - cron: '15 23 * * 1-5'
+    - cron: '0 10 * * *'
+    - cron: '0 22 * * *'
   workflow_dispatch:
 permissions:
   contents: write
