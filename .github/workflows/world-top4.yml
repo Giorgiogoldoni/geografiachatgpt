@@ -11,7 +11,8 @@ on:
       - '.github/workflows/world-top4.yml'
       - 'requirements.txt'
   schedule:
-    - cron: '30 22 * * 1-5'
+    - cron: '0 10 * * *'
+    - cron: '0 22 * * *'
   workflow_dispatch:
 concurrency:
   group: world-top4-main
