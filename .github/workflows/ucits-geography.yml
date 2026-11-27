@@ -7,7 +7,8 @@ on:
       - 'ucits_country_universe_seed_2026-11-18.csv'
       - '.github/workflows/ucits-geography.yml'
   schedule:
-    - cron: '15 21 * * 1-5'
+    - cron: '0 10 * * *'
+    - cron: '0 22 * * *'
   workflow_dispatch:
 permissions:
   contents: write
