@@ -8,7 +8,8 @@ on:
       - 'data/geografia_index_factor_21.csv'
       - '.github/workflows/rrg-history.yml'
   schedule:
-    - cron: '40 22 * * 1-5'
+    - cron: '0 10 * * *'
+    - cron: '0 22 * * *'
   workflow_dispatch:
 permissions:
   contents: write
